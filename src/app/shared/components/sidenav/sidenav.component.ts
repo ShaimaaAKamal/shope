@@ -37,9 +37,6 @@ export class SidenavComponent {
   ];
 
   constructor(private commonService: CommonService) {
-    // this.commonService.isCollapse.subscribe({
-    //   next: isCollapse => (this.isCollapsed = isCollapse),
-    // });
     this.isCollapsed=this.commonService.isCollapse();
   }
 
@@ -58,15 +55,12 @@ export class SidenavComponent {
 
   private setIsCollapsed() {
     if (window.innerWidth < 768) {
-      // this.commonService.isCollapse.next(true);
             this.commonService.isCollapse.set(true);
-
     }
   }
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
-    // this.commonService.isCollapse.next(this.isCollapsed);
     this.commonService.isCollapse.set(this.isCollapsed);
     this.setIsCollapsed();
   }

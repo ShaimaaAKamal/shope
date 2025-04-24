@@ -1,0 +1,38 @@
+@use "variables" as *;
+.quantity-container {
+            display: flex;
+            align-items: stretch;
+            border-radius: 8px;
+            padding: 0px;
+            width: fit-content;
+        }
+
+.quantity-btn {
+            border: none;
+            padding: 4px 8px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            border-radius: 0 6px 6px 0;
+        }
+
+.decrease {
+            background-color: $dark;
+            color:#f1f1f1;
+            border-radius: 6px 0 0 6px;
+        }
+
+.increase {
+            background-color: $semi-dark;
+            color:$light;
+        }
+
+.quantity-input {
+            width:30px;
+            padding:.2rem !important;
+            text-align: center;
+            border: none;
+            font-size: 16px;
+            font-weight: semi-bold;
+            background: #f1f1f1;
+        }

@@ -1,0 +1,13 @@
+  <div class="container-fluid px-0" [class.mb-3]="!vertCLass">
+  <div class="row align-items-center gx-2">
+    <div   [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-4 col-xxl-3'" >
+                <label [id]="id" class="form-label small">{{label}}</label>
+    </div>
+    <div    [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'" >
+        <select class="form-select" [id]="id" [name]="id" (change)="onSelectionChange($event)">
+            <option [value]="noOption">{{noOption}}</option>
+            <option  *ngFor="let option of options" [value]="option[value]">{{option[prop]}}</option>
+          </select>
+    </div>
+  </div>
+ </div>

@@ -1,0 +1,24 @@
+@use 'variables' as *;
+
+  .position-relative {
+  &:focus-within {
+    .input-icon{
+      color: $semi-dark !important;
+    }
+  }
+  .input-icon{
+  left:8px;
+  top:50%;
+  color:#000;
+  font-size: .8rem;
+  opacity: .4;
+  transform: translateY(-50%);
+  z-index:100000;
+}
+ input.form-control:focus + .input-group-text {
+    border-color: $semi-dark;
+  }
+   input.form-control:focus + .input-group-text {
+    border-color: $semi-dark;
+  }
+}
