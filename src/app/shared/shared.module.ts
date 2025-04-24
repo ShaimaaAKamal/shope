@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavitemComponent } from './components/navitem/navitem.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { AppRoutingModule } from '../app-routing.module';
 import { NavSalesPersonComponent } from './components/nav-sales-person/nav-sales-person.component';
+import { InputComponent } from './components/input/input.component';
+import { SelectInputComponent } from './components/select-input/select-input.component';
+import { QuantityControlComponent } from './components/quantity-control/quantity-control.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -11,16 +14,23 @@ import { NavSalesPersonComponent } from './components/nav-sales-person/nav-sales
   declarations: [
     NavitemComponent,
     SidenavComponent,
-    NavSalesPersonComponent
+    NavSalesPersonComponent,
+    InputComponent,
+    SelectInputComponent,
+    QuantityControlComponent
   ],
   imports: [
     CommonModule,
-    AppRoutingModule,
+    RouterModule,
   ],
   exports:[
         NavitemComponent,
         SidenavComponent,
-        NavSalesPersonComponent
+        NavSalesPersonComponent,
+         InputComponent,
+        SelectInputComponent,
+        QuantityControlComponent
+
   ]
 })
 export class SharedModule { }
