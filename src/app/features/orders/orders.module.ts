@@ -3,15 +3,28 @@ import { CommonModule } from '@angular/common';
 
 import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders.component';
+import { CreateNewOrderComponent } from './create-new-order/create-new-order.component';
+import { OrderProductsComponent } from './shared/order-products/order-products.component';
+import { SharedModule } from '../../shared/shared.module';
+import { SummaryComponent } from './shared/summary/summary.component';
+import { HomePaymentComponent } from './shared/home-payment/home-payment.component';
 
 
 @NgModule({
   declarations: [
-    OrdersComponent
+    OrdersComponent,
+    CreateNewOrderComponent,
+    OrderProductsComponent,
+    SummaryComponent,
+    HomePaymentComponent
   ],
   imports: [
+    SharedModule,
     CommonModule,
-    OrdersRoutingModule
+    OrdersRoutingModule,
+
   ]
 })
-export class OrdersModule { }
+export class OrdersModule {
+ 
+}
