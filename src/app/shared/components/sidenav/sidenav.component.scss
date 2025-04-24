@@ -1,0 +1,44 @@
+@use 'variables' as *;
+
+.sidebar {
+  min-width: 250px;
+  height:calc(100vh - 52px);
+  background: $dark;
+  color: $light;
+  transition: width 0.3s;
+   @media (min-width: 768px) {
+    height: 100vh;
+  }
+
+   ::-webkit-scrollbar {
+  width: 6px;
+}
+
+    &:hover ::-webkit-scrollbar-thumb,
+  &:has(:hover)::after { // optional fallback
+    background-color:$semi-light;
+  }
+  .sidenav-section-one{
+    border-bottom:.05px solid $secondary-light
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      text-align: center;
+      font-size: .9rem;
+      a {
+        color: $light;
+        text-decoration: none;
+        display: block;
+      }
+    }
+  }
+}
+
+.collapsed {
+  min-width: 60px;
+}
+
+

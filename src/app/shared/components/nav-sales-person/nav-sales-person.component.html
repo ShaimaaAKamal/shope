@@ -1,0 +1,14 @@
+ <div class="salesPerson  pt-2">
+    <div class="d-flex align-items-center  p-3 rounded rounded-4 hover-bg "
+     [class.justify-content-center]="isCollapsed"
+      routerLink="SalesPerson" routerLinkActive="router-link-active">
+      <img [src]="'assets/images/'+personImage"   alt="sales person Image" width="40pxx;" height="40px" class="rounded rounded-circle ">
+      <div [class.d-none]="isCollapsed" class="ps-2  flex-grow-1">
+        <div class="d-flex align-item-center justify-content-between">
+           <span class="fs-verySmall">Welcome Back 👋 </span>
+            <i class="fa-solid fa-chevron-right small"></i>
+        </div>
+         <span class="small">{{salesPersonName}}</span>
+      </div>
+    </div>
+  </div>
