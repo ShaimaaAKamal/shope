@@ -24,6 +24,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+              "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            },
             "outputPath": "dist/shope",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -38,10 +43,13 @@
                 "input": "public"
               }
             ],
-            "styles": [
+           "styles": [
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+             "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/typeface-poppins/index.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [ "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
             "production": {
