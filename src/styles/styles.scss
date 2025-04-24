@@ -1,0 +1,133 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use 'variables' as *;
+
+html {
+  font-size: 16px;
+  body{
+  font-family: 'Poppins', sans-serif;
+  }
+  .bg-gray{
+    background-color: $gray;
+  }
+  .bg-light{
+    background-color: $light;
+  }
+  .bg-semi-light{
+    background-color: $semi-light;
+  }
+  .bg-second{
+    background-color: $secondary;
+  }
+  .fs-verySmall{
+    font-size:10px !important;
+  }
+  .fs-medium{
+    font-size:14px !important;
+  }
+  .bg-dark{
+    background-color: $dark !important;
+  }
+  .bg-semi-dark{
+    background-color: $semi-dark;
+  }
+  .hover-bg:hover {
+  background-color: $semi-dark ;
+  transition: background-color 0.3s ease;
+  }
+  .router-link-active{
+    background-color:$activeColor;
+  }
+  .bg-white{
+    background-color: white;
+  }
+  .text-semi-dark{
+    color:$semi-dark;
+  }
+  .section-style{
+    border:.5px solid $secondary-light;
+    background-color: white;
+  }
+
+
+ ::-webkit-scrollbar-track {
+  background:transparent;
+}
+
+ ::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+ input {
+  padding-left: 2rem !important;
+  font-size: .7rem !important;
+  &::placeholder{
+    font-size: .7rem;
+    font-weight:300;
+  }
+  &:focus {
+    border-color: $semi-dark !important;
+      box-shadow: none !important;
+  }
+  // Chrome, Safari, Edge, Opera
+&[type='number']::-webkit-outer-spin-button,
+&[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+// Firefox
+&[type='number'] {
+  appearance:textfield ;
+  -moz-appearance: textfield;
+}
+
+}
+.dropdown-menu {
+  z-index:999999;
+}
+
+.popScreenContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 200000 !important;
+  background: #00857c6f;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.popScreenContent {
+  max-width: 50%;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+ .closeIcon{
+  position: absolute;
+  left:10px;
+  top:10px;
+ }
+  .summary,.payment{
+    input{
+      border-radius: 8px;
+      width:100%;
+      padding:6px;
+      border:1px solid transparent;
+      background-color: #f0f0f0;
+       &:focus{
+        border:1px solid $semi-dark;
+        box-shadow:1px 1px 1px  $semi-dark !important;
+        outline: none;
+      }
+    }
+
+}
+
+
+}
