@@ -1,0 +1,70 @@
+<div class="container-fluid px-0">
+  <div class="row g-3">
+  <div class="col-12 col-lg flex-grow-1 py-3" style="height: 100vh;">
+  <div class="d-flex flex-column section-style rounded rounded-3 px-4 py-3" style="height: 100%;">
+    <div class="flex-grow-0 searchInputs border-bottom">
+     <div class="position-relative w-100 searchContainer">
+      <app-input [id]="'findProductByName'" [label]="'Find By Name'"
+      (input)="searchProductsByName($event)"     #searchInputByName>
+        <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="nameSearch"></i> -->
+        <i class="fa-solid fa-magnifying-glass" ></i>
+
+      </app-input>
+          <ul
+            class="list-group position-absolute shadow-sm z-3"
+            *ngIf="searchItems.length > 0"
+            style="max-height: 330px; overflow-y: auto;"
+          >
+            <li
+              class="list-group-item list-group-item-action"
+              *ngFor="let item of searchItems"
+              (click)="selectItem(item)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+      </div>
+      <!-- <zxing-scanner
+  [formats]="formatsEnabled"
+    [device]="selectedDevice"
+  (scanSuccess)="handleBarcodeResult($event)"
+  >
+</zxing-scanner> -->
+      <div class="py-3">
+        <app-input [id]="'findProductByBarcode'" [label]="'Find By Barcode'"  (input)="searchProductsByBarcode($event)" #searchInputByBarcode >
+        <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="barcodeSearch"></i> -->
+         <i class="fa-solid fa-magnifying-glass"></i>
+      </app-input>
+      </div>
+    </div>
+    <div class="flex-grow-1 pb-3" style="min-height: 0;">
+      <app-order-products ></app-order-products>
+    </div>
+    <div class="flex-grow-0 mt-3 border-top">
+      <app-summary></app-summary>
+    </div>
+  </div>
+</div>
+  <div class="col-12 col-lg-auto py-3" style="height: 100vh;">
+  <div class="section_2 section-style rounded rounded-3 h-100 pt-3 px-4 d-flex flex-column">
+    <div class="d-flex mb-3  selectCustomerContainer flex-grow-0">
+      <app-select-input
+        [label]="'Select Customer'" [id]="'customer'"
+        [options]="customers" (selectedOption)="selectedCustomerEvent($event)"
+        [prop]="'name'" [value]="'id'" [vertCLass]="'col-12'"
+        class="flex-grow-1">
+      </app-select-input>
+      <button class="btn bg-dark align-self-end ms-2">
+        <i class="fa-solid fs-2x text-white fa-plus"></i>
+      </button>
+    </div>
+    <div class="flex-grow-1 overflow-auto" style="min-height: 0;">
+      <div class="d-flex flex-column h-100">
+        <app-home-payment class="flex-grow-1 h-100"></app-home-payment>
+      </div>
+    </div>
+
+  </div>
+</div>
+  </div>
+</div>

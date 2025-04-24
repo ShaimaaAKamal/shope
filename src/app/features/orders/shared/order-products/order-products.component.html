@@ -1,0 +1,63 @@
+<div class="border rounded rounded-3 invoice-products   my-3 d-flex flex-column h-100">
+ <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row justify-content-between align-items-sm-center  align-items-xl-center  align-items-lg-start   border-bottom p-3">
+   <div class="d-flex align-item-center ">
+   <h6 class="mb-0 small fw-bold">Invoice Products</h6>
+   <span class="badge bg-semi-dark ms-2 ">New</span>
+  </div>
+  <div class="qty small d-flex align-items-center">
+    <div class="pe-2"><span>Items No : </span> <span>{{products().length}}</span></div>
+    <div><span>Total Qty: </span> <span>{{getTotalQuantity()}}</span></div>
+  </div>
+ </div>
+
+<div class="table-container  flex-grow-1">
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col" colspan="4" >
+              <span>Name</span> <i class="ps-1 fa-solid fa-arrow-down"></i>
+      </th>
+    </tr>
+    <tr>
+      <th scope="col" ><span >Price</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
+      <th scope="col" class="text-center"><span>Qty</span> <i class="ps-1 fa-solid fa-arrow-down"></i> </th>
+      <th scope="col" class="text-center" ><span>Total Price</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
+      <th scope="col" class="text-end" >
+       <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+          <rect x="1" y="0.5" width="19" height="19" rx="5.5" fill="#F7FAFF"/>
+          <rect x="1" y="0.5" width="19" height="19" rx="5.5" stroke="#C282FA"/>
+          <path d="M6.41602 10H14.5827" stroke="#C282FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+       </svg>
+      </th>
+    </tr>
+  </thead>
+  <tbody *ngIf="products().length > 0; else noProducts">
+  <ng-container *ngFor="let product of products() ; let index=index;">
+    <tr>
+      <td colspan="4">{{ product.name | titlecase }}</td>
+    </tr>
+    <tr>
+      <td scope="row">{{ product.price }}  SAR</td>
+      <td >
+        <div class="d-flex justify-content-center">
+            <app-quantity-control [quantity]="product.quantity" (quantityChange)="updateQuantity(index, $event)">
+            </app-quantity-control>
+        </div>
+      </td>
+      <td class="text-center">{{ product.price * getProductQuantity(product) }} SAR</td>
+      <td class="text-end" (click)="removeProduct(index)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="22" viewBox="0 0 23 22" fill="none">
+          <path d="M15.9444 5V4.2C15.9444 3.0799 15.9444 2.51984 15.7022 2.09202C15.4892 1.71569 15.1492 1.40973 14.7311 1.21799C14.2557 1 13.6335 1 12.3889 1H10.6111C9.36655 1 8.74427 1 8.26891 1.21799C7.85077 1.40973 7.51082 1.71569 7.29776 2.09202C7.05556 2.51984 7.05556 3.0799 7.05556 4.2V5M9.27778 10.5V15.5M13.7222 10.5V15.5M1.5 5H21.5M19.2778 5V16.2C19.2778 17.8802 19.2778 18.7202 18.9145 19.362C18.5949 19.9265 18.085 20.3854 17.4577 20.673C16.7447 21 15.8113 21 13.9444 21H9.05556C7.18871 21 6.25529 21 5.54225 20.673C4.91505 20.3854 4.40511 19.9265 4.08553 19.362C3.72222 18.7202 3.72222 17.8802 3.72222 16.2V5" stroke="#C282FA" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </td>
+    </tr>
+  </ng-container>
+</tbody>
+
+<ng-template #noProducts>
+  <tbody>
+  </tbody>
+</ng-template>
+</table>
+</div>
+</div>

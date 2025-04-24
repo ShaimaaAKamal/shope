@@ -1,0 +1,32 @@
+@use 'variables' as *;
+.invoice-products{
+.table-container {
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead, th {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 2;
+  font-weight: 600;
+}
+rect, path {
+    stroke: $semi-dark
+}
+.badge{
+font-size:.6rem !important;
+font-weight: 300;
+}
+td,th{
+  font-size:.9rem;
+  vertical-align: middle;
+}
+
+}
+
