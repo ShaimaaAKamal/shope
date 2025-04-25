@@ -16,14 +16,14 @@
                <div class="w-100">
               <app-input
                 #inputRef
-                [id]="method.name"
+                [id]="method.focusKey"
                 type="text"
                 spanLabel="SAR"
                 placeholder="'0.00'"
                 [inputGroup]="true"
                 [hideLabel]="true"
                 [vertCLass]="'col-12'"
-                (focus)="setActiveInput(method.focusKey, inputRef.nativeInput)"
+                (focus)="setActiveInput(method.focusKey, inputRef)"
                 (input)="setValueFromInputEvent(method.focusKey, $event)"
               >
                 <i class="fa-solid fa-money-bill-1-wave"></i>
@@ -60,13 +60,6 @@
        <div class="col-12">
         <app-keypad (key)="enterKey($event)"></app-keypad>
        </div>
-       <!-- <div class="col-12">
-        <app-payment-buttons
-         [getPaidAmount]="getPaidAmount"
-        (mustBePaid)="setMustBePaid($event)"
-        (clearOrder)="handleclearOrder($event)"
-        [setoOrderDetails]="setoOrderDetails"></app-payment-buttons>
-       </div> -->
 
        <div class="col-12">
         <app-payment-buttons [inputMap]="inputMap"

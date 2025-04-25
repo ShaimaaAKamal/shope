@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../../../Services/order/order.service';
+import { Order } from '../../../../Interfaces/order';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-home-payment',
@@ -9,6 +11,8 @@ import { OrderService } from '../../../../Services/order/order.service';
   styleUrl: './home-payment.component.scss'
 })
 export class HomePaymentComponent {
+@Input() order!:Order|null;
+
 private __OrderService=inject(OrderService);
 products=this.__OrderService.orderProducts;
 calculateDueAmount=this.__OrderService.dueAmount;
@@ -27,14 +31,12 @@ paymentMethods: {
   }[] = [];
 
 activeInputKey!: string;
-activeInputEl!: HTMLInputElement;
-inputMap: { [key: string]: HTMLInputElement } = {};
- 
-  constructor(private __ActivatedRoute:ActivatedRoute){}
+activeInputEl!: InputComponent;
+
+inputMap: { [key: string]: InputComponent } = {};
+@ViewChildren(InputComponent) inputComponents!: QueryList<InputComponent>;
 
   ngOnInit(): void {
-      const id = this.__ActivatedRoute.snapshot.paramMap.get('id');
-        // this.code=this.generateOrderCode();
          this.paymentMethods = [
       {
         label: 'Discount',
@@ -63,12 +65,47 @@ inputMap: { [key: string]: HTMLInputElement } = {};
     ];
   }
 
-  setValueFromInputEvent(focusKey: string, event: Event) {
+ ngAfterViewInit(): void {
+  if (this.order) {
+    setTimeout(() => {
+      this.populateInputMap();
+      this.fillInputValuesFromService();
+    });
+  }
+}
+
+private populateInputMap() {
+  this.inputComponents.forEach(comp => {
+    if (comp.id) {
+      this.inputMap[comp.id] = comp;
+    }
+  });
+}
+
+private fillInputValuesFromService() {
+  const paymentValues = {
+    _discountValue: this.__OrderService.discount(),
+    _Cash: this.order?.paymentMethods['cash'] ?? '0',
+    _Network: this.order?.paymentMethods['network']  ?? '0',
+    _Master_Card: this.order?.paymentMethods['masterCard']  ?? '0'
+  };
+  Object.entries(paymentValues).forEach(([key, value]) => {
+    const input = this.inputMap[key];
+    if (input) {
+      input.value = value?.toString() || '0';
+      input.nativeInput?.dispatchEvent(new Event('input'));
+    }
+  });
+
+  this.getPaidAmount();
+}
+
+setValueFromInputEvent(focusKey: string, event: Event) {
   const value = (event.target as HTMLInputElement).value;
   this.setModelValue(focusKey, value);
 }
 
-  setModelValue(focusKey: string, value: string) {
+setModelValue(focusKey: string, value: string) {
     const numericValue=Number(value);
     (this as any)[focusKey] = numericValue;
 
@@ -78,7 +115,7 @@ inputMap: { [key: string]: HTMLInputElement } = {};
     }
   }
 
-  setActiveInput(key: string, input: HTMLInputElement | null) {
+  setActiveInput(key: string, input: InputComponent | null) {
   if (!input) return;
   this.activeInputKey = key;
   this.activeInputEl = input;
@@ -89,8 +126,8 @@ inputMap: { [key: string]: HTMLInputElement } = {};
   let total = 0;
 
   for (const key of Object.keys(this.inputMap)) {
-    if(key != '_discountValue'){
-          const input = this.inputMap[key];
+    if(key != '_discountValue' ){
+    const input = this.inputMap[key];
     const value = parseFloat(input.value || '0');
     total += isNaN(value) ? 0 : value;
     }
@@ -112,7 +149,8 @@ enterKey(key: string) {
 
   if (key === 'C') {
     newValue = '0';
-  } else if (key === '.') {
+  }
+   else if (key === '.') {
     if (!currentValue.includes('.')) {
       newValue += '.';
     }

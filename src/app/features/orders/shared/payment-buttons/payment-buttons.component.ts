@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OrderService } from '../../../../Services/order/order.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
 import { SalesPersonsService } from '../../../../Services/SalesPersons/sales-persons.service';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-payment-buttons',
@@ -13,7 +14,9 @@ export class PaymentButtonsComponent {
     code: string = '';
 
    @Input() getPaidAmount!: () => number;
-   @Input() inputMap!: { [key: string]: HTMLInputElement };
+  //  @Input() inputMap!: { [key: string]: HTMLInputElement };
+     @Input() inputMap!: { [key: string]: InputComponent };
+
    @Output() mustBePaid=new EventEmitter<boolean>(false);
 
   constructor( private __OrderService: OrderService,
@@ -70,9 +73,11 @@ export class PaymentButtonsComponent {
   private clearOrder(): void {
     this.__OrderService.orderProducts.set([]);
 
-    Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
+    // Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
+        Object.values(this.inputMap).forEach((input: InputComponent) => {
+
       input.value = '';
-      input.dispatchEvent(new Event('input'));
+      input.nativeInput?.dispatchEvent(new Event('input'));
     });
 
     this.__OrderService.setPaidAmount(0);
