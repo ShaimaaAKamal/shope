@@ -128,6 +128,17 @@ html {
     }
 
 }
-
+.paymentButtons,.keypad{
+     button{
+        padding:1.5rem;
+        border:none;
+        border-radius: 8px;
+        font-size:1.2rem;
+        &:hover{
+          background-color: $semi-dark;
+          color:$light;
+        }
+    }
+}
 
 }
