@@ -19,12 +19,6 @@ discountvalue=this.__OrderService.discount;
 paidAmount=this.__OrderService.paidAmount;
 mustBePaid:boolean=true;
 
-keypad: string[][] = [
-  ['7', '8', '9'],
-  ['4', '5', '6'],
-  ['1', '2', '3'],
-  ['.', '0', 'C']
-];
 
 paymentMethods: {
     label: string;

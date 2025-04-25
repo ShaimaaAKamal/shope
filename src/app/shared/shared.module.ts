@@ -7,6 +7,7 @@ import { InputComponent } from './components/input/input.component';
 import { SelectInputComponent } from './components/select-input/select-input.component';
 import { QuantityControlComponent } from './components/quantity-control/quantity-control.component';
 import { RouterModule } from '@angular/router';
+import { KeypadComponent } from './components/keypad/keypad.component';
 
 
 
@@ -17,7 +18,8 @@ import { RouterModule } from '@angular/router';
     NavSalesPersonComponent,
     InputComponent,
     SelectInputComponent,
-    QuantityControlComponent
+    QuantityControlComponent,
+    KeypadComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { RouterModule } from '@angular/router';
         NavSalesPersonComponent,
          InputComponent,
         SelectInputComponent,
-        QuantityControlComponent
+        QuantityControlComponent,
+        KeypadComponent
 
   ]
 })

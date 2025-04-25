@@ -57,14 +57,9 @@
 
   <div class="keyboard  py-3 d-flex justify-content-center align-items-start " >
     <div class="row gy-2 w-100">
-      <div class="col-12" *ngFor="let row of keypad">
-        <div class="row g-2">
-          <div class="col flex-grow-1" *ngFor="let key of row">
-            <button class="w-100" (click)="enterKey(key)">{{ key }}</button>
-          </div>
-        </div>
-      </div>
-
+       <div class="col-12">
+        <app-keypad (key)="enterKey($event)"></app-keypad>
+       </div>
       <div class="col-12">
         <div class="row gy-2">
           <div class="col-12">

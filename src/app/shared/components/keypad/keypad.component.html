@@ -1,0 +1,9 @@
+<div class="row g-2">
+  <div class="col-12" *ngFor="let row of keypad">
+        <div class="row g-2">
+          <div class="col flex-grow-1" *ngFor="let key of row">
+            <button class="w-100" (click)="enterKey(key)">{{ key }}</button>
+          </div>
+        </div>
+  </div>
+</div>
