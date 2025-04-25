@@ -6,14 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CommonService {
 
-  // isCollapse=new BehaviorSubject<boolean>(false);
 
-  isCollapse=signal<boolean>(false);
+isCollapse=signal<boolean>(false);
 
 
  constructor() {}
 
-   generate10CharCode() {
+  generate10CharCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let code = '';
   for (let i = 0; i < 10; i++) {
@@ -53,6 +52,15 @@ updateItemInArray<T extends { name?: string }>(
   return { updated, array };
 }
 
+findItemInArray<T extends { name?: string,code?:string }>(
+  array: T[], matchFn: (item: T) => boolean) :{exists:boolean; ind: number; item:any }{
+  const index = array.findIndex(matchFn);
+  const exists = index !== -1;
+  if(exists)
+    return {exists:true,ind:index,item:array[index]}
+  else return {exists:false, ind:index ,item:null }
+
+}
 controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: string = 'open'): void {
   ref?.togglePopScreen?.(action);
 }
