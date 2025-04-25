@@ -9,6 +9,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { SummaryComponent } from './shared/summary/summary.component';
 import { HomePaymentComponent } from './shared/home-payment/home-payment.component';
 import { PaymentButtonsComponent } from './shared/payment-buttons/payment-buttons.component';
+import { OrderDetailsComponent } from './shared/order-details/order-details.component';
+import { OrderComponent } from './order/order.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { PaymentButtonsComponent } from './shared/payment-buttons/payment-button
     OrderProductsComponent,
     SummaryComponent,
     HomePaymentComponent,
-    PaymentButtonsComponent
+    PaymentButtonsComponent,
+    OrderDetailsComponent,
+    OrderComponent
   ],
   imports: [
     SharedModule,
@@ -28,5 +32,5 @@ import { PaymentButtonsComponent } from './shared/payment-buttons/payment-button
   ]
 })
 export class OrdersModule {
- 
+
 }

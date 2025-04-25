@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+  { path: '', redirectTo:"Orders/create" ,pathMatch:'full'},
   { path: 'Home', redirectTo:"Orders/create" },
   { path: 'Products', loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule) },
   { path: 'Orders', loadChildren: () => import('./features/orders/orders.module').then(m => m.OrdersModule) },
