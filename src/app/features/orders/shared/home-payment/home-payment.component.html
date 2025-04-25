@@ -1,6 +1,6 @@
 <div class="d-flex flex-column h-100">
 
-  <div class="payment border-top border-bottom py-3" >
+  <div class="payment border-top border-bottom py-2" >
   <div class="d-flex align-items-center justify-content-between  mb-2">
       <h6 class="text-decoration-underline mb-0">Payment Methods</h6>
       <span class="fs-verySmall text-danger" [class.d-none]="mustBePaid">Total Amount must be Paid</span>
@@ -60,7 +60,20 @@
        <div class="col-12">
         <app-keypad (key)="enterKey($event)"></app-keypad>
        </div>
-      <div class="col-12">
+       <!-- <div class="col-12">
+        <app-payment-buttons
+         [getPaidAmount]="getPaidAmount"
+        (mustBePaid)="setMustBePaid($event)"
+        (clearOrder)="handleclearOrder($event)"
+        [setoOrderDetails]="setoOrderDetails"></app-payment-buttons>
+       </div> -->
+
+       <div class="col-12">
+        <app-payment-buttons [inputMap]="inputMap"
+        (mustBePaid)="setMustbePaid($event)"
+        [getPaidAmount]="getPaidAmount.bind(this)"></app-payment-buttons>
+      </div>
+      <!-- <div class="col-12">
         <div class="row gy-2">
           <div class="col-12">
             <button class="btn w-100 bg-dark text-light" (click)="pay_Order()">Pay</button>
@@ -77,7 +90,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </div>

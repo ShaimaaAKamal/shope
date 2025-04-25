@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonService } from '../../../../Services/CommonService/common.service';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../../../Services/order/order.service';
 
@@ -30,13 +29,14 @@ paymentMethods: {
 activeInputKey!: string;
 activeInputEl!: HTMLInputElement;
 inputMap: { [key: string]: HTMLInputElement } = {};
-  private code!:string;
+  // private code!:string;
 
-  constructor( private __CommonService:CommonService ,private __ActivatedRoute:ActivatedRoute){}
+  // constructor( private __CommonService:CommonService ,private __ActivatedRoute:ActivatedRoute){}
+  constructor(private __ActivatedRoute:ActivatedRoute){}
 
   ngOnInit(): void {
       const id = this.__ActivatedRoute.snapshot.paramMap.get('id');
-        this.code=this.generateOrderCode();
+        // this.code=this.generateOrderCode();
          this.paymentMethods = [
       {
         label: 'Discount',
@@ -70,7 +70,6 @@ inputMap: { [key: string]: HTMLInputElement } = {};
   this.setModelValue(focusKey, value);
 }
 
-
   setModelValue(focusKey: string, value: string) {
     const numericValue=Number(value);
     (this as any)[focusKey] = numericValue;
@@ -103,62 +102,8 @@ inputMap: { [key: string]: HTMLInputElement } = {};
   return total;
 }
 
-
-pay_Order(){
-if(this.getPaidAmount() >= this.getGrossTotal() && this.products().length >0)
-{  this.setoOrderDetails('paid');
-  this.mustBePaid=true;
-}
-else this.mustBePaid=false;
-}
-
-hold_Order(){
-    this.setoOrderDetails('hold');
-}
-
-cancal_Order(){
-this.clearOrder();
-}
-
-private setoOrderDetails(status:string){
-let order={
-  code:this.code,
-  customer:this.__OrderService.invoiveCustomer,
-  // salesPerson:this.__OrderCalculationsService.getSalesPerson(),
-  salesPerson:"don't forget",
-  products:this.products(),
-  grossTotal:this.getGrossTotal(),
-  discount:parseFloat(this.inputMap['_discountValue']?.value || '0'),
-  paymentMethods:{
-    cash: parseFloat(this.inputMap['_Cash']?.value || '0'),
-    network: parseFloat(this.inputMap['_Network']?.value || '0'),
-    masterCard: parseFloat(this.inputMap['_Master_Card']?.value || '0')
-  },
- status:status,
- time:new Date()
- }
- if(this.__OrderService.addNewOrder(order))
- {     this.clearOrder();
-       this.code=this.generateOrderCode();
- }
-}
-private generateOrderCode(){
-     return this.__CommonService.generate10CharCode();
-   }
-
-private clearOrder(): void {
-  this.__OrderService.orderProducts.set([]);
-
-
-  Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
-    input.value = '';
-    input.dispatchEvent(new Event('input'));
-  });
-  this.__OrderService.setPaidAmount(0);
-  this.__OrderService.discount.set(0);
-  this.inputMap = {};
-  this.activeInputEl = null!;
-  this.activeInputKey = '';
+setMustbePaid(value:any){
+  this.mustBePaid=value;
 }
 
 enterKey(key: string) {
@@ -185,4 +130,61 @@ enterKey(key: string) {
   }
 this.getPaidAmount();
 }
+// pay_Order(){
+// if(this.getPaidAmount() >= this.getGrossTotal() && this.products().length >0)
+// {  this.setoOrderDetails('paid');
+//   this.mustBePaid=true;
+// }
+// else this.mustBePaid=false;
+// }
+
+// hold_Order(){
+//     this.setoOrderDetails('hold');
+// }
+
+// cancal_Order(){
+// this.clearOrder();
+// }
+
+// setoOrderDetails(status:string){
+// let order={
+//   code:this.code,
+//   customer:this.__OrderService.invoiveCustomer,
+//   // salesPerson:this.__OrderCalculationsService.getSalesPerson(),
+//   salesPerson:"don't forget",
+//   products:this.products(),
+//   grossTotal:this.getGrossTotal(),
+//   discount:parseFloat(this.inputMap['_discountValue']?.value || '0'),
+//   paymentMethods:{
+//     cash: parseFloat(this.inputMap['_Cash']?.value || '0'),
+//     network: parseFloat(this.inputMap['_Network']?.value || '0'),
+//     masterCard: parseFloat(this.inputMap['_Master_Card']?.value || '0')
+//   },
+//  status:status,
+//  time:new Date()
+//  }
+//  if(this.__OrderService.addNewOrder(order))
+//  {     this.clearOrder();
+//        this.code=this.generateOrderCode();
+//  }
+// }
+// private generateOrderCode(){
+//      return this.__CommonService.generate10CharCode();
+//    }
+
+// private clearOrder(): void {
+//   this.__OrderService.orderProducts.set([]);
+
+
+//   Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
+//     input.value = '';
+//     input.dispatchEvent(new Event('input'));
+//   });
+//   this.__OrderService.setPaidAmount(0);
+//   this.__OrderService.discount.set(0);
+//   this.inputMap = {};
+//   this.activeInputEl = null!;
+//   this.activeInputKey = '';
+// }
+
 }

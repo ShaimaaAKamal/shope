@@ -8,6 +8,7 @@ import { OrderProductsComponent } from './shared/order-products/order-products.c
 import { SharedModule } from '../../shared/shared.module';
 import { SummaryComponent } from './shared/summary/summary.component';
 import { HomePaymentComponent } from './shared/home-payment/home-payment.component';
+import { PaymentButtonsComponent } from './shared/payment-buttons/payment-buttons.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { HomePaymentComponent } from './shared/home-payment/home-payment.compone
     CreateNewOrderComponent,
     OrderProductsComponent,
     SummaryComponent,
-    HomePaymentComponent
+    HomePaymentComponent,
+    PaymentButtonsComponent
   ],
   imports: [
     SharedModule,
