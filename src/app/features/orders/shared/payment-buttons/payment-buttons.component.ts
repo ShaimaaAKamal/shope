@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OrderService } from '../../../../Services/order/order.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
+import { SalesPersonsService } from '../../../../Services/SalesPersons/sales-persons.service';
 
 @Component({
   selector: 'app-payment-buttons',
@@ -14,7 +15,10 @@ export class PaymentButtonsComponent {
    @Input() getPaidAmount!: () => number;
    @Input() inputMap!: { [key: string]: HTMLInputElement };
    @Output() mustBePaid=new EventEmitter<boolean>(false);
-  constructor( private __OrderService: OrderService,private __CommonService: CommonService ) {}
+
+  constructor( private __OrderService: OrderService,
+    private __CommonService: CommonService ,
+    private __SalesPersonsService:SalesPersonsService) {}
 
   ngOnInit() {
     this.code = this.generateOrderCode();
@@ -44,7 +48,7 @@ export class PaymentButtonsComponent {
     const order = {
       code: this.code,
       customer: this.__OrderService.invoiveCustomer,
-      salesPerson: "don't forget",
+      salesPerson: this.__SalesPersonsService.currentSalesPerson() ,
       products: this.__OrderService.orderProducts(),
       grossTotal: this.__OrderService.getGrossTotal(),
       discount: parseFloat(this.inputMap['_discountValue']?.value || '0'),

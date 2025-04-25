@@ -29,9 +29,7 @@ paymentMethods: {
 activeInputKey!: string;
 activeInputEl!: HTMLInputElement;
 inputMap: { [key: string]: HTMLInputElement } = {};
-  // private code!:string;
-
-  // constructor( private __CommonService:CommonService ,private __ActivatedRoute:ActivatedRoute){}
+ 
   constructor(private __ActivatedRoute:ActivatedRoute){}
 
   ngOnInit(): void {

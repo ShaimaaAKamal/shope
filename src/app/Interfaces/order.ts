@@ -13,7 +13,7 @@ export interface Order {
     network:number,
     masterCard:number
   },
-  salesPerson:SalesPerson |string,
+  salesPerson:SalesPerson,
   customer:Customer,
   time:Date
 }
