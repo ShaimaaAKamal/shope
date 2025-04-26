@@ -63,13 +63,32 @@ this.invoiveCustomer=customer;
   setPaidAmount(value: number) {
     this.paidAmount.set(value);
   }
-   addNewOrder(order:Order):boolean{
-    let newOrders=[...this.orders(),order]
-    this.orders.set(newOrders);
-    this.__CommonService.saveToStorage('orders',newOrders);
-    return true;
+
+   addNewOrder(order:Order):{status:boolean,message:string}{
+    let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code);
+    if(result.exists) return {status:false , message : 'This order is already exist!'};
+    else{
+        this.setOrders([...this.orders(),order]);
+        return {status:true , message : 'Order has been added successfully!'};
+    }
   }
-  
+
+  updateOrder(order:Order):{status:boolean,message:string}{
+    let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code && o.status == 'hold');
+    if(result.exists){
+      this.orders()[result.ind]=order;
+      this.setOrders([...this.orders()]);
+      return  {status:true , message : 'Order has been updated successfully!'};;
+    }else
+      return (order.status == 'paid') ?
+      {status:false , message : 'This Order is already been paid !'} :
+      {status:false , message : "This Order  hasn't been updated !"};
+  }
+
+  setOrders(orders:Order[]){
+      this.orders.set(orders);
+      this.__CommonService.saveToStorage('orders',orders);
+  }
   getOrderByCode(code:string){
    const result=this.__CommonService.findItemInArray(this.orders(), p => p.code == code)
    return result.exists?result.item:null

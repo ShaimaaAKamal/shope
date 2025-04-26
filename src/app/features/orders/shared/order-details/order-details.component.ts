@@ -30,7 +30,6 @@ ngOnInit(): void {
  this.customers=this.__CustomerService.customers();
 }
 
-
 selectedCustomerEvent(customer:Customer){
   this.selectedCustomer=customer;
   this.__OrderService.setInvoiveCustomer(customer);

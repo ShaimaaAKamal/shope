@@ -3,6 +3,9 @@ import { OrderService } from '../../../../Services/order/order.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
 import { SalesPersonsService } from '../../../../Services/SalesPersons/sales-persons.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
+import { Order } from '../../../../Interfaces/order';
+import { Router } from '@angular/router';
+import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-payment-buttons',
@@ -11,20 +14,20 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
   styleUrl: './payment-buttons.component.scss'
 })
 export class PaymentButtonsComponent {
-    code: string = '';
-
+   code: string = '';
    @Input() getPaidAmount!: () => number;
-  //  @Input() inputMap!: { [key: string]: HTMLInputElement };
-     @Input() inputMap!: { [key: string]: InputComponent };
-
+   @Input() inputMap!: { [key: string]: InputComponent };
+   @Input() order:Order|null=null;
    @Output() mustBePaid=new EventEmitter<boolean>(false);
 
   constructor( private __OrderService: OrderService,
     private __CommonService: CommonService ,
-    private __SalesPersonsService:SalesPersonsService) {}
+    private __SalesPersonsService:SalesPersonsService,
+    private __ToastingMessagesService:ToastingMessagesService,
+   private __Router:Router) {}
 
   ngOnInit() {
-    this.code = this.generateOrderCode();
+    this.code = (this.order) ? this.order.code : this.generateOrderCode();
   }
 
   pay_Order() {
@@ -32,7 +35,7 @@ export class PaymentButtonsComponent {
     const totalAmount = this.__OrderService.getGrossTotal();
 
     if (paidAmount >= totalAmount && this.__OrderService.orderProducts().length > 0) {
-      this.setoOrderDetails('paid');
+      this.setOrderDetails('paid');
             this.mustBePaid.emit(true);
     } else {
       this.mustBePaid.emit(false);
@@ -40,42 +43,57 @@ export class PaymentButtonsComponent {
   }
 
   hold_Order() {
-    this.setoOrderDetails('hold');
+    this.setOrderDetails('hold');
   }
 
   cancal_Order() {
-    this.clearOrder();
+    this.__Router.navigateByUrl('Orders/create');
   }
 
-  setoOrderDetails(status: string) {
-    const order = {
-      code: this.code,
-      customer: this.__OrderService.invoiveCustomer,
-      salesPerson: this.__SalesPersonsService.currentSalesPerson() ,
-      products: this.__OrderService.orderProducts(),
-      grossTotal: this.__OrderService.getGrossTotal(),
-      discount: parseFloat(this.inputMap['_discountValue']?.value || '0'),
-      paymentMethods: {
-        cash: parseFloat(this.inputMap['_Cash']?.value || '0'),
-        network: parseFloat(this.inputMap['_Network']?.value || '0'),
-        masterCard: parseFloat(this.inputMap['_Master_Card']?.value || '0')
-      },
-      status: status,
-      time: new Date()
-    };
+  setOrderDetails(status: string) {
+  const order = this.buildOrder(status);
+  const actionSuccess = this.order
+    ? this.__OrderService.updateOrder(order)
+    : this.__OrderService.addNewOrder(order);
 
-    if (this.__OrderService.addNewOrder(order)) {
-      this.clearOrder();
-      this.code = this.generateOrderCode();
-    }
-  }
+  if (actionSuccess.status) {
+    this.__ToastingMessagesService.showToast(actionSuccess.message,'success');
+    if(!this.order)
+       this.resetOrder();
+    else  this.__Router.navigateByUrl('Orders/create');
+  } else
+    this.__ToastingMessagesService.showToast(actionSuccess.message,'error');
 
-  private clearOrder(): void {
+}
+
+private buildOrder(status: string): Order {
+  return {
+    code: this.code,
+    customer: this.__OrderService.invoiveCustomer,
+    salesPerson: this.__SalesPersonsService.currentSalesPerson(),
+    products: this.__OrderService.orderProducts(),
+    grossTotal: this.__OrderService.getGrossTotal(),
+    discount: this.getInputValue('_discountValue'),
+    paymentMethods: {
+      cash: this.getInputValue('_Cash'),
+      network: this.getInputValue('_Network'),
+      masterCard: this.getInputValue('_Master_Card')
+    },
+    status,
+    time: new Date()
+  };
+}
+private getInputValue(key: string): number {
+  return parseFloat(this.inputMap[key]?.value || '0');
+}
+private resetOrder(): void {
+  this.clearOrder();
+  this.code = this.generateOrderCode();
+}
+
+private clearOrder(): void {
     this.__OrderService.orderProducts.set([]);
-
-    // Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
-        Object.values(this.inputMap).forEach((input: InputComponent) => {
-
+      Object.values(this.inputMap).forEach((input: InputComponent) => {
       input.value = '';
       input.nativeInput?.dispatchEvent(new Event('input'));
     });
@@ -84,7 +102,7 @@ export class PaymentButtonsComponent {
     this.__OrderService.discount.set(0);
   }
 
-  private generateOrderCode(): string {
+private generateOrderCode(): string {
     return this.__CommonService.generate10CharCode();
   }
 

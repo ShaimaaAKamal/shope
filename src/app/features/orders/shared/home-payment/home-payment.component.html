@@ -62,7 +62,9 @@
        </div>
 
        <div class="col-12">
-        <app-payment-buttons [inputMap]="inputMap"
+        <app-payment-buttons
+         [order]="order"
+         [inputMap]="inputMap"
         (mustBePaid)="setMustbePaid($event)"
         [getPaidAmount]="getPaidAmount.bind(this)"></app-payment-buttons>
       </div>
