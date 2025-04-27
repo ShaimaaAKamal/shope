@@ -1,0 +1,7 @@
+@use 'variables' as *;
+.spanBtn{
+  width:fit-content;
+  &:hover{
+    background-color: $activeColor;
+  }
+}

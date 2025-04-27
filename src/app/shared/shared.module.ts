@@ -10,6 +10,9 @@ import { RouterModule } from '@angular/router';
 import { KeypadComponent } from './components/keypad/keypad.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PopScreenComponent } from './components/pop-screen/pop-screen.component';
+import { PageControlsComponent } from './components/page-controls/page-controls.component';
+import { NoItemsComponent } from './components/no-items/no-items.component';
+import { SiteButtonComponent } from './components/site-button/site-button.component';
 
 
 
@@ -23,7 +26,10 @@ import { PopScreenComponent } from './components/pop-screen/pop-screen.component
     QuantityControlComponent,
     KeypadComponent,
     NotFoundComponent,
-    PopScreenComponent
+    PopScreenComponent,
+    PageControlsComponent,
+    NoItemsComponent,
+    SiteButtonComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +43,10 @@ import { PopScreenComponent } from './components/pop-screen/pop-screen.component
         SelectInputComponent,
         QuantityControlComponent,
         KeypadComponent,
-        PopScreenComponent
+        PopScreenComponent,
+        PageControlsComponent,
+        NoItemsComponent,
+        SiteButtonComponent
 
   ]
 })
