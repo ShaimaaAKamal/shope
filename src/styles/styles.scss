@@ -108,6 +108,10 @@ html {
   display: flex;
   flex-direction: column;
 }
+.toast-success {
+  background-color: $semi-dark !important;
+}
+
  .closeIcon{
   position: absolute;
   left:10px;
