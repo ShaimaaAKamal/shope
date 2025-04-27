@@ -1,4 +1,4 @@
-<div class="popScreenContainer d-none" #popScreen>
+<div class="popScreenContainer" #popScreen>
   <div class="popScreenContent">
     <div class="header bg-semi-dark d-flex align-items-center text-white rounded-top-3 justify-content-between py-2 px-3">
       <span class="small">{{headerLabel}}</span>
@@ -10,10 +10,10 @@
     <div class="footer d-flex py-2 px-3 align-items-center bg-second rounded-bottom-3"
       [class.justify-content-between]="!hideCancalBtn"
       [class.justify-content-end]="hideCancalBtn">
-      <span class="p-2 rounded rouned-3 fs-verySmall bg-semi-dark text-light" (click)="done()">{{btnLabel}}</span>
       <span class="p-2 rounded rouned-3 fs-verySmall bg-secondary text-light"
         [class.d-none]="hideCancalBtn"
         (click)="togglePopScreen('close')">Cancel</span>
+      <span class="p-2 rounded rouned-3 fs-verySmall bg-semi-dark text-light" (click)="done()">{{btnLabel}}</span>
     </div>
   </div>
 </div>
