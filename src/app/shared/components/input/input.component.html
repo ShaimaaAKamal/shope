@@ -11,7 +11,7 @@
            <ng-content #name></ng-content>
           </span>
           <div class="input-group" *ngIf="inputGroup">
-            <input [type]="type"  class="form-control" [placeholder]="placeholder" [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="onFocus($event)" #inputRef2>
+            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder" [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="onFocus($event)" #inputRef2>
              <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="spanLabel" (click)="handleClick($event)"></span>
           </div>
          <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id"  (focus)="onFocus($event)"  [readonly]="readonly" [placeholder]="placeholder" #inputRef
