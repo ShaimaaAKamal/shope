@@ -8,6 +8,8 @@ import { SelectInputComponent } from './components/select-input/select-input.com
 import { QuantityControlComponent } from './components/quantity-control/quantity-control.component';
 import { RouterModule } from '@angular/router';
 import { KeypadComponent } from './components/keypad/keypad.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { PopScreenComponent } from './components/pop-screen/pop-screen.component';
 
 
 
@@ -19,7 +21,9 @@ import { KeypadComponent } from './components/keypad/keypad.component';
     InputComponent,
     SelectInputComponent,
     QuantityControlComponent,
-    KeypadComponent
+    KeypadComponent,
+    NotFoundComponent,
+    PopScreenComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +36,8 @@ import { KeypadComponent } from './components/keypad/keypad.component';
          InputComponent,
         SelectInputComponent,
         QuantityControlComponent,
-        KeypadComponent
+        KeypadComponent,
+        PopScreenComponent
 
   ]
 })
