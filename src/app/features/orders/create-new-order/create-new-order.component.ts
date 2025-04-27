@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal ,effect} from '@angular/core';
 import { OrderService } from '../../../Services/order/order.service';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-new-order',
@@ -9,11 +11,21 @@ import { OrderService } from '../../../Services/order/order.service';
 })
 export class CreateNewOrderComponent {
 
-constructor(private __OrderService:OrderService){}
+__Route=inject(ActivatedRoute);
+popupVisible = signal(false);
+queryParamsSignal= toSignal(this.__Route.queryParamMap);
+
+constructor(private __OrderService:OrderService){
+   const _ = effect(() => {
+    const popup = this.queryParamsSignal()?.get('popup');
+    this.popupVisible.set(popup === 'hold_orders');
+  });
+}
+
 ngOnInit(): void {
   this.__OrderService.orderProducts.set([]);
   this.__OrderService.discount.set(0);
   this.__OrderService.setPaidAmount(0);
-
 }
+
 }

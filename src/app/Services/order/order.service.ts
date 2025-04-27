@@ -56,6 +56,10 @@ getTax = computed(() => {
     return remaining < 0 ? 0 : remaining;
   });
 
+  HoldOrders = computed(() => {
+      return this.orders().filter(o => o.status=='hold');
+  });
+
   setInvoiveCustomer(customer:Customer){
 this.invoiveCustomer=customer;
 }

@@ -1,0 +1,32 @@
+<app-pop-screen
+
+  headerLabel="Hold Orders"
+  btnLabel="Done"
+  (doneChange)="done()"
+  (closeChange)="done()"
+  [hideCancalBtn]="false"
+  #addDetailsAlert
+>
+<div class="p-4 bg-white">
+  <table class="table table-striped table-hover shadow-sm">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center">Id</th>
+      <th scope="col" class="text-center">Time</th>
+      <th scope="col" class="text-center">Code</th>
+      <th scope="col" class="text-center">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of holdOrders() ;let index=index;"  (click)="showOrder(order)">
+      <th scope="row" class="text-center">{{index+1}}</th>
+      <td class="text-center">{{getTimeFromDate(order.time)}}</td>
+      <td class="text-center">{{order.code}}</td>
+      <td class="text-center">{{order.grossTotal}} SAR</td>
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+</app-pop-screen>
