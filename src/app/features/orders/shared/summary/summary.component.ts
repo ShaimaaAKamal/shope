@@ -12,4 +12,5 @@ export class SummaryComponent {
   netTotal=this.__OrderService.getNetTotal;
   tax=this.__OrderService.getTax;
   grossTotal=this.__OrderService.getGrossTotal;
+  currency:string='SAR';
 }

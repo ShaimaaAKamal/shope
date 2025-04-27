@@ -21,7 +21,7 @@ getGrossTotal=this.__OrderService.getGrossTotal;
 discountvalue=this.__OrderService.discount;
 paidAmount=this.__OrderService.paidAmount;
 mustBePaid:boolean=true;
-
+currency:string='SAR';
 
 paymentMethods: {
     label: string;
@@ -50,18 +50,19 @@ inputMap: { [key: string]: InputComponent } = {};
         id: 'Cash',
         focusKey: '_Cash'
       },
+       {
+        label: 'Network',
+        name: 'Network',
+        id: 'Network',
+        focusKey: '_Network'
+      },
       {
         label: 'Master Card',
         name: 'Master_Card',
         id: 'Master_Card',
         focusKey: '_Master_Card'
       },
-      {
-        label: 'Network',
-        name: 'Network',
-        id: 'Network',
-        focusKey: '_Network'
-      }
+
     ];
   }
 

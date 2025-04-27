@@ -6,11 +6,11 @@
       <span class="fs-verySmall text-danger" [class.d-none]="mustBePaid">Total Amount must be Paid</span>
     </div>
     <div class="container-fluid px-0">
-      <div class="row gy-2">
+      <div class="row border-bottom pb-2 mb-2 gy-2">
         <div class="col-12" *ngFor="let method of paymentMethods">
           <div class="row align-items-center" [id]="method.label + ' Method'">
             <div class="col-6 text-start">
-              <span>{{ method.label }} :</span>
+              <span class="small">{{ method.label }} :</span>
             </div>
             <div class="col-6">
                <div class="w-100">
@@ -18,7 +18,7 @@
                 #inputRef
                 [id]="method.focusKey"
                 type="text"
-                spanLabel="SAR"
+                [spanLabel]="currency"
                 placeholder="'0.00'"
                 [inputGroup]="true"
                 [hideLabel]="true"
@@ -32,27 +32,28 @@
             </div>
           </div>
         </div>
-
-        <div class="col-12">
-          <div class="row">
-            <div class="col-6 text-start"><span>Paid :</span></div>
-            <div class="col-6 text-end"><span>{{paidAmount()}} SAR</span></div>
-          </div>
-        </div>
-          <div class="col-12">
-          <div class="row">
-            <div class="col-6 text-start"><span>Due Amount :</span></div>
-            <div class="col-6 text-end"><span>{{calculateDueAmount()}} SAR</span></div>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="row">
-            <div class="col-6 text-start"><span>Reminder :</span></div>
-            <div class="col-6 text-end"><span>{{ calculateReminder() }} SAR</span></div>
-          </div>
-        </div>
       </div>
-    </div>
+        <div class="row gy-2">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6 text-start small"><span>Due Amount :</span></div>
+            <div class="col-6 text-end small"><span>{{calculateDueAmount()}} {{currency}}</span></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6 text-start small"><span>Paid :</span></div>
+            <div class="col-6 text-end small"><span>{{paidAmount()}} {{currency}}</span></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6 text-start small"><span>Reminder :</span></div>
+            <div class="col-6 text-end small"><span>{{ calculateReminder() }} {{currency}}</span></div>
+          </div>
+        </div>
+        </div>
+     </div>
   </div>
 
   <div class="keyboard  py-3 d-flex justify-content-center align-items-start " >
