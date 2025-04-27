@@ -1,0 +1,6 @@
+@use "variables"  as * ;
+button{
+  &:hover{
+    background-color:$activeColor !important;
+  }
+}
