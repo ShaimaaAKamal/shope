@@ -13,6 +13,8 @@ import { PopScreenComponent } from './components/pop-screen/pop-screen.component
 import { PageControlsComponent } from './components/page-controls/page-controls.component';
 import { NoItemsComponent } from './components/no-items/no-items.component';
 import { SiteButtonComponent } from './components/site-button/site-button.component';
+import { InputCheckboxComponent } from './components/input-checkbox/input-checkbox.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -29,11 +31,13 @@ import { SiteButtonComponent } from './components/site-button/site-button.compon
     PopScreenComponent,
     PageControlsComponent,
     NoItemsComponent,
-    SiteButtonComponent
+    SiteButtonComponent,
+    InputCheckboxComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
+    TranslateModule,
   ],
   exports:[
         NavitemComponent,
@@ -46,8 +50,9 @@ import { SiteButtonComponent } from './components/site-button/site-button.compon
         PopScreenComponent,
         PageControlsComponent,
         NoItemsComponent,
-        SiteButtonComponent
-
+        SiteButtonComponent,
+        InputCheckboxComponent,
+        TranslateModule,
   ]
 })
 export class SharedModule { }

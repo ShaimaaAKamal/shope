@@ -104,6 +104,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              }, {
+                "glob": "**/*",
+                "input": "src/assets/i18n"
               }
             ],
             "styles": [
