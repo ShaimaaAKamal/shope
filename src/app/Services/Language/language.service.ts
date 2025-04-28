@@ -6,12 +6,19 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LanguageService {
 
-    private langSignal = signal('en');
+  private langSignal = signal('en');
+  dirSignal: Signal<string>;
+  rtlClassSignal: Signal<boolean>;
 
-   
   constructor(private translateService: TranslateService) {
     this.translateService.setDefaultLang('en');
     this.translateService.use('en');
+     this.dirSignal = computed(() => {
+      const lang = this.langSignal();
+      return lang === 'ar' ? 'rtl' : 'ltr';
+    });
+
+    this.rtlClassSignal = computed(() => this.langSignal() === 'ar');
   }
 
   getLangSignal(): Signal<string> {
