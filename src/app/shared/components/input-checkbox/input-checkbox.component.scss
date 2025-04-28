@@ -1,0 +1,12 @@
+  @use "variables" as *;
+  input[type="checkbox"]{
+    box-shadow: none;
+    border-radius: .2rem;
+    &:focus{
+    border-color: $semi-dark !important;
+    }
+    &:checked {
+    border-color: $semi-dark !important;
+    background-color:$semi-dark  !important;
+  }
+  }
