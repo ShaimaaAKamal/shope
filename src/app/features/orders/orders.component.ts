@@ -18,4 +18,5 @@ __Router=inject(Router);
   this.__Router.navigateByUrl('Orders/create');
  }
  handleDelete(event:any){}
+ getCheckedItemCode(code:string){}
 }

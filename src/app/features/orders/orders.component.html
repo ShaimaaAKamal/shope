@@ -20,7 +20,11 @@
       </app-no-items>
 
       <ng-template #orderContainer>
-            <ng-content #name></ng-content>
+        <div class="row gy-3">
+          <div class="col-12 border-bottom pb-2" *ngFor="let order of orders()">
+            <app-order-item [order]="order" [currency]="'SAR'" (checkedItemCode)="getCheckedItemCode($event)"></app-order-item>
+          </div>
+        </div>
       </ng-template>
   </div>
   </div>
