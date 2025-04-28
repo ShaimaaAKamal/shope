@@ -29,7 +29,7 @@
 <ng-template #content>
   <ng-content></ng-content>
   <span class="ps-2 fw-light small" [class.d-none]="isCollapsed">
-    {{ navItemName.split('_').join(' ') }}
+    {{ navItemName.split('_').join(' ') | translate }}
   </span>
 </ng-template>
 
@@ -43,7 +43,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="['Hold_Orders', 'Return_Order', 'End_Day'].includes(navItemName)">
+<ng-container *ngIf="['Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية'].includes(navItemName)">
   <div class="d-flex align-items-center rounded px-3 mb-2 rounded-4 hover-bg"
        [ngClass]="classes"
        [class.justify-content-center]="isCollapsed"
@@ -53,7 +53,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order', 'End_Day'].includes(navItemName)">
+<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية'].includes(navItemName)">
   <div class="d-flex align-items-center px-3 mb-2 rounded rounded-4 hover-bg"
        [ngClass]="classes"
        [class.justify-content-center]="isCollapsed"

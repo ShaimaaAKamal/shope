@@ -1,16 +1,16 @@
   <div class="col-12 paymentButtons">
         <div class="row gy-2">
           <div class="col-12">
-            <button class="btn w-100 bg-dark text-light" (click)="pay_Order()">Pay</button>
+            <button class="btn w-100 bg-dark text-light" (click)="pay_Order()">{{'Pay' | translate}}</button>
           </div>
 
           <div class="col-12">
             <div class="row gx-2">
               <div class="col-6">
-                <button class="btn w-100 bg-secondary text-light" (click)="hold_Order()">Hold</button>
+                <button class="btn w-100 bg-secondary text-light" (click)="hold_Order()">{{'Hold' | translate}}</button>
               </div>
               <div class="col-6">
-                <button class="btn w-100 bg-danger text-light" (click)="cancal_Order()">Cancel</button>
+                <button class="btn w-100 bg-danger text-light" (click)="cancal_Order()">{{'Cancal' | translate}}</button>
               </div>
             </div>
           </div>

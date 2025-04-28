@@ -1,12 +1,12 @@
 <div class="border rounded rounded-3 invoice-products   my-3 d-flex flex-column h-100">
  <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row justify-content-between align-items-sm-center  align-items-xl-center  align-items-lg-start   border-bottom p-3">
    <div class="d-flex align-item-center ">
-   <h6 class="mb-0 small fw-bold">Invoice Products</h6>
-   <span class="badge bg-semi-dark ms-2 ">New</span>
+   <h6 class="mb-0 small fw-bold">{{'Order Products' | translate}}</h6>
+   <span class="badge bg-semi-dark ms-2 ">{{'New' | translate}}</span>
   </div>
   <div class="qty small d-flex align-items-center">
-    <div class="pe-2"><span>Items No : </span> <span>{{products().length}}</span></div>
-    <div><span>Total Qty: </span> <span>{{getTotalQuantity()}}</span></div>
+    <div class="pe-2"><span>{{'Items No' | translate }}: </span> <span>{{products().length}}</span></div>
+    <div><span>{{'Total Qty' | translate}}: </span> <span>{{getTotalQuantity()}}</span></div>
   </div>
  </div>
 
@@ -15,13 +15,13 @@
   <thead>
     <tr>
       <th scope="col" colspan="4" >
-              <span>Name</span> <i class="ps-1 fa-solid fa-arrow-down"></i>
+              <span>{{'Name' | translate}}</span> <i class="ps-1 fa-solid fa-arrow-down"></i>
       </th>
     </tr>
     <tr>
-      <th scope="col" ><span >Price</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
-      <th scope="col" class="text-center"><span>Qty</span> <i class="ps-1 fa-solid fa-arrow-down"></i> </th>
-      <th scope="col" class="text-center" ><span>Total Price</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
+      <th scope="col" ><span >{{'Price' | translate}}</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
+      <th scope="col" class="text-center"><span>{{'Qty' | translate}}</span> <i class="ps-1 fa-solid fa-arrow-down"></i> </th>
+      <th scope="col" class="text-center" ><span>{{'Total Price' | translate}}</span> <i class="ps-1 fa-solid fa-arrow-down"></i></th>
       <th scope="col" class="text-end" >
        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
           <rect x="1" y="0.5" width="19" height="19" rx="5.5" fill="#F7FAFF"/>

@@ -5,7 +5,7 @@
     </div>
     <div    [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'" >
         <select class="form-select form-select-sm" [id]="id" [name]="id" (change)="onSelectionChange($event)">
-            <option [value]="noOption" selected>{{noOption}}</option>
+            <option [value]="noOption" selected>{{noOption | translate}}</option>
             <option  *ngFor="let option of options"
             [value]="option[value]"
             [selected]="selected && option[value] === selected[value]">

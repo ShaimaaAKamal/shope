@@ -1,11 +1,11 @@
 <div class="summary border-top py-3">
-<h6 class="text-decoration-underline mb-3">Order Summary</h6>
+<h6 class="text-decoration-underline mb-3">{{'Order Summary' | translate}}</h6>
 <div class="container-fluid px-0">
   <div class="row  gx-3 gy-2">
      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
       <div class="row">
         <div class="col-6 text-start">
-          <span class="small">Net Total :</span>
+          <span class="small">{{'Net Total' | translate}} :</span>
         </div>
         <div class="col-6 text-end">
             <span class="small">{{netTotal()}} {{currency}}</span>
@@ -15,7 +15,7 @@
      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
       <div class="row ">
         <div class="col-8 text-start ">
-          <span class="ps-md-3 ps-lg-0 ps-xl-3 net-total-border small">Net Total + Tax  :</span>
+          <span class="ps-md-3 ps-lg-0 ps-xl-3 net-total-border small">{{'Net Total' | translate}} +{{'Tax' | translate}}  :</span>
         </div>
         <div class="col-4 text-end">
             <span class="small">{{netTotal() + tax()}} {{currency}}</span>
@@ -25,7 +25,7 @@
      <div class="col-12">
       <div class="row">
         <div class="col-6 text-start">
-          <span class="small">Gross Total :</span>
+          <span class="small">{{'Gross Total' | translate}} :</span>
         </div>
         <div class="col-6 text-end">
             <span class="small">{{grossTotal()}} {{currency}}</span>
