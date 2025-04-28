@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row align-items-center" (click)="showOrder(order.code)">
+    <div class="col-8 col-md-6 col-lg-8 col-xl-9 col-xxl-9 text-start">
+  <div class="d-flex align-items-center flex-grow-1">
+  <app-input-checkbox  [value]="order.code" [id]="order.code" (checked)="getOrderCode($event)"></app-input-checkbox>
+  <span class="px-3">
+       <img [src]="'assets/images/'+personImage"   alt="customer image" width="40px;" height="40px" class="rounded rounded-circle ">
+  </span>
+  <div class="d-flex flex-column  justify-content-center">
+   <span class="pb-1">{{order.customer.name || 'unknown' |titlecase}}</span>
+   <div class="d-flex align-items-center">
+     <span class="pe-2 fs-verySmall text-secondary">#{{order.code}}</span>
+     <span class="small d-flex align-items-center  text-secondary">
+       <i
+          class="fa fa-circle fs-xxs pe-1"
+          [ngClass]="{
+            'text-warning': order.status === 'hold',
+            'text-semi-dark': order.status === 'paid',
+             'text-danger': order.status === 'cancalled',
+            'text-info': order.status === 'processing'
+          }"
+          aria-hidden="true">
+        </i>
+        <span class="fs-verySmall">{{ order.status }}</span>
+      </span>
+   </div>
+  </div>
+  </div>
+    </div>
+    <div class="col-4 col-md-6 col-lg-4 col-xl-3  col-xxl-3">
+       <div class="row ">
+      <div class="col-12 col-lg-6 text-end text-lg-center">
+        <span class="small">
+          {{order.grossTotal}} {{currency}}
+        </span>
+      </div>
+      <div class="col-12 col-lg-6 text-end text-lg-center">
+        <span class="fs-verySmall text-secondary">since {{timeDifference.value}} {{timeDifference.unit}}</span>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
