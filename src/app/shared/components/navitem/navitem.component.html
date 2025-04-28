@@ -1,34 +1,11 @@
-<!--
-<ng-template #content>
-  <ng-content></ng-content>
-  <span class="ps-2 fw-light small" [class.d-none]="isCollapsed">
-    {{ navItemName.split('_').join(" ") }}
-  </span>
-</ng-template>
-
-<ng-container *ngIf="navItemName !== 'Shopping'; else noRouter">
-  <div class="d-flex align-items-center  px-3 mb-2 rounded rounded-4 hover-bg"
-       [ngClass]="classes"
-       [class.justify-content-center]="isCollapsed"
-       [routerLink]="navItemName"
-       routerLinkActive="router-link-active"
-       [title]="navItemName">
-    <ng-container *ngTemplateOutlet="content"></ng-container>
-  </div>
-</ng-container>
-
-<ng-template #noRouter>
-  <div class="d-flex align-items-center  rounded rounded-4 hover-bg"
-       [ngClass]="classes"
-       [class.justify-content-center]="isCollapsed"
-       [title]="navItemName" #shopping>
-    <ng-container *ngTemplateOutlet="content"></ng-container>
-  </div>
-</ng-template> -->
 
 <ng-template #content>
   <ng-content></ng-content>
-  <span class="ps-2 fw-light small" [class.d-none]="isCollapsed">
+  <span class="fw-light pe-2" [class.d-none]="isCollapsed"
+  [ngClass]="{
+        'ps-2 pe-0': !isRtl,
+      }"
+      >
     {{ navItemName.split('_').join(' ') | translate }}
   </span>
 </ng-template>

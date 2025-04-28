@@ -1,7 +1,9 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, signal, Signal, ViewChild } from '@angular/core';
 import { NavitemComponent } from '../navitem/navitem.component';
 import { Navitem } from '../../../Interfaces/navitem';
 import { CommonService } from '../../../Services/CommonService/common.service';
+import { LanguageService } from '../../../Services/Language/language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidenav',
@@ -13,12 +15,11 @@ export class SidenavComponent {
 @ViewChild('sideNav') sideNav!: ElementRef;
 @ViewChild('logo') logo!: NavitemComponent;
 
-  // isCollapsed = false;
   isCollapsed!:boolean;
   smallScreen = false;
   personImage = 'person.jpg';
   salesPersonName = 'Ahmed Kamal';
-
+  lang:string='Arabic';
   sectionOneNavItems: Navitem[] = [
     { name: 'Home', icon: 'fa-solid fa-house' },
     { name: 'Products', icon: 'fa-solid fa-tags' },
@@ -30,16 +31,23 @@ export class SidenavComponent {
 
   sectionTwoNavItems: Navitem[] = [
     { name: 'Settings', icon: 'fa-solid fa-gear' },
-    { name: 'Arabic', icon: 'fa-solid fa-globe' },
+    { name: this.lang, icon: 'fa-solid fa-globe' },
     { name: 'Return_Order', icon: 'fa-solid fa-right-left' },
     { name: 'End_Day', icon: 'fa-solid fa-rectangle-xmark' },
     { name: 'Hold_Orders', icon: 'fa-solid fa-hourglass-start' },
   ];
 
-  constructor(private commonService: CommonService) {
+  constructor(private commonService: CommonService,private __TranslateService:TranslateService) {
     this.isCollapsed=this.commonService.isCollapse();
+    this,__TranslateService.onLangChange.subscribe((event) => {
+      const lang = event.lang;
+      this.lang = lang === 'ar' ? 'اللغة الإنجليزية' : 'Arabic';
+      this.updateNavItems();
+    });
   }
-
+  private updateNavItems() {
+    this.sectionTwoNavItems[1].name = this.lang;
+  }
   ngOnInit() {
     this.setIsCollapsed();
     this.smallScreen = window.innerWidth < 768;

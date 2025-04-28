@@ -1,5 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-navitem',
@@ -11,9 +13,10 @@ export class NavitemComponent {
 @Input() isCollapsed:boolean=false;
 @Input() navItemName:string='';
 @Input() classes:string='';
+isRtl:boolean=false;
 @ViewChild('shopping') shopping!:ElementRef;
 
-constructor(private __Router:Router){}
+constructor(private __Router:Router, private __LanguageService:LanguageService){}
 showHeader(){
   this.shopping.nativeElement.classList.remove('d-none');
 }
@@ -24,17 +27,22 @@ hideHeader(){
 handleSpecialClick(name: string) {
   switch (name) {
     case 'Hold_Orders':
-      console.log('Hold Orders clicked!');
       this.__Router.navigateByUrl('Orders/create?popup=hold_orders');
       break;
     case 'Return_Order':
       console.log('Return Order clicked!');
-      // your return_order logic here
       break;
     case 'End_Day':
       console.log('End Day clicked!');
-      // your end_Day logic here
       break;
+    case 'Arabic':
+      this.isRtl=true;
+      this.__LanguageService.changeLanguage('ar');
+      break;
+    case 'اللغة الإنجليزية':
+       this.isRtl=false;
+       this.__LanguageService.changeLanguage('en');
+       break;
     default:
       break;
   }

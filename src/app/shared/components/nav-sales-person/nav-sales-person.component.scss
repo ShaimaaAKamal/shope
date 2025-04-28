@@ -2,3 +2,6 @@
  .salesPerson{
      border-top:.05px solid $secondary-light;
   }
+ .rotate {
+    transform: rotate(180deg) !important;
+  }

@@ -6,7 +6,7 @@
       <div [class.d-none]="isCollapsed" class="ps-2  flex-grow-1">
         <div class="d-flex align-item-center justify-content-between">
            <span class="fs-verySmall">{{'Welcome Back' | translate}}👋 </span>
-            <i class="fa-solid fa-chevron-right small"></i>
+            <i class="fa-solid fa-chevron-right small" [class.rotate]="isRtl()"></i>
         </div>
          <span class="small">{{salesPersonName}}</span>
       </div>
