@@ -25,6 +25,9 @@ html {
   .fs-medium{
     font-size:14px !important;
   }
+  .fs-xxs{
+        font-size:6px !important;
+  }
   .bg-dark{
     background-color: $dark !important;
   }
@@ -82,7 +85,9 @@ html {
   appearance:textfield ;
   -moz-appearance: textfield;
 }
-
+&[type='checkbox'] {
+ padding:10px !important;
+}
 }
 .dropdown-menu {
   z-index:999999;
