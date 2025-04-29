@@ -3,6 +3,7 @@ import { Variant } from "./variant";
 export interface Product {
   id:number,
   name:string,
+  nameAr:string,
   barcode:string,
   price:number,
   quantity:string,
