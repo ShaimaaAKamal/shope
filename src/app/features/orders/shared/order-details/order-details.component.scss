@@ -25,7 +25,8 @@
 .list-group{
     top:28px;
     width:75%;
-    left:25%;
+    // left:25%;
+    inset-inline-start:25%;
     z-index:100001;
    li{
     color:$semi-dark  !important;

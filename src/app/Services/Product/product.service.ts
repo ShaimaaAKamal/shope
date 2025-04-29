@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { Router } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +8,8 @@ import { Router } from 'express';
 export class ProductService {
 
 products=signal<Product[]>([
-  {id: 1, name: "samsung a35", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"},
-    {id: 2, name: "samsung e3", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"}
+  {id: 1, name: "samsung a35",nameAr: "سامسونج ٣٥", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"},
+    {id: 2, name: "samsung e3", nameAr: "سامسونج اي ٣", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"}
 ]);
  usedProducts:Product[]=this.products();
 
@@ -48,7 +47,7 @@ updateProducts(products:Product[]){
 findProductByName(name:string):Product[]{
   const search = name.trim().toLowerCase();
    return  this.usedProducts.filter(product =>
-     product.name.toLowerCase().includes(search)
+     product.name.toLowerCase().includes(search) || product.nameAr.toLowerCase().includes(search)
   );
   }
 
@@ -62,6 +61,7 @@ findProductByBarcode(barcode:string):Product[]{
      return {
         id:-1,
         name: '',
+        nameAr: '',
         barcode: '',
         price: 0,
         quantity: '0',

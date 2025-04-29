@@ -13,7 +13,6 @@ export class NavitemComponent {
 @Input() isCollapsed:boolean=false;
 @Input() navItemName:string='';
 @Input() classes:string='';
-isRtl:boolean=false;
 @ViewChild('shopping') shopping!:ElementRef;
 
 constructor(private __Router:Router, private __LanguageService:LanguageService){}
@@ -36,11 +35,9 @@ handleSpecialClick(name: string) {
       console.log('End Day clicked!');
       break;
     case 'Arabic':
-      this.isRtl=true;
       this.__LanguageService.changeLanguage('ar');
       break;
     case 'اللغة الإنجليزية':
-       this.isRtl=false;
        this.__LanguageService.changeLanguage('en');
        break;
     default:

@@ -7,15 +7,16 @@
     }
   }
   .input-icon{
-  left:8px;
+  inset-inline-start: 8px;
+  inset-inline-end: auto;
   top:50%;
   color:#000;
   font-size: .8rem;
   opacity: .4;
   transform: translateY(-50%);
   z-index:100000;
-
 }
+
  input.form-control:focus + .input-group-text {
     border-color: $semi-dark;
   }
@@ -23,4 +24,3 @@
     border-color: $semi-dark;
   }
 }
-

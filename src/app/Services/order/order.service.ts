@@ -12,7 +12,7 @@ export class OrderService {
  orderProducts=signal<Product[]>([]);
  discount=signal<number>(0);
  paidAmount = signal<number>(0);
- invoiveCustomer:Customer={name:'',id:-1};
+ invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
 
 constructor(private __CommonService:CommonService){
   this.orders.set(this.__CommonService.getItemsFromStorage('orders'));

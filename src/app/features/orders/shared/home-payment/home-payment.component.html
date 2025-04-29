@@ -18,7 +18,7 @@
                 #inputRef
                 [id]="method.focusKey"
                 type="text"
-                [spanLabel]="currency"
+                [spanLabel]="currency | translate "
                 placeholder="'0.00'"
                 [inputGroup]="true"
                 [hideLabel]="true"
@@ -37,19 +37,19 @@
         <div class="col-12">
           <div class="row">
             <div class="col-6 text-start small"><span>{{'Due Amount' | translate}} :</span></div>
-            <div class="col-6 text-end small"><span>{{calculateDueAmount()}} {{currency}}</span></div>
+            <div class="col-6 text-end small"><span>{{calculateDueAmount()}} {{currency | translate }}</span></div>
           </div>
         </div>
         <div class="col-12">
           <div class="row">
             <div class="col-6 text-start small"><span>{{'Paid' | translate}} :</span></div>
-            <div class="col-6 text-end small"><span>{{paidAmount()}} {{currency}}</span></div>
+            <div class="col-6 text-end small"><span>{{paidAmount()}} {{currency | translate }}</span></div>
           </div>
         </div>
         <div class="col-12">
           <div class="row">
             <div class="col-6 text-start small"><span>{{'Reminder' | translate}} :</span></div>
-            <div class="col-6 text-end small"><span>{{ calculateReminder() }} {{currency}}</span></div>
+            <div class="col-6 text-end small"><span>{{ calculateReminder() }} {{currency | translate }}</span></div>
           </div>
         </div>
         </div>

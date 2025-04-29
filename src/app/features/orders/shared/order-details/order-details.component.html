@@ -20,7 +20,7 @@
               *ngFor="let item of searchItems"
               (click)="selectItem(item)"
             >
-              {{ item.name }}
+              {{ isRtl() ? item.nameAr : item.name }}
             </li>
           </ul>
       </div>
@@ -49,9 +49,9 @@
   <div class="section_2 section-style rounded rounded-3 h-100 pt-3 px-4 d-flex flex-column">
     <div class="d-flex mb-3  selectCustomerContainer flex-grow-0">
       <app-select-input
-        [label]="'Select Customer' | translate" [id]="'customer'"
+        [label]="'Select Customer' | translate" [id]="'customer'" [noOption]="'Select Customer'"
         [options]="customers" (selectedOption)="selectedCustomerEvent($event)"
-        [prop]="'name'" [value]="'id'" [vertCLass]="'col-12'"   [selected]="selectedCustomer"
+        [prop]="isRtl()?'nameAr' :'name'" [value]="'id'" [vertCLass]="'col-12'"   [selected]="selectedCustomer"
         class="flex-grow-1">
       </app-select-input>
       <button class="btn bg-dark align-self-end ms-2">

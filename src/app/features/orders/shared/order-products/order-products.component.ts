@@ -9,7 +9,9 @@ import { OrderService } from '../../../../Services/order/order.service';
   styleUrl: './order-products.component.scss'
 })
 export class OrderProductsComponent {
-  private __OrderService=inject(OrderService)
+
+ private __OrderService=inject(OrderService);
+ currency:string='SAR';
  products= this.__OrderService.orderProducts;
  getTotalQuantity=this.__OrderService.getTotalQuantity;
 

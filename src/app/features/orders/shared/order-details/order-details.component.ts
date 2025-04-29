@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, Signal, ViewChild } from '@angular/core';
 import { Product } from '../../../../Interfaces/product';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Customer } from '../../../../Interfaces/customer';
@@ -6,6 +6,7 @@ import { CustomerService } from '../../../../Services/Customer/customer.service'
 import { Order } from '../../../../Interfaces/order';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { OrderService } from '../../../../Services/order/order.service';
+import { LanguageService } from '../../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-order-details',
@@ -18,13 +19,16 @@ export class OrderDetailsComponent {
 @ViewChild('searchInputByBarcode') searchInputByBarcode!: InputComponent;
 
 @Input() order:Order|null=null;
-@Input()selectedCustomer:Customer={name:'' , id:-1};
-
+@Input()selectedCustomer:Customer={name:'',nameAr:'' , id:-1};
+isRtl!:Signal<boolean>;
 customers!:Customer[];
 searchItems:Product[]=[];
 constructor(private __CustomerService:CustomerService
   ,private __ProductsService:ProductService
-  ,private __OrderService:OrderService){}
+  ,private __OrderService:OrderService
+  ,private __LanguageService:LanguageService){
+    this.isRtl=this.__LanguageService.rtlClassSignal;
+  }
 
 ngOnInit(): void {
  this.customers=this.__CustomerService.customers();

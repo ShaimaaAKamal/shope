@@ -1,6 +1,7 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, Output, Signal } from '@angular/core';
 import { Order } from '../../../../Interfaces/order';
 import { Router } from '@angular/router';
+import { LanguageService } from '../../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-order-item',
@@ -16,6 +17,14 @@ private __Router=inject(Router);
 
 timeDifference: { unit: string, value: number }  = { unit: 'seconds', value: 0 };
 personImage:string='person.jpg';
+isRtl!:Signal<boolean>;
+customerName:string='';
+constructor(private __LanguageService:LanguageService){
+  this.isRtl=this.__LanguageService.rtlClassSignal;
+   effect(() => {
+      this.getCustomerName();
+    });
+}
 
 ngOnInit() {
   this.timeDifference = this.getSmartDateDifference(this.order.time);
@@ -49,5 +58,8 @@ getSmartDateDifference(time: Date | string): { unit: string, value: number } {
   } else {
     return { unit: 'seconds', value: seconds };
   }
+}
+getCustomerName(){
+    this.customerName= this.isRtl() ? this.order.customer.nameAr : this.order.customer.name;
 }
 }

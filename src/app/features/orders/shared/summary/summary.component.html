@@ -8,7 +8,7 @@
           <span class="small">{{'Net Total' | translate}} :</span>
         </div>
         <div class="col-6 text-end">
-            <span class="small">{{netTotal()}} {{currency}}</span>
+            <span class="small">{{netTotal()}} {{currency | translate}}</span>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
           <span class="ps-md-3 ps-lg-0 ps-xl-3 net-total-border small">{{'Net Total' | translate}} +{{'Tax' | translate}}  :</span>
         </div>
         <div class="col-4 text-end">
-            <span class="small">{{netTotal() + tax()}} {{currency}}</span>
+            <span class="small">{{netTotal() + tax()}} {{currency | translate}}</span>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
           <span class="small">{{'Gross Total' | translate}} :</span>
         </div>
         <div class="col-6 text-end">
-            <span class="small">{{grossTotal()}} {{currency}}</span>
+            <span class="small">{{grossTotal()}} {{currency | translate}}</span>
         </div>
       </div>
     </div>

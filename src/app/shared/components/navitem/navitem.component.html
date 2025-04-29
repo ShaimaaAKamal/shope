@@ -1,10 +1,8 @@
 
 <ng-template #content>
   <ng-content></ng-content>
-  <span class="fw-light pe-2" [class.d-none]="isCollapsed"
-  [ngClass]="{
-        'ps-2 pe-0': !isRtl,
-      }"
+  <span class="fw-light ps-2" [class.d-none]="isCollapsed"
+
       >
     {{ navItemName.split('_').join(' ') | translate }}
   </span>

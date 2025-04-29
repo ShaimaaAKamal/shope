@@ -1,5 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
-import { LanguageService } from '../../../Services/Language/language.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-nav-sales-person',
@@ -11,6 +10,4 @@ export class NavSalesPersonComponent {
 @Input() isCollapsed:boolean=false;
 @Input() personImage:string='';
 @Input() salesPersonName:string='';
-private __LanguageService=inject(LanguageService);
-isRtl=this.__LanguageService.rtlClassSignal;
 }

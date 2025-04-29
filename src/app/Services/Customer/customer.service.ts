@@ -6,9 +6,9 @@ import { Customer } from '../../Interfaces/customer';
 })
 export class CustomerService {
    customers=signal<Customer[]>([
-    {name:"Mohamed Ahmed",id:1},
-   { name:"Ali Muhamed",id:2},
-    {name:"Omar Ali",id:3}
+    {name:"Mohamed Ahmed",nameAr:'محمد احمد',id:1},
+   { name:"Ali Muhamed",nameAr:'علي محمد',id:2},
+    {name:"Omar Ali",nameAr:'عمر علي',id:3}
   ]);
   constructor() { }
 }

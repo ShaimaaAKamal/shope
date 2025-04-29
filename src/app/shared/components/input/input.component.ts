@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, Signal, ViewChild } from '@angular/core';
+import { LanguageService } from '../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-input',
@@ -27,7 +28,6 @@ export class InputComponent {
 
 hideIconVar:boolean=false;
 InputQuantity:number=0;
-
 
   onFocus(event:any) {
     this.focus.emit(event.target.id);

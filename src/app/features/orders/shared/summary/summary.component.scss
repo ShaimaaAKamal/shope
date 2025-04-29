@@ -2,13 +2,16 @@
 .net-total-border{
   border:none;
 @media screen and (min-width : 768px) and (max-width : 992px){
-  border-left:2px solid $dark;
+  // border-left:2px solid $dark;
+  border-inline-start:2px solid $dark;
 
 }
 @media screen and (min-width : 992px) and (max-width : 1200px){
   border:none;
 }
 @media screen and (min-width : 1200px){
-  border-left:2px solid $dark;
+  // border-left:2px solid $dark;
+    border-inline-start:2px solid $dark;
+
 }
 }

@@ -11,9 +11,9 @@ import { Customer } from '../../../Interfaces/customer';
   styleUrl: './order.component.scss'
 })
 export class OrderComponent {
-  
+
   order!:Order;
-  selectedCustomer:Customer={name:'' , id:-1};
+  selectedCustomer:Customer={name:'' ,'nameAr':'', id:-1};
 
   constructor(private __ActivatedRoute:ActivatedRoute,private __OrderService:OrderService){}
 
