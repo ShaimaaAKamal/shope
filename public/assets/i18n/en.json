@@ -26,7 +26,8 @@
   "Pay":"Pay",
   "Hold":"Hold",
   "Cancal":"Cancal",
-  
+  "SAR":"SAR",
+
   "Home":"Home",
   "Products":"Products",
   "Orders":"Orders",
@@ -39,5 +40,16 @@
   "Return Order":"Return Order",
   "End Day":"End Day",
   "Hold Orders":"Hold Orders",
-  "Welcome Back":"Welcome Back"
+  "Welcome Back":"Welcome Back",
+
+  "All":"All",
+  "unknown":"unknown",
+  "paid":"paid",
+  "hold":"hold",
+  "since":"since",
+  "months":"months",
+  "days":"days",
+  "hours":"hours",
+  "minutes":"minutes",
+  "seconds":"seconds"
 }
