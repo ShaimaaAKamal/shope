@@ -32,11 +32,7 @@ export class AppComponent {
 
     effect(() => {
       const isRtl = this.__LanguageService.rtlClassSignal();
-      if (isRtl) {
-        document.body.classList.add('rtl');
-      } else {
-        document.body.classList.remove('rtl');
-      }
+      this.__LanguageService.switchStyleToRTL(isRtl,this.__LanguageService.getLangSignal()());
     });
 }
 
