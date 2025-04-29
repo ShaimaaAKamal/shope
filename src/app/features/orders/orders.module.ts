@@ -13,6 +13,7 @@ import { OrderDetailsComponent } from './shared/order-details/order-details.comp
 import { OrderComponent } from './order/order.component';
 import { HoldOrdersComponent } from './hold-orders/hold-orders.component';
 import { OrderItemComponent } from './shared/order-item/order-item.component';
+import { OrderPageComponent } from './order-page/order-page.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { OrderItemComponent } from './shared/order-item/order-item.component';
     OrderDetailsComponent,
     OrderComponent,
     HoldOrdersComponent,
-    OrderItemComponent
+    OrderItemComponent,
+    OrderPageComponent
   ],
   imports: [
     SharedModule,
