@@ -1,0 +1,31 @@
+<div class="d-flex flex-column">
+  <div class="pb-1" *ngIf="title">
+  <span class="small">{{title}}</span>
+</div>
+<div class="btn-group " [class.border]="title">
+            <button
+              class="btn rounded-0 border-0 small dropdown-toggle border-end d-flex justify-content-between align-items-center py-1 px-2"
+              [class.border-end-0]="title || noBorder"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+             <div class="d-flex align-items-center">
+              <ng-content #name></ng-content>
+              <span class="fs-verySmall text-muted text-start">
+                {{ dropdownSelection | translate }}
+              </span>
+             </div>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <ul class="dropdown-menu w-100">
+              <li *ngIf="optionsArray.length === 0">
+                <a class="dropdown-item fs-verySmall">No Categories</a>
+              </li>
+              <li *ngFor="let option of optionsArray" (click)="selectOption(option)">
+                <a class="dropdown-item fs-verySmall">{{ option[key] |translate | titlecase }}</a>
+              </li>
+            </ul>
+  </div>
+</div>
