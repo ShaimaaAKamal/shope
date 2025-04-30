@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 export class SiteButtonComponent {
 @Input() BtnName:string='';
 @Input() route:string='';
+@Input() iconDir:string='';
 }
