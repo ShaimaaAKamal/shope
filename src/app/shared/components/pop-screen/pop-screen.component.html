@@ -12,7 +12,7 @@
       [class.justify-content-end]="hideCancalBtn">
       <span class="p-2 rounded rouned-3 fs-verySmall bg-secondary text-light"
         [class.d-none]="hideCancalBtn"
-        (click)="togglePopScreen('close')">{{'Cancal' | translate | titlecase}}</span>
+        (click)="togglePopScreen('close')" *ngIf="!hideCancalBtn">{{'Cancal' | translate | titlecase}}</span>
       <span class="p-2 rounded rouned-3 fs-verySmall bg-semi-dark text-light" (click)="done()">{{btnLabel | translate}}</span>
     </div>
   </div>

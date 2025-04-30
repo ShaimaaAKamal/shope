@@ -113,12 +113,18 @@ html {
   padding: 2rem;
 }
 
-.popScreenContent {
+ .popScreenContent {
   max-width: 50%;
   width: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .popScreenContent {
+    max-width: 90%;
+  }
 }
 .toast-success {
   background-color: $semi-dark !important;
