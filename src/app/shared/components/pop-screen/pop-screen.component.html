@@ -1,7 +1,7 @@
 <div class="popScreenContainer" #popScreen>
   <div class="popScreenContent">
     <div class="header bg-semi-dark d-flex align-items-center text-white rounded-top-3 justify-content-between py-2 px-3">
-      <span class="small">{{headerLabel}}</span>
+      <span class="small">{{headerLabel | translate}}</span>
       <i class="fa-solid fa-xmark" (click)="togglePopScreen('close')"></i>
     </div>
 
@@ -12,8 +12,8 @@
       [class.justify-content-end]="hideCancalBtn">
       <span class="p-2 rounded rouned-3 fs-verySmall bg-secondary text-light"
         [class.d-none]="hideCancalBtn"
-        (click)="togglePopScreen('close')">Cancel</span>
-      <span class="p-2 rounded rouned-3 fs-verySmall bg-semi-dark text-light" (click)="done()">{{btnLabel}}</span>
+        (click)="togglePopScreen('close')">{{'Cancal' | translate | titlecase}}</span>
+      <span class="p-2 rounded rouned-3 fs-verySmall bg-semi-dark text-light" (click)="done()">{{btnLabel | translate}}</span>
     </div>
   </div>
 </div>
