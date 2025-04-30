@@ -12,7 +12,7 @@
   <div class="d-flex align-items-center rounded rounded-4 hover-bg"
        [ngClass]="classes"
        [class.justify-content-center]="isCollapsed"
-       [title]="navItemName"
+       [title]="navItemName | translate"
        #shopping>
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
@@ -22,7 +22,7 @@
   <div class="d-flex align-items-center rounded px-3 mb-2 rounded-4 hover-bg"
        [ngClass]="classes"
        [class.justify-content-center]="isCollapsed"
-       [title]="navItemName"
+       [title]="navItemName | translate"
        (click)="handleSpecialClick(navItemName)">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
@@ -34,7 +34,7 @@
        [class.justify-content-center]="isCollapsed"
        [routerLink]="navItemName"
        routerLinkActive="router-link-active"
-       [title]="navItemName">
+       [title]="navItemName | translate">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
 </ng-container>
