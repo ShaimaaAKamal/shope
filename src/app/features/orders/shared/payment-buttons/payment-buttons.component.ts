@@ -68,6 +68,7 @@ export class PaymentButtonsComponent {
 
 private buildOrder(status: string): Order {
   return {
+    id:this.__OrderService.orders().length +1,
     code: this.code,
     customer: this.__OrderService.invoiveCustomer,
     salesPerson: this.__SalesPersonsService.currentSalesPerson(),
