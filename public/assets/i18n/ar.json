@@ -51,6 +51,23 @@
   "days":"أيام",
   "hours":"ساعات",
   "minutes":"دقائق",
-  "seconds":"ثواني"
+  "seconds":"ثواني",
+
+  "waiting for Payment":"بإنتظار الدفع",
+  "waiting for Processing":"بإنتظار المراجعة",
+  "in Progress":"قيد التنفيذ",
+  "cancelled":"ملغي",
+
+  "Next Order":"الطلب التالي",
+  "previous Order":"الطلب السابق",
+  "Order Number":"رقم الطلب",
+  "Order Date":"تاريخ الطلب",
+  "Order Status":"حالة الطلب",
+  "Sales Person":"مندوب مبيعات",
+  "Enter Notes":"أدخل الملاحظات",
+  "Client Additional Notes":"ملاحظات إضافية للعميل",
+  "choose order status":"اختر حالة الطلب",
+  "Update Status":"تعديل الحالة",
+  "Update Order Status":"تعديل حالة الطلب"
 
 }

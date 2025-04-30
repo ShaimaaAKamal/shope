@@ -51,5 +51,26 @@
   "days":"days",
   "hours":"hours",
   "minutes":"minutes",
-  "seconds":"seconds"
+  "seconds":"seconds",
+
+  "waiting for Payment":"waiting for Payment",
+  "waiting for Processing":"waiting for Processing",
+  "in Progress":"in Progress",
+  "cancelled":"cancelled",
+
+
+  "Next Order":"Next Order",
+  "previous Order":"previous Order",
+  "Order Number":"Order Number",
+  "Order Date":"Order Date",
+  "Order Status":"Order Status",
+  "Sales Person":"Sales Person",
+  "Enter Notes":"Enter Notes",
+  "Client Additional Notes":"Client Additional Notes",
+  "choose order status":"choose order status",
+  "Update Status":"Update Status",
+  "Update Order Status":"Update Order Status"
+
+
+
 }
