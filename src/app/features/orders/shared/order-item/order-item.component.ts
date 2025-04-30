@@ -16,15 +16,6 @@ private __Router=inject(Router);
 @Output() checkedItemCode=new EventEmitter<string>();
 
 timeDifference: { unit: string, value: number }  = { unit: 'seconds', value: 0 };
-personImage:string='person.jpg';
-isRtl!:Signal<boolean>;
-customerName:string='';
-constructor(private __LanguageService:LanguageService){
-  this.isRtl=this.__LanguageService.rtlClassSignal;
-   effect(() => {
-      this.getCustomerName();
-    });
-}
 
 ngOnInit() {
   this.timeDifference = this.getSmartDateDifference(this.order.time);
@@ -32,8 +23,8 @@ ngOnInit() {
 getOrderCode(code:any){
  this.checkedItemCode.emit(code);
 }
-showOrder(code:string){
-  this.__Router.navigateByUrl(`Orders/Order/${code}`)
+showOrder(id:number){
+  this.__Router.navigateByUrl(`Orders/${id}`)
 }
 getSmartDateDifference(time: Date | string): { unit: string, value: number } {
    const d1 = new Date();
@@ -59,7 +50,5 @@ getSmartDateDifference(time: Date | string): { unit: string, value: number } {
     return { unit: 'seconds', value: seconds };
   }
 }
-getCustomerName(){
-    this.customerName= this.isRtl() ? this.order.customer.nameAr : this.order.customer.name;
-}
+
 }
