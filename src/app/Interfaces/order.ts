@@ -1,9 +1,11 @@
 import { Customer } from "./customer"
+import { OrderStatus } from "./order-status"
 import { Product } from "./product"
 import { SalesPerson } from "./sales-person"
 
 export interface Order {
-    code:string,
+  id:number,
+  code:string,
   status:string,
   products:Product[],
   grossTotal:number,
