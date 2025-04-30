@@ -14,7 +14,7 @@ products=signal<Product[]>([
  usedProducts:Product[]=this.products();
 
   constructor(private __CommonService:CommonService) {
-  this.products.set(this.__CommonService.getItemsFromStorage('products'));
+  this.products.set(this.__CommonService.getItemsFromStorage<Product[]>('products',[]));
 }
 
 addNewProduct(newProduct : Product){

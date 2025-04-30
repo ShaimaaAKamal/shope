@@ -18,10 +18,11 @@ isCollapse=signal<boolean>(false);
   }
   return code;
 }
-  getItemsFromStorage(key: string): any[] {
-     const items = localStorage.getItem(key);
-      return items ? JSON.parse(items) : [];
-  }
+
+  getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
+  const item = localStorage.getItem(key);
+  return item ? (JSON.parse(item) as T) : defaultValue;
+}
 
   saveToStorage(key: string, data: any) {
       localStorage.setItem(key, JSON.stringify(data));

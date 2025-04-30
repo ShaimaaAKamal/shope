@@ -15,7 +15,7 @@ export class OrderService {
  invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
 
 constructor(private __CommonService:CommonService){
-  this.orders.set(this.__CommonService.getItemsFromStorage('orders'));
+  this.orders.set(this.__CommonService.getItemsFromStorage<Order[]>('orders',[]));
 }
 
 UpdateProducts(products:Product[]){
