@@ -4,5 +4,6 @@ export interface Customer {
   id:number,
   image?:string,
   phone?:string,
+  status?:string,
   [key: string]: any
 }
