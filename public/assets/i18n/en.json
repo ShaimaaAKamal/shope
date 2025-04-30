@@ -57,7 +57,8 @@
   "waiting for Processing":"waiting for Processing",
   "in Progress":"in Progress",
   "cancelled":"cancelled",
-
+  "shipped":"shipped",
+  "delivered":"delivered",
 
   "Next Order":"Next Order",
   "previous Order":"previous Order",
@@ -69,7 +70,25 @@
   "Client Additional Notes":"Client Additional Notes",
   "choose order status":"choose order status",
   "Update Status":"Update Status",
-  "Update Order Status":"Update Order Status"
+  "Update Order Status":"Update Order Status",
+  "shipping":"shipping",
+  "payment":"payment",
+  "client":"client",
+
+"Order has been updated successfully!":"Order has been updated successfully!",
+"This Order  hasn't been updated !":"This Order  hasn't been updated !",
+"This Order is already been paid !":"This Order is already been paid !",
+"This order is already exist!":"This order is already exist!",
+"Order has been added successfully!":"Order has been added successfully!",
+"TOAST": {
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "INFO": "Info",
+    "WARNING": "Warning"
+  }
+
+
+
 
 
 

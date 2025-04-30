@@ -57,6 +57,8 @@
   "waiting for Processing":"بإنتظار المراجعة",
   "in Progress":"قيد التنفيذ",
   "cancelled":"ملغي",
+  "shipped":"تم الشحن",
+  "delivered":"تم التسليم",
 
   "Next Order":"الطلب التالي",
   "previous Order":"الطلب السابق",
@@ -68,6 +70,22 @@
   "Client Additional Notes":"ملاحظات إضافية للعميل",
   "choose order status":"اختر حالة الطلب",
   "Update Status":"تعديل الحالة",
-  "Update Order Status":"تعديل حالة الطلب"
+  "Update Order Status":"تعديل حالة الطلب",
+  "shipping":"الشحن",
+  "payment":"الدفع",
+  "client":"العميل",
+
+
+  "Order has been updated successfully!":"تم تحديث الطلب بنجاح ",
+"This Order  hasn't been updated !":"لم يتم تحديث هذا الطلب",
+"This Order is already been paid !":"تم دفع هذا الطلب بالفعل",
+"This order is already exist!":"هذا الطلب موجود بالفعل",
+"Order has been added successfully!":"تمت إضافة الطلب بنجاح",
+"TOAST": {
+    "SUCCESS": "نجاح",
+    "ERROR": "خطأ",
+    "INFO": "معلومات",
+    "WARNING": "تحذير"
+  }
 
 }
