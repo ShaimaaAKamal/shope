@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, Signal } from '@angular/core';
 import { Product } from '../../../../Interfaces/product';
 import { OrderService } from '../../../../Services/order/order.service';
 
@@ -9,7 +9,7 @@ import { OrderService } from '../../../../Services/order/order.service';
   styleUrl: './order-products.component.scss'
 })
 export class OrderProductsComponent {
-
+ @Input() isRtl!:Signal<boolean>
  private __OrderService=inject(OrderService);
  currency:string='SAR';
  products= this.__OrderService.orderProducts;
@@ -26,5 +26,8 @@ removeProduct(index:number){
 
 getProductQuantity(product:Product){
   return Number(product.quantity);
+}
+getOrderName(product:Product){
+return this.isRtl()?product.nameAr:product.name;
 }
 }
