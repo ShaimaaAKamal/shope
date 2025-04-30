@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NavitemComponent } from './components/navitem/navitem.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { NavSalesPersonComponent } from './components/nav-sales-person/nav-sales-person.component';
@@ -15,6 +15,8 @@ import { NoItemsComponent } from './components/no-items/no-items.component';
 import { SiteButtonComponent } from './components/site-button/site-button.component';
 import { InputCheckboxComponent } from './components/input-checkbox/input-checkbox.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { NewDatePipe } from '../pipes/date/date.pipe';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 
 
@@ -32,7 +34,9 @@ import { TranslateModule } from '@ngx-translate/core';
     PageControlsComponent,
     NoItemsComponent,
     SiteButtonComponent,
-    InputCheckboxComponent
+    InputCheckboxComponent,
+    NewDatePipe,
+    DropdownComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +57,12 @@ import { TranslateModule } from '@ngx-translate/core';
         SiteButtonComponent,
         InputCheckboxComponent,
         TranslateModule,
+        NewDatePipe,
+        DropdownComponent
+  ],
+  providers:[
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'ar' }
   ]
 })
 export class SharedModule { }
