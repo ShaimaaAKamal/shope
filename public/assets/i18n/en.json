@@ -41,6 +41,7 @@
   "End Day":"End Day",
   "Hold Orders":"Hold Orders",
   "Welcome Back":"Welcome Back",
+   "Done":"Done",
 
   "All":"All",
   "unknown":"unknown",
@@ -85,9 +86,14 @@
     "ERROR": "Error",
     "INFO": "Info",
     "WARNING": "Warning"
-  }
+  },
 
 
+"Id":"Id",
+"Time":"Time",
+"Code":"Code",
+"controls":"controls",
+"There isn't any hold products":"There isn't any hold products"
 
 
 
