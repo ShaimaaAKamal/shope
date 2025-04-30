@@ -3,6 +3,7 @@ import { Order } from '../../../Interfaces/order';
 import { Router } from '@angular/router';
 import { CommonService } from '../../../Services/CommonService/common.service';
 import { OrderService } from '../../../Services/order/order.service';
+import { LanguageService } from '../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-hold-orders',
@@ -12,10 +13,14 @@ import { OrderService } from '../../../Services/order/order.service';
 })
 export class HoldOrdersComponent {
 
-__CommonService=inject(CommonService);
- getTimeFromDate=this.__CommonService.getTimeFromDate;
+
 __OrderService=inject(OrderService);
 holdOrders=this.__OrderService.HoldOrders;
+
+__LanguageService=inject(LanguageService);
+isRtl=this.__LanguageService.rtlClassSignal;
+
+currency:string='SAR';
 constructor(private __Router:Router){}
 
 done(){
@@ -24,5 +29,24 @@ this.__Router.navigateByUrl('Orders/create');
 
 showOrder(order:Order){
 this.__Router.navigateByUrl(`Orders/Order/${order.code}`)
+}
+
+deleteOrder(order:Order){
+ this.__OrderService.deleteOrderBycode(order.code);
+}
+
+getLocalizedTime(date: string | Date | null | undefined): string {
+  if (!date) return '';
+
+  const time = new Date(date);
+  if (isNaN(time.getTime())) return '';
+
+  const locale = this.isRtl()  ? 'ar-EG' : 'en-US';
+
+  return new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  }).format(time);
 }
 }

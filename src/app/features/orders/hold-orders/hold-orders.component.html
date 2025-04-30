@@ -1,32 +1,40 @@
 <app-pop-screen
-
   headerLabel="Hold Orders"
   btnLabel="Done"
   (doneChange)="done()"
   (closeChange)="done()"
-  [hideCancalBtn]="false"
+  [hideCancalBtn]="true"
   #addDetailsAlert
 >
-<div class="p-4 bg-white">
-  <table class="table table-striped table-hover shadow-sm">
+<div class="p-4 bg-white overflow-scroll" >
+  <table class="table table-striped table-responsive table-hover shadow-sm"  *ngIf=" holdOrders().length > 0 ;else noHoldOrders">
   <thead>
     <tr>
-      <th scope="col" class="text-center">Id</th>
-      <th scope="col" class="text-center">Time</th>
-      <th scope="col" class="text-center">Code</th>
-      <th scope="col" class="text-center">Price</th>
+      <th scope="col" class="text-center">{{'Id' |translate}}</th>
+      <th scope="col" class="text-center">{{'Time' | translate}}</th>
+      <th scope="col" class="text-center">{{'Code' | translate}}</th>
+      <th scope="col" class="text-center">{{'Price' | translate}}</th>
+      <th scope="col" class="text-center" colspan="2">{{'controls' | translate }}</th>
+
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let order of holdOrders() ;let index=index;"  (click)="showOrder(order)">
+    <tr *ngFor="let order of holdOrders() ;let index=index;" >
       <th scope="row" class="text-center">{{index+1}}</th>
-      <td class="text-center">{{getTimeFromDate(order.time)}}</td>
+      <td class="text-center">{{getLocalizedTime(order.time)}}</td>
       <td class="text-center">{{order.code}}</td>
-      <td class="text-center">{{order.grossTotal}} SAR</td>
+      <td class="text-center">{{order.grossTotal}} {{ currency | translate}}</td>
+      <td class="text-center"  (click)="showOrder(order)"><i class="fa-solid fa-eye"></i></td>
+      <td class="text-center"  (click)="deleteOrder(order)"><i class="fa-solid fa-trash-can"></i></td>
     </tr>
-
 
   </tbody>
 </table>
+<ng-template #noHoldOrders>
+  <div  class="alert alert-secondary text-center mb-0 py-2 small">
+    {{"There isn't any hold products" | translate}}
+  </div>
+</ng-template>
 </div>
 </app-pop-screen>
+
