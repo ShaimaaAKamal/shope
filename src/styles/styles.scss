@@ -163,4 +163,24 @@ html {
         }
     }
 }
+.section_2{
+  .btn{
+    padding:.19rem 1.5rem;
+
+    &:hover{
+      background-color: $semi-dark !important;
+      color:$light !important;
+    }
+  }
+  width:100%;
+  @media screen and (min-width: 992px) {
+    width:400px;
+  }
+  @media screen and (min-width: 1400px) {
+    width:500px;
+  }
+   @media screen and (min-width: 1600px) {
+    width:700px;
+  }
+}
 }
