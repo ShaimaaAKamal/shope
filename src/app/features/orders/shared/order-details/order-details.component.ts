@@ -20,9 +20,11 @@ export class OrderDetailsComponent {
 
 @Input() order:Order|null=null;
 @Input()selectedCustomer:Customer={name:'',nameAr:'' , id:-1};
+
 isRtl!:Signal<boolean>;
-customers!:Customer[];
+customers!:Signal<Customer[]>;
 searchItems:Product[]=[];
+addNewCustomer:boolean=false;
 constructor(private __CustomerService:CustomerService
   ,private __ProductsService:ProductService
   ,private __OrderService:OrderService
@@ -31,7 +33,7 @@ constructor(private __CustomerService:CustomerService
   }
 
 ngOnInit(): void {
- this.customers=this.__CustomerService.customers();
+ this.customers=this.__CustomerService.customers;
 }
 
 selectedCustomerEvent(customer:Customer){
@@ -69,6 +71,13 @@ if (existingProductIndex > -1) {
   products.push(proudct);
 }
     this.__OrderService.UpdateProducts(products);
+}
+
+showAddNewCustomerForm(){
+  this.addNewCustomer=true;
+}
+closeCustomerForm(){
+    this.addNewCustomer=false ;
 
 }
 }

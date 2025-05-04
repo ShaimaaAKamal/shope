@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="flex-grow-1 pb-3" style="min-height: 0;">
-      <app-order-products ></app-order-products>
+      <app-order-products [isRtl]="isRtl"></app-order-products>
     </div>
     <div class="flex-grow-0 mt-3 border-top">
       <app-summary></app-summary>
@@ -50,11 +50,11 @@
     <div class="d-flex mb-3  selectCustomerContainer flex-grow-0">
       <app-select-input
         [label]="'Select Customer' | translate" [id]="'customer'" [noOption]="'Select Customer'"
-        [options]="customers" (selectedOption)="selectedCustomerEvent($event)"
+        [options]="customers()" (selectedOption)="selectedCustomerEvent($event)"
         [prop]="isRtl()?'nameAr' :'name'" [value]="'id'" [vertCLass]="'col-12'"   [selected]="selectedCustomer"
         class="flex-grow-1">
       </app-select-input>
-      <button class="btn bg-dark align-self-end ms-2">
+      <button class="btn bg-dark align-self-end ms-2" (click)="showAddNewCustomerForm()">
         <i class="fa-solid fs-2x text-white fa-plus"></i>
       </button>
     </div>
@@ -68,3 +68,8 @@
 </div>
   </div>
 </div>
+
+
+<app-add-in-voice-new-customer *ngIf="addNewCustomer" (closeCustomerForm)="closeCustomerForm()">
+
+</app-add-in-voice-new-customer>
