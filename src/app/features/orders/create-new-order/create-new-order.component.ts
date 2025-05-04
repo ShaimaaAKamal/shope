@@ -13,12 +13,13 @@ export class CreateNewOrderComponent {
 
 __Route=inject(ActivatedRoute);
 popupVisible = signal(false);
+popupRetuenOrderVisible = signal(false);
 queryParamsSignal= toSignal(this.__Route.queryParamMap);
-
 constructor(private __OrderService:OrderService){
    const _ = effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'hold_orders');
+    this.popupRetuenOrderVisible.set(popup === 'return_orders');
   });
 }
 
