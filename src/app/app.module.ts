@@ -10,16 +10,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
-import { provideHttpClient } from '@angular/common/http'; // ✅ modern way if needed
+import { provideHttpClient } from '@angular/common/http';
+import localeAr from '@angular/common/locales/ar';
+import { registerLocaleData } from '@angular/common';
 
-
+registerLocaleData(localeAr);
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,9 +29,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-        timeOut: 1000,
+        timeOut: 2000,
         positionClass: 'toast-top-right',
         preventDuplicates: true,
+         progressBar: true,
+         progressAnimation: 'increasing'
     }
     ),
     TranslateModule.forRoot({
