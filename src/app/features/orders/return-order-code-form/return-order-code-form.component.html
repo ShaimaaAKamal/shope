@@ -1,0 +1,20 @@
+<app-pop-screen
+  [headerLabel]="'Return Order' | translate"
+  btnLabel="Done"
+  (doneChange)="done()"
+  (closeChange)="close()"
+  [hideCancalBtn]="true"
+  #addDetailsAlert
+>
+<div class="bg-white p-4">
+<app-input [id]="'returnOrderByCode'"
+[label]="'Enter Order Code' | translate"
+[vertCLass]="'col-12'"
+(input)="clearErrorMessage()"
+#orderCode>
+<i class="fa-solid fa-magnifying-glass" ></i>
+</app-input>
+<small class="text-danger fs-verySmall" *ngIf="errorMessage">{{errorMessage | translate | titlecase}}</small>
+</div>
+</app-pop-screen>
+
