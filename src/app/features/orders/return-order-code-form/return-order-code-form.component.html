@@ -11,10 +11,10 @@
 [label]="'Enter Order Code' | translate"
 [vertCLass]="'col-12'"
 (input)="clearErrorMessage()"
+[errorMessage]="errorMessage"
 #orderCode>
 <i class="fa-solid fa-magnifying-glass" ></i>
 </app-input>
-<small class="text-danger fs-verySmall" *ngIf="errorMessage">{{errorMessage | translate | titlecase}}</small>
 </div>
 </app-pop-screen>
 
