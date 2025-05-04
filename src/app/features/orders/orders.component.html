@@ -20,6 +20,33 @@
       </app-no-items>
 
       <ng-template #orderContainer>
+        <div class="container-fluid border-bottom mb-2">
+           <div class="d-flex align-items-center">
+          <app-input-checkbox  [value]="'checkAll'" [id]="'checkAll'"></app-input-checkbox>
+            <div class="row align-items-center flex-grow-1">
+            <div class="col-8 col-md-5 col-lg-7 col-xl-8 text-start">
+              <span class="ps-4">Client Info</span>
+            </div>
+            <div class="col-4 col-md-7 col-lg-5 col-xl-4 ">
+              <div class="row ">
+              <div class="col-12  col-lg-4 text-end text-lg-center">
+                <span class="small ps-lg-4">
+               Price
+                </span>
+              </div>
+              <div class="col-12 col-lg-4 text-end text-lg-center">
+                <span class="small ps-lg-5">Date</span>
+              </div>
+                <div class="col-12  col-lg-4 text-end text-lg-center">
+                <span class="small ps-lg-5">
+                  Actions
+                  </span>
+              </div>
+            </div>
+            </div>
+          </div>
+          </div>
+        </div>
         <div class="row gy-3">
           <div class="col-12 border-bottom pb-2" *ngFor="let order of orders()">
             <app-order-item [order]="order" [currency]="'SAR'" (checkedItemCode)="getCheckedItemCode($event)"></app-order-item>
