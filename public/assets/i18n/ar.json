@@ -104,5 +104,16 @@
  "RETURN": {
     "INVALID_PRODUCT":"المُنتج ذو المعرف {{id}} لم يكن جزءًا من الطلب الأصلي.",
     "MAX_QUANTITY": "يمكنك فقط إرجاع {{quantity}} من \"{{name}}\"."
-  }
+  },
+  "Enter Order Code":"أدخل كود الطلب",
+   "No Order Found with this code":"لم يتم العثور على طلب بهذا الرمز",
+  "This Order has been already returned before":"لقد تم إرجاع طلبه بالفعل من قبل",
+
+  "Add Customer":"إضافة العميل",
+  "Customer Name":"اسم العميل",
+   "Customer Arabic Name":"اسم العميل باللغة الإنجليزية",
+  "Customer Phone":"رقم العميل",
+    "Customer name is required":"اسم العميل مطلوب",
+  "Customer Arabic name is required":"اسم العميل باللغة الإنجليزية مطلوب",
+  "Phone number is required":"رقم الهاتف مطلوب"
 }

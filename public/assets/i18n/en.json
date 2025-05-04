@@ -103,6 +103,18 @@
 "RETURN": {
     "INVALID_PRODUCT": "Product ID {{id}} was not part of the original order.",
     "MAX_QUANTITY": "You can only return up to {{quantity}} of \"{{name}}\"."
-  }
+  },
+  "Enter Order Code":"Enter Order Code",
+  "No Order Found with this code":"No Order Found with this code",
+  "This Order has been already returned before":"This Order has been already returned before",
+
+
+  "Add Customer":"Add Customer",
+  "Customer Name":"Customer Name",
+  "Customer Arabic Name":"Customer Arabic Name",
+  "Customer Phone":"Customer Phone",
+  "Customer name is required":"Customer name is required",
+  "Customer Arabic name is required":"Customer Arabic name is required",
+  "Phone number is required":"Phone number is required"
 
 }
