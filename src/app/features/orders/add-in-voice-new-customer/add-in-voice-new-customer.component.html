@@ -1,0 +1,33 @@
+<app-pop-screen
+  [headerLabel]="'Add Customer' | translate"
+  btnLabel="Done"
+  (doneChange)="done()"
+  (closeChange)="close()"
+  [hideCancalBtn]="true"
+
+>
+<div class="bg-white p-4">
+<app-input [id]="'customerName'"
+[label]="'Customer Name' | translate"
+[vertCLass]="'col-12'"
+[errorMessage]="customerNameError"
+#customerName>
+<i class="fa-solid fa-signature"></i>
+</app-input>
+<app-input [id]="'customerArabicName'"
+[label]="'Customer Arabic Name' | translate"
+[vertCLass]="'col-12'"
+[errorMessage]="customerArabicNameError"
+#customeArabicrName>
+<i class="fa-solid fa-signature"></i>
+</app-input>
+<app-input [id]="'customerPhone'"
+[label]="'Customer Phone' | translate"
+[vertCLass]="'col-12'"
+[errorMessage]="customerPhoneError"
+#customerPhone>
+<i class="fa-solid fa-phone-volume"></i>
+</app-input>
+</div>
+</app-pop-screen>
+
