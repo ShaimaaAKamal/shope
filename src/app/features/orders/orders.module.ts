@@ -14,6 +14,8 @@ import { OrderComponent } from './order/order.component';
 import { HoldOrdersComponent } from './hold-orders/hold-orders.component';
 import { OrderItemComponent } from './shared/order-item/order-item.component';
 import { OrderPageComponent } from './order-page/order-page.component';
+import { ClientInfoComponent } from './shared/client-info/client-info.component';
+import { ReturnOrderComponent } from './return-order/return-order.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { OrderPageComponent } from './order-page/order-page.component';
     OrderComponent,
     HoldOrdersComponent,
     OrderItemComponent,
-    OrderPageComponent
+    OrderPageComponent,
+    ClientInfoComponent,
+    ReturnOrderComponent
   ],
   imports: [
     SharedModule,
