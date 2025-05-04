@@ -29,7 +29,7 @@ handleSpecialClick(name: string) {
       this.__Router.navigateByUrl('Orders/create?popup=hold_orders');
       break;
     case 'Return_Order':
-      console.log('Return Order clicked!');
+      this.__Router.navigateByUrl('Orders/create?popup=return_orders');
       break;
     case 'End_Day':
       console.log('End Day clicked!');
