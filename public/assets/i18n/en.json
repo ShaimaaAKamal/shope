@@ -93,9 +93,16 @@
 "Time":"Time",
 "Code":"Code",
 "controls":"controls",
-"There isn't any hold products":"There isn't any hold products"
+"There isn't any hold products":"There isn't any hold products",
+"This is a hold order":"This is a hold order",
+"This order has already been rerurned before":"This order has already been rerurned before",
 
-
-
+"Return":"Return",
+"products":"products",
+"Products count must be > 0":"Products count must be > 0",
+"RETURN": {
+    "INVALID_PRODUCT": "Product ID {{id}} was not part of the original order.",
+    "MAX_QUANTITY": "You can only return up to {{quantity}} of \"{{name}}\"."
+  }
 
 }

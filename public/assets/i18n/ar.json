@@ -94,5 +94,15 @@
 "Time":"الوقت",
 "Code":"الكود",
  "controls":"التحكم",
- "There isn't any hold products":"لا يوجد اي طلبات مؤجلة"
+ "There isn't any hold products":"لا يوجد اي طلبات مؤجلة",
+ "This is a hold order":"هذا طلب مؤجل",
+ "This order has already been rerurned before":":هذا الطلب تم استرجاعه مسبقًا",
+
+ "Return":"استرجاع",
+ "products":"المنتجات",
+ "Products count must be > 0":"يجب أن يكون عدد المنتجات > 0",
+ "RETURN": {
+    "INVALID_PRODUCT":"المُنتج ذو المعرف {{id}} لم يكن جزءًا من الطلب الأصلي.",
+    "MAX_QUANTITY": "يمكنك فقط إرجاع {{quantity}} من \"{{name}}\"."
+  }
 }
