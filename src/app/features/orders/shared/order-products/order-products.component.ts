@@ -9,7 +9,8 @@ import { OrderService } from '../../../../Services/order/order.service';
   styleUrl: './order-products.component.scss'
 })
 export class OrderProductsComponent {
- @Input() isRtl!:Signal<boolean>
+ @Input() isRtl!:Signal<boolean>;
+ @Input() displayQtySection:boolean=true;
  private __OrderService=inject(OrderService);
  currency:string='SAR';
  products= this.__OrderService.orderProducts;
