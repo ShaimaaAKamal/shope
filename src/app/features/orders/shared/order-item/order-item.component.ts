@@ -26,6 +26,14 @@ getOrderCode(code:any){
 showOrder(id:number){
   this.__Router.navigateByUrl(`Orders/${id}`)
 }
+printOrder(){
+  console.log('print order');
+}
+returnOrder(){
+ this.__Router.navigate(['/Orders/Return_Order'], {
+  state: { order: this.order}
+});
+}
 getSmartDateDifference(time: Date | string): { unit: string, value: number } {
    const d1 = new Date();
    const d2 =new Date(time);
