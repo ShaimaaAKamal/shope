@@ -82,6 +82,7 @@
 "This Order is already been paid !":"تم دفع هذا الطلب بالفعل",
 "This order is already exist!":"هذا الطلب موجود بالفعل",
 "Order has been added successfully!":"تمت إضافة الطلب بنجاح",
+"Order has been returned successfully!":"تمت إعادة الطلب بنجاح",
 "TOAST": {
     "SUCCESS": "نجاح",
     "ERROR": "خطأ",

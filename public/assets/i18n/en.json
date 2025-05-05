@@ -81,6 +81,7 @@
 "This Order is already been paid !":"This Order is already been paid !",
 "This order is already exist!":"This order is already exist!",
 "Order has been added successfully!":"Order has been added successfully!",
+"Order has been returned successfully!":"Order has been returned successfully!",
 "TOAST": {
     "SUCCESS": "Success",
     "ERROR": "Error",
