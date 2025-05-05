@@ -103,7 +103,7 @@ html {
 .popScreenContainer {
   position: fixed;
   inset: 0;
-  z-index: 200000 !important;
+  z-index: 20000000 !important;
   background: #00857c6f;
   overflow-y: auto;
   overflow-x: hidden;
@@ -129,10 +129,11 @@ html {
 .toast-success {
   background-color: $semi-dark !important;
 }
-
+#toast-container.toast-top-right {
+  z-index: 999999999 !important;
+}
  .closeIcon{
   position: absolute;
-  // left:10px;
   inset-inline-start: 10px;
   top:10px;
  }
