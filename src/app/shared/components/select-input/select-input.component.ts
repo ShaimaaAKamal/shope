@@ -11,17 +11,21 @@ export class SelectInputComponent<T extends Record<string, any>>{
   @Input() label: string = '';
   @Input() id: string = '';
   @Input() options: T[] = [];
-  @Input() prop:keyof T='';
-  @Input() value:keyof T='';
+  // @Input() prop:keyof T='';
+  // @Input() value:keyof T='';
+  @Input() prop: string = '';
+@Input() value: string = '';
   @Input() vertCLass:string='';
   @Input() noOption:string='';
   @Output() selectedOption: EventEmitter<T> = new EventEmitter<T>();
 
-  onSelectionChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-        const selected = this.options.find((opt: any) => String((opt as any)?.id) === value ||  String((opt as any)?.code) === value);
-    if (selected) {
-      this.selectedOption.emit(selected);
-    }
+  onSelectionChange(event: any): void {
+    // const value = (event.target as HTMLSelectElement).value;
+    //     const selected = this.options.find((opt: any) => String((opt as any)?.id) === value ||  String((opt as any)?.code) === value);
+    // if (selected) {
+    //   this.selectedOption.emit(selected);
+    // }
+   this.selectedOption.emit(event);
+
   }
 }

@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+::ng-deep ng-select {
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  z-index: 9999999;
+
+  .ng-select-container {
+    min-height: unset;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    // transition: border-color 0.2s;
+  }
+
+  &.ng-select-focused .ng-select-container {
+    border-color: $semi-dark;
+    box-shadow: 0 0 0 0.1rem $semi-dark;
+  }
+
+  &.ng-has-value .ng-select-container {
+    background-color: #f5faff;
+    border-color: $semi-dark;
+    box-shadow: 0 0 0 0.1rem $semi-dark;
+  }
+}

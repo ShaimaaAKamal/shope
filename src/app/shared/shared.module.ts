@@ -17,7 +17,8 @@ import { InputCheckboxComponent } from './components/input-checkbox/input-checkb
 import { TranslateModule } from '@ngx-translate/core';
 import { NewDatePipe } from '../pipes/date/date.pipe';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -42,6 +43,8 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     CommonModule,
     RouterModule,
     TranslateModule,
+    NgSelectModule,
+    FormsModule
   ],
   exports:[
         NavitemComponent,
@@ -58,7 +61,8 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
         InputCheckboxComponent,
         TranslateModule,
         NewDatePipe,
-        DropdownComponent
+        DropdownComponent,
+
   ],
   providers:[
     DatePipe,

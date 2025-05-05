@@ -4,13 +4,25 @@
                 <label [id]="id" class="form-label small">{{label}}</label>
     </div>
     <div    [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'" >
-        <select class="form-select form-select-sm" [id]="id" [name]="id" (change)="onSelectionChange($event)">
+        <!-- <select class="form-select form-select-sm" [id]="id" [name]="id" (change)="onSelectionChange($event)">
             <option [value]="noOption" selected>{{noOption | translate}}</option>
             <option  *ngFor="let option of options"
             [value]="option[value]"
             [selected]="selected && option[value] === selected[value]">
             {{option[prop]}}</option>
-          </select>
+          </select> -->
+          <ng-select
+          class="small "
+          [items]="options"
+          [bindLabel]="prop"
+          [bindValue]="value"
+          [ngModel]="selected?.[value]"
+          [clearable]="false"
+          [searchable]="true"
+          (change)="onSelectionChange($event)"
+          >
+          <ng-option [value]="null">{{ noOption | translate }}</ng-option>
+        </ng-select>
     </div>
   </div>
  </div>
