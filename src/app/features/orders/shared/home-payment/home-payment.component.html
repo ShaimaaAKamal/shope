@@ -67,6 +67,7 @@
          [order]="order"
          [inputMap]="inputMap"
         (mustBePaid)="setMustbePaid($event)"
+        (clearCustomer)="clearCustomerFn()"
         [getPaidAmount]="getPaidAmount.bind(this)"></app-payment-buttons>
       </div>
       <!-- <div class="col-12">

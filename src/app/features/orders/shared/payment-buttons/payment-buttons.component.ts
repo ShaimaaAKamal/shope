@@ -19,10 +19,10 @@ export class PaymentButtonsComponent {
    @Input() inputMap!: { [key: string]: InputComponent };
    @Input() order:Order|null=null;
    @Output() mustBePaid=new EventEmitter<boolean>(false);
+  @Output() clearCustomer=new EventEmitter<void>();
 
   constructor( private __OrderService: OrderService,
     private __CommonService: CommonService ,
-    private __SalesPersonsService:SalesPersonsService,
     private __ToastingMessagesService:ToastingMessagesService,
    private __Router:Router) {}
 
@@ -67,22 +67,30 @@ export class PaymentButtonsComponent {
 }
 
 private buildOrder(status: string): Order {
-  return {
-    id:this.__OrderService.orders().length +1,
-    code: this.code,
-    customer: this.__OrderService.invoiveCustomer,
-    salesPerson: this.__SalesPersonsService.currentSalesPerson(),
-    products: this.__OrderService.orderProducts(),
-    grossTotal: this.__OrderService.getGrossTotal(),
-    discount: this.getInputValue('_discountValue'),
-    paymentMethods: {
+  const   code= this.code;
+  const discount=this.getInputValue('_discountValue');
+  const   paymentMethods= {
       cash: this.getInputValue('_Cash'),
       network: this.getInputValue('_Network'),
       masterCard: this.getInputValue('_Master_Card')
-    },
-    status,
-    time: new Date()
-  };
+    }
+ return this.__OrderService.buildOrder(code,discount,status,paymentMethods)
+  // return {
+  //   id:this.__OrderService.orders().length +1,
+  //   code: this.code,
+  //   customer: this.__OrderService.invoiveCustomer,
+  //   salesPerson: this.__SalesPersonsService.currentSalesPerson(),
+  //   products: this.__OrderService.orderProducts(),
+  //   grossTotal: this.__OrderService.getGrossTotal(),
+  //   discount: this.getInputValue('_discountValue'),
+  //   paymentMethods: {
+  //     cash: this.getInputValue('_Cash'),
+  //     network: this.getInputValue('_Network'),
+  //     masterCard: this.getInputValue('_Master_Card')
+  //   },
+  //   status,
+  //   time: new Date()
+  // };
 }
 private getInputValue(key: string): number {
   return parseFloat(this.inputMap[key]?.value || '0');
@@ -101,6 +109,7 @@ private clearOrder(): void {
 
     this.__OrderService.setPaidAmount(0);
     this.__OrderService.discount.set(0);
+    this.clearCustomer.emit();
   }
 
 private generateOrderCode(): string {

@@ -14,6 +14,7 @@ import { LanguageService } from '../../../../Services/Language/language.service'
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss'
 })
+
 export class OrderDetailsComponent {
 @ViewChild('searchInputByName') searchInputByName!: InputComponent;
 @ViewChild('searchInputByBarcode') searchInputByBarcode!: InputComponent;
@@ -25,6 +26,7 @@ isRtl!:Signal<boolean>;
 customers!:Signal<Customer[]>;
 searchItems:Product[]=[];
 addNewCustomer:boolean=false;
+
 constructor(private __CustomerService:CustomerService
   ,private __ProductsService:ProductService
   ,private __OrderService:OrderService
@@ -34,6 +36,7 @@ constructor(private __CustomerService:CustomerService
 
 ngOnInit(): void {
  this.customers=this.__CustomerService.customers;
+ if(this.selectedCustomer) this.__OrderService.setInvoiveCustomer(this.selectedCustomer);
 }
 
 selectedCustomerEvent(customer:Customer){
@@ -78,6 +81,9 @@ showAddNewCustomerForm(){
 }
 closeCustomerForm(){
     this.addNewCustomer=false ;
-
+}
+clearCustomerFn(){
+  this.selectedCustomer={name:'',nameAr:'' , id:-1};
+  this.__OrderService.setInvoiveCustomer(this.selectedCustomer);
 }
 }

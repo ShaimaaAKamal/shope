@@ -1,4 +1,4 @@
-import { Component, inject, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../../../Services/order/order.service';
 import { Order } from '../../../../Interfaces/order';
@@ -12,6 +12,7 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 })
 export class HomePaymentComponent {
 @Input() order!:Order|null;
+@Output() clearCustomer=new EventEmitter<void>();
 
 private __OrderService=inject(OrderService);
 products=this.__OrderService.orderProducts;
@@ -138,6 +139,9 @@ setModelValue(focusKey: string, value: string) {
   return total;
 }
 
+clearCustomerFn(){
+  this.clearCustomer.emit()
+}
 setMustbePaid(value:any){
   this.mustBePaid=value;
 }

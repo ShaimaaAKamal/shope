@@ -16,6 +16,8 @@ import { OrderItemComponent } from './shared/order-item/order-item.component';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { ClientInfoComponent } from './shared/client-info/client-info.component';
 import { ReturnOrderComponent } from './return-order/return-order.component';
+import { ReturnOrderCodeFormComponent } from './return-order-code-form/return-order-code-form.component';
+import { AddInVoiceNewCustomerComponent } from './add-in-voice-new-customer/add-in-voice-new-customer.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { ReturnOrderComponent } from './return-order/return-order.component';
     OrderItemComponent,
     OrderPageComponent,
     ClientInfoComponent,
-    ReturnOrderComponent
+    ReturnOrderComponent,
+    ReturnOrderCodeFormComponent,
+    AddInVoiceNewCustomerComponent
   ],
   imports: [
     SharedModule,

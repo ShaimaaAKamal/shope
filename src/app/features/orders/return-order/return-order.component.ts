@@ -6,6 +6,7 @@ import { OrderService } from '../../../Services/order/order.service';
 import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
 import { Product } from '../../../Interfaces/product';
 import { TranslateService } from '@ngx-translate/core';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-return-order',
@@ -28,10 +29,12 @@ currency:string='SAR';
 
 constructor(private __Router: Router,
 private __ToastingMessagesService: ToastingMessagesService,
-private __TranslateService: TranslateService) {
+private __TranslateService: TranslateService,
+private __CommonService:CommonService) {
   const nav = this.__Router.getCurrentNavigation();
   const data = nav?.extras?.state;
   this.order = data?.['order'];
+
   if(this.order && this.order.status == 'hold')
   {
     this.__ToastingMessagesService.showToast("This is a hold order",'error');
@@ -45,6 +48,7 @@ private __TranslateService: TranslateService) {
   else {
     this.__OrderService.orderProducts.set([...this.order.products.map(p => ({ ...p }))]);
     this.orderProducts = this.order.products.map(p => ({ ...p }));
+    this.__OrderService.setInvoiveCustomer(this.order.customer);
   }
 }
 
@@ -58,10 +62,16 @@ returnOrder(){
   else{
     const valid=this.validateReturnOrder(this.__OrderService.orderProducts());
     if(valid){
-       
-      //create return order|
-      //update order return type to be true
-      //navigate to create order
+       this.order.hasARetrun=true;
+       const result=this.__OrderService.updateOrderHasReturn(this.order);
+       if(result.status)
+      {
+        const code=this.__CommonService.generate10CharCode();
+        const returnOrder=this.__OrderService.buildOrder(code,0,'return');
+        const result=this.__OrderService.addNewOrder(returnOrder);
+        this.__ToastingMessagesService.showToast(result.message, result.status ? 'success' : 'error');
+        this.__Router.navigateByUrl('Orders/create');
+      }
     }
   }
 }

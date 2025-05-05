@@ -47,20 +47,20 @@
 </div>
   <div class="col-12 col-lg-auto py-3" style="height: 100vh;">
   <div class="section_2 section-style rounded rounded-3 h-100 pt-3 px-4 d-flex flex-column">
-    <div class="d-flex mb-3  selectCustomerContainer flex-grow-0">
+    <div class="d-flex mb-3  align-items-center  selectCustomerContainer flex-grow-0">
       <app-select-input
         [label]="'Select Customer' | translate" [id]="'customer'" [noOption]="'Select Customer'"
         [options]="customers()" (selectedOption)="selectedCustomerEvent($event)"
         [prop]="isRtl()?'nameAr' :'name'" [value]="'id'" [vertCLass]="'col-12'"   [selected]="selectedCustomer"
         class="flex-grow-1">
       </app-select-input>
-      <button class="btn bg-dark align-self-end ms-2" (click)="showAddNewCustomerForm()">
-        <i class="fa-solid fs-2x text-white fa-plus"></i>
+      <button class="btn bg-dark  align-self-end ms-2" (click)="showAddNewCustomerForm()">
+        <i class="fa-solid text-white fa-plus"></i>
       </button>
     </div>
     <div class="flex-grow-1 overflow-auto" style="min-height: 0;">
       <div class="d-flex flex-column h-100">
-        <app-home-payment class="flex-grow-1 h-100" [order]="order"></app-home-payment>
+        <app-home-payment class="flex-grow-1 h-100" [order]="order" (clearCustomer)="clearCustomerFn()"></app-home-payment>
       </div>
     </div>
 

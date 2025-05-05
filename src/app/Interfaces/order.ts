@@ -18,7 +18,6 @@ export interface Order {
   salesPerson:SalesPerson,
   customer:Customer,
   time:Date,
-  invoiceType?:string,
   currency?:string,
   hasARetrun?:boolean
 }
