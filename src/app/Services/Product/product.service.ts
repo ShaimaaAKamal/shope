@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
 
@@ -6,23 +6,19 @@ import { CommonService } from '../CommonService/common.service';
   providedIn: 'root'
 })
 export class ProductService {
-
-products=signal<Product[]>([
-  {id: 1, name: "samsung a35",nameAr: "سامسونج ٣٥", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"},
-    {id: 2, name: "samsung e3", nameAr: "سامسونج اي ٣", barcode: "", price: 3000, quantity: "", tax: 0, status: "Inactive"}
-]);
- usedProducts:Product[]=this.products();
+ products=signal<Product[]>([]);
+ usedProducts!:Product[]
 
   constructor(private __CommonService:CommonService) {
   this.products.set(this.__CommonService.getItemsFromStorage<Product[]>('products',[]));
+  this.usedProducts=[...this.products()];
 }
 
 addNewProduct(newProduct : Product){
-const exists = this.usedProducts.some((product:Product) => product.name === newProduct.name  );
+const exists = this.products().some((product:Product) => product.name === newProduct.name  );
 if (!exists) {
-  this.usedProducts.push(newProduct);
-  this.products.set(this.usedProducts);
-  this.__CommonService.saveToStorage('products',this.usedProducts);
+ this.products.update(prev => [...prev, newProduct]);
+  this.__CommonService.saveToStorage('products',this.products().slice().sort((a, b) => b.id - a.id));
   return true;
 } else {
   return false;
@@ -31,6 +27,7 @@ if (!exists) {
 
 updateProductInfo(product:Product ){
  const result=this.__CommonService.updateItemInArray(this.products(),p => p.id === product.id,product);
+
  if(result.updated){ this.updateProducts(result.array) ;return true;}
  else return false;
 }
@@ -41,9 +38,21 @@ getProductLength():number{
    return firstId;
 }
 updateProducts(products:Product[]){
-  this.products.set(products);
-  this.__CommonService.saveToStorage('products',this.usedProducts);
+  this.products.set([...products]);
+  this.__CommonService.saveToStorage('products',products.slice().sort((a, b) => b.id - a.id));
 }
+
+ deleteProductByIndex(index:number):boolean{
+    const currentProducts = structuredClone(this.products().slice().sort((a, b) => b.id - a.id));
+    if (index >= 0 && index < this.products().length) {
+      currentProducts.splice(index, 1);
+      this.products.set(currentProducts);
+      this.__CommonService.saveToStorage('products', currentProducts);
+      return true;
+    }
+    else return false;
+  }
+
 findProductByName(name:string):Product[]{
   const search = name.trim().toLowerCase();
    return  this.usedProducts.filter(product =>
@@ -72,13 +81,5 @@ findProductByBarcode(barcode:string):Product[]{
       };
   }
 
-  deleteProductByIndex(index:number):boolean{
-    if (index >= 0 && index < this.products().length) {
-      this.products().splice(index, 1);
-      this.products.set(this.products());
-      this.__CommonService.saveToStorage('products', this.usedProducts);
-      return true;
-    }
-    else return false;
-  }
+
 }
