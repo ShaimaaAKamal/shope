@@ -3,7 +3,7 @@
   <div class="row align-items-center gx-2 gy-0">
     <div  [class.mb-0]="true"   [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-4 col-xxl-3'" [class.d-none]="hideLabel">
 
-            <label [for]="id" class="form-label mb-1 small">{{label}}</label>
+            <label [for]="id" class="form-label mb-1 small">{{label | translate}}</label>
     </div>
     <div  [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'">
         <div class="position-relative flex-grow-1">
@@ -11,14 +11,14 @@
            <ng-content #name></ng-content>
           </span>
           <div class="input-group" *ngIf="inputGroup">
-            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder" [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="onFocus($event)" #inputRef2>
-             <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="spanLabel" (click)="handleClick($event)"></span>
+            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder|translate" [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="onFocus($event)" #inputRef2>
+             <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="spanLabel | translate" (click)="handleClick($event)"></span>
           </div>
-         <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id"  (focus)="onFocus($event)"  [readonly]="readonly" [placeholder]="placeholder" #inputRef
+         <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id"  (focus)="onFocus($event)"  [readonly]="readonly" [placeholder]="placeholder | translate" #inputRef
          />
       </div>
     </div>
-    <div class="fs-verySmall mb-0 pt-1 text-danger" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="fs-verySmall mb-0 pt-1 text-danger" *ngIf="errorMessage">{{errorMessage | translate}}</div>
 
   </div>
  </div>
