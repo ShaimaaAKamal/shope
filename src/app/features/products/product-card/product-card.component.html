@@ -1,0 +1,197 @@
+<div class="card w-100" *ngIf="!removeProduct">
+  <div class="position-relative">
+      <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(product)"></i>
+      <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(product)"></i>
+
+    <!-- Close Button -->
+    <i *ngIf="!displayCheck"
+      class="fa-solid fa-circle-xmark text-danger icon"
+      (click)="cancalProduct()"
+    ></i>
+
+    <!-- Image Preview -->
+    <img
+      src="assets/images/noImage.png"
+      class="card-img-top"
+      alt="product image"
+    />
+
+    <!-- Add Image/Video -->
+    <div class="d-flex align-items-center addImage p-2 bg-second rounded-3" (click)="AddImage()">
+      <i class="fa-regular fa-image fa-sm pe-1"></i>
+      <span class="fs-verySmall">{{'Add Image or Video' | translate}}</span>
+    </div>
+  </div>
+
+  <!-- Card Body -->
+  <div class="card-body py-2 px-2">
+    <div class="row gy-2">
+
+      <!-- Product Title -->
+      <div class="col-12">
+        <app-input
+          id="productTitle"
+          placeholder="Enter Product Name"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #productTitle
+        >
+          <i class="fa-solid fa-box-open"></i>
+        </app-input>
+      </div>
+
+      <!-- Price -->
+      <div class="col-12">
+        <app-input
+          id="price"
+          type="number"
+          spanLabel="SAR"
+          placeholder="Price"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #price
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+      </div>
+
+      <!-- Quantity -->
+      <div class="col-12">
+        <app-input
+          id="quantity"
+          type="text"
+          [spanLabel]="quantityLabel"
+          placeholder="Unlimited Quantity"
+          clickMessage="Infinity"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          (showVariant)="showVariant($event)"
+          vertCLass="col-12"
+          #quantity
+        >
+
+          <i class="fa-solid fa-database"></i>
+        </app-input>
+      </div>
+
+      <!-- Category Dropdown -->
+      <div class="col-12">
+        <div class="d-flex border rounded">
+
+          <app-dropdown
+          class="flex-grow-1"
+          [dropdownSelection]="dropdownSelection"
+          [optionsArray]="categories()"
+          [key]="isRtl()?'nameAr':'name'"
+          (changeSelect)="chooseCategory($event)"
+          ></app-dropdown>
+          <div>
+              <span class="bg-second fs-verySmall p-2" (click)="controlPopScreen('category')">
+              {{'Add new' | translate}}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Details Alert -->
+<div class="card-footer  py-0">
+   <div class="row ">
+    <div class="col-6  " *ngIf="!type">
+      <div class="d-flex align-items-center justify-content-center   border-end py-2 "  >
+        <span class="fs-verySmall pe-2">{{'More' | translate}}</span>
+        <i class="fa-solid fa-chevron-down fa-xs"></i>
+      </div>
+    </div>
+     <div class="col-6  flex-grow-1">
+       <div class="d-flex align-items-center justify-content-center py-2" (click)="openProductDetails()">
+        <span class="fs-verySmall pe-2">{{'Details' | translate}}</span>
+       <i class="fa-solid fa-arrow-down-short-wide fa-sm"></i>
+      </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="card-footer bg-semi-dark text-white" (click)="handleSave()">
+    <div class="d-flex align-items-center justify-content-center" >
+      <span class="fs-verySmall pe-2">{{'Save' | translate}}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Add Category Popup -->
+<app-pop-screen
+ *ngIf="showCategory"
+  [headerLabel]="'Add New Category'"
+  [btnLabel]="'Add Categrory'"
+  (closeChange)="clearCategoryForm()"
+  (doneChange)="createCategory()"
+  #addCategory
+>
+  <div class="px-3 bg-white pb-3">
+    <app-input
+      id="categoryName"
+      [placeholder]="'Enter Category Name' | translate"
+      [errorMessage]="errorMessage | translate"
+      vertCLass="col-12"
+      #CategoryName
+    >
+      <i class="fa-solid fa-text-width"></i>
+    </app-input>
+    <app-input
+      id="categoryName"
+      [placeholder]="'Enter Category Arabic Name' | translate"
+      [errorMessage]="errorMessage | translate"
+      vertCLass="col-12"
+      #CategoryArabicName
+    >
+      <i class="fa-solid fa-text-width"></i>
+    </app-input>
+  </div>
+</app-pop-screen>
+
+<!-- Alert Message Popup -->
+<app-pop-screen
+  *ngIf="showDetailsAlert"
+  [headerLabel]="'Alert' "
+  [btnLabel]="'Accept'"
+  (doneChange)="controlPopScreen('addDetailsAlert','close')"
+  [hideCancalBtn]="true"
+  #addDetailsAlert
+>
+  <div class="px-3 bg-white small p-3">
+    <span>{{'Add Product Details then save it to be able to control advanced options.' | translate}}</span>
+  </div>
+</app-pop-screen>
+
+<!-- product details pop screen -->
+<app-pop-screen
+  *ngIf="showProductInfo"
+  [headerLabel]="'Product Details'"
+  btnLabel="Save Product Details"
+  (closeChange)="closeProductPopscreen()"
+  (doneChange)="saveProductDetails()"
+  #productInfo
+>
+  <div class="px-3 bg-white pb-3">
+      <app-product-details-pop [product]="product" [saveInfo]="saveInfo" (updated)="saveAdditionalInfo($event)"></app-product-details-pop>
+
+  </div>
+</app-pop-screen>
+
+<!-- product variant pop screen -->
+<app-pop-screen
+  *ngIf="showVariantPopScreen"
+  headerLabel="Product Variants"
+  btnLabel="Save"
+  (doneChange)="saveProductVariants()"
+  (closeChange)="closeVraianTpopScreen()"
+  [hideCancalBtn]="true"
+  #variantsPopScreen
+>     <app-variants [product]="product" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)" ></app-variants>
+
+</app-pop-screen>

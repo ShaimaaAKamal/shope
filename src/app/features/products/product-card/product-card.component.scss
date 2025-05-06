@@ -1,0 +1,21 @@
+.card{
+  .card-img-top{
+  height:250px;
+  width: 100%;
+}
+.icon{
+ position: absolute;
+ font-size:1.6rem;
+ top:10px;
+ right:10px;
+}
+
+.addImage{
+  position: absolute;
+  bottom:10px;
+  left:10px;
+}
+.dropdown-menu {
+top:-4px !important;
+}
+}

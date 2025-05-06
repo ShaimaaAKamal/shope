@@ -1,0 +1,92 @@
+<div class="row g-2">
+  <div class="col-12">
+        <app-input
+          id="price"
+          type="number"
+          spanLabel="SAR"
+          placeholder="Price"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+      </div>
+       <div class="col-12 col-md-6">
+        <app-input
+          id="costPrice"
+          type="number"
+          spanLabel="SAR"
+          placeholder="Cost Price"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+      </div>
+       <div class="col-12 col-md-6">
+        <app-input
+          id="salePrice"
+          type="number"
+          spanLabel="SAR"
+          placeholder="Sale Price"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+      </div>
+       <div class="col-12 col-md-4">
+        <app-input
+          id="weight"
+          type="number"
+          spanLabel="Kg"
+          placeholder="Weight"
+          [inputGroup]="true"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+          <i class="fa-solid fa-weight-scale"></i>
+        </app-input>
+      </div>
+       <div class="col-12 col-md-4">
+     <app-input
+          [id]="'barcode'"
+          [placeholder]="'Barcode'"
+          [label]="'Barcode'"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+         <i class="fa-solid fa-barcode"></i>
+        </app-input>
+       </div>
+        <div class="col-12 col-md-4">
+          <app-input
+          [id]="'notify'"
+          [placeholder]="'Notify Quantity'"
+          [label]="'Notify'"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #inputRef
+        >
+        <i class="fa-solid fa-bell"></i>
+        </app-input>
+       </div>
+        <div class="col-12">
+        <div class="pt-2 pb-1">
+          <h6 class="pb-3 border-bottom">{{'Quantity' | translate}}</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <span>{{'Product Quantity' | translate}}</span>
+              <app-quantity-control [quantity]="quantity" (quantityChange)="updateQuantity($event)">
+            </app-quantity-control>
+          </div>
+        </div>
+       </div>
+</div>

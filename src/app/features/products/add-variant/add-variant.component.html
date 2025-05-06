@@ -1,0 +1,83 @@
+ <div class="option border-bottom py-2 px-1  mb-3">
+  <div class="row g-2 align-items-start">
+      <div class="col-lg-6">
+         <app-input
+          id="optionName"
+          placeholder="Option Name"
+          [hideLabel]="true"
+          [errorMessage]="nameErrorMessage"
+          vertCLass="col-12"
+          #optionName
+        >
+          <i class="fa-solid fa-text-width"></i>
+        </app-input>
+      </div>
+       <div class="col-lg-6 ">
+         <div class="border rounded-1 h-100">
+            <app-dropdown
+          [dropdownSelection]="optionSelection"
+          [optionsArray]="ProductVariantOptions"
+          [key]="'name'"
+          (changeSelect)="chooseOption($event)"
+          >
+            <i class="fa-solid fa-clipboard-check fa-sm text-secondary pe-2"></i>
+        </app-dropdown>
+         </div>
+      </div>
+      <div class="col-12" >
+      <ng-container *ngFor="let value of values; let index = index;">
+        <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
+          <div class="d-flex align-items-center flex-grow-1">
+            <div class="pe-2">
+              <i class="fa-regular text-secondary fa-lg fa-circle" ></i>
+              <i class="fa-regular text-semi-dark fa-lg fa-circle-check" *ngIf="false"></i>
+            </div>
+            <div class="flex-grow-1 position-relative">
+              <app-input
+                placeholder="Variant Value"
+                [hideLabel]="true"
+                vertCLass="col-12"
+                #variantValue
+              >
+                <i class="fa-solid fa-text-width"></i>
+              </app-input>
+
+              <div class="colorPickerContainer" *ngIf="showColorPickerContainer">
+              <input
+                [colorPicker]="value.color"
+                [style.background]="value.color"
+                [cpToggle]="showColorPicker[index]"
+                (click)="toggleColorPicker(index)"
+                (colorPickerChange)="onColorChange($event, index);"
+                (colorPickerClose)="hideColorPicker(index)"
+                class="circle-picker rounded-2"
+                #colorPick
+              />
+            </div>
+            </div>
+          </div>
+
+          <div class="ps-2 align-self-end pt-2 pt-sm-0" *ngIf="values.length > 1" (click)="removeValue(value.id)">
+            <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
+          </div>
+        </div>
+      </ng-container>
+      <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" (click)="addNewValue()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add Another Value' | translate}}</span>
+       </div>
+     </div>
+</div>
+</div>
+ <div>
+ <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between">
+   <div class="p-2 text-center bg-danger  text-white fs-verySmall rounded-2 d-flex align-items-center justify-content-center" (click)="deleteVariant()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span>{{'Delete Varaiant' | translate}}</span>
+       </div>
+   <div class="p-2 mt-1 mt-sm-0 text-center bg-semi-dark text-white fs-verySmall rounded-2 d-flex align-items-center justify-content-center" (click)="addVariant()">
+      <i class="fa-solid fa-plus fa-sm pe-2"></i>
+      <span> {{'Add Variant' | translate}}</span>
+  </div>
+ </div>
+  </div>

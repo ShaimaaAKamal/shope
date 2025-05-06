@@ -1,0 +1,54 @@
+<div class="variantsContainer bg-white p-3">
+       <span class=" small">{{'Product Variants' | translate}}</span>
+        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="!displayVariant && variants.length == 0" >
+          <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
+          <span class="small">{{'Add Options' | translate}}</span>
+        </div>
+          <div class="variants mb-3" *ngIf="variants.length > 0">
+          <div class="variantContainer">
+            <div *ngFor="let variant of variants; let index=index;">
+            <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0">
+                 <div class="d-flex align-items-center  flex-grow-1">
+                  <span class="small pe-3">{{variant.name | translate |titlecase}}:</span>
+                  <div class="d-flex align-items-center">
+                   <span *ngFor="let value of variant.values; let last = last" [class.me-2]="!last">
+                        <ng-container *ngIf="variant.type !== 'color'; else coloredVariant">
+                          <span class="px-3 variantValuebg py-1 text-white fw-light fs-verySmall rounded-3 d-inline-block">
+                            {{ value | translate | titlecase}}
+                          </span>
+                        </ng-container>
+                            <ng-template #coloredVariant>
+                              <span class="variantValuebg rounded-3 d-inline-block"
+                                    [ngStyle]="{
+                                      'background-color': value,
+                                      'width': '36px',
+                                      'height': '20px',
+                                      'display': 'inline-block'
+                                    }"
+                                    [title]="value">
+                              </span>
+                            </ng-template>
+                          </span>
+                  </div>
+                 </div>
+                 <div>
+                        <span (click)="updateVariant(index)" class="pe-2"><i class="fa-solid fa-pen-to-square  text-semi-dark"></i></span>
+                        <span (click)="deleteVariant(index)"><i class="fa-solid fa-trash-can text-semi-dark"></i></span>
+                 </div>
+            </div>
+           </div>
+            <div class="d-flex align-items-center py-2 px-3 border border-top-0 rounded-bottom-3" (click)="showOptionsSection()" >
+              <i class="fa-regular fa-square-plus pe-2"></i>
+              <span class="small">{{'Add Options' | translate}}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="displayVariant" class="border p-3 rounded-3">
+           <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)" [alreadyExist]="alreadyExist" [saveVariants]="saveVariants"></app-add-variant>
+        </div>
+        <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
+                <app-variant-options-values-quantity [variants]="variants" [variantsDetails]="variantsDetails" [product]="product"
+                  (updated)="addProductVariantsDetails($event)" [saveVariants]="saveVariants"></app-variant-options-values-quantity>
+
+        </div>
+    </div>

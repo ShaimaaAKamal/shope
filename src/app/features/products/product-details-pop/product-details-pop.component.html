@@ -1,0 +1,95 @@
+
+<div class="row gy-3 py-2">
+  <!-- <div class="col-12">
+    <span class="small text-danger" *ngIf="errorMessage">Check your details or internet connection</span>
+  </div> -->
+  <div class="col-12">
+  <app-dropdown
+          [title]="'Require Shipping/Delivery?'"
+          [dropdownSelection]="dropdownSelection"
+          [optionsArray]="shippingOptions"
+          [key]="'title'"
+          (changeSelect)="changeSelect($event,'requireShipping')"
+          >
+  </app-dropdown>
+  </div>
+  <div class="col-12">
+    <div class="d-fles flex-column">
+      <span class="small">{{'Product Weight' | translate}}</span>
+      <div class="d-flex">
+        <app-input
+          class="flex-grow-1"
+          id="ProducWeight"
+          placeholder="Product Weight"
+          [hideLabel]="true"
+          vertCLass="col-12"
+          #productWeight
+        >
+         <i class="fa-solid fa-weight-scale"></i>
+        </app-input>
+            <app-dropdown
+            class="ms-1 bg-second rounded-1"
+            [noBorder]="true"
+          [dropdownSelection]="weightDropDownSelection"
+          [optionsArray]="weightOptions"
+          [key]="'title'"
+          (changeSelect)="changeSelect($event,'weightUnit')"
+          >
+        </app-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+     <app-input
+          [id]="'productCostPrice'"
+          [placeholder]="'Cost Price'"
+          [label]="'Cost Price'"
+          [hideLabel]="false"
+          vertCLass="col-12"
+          #productCostPrice
+        >
+         <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+  </div>
+   <div class="col-12">
+    <div class="row gx-2">
+      <div class="col-6">
+         <app-input
+          [id]="'salePrice'"
+          [placeholder]="'Sale Price'"
+          [hideLabel]="false"
+          [vertCLass]="'col-12'"
+          [label]="'Sale Price'"
+          #salePrice
+        >
+         <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+      </div>
+         <div class="col-6">
+         <app-input
+          [id]="'SaleEndDate'"
+          [placeholder]="'Sale Price end date'"
+          [hideLabel]="false"
+          [vertCLass]="'col-12'"
+          [type]="'Date'"
+            [label]="'Valid till'"
+          #salePriceEndDate
+        >
+        <i class="fa-solid fa-calendar"></i>
+        </app-input>
+      </div>
+    </div>
+  </div>
+    <div class="col-12">
+     <app-input
+          [id]="'barcode'"
+          [placeholder]="'Product Barcode'"
+          [label]="'Product Barcode'"
+          [hideLabel]="false"
+          vertCLass="col-12"
+          #barcode
+        >
+        <i class="fa-solid fa-barcode"></i>
+        </app-input>
+  </div>
+</div>
