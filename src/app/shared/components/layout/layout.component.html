@@ -1,0 +1,28 @@
+<div class="container-fluid p-4 vh-100 overflow-auto d-flex flex-column">
+  <div class="row flex-column flex-grow-1">
+    <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
+      <app-page-controls
+        [items]="items"
+        [sortKey]="sortKey"
+        [type]="'product'"
+        (addNewVar)="addNew($event)"
+         (displayedItems)="handleDispalyedItems($event)"
+         (deleteEvent)="handleDelete($event)">
+      </app-page-controls>
+    </div>
+
+    <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': items.length > 0 }">
+      <app-no-items
+        [header]="header"
+        (addNewVar)="addNew($event)"
+        [subTitle]="subTitle"
+        [BtnName]="BtnName"
+        *ngIf="noItems; else ProductTable">
+      </app-no-items>
+
+      <ng-template #ProductTable>
+            <ng-content #name></ng-content>
+      </ng-template>
+    </div>
+  </div>
+</div>
