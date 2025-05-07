@@ -170,5 +170,9 @@
       "Add Image or Video":"إضافة صورة أو فيديو",
       "Enter Product Name":"أدخل اسم المنتج",
       "Unlimited Quantity":"كمية غير محدودة",
-      "Variants":"متغيرات"
+      "Variants":"متغيرات",
+       "Variant has been saved successfully":"تم حفظ المتغير بنجاح",
+      "Something went wrong":"حدث خطأ ما",
+       "Product data has been saved successfully":"بيانات المنتج قد تم حفظها بنجاح",
+       "Product data hasn't been saved successfully":"بيانات المنتج لم يتم حفظها بنجاح"
 }

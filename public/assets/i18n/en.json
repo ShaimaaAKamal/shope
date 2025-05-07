@@ -169,6 +169,10 @@
   "Add Image or Video":"Add Image or Video",
   "Enter Product Name":"Enter Product Name",
   "Unlimited Quantity":"Unlimited Quantity",
-  "Variants":"Variants"
+  "Variants":"Variants",
+  "Variant has been saved successfully":"Variant has been saved successfully",
+  "Something went wrong":"Something went wrong",
+  "Product data has been saved successfully":"Product data has been saved successfully",
+  "Product data hasn't been saved successfully":"Product data hasn't been saved successfully"
 
 }
