@@ -1,85 +1,107 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
+import { VariantOption } from '../../Interfaces/variant-option';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
- products=signal<Product[]>([]);
- usedProducts!:Product[]
+  products = signal<Product[]>([]);
+  type = signal<string>('');
+  usedProducts: Product[] = [];
+  variantOptions = signal<VariantOption[]>([
+    { id: 1, name: 'color', nameAr: 'لون' },
+    { id: 2, name: 'text', nameAr: 'نص' }
+  ]);
+  currentProduct = signal<Product>(this.getEmptyProduct());
 
-  constructor(private __CommonService:CommonService) {
-  this.products.set(this.__CommonService.getItemsFromStorage<Product[]>('products',[]));
-  this.usedProducts=[...this.products()];
-}
+  constructor(private commonService: CommonService) {
+    const storedProducts = this.commonService.getItemsFromStorage<Product[]>('products', [])
+      .filter(p => p.name && p.price);
 
-addNewProduct(newProduct : Product){
-const exists = this.products().some((product:Product) => product.name === newProduct.name  );
-if (!exists) {
- this.products.update(prev => [...prev, newProduct]);
-  this.__CommonService.saveToStorage('products',this.products().slice().sort((a, b) => b.id - a.id));
-  return true;
-} else {
-  return false;
-}
-}
+    const sortedProducts = this.sortProductsDesc(storedProducts);
+    this.products.set(sortedProducts);
+    this.commonService.saveToStorage('products', sortedProducts);
 
-updateProductInfo(product:Product ){
- const result=this.__CommonService.updateItemInArray(this.products(),p => p.id === product.id,product);
+    this.usedProducts = [...sortedProducts];
+  }
 
- if(result.updated){ this.updateProducts(result.array) ;return true;}
- else return false;
-}
+  addNewProduct(newProduct: Product): boolean {
+    const exists = this.products().some(p => p.name === newProduct.name);
+    if (exists) return false;
 
-getProductLength():number{
-  const sortedProducts = this.products().sort((a, b) => b.id - a.id);
-   const firstId = sortedProducts[0]?.id ?? 0;
-   return firstId;
-}
-updateProducts(products:Product[]){
-  this.products.set([...products]);
-  this.__CommonService.saveToStorage('products',products.slice().sort((a, b) => b.id - a.id));
-}
+    const updated = [...this.products(), newProduct];
+    const sorted = this.sortProductsDesc(updated);
+    this.products.set(sorted);
+    this.commonService.saveToStorage('products', sorted);
+    return true;
+  }
 
- deleteProductByIndex(index:number):boolean{
-    const currentProducts = structuredClone(this.products().slice().sort((a, b) => b.id - a.id));
-    if (index >= 0 && index < this.products().length) {
-      currentProducts.splice(index, 1);
-      this.products.set(currentProducts);
-      this.__CommonService.saveToStorage('products', currentProducts);
+  updateProductInfo(product: Product): boolean {
+    const updatedArray = this.commonService.updateItemInArray(
+      this.products(),
+      p => p.id === product.id,
+      product
+    );
+
+    if (updatedArray.updated) {
+      this.updateProducts(updatedArray.array);
       return true;
     }
-    else return false;
+    return false;
   }
 
-findProductByName(name:string):Product[]{
-  const search = name.trim().toLowerCase();
-   return  this.usedProducts.filter(product =>
-     product.name.toLowerCase().includes(search) || product.nameAr.toLowerCase().includes(search)
-  );
+  updateProducts(products: Product[]): void {
+    const sorted = this.sortProductsDesc(products);
+    this.products.set(sorted);
+    this.type.set('');
+    this.commonService.saveToStorage('products', sorted);
   }
 
-findProductByBarcode(barcode:string):Product[]{
-    const search = barcode.trim().toLowerCase();
-    return this.usedProducts.filter(product =>
-      product.barcode.toLowerCase() == search
-   );
-  }
-   getProductEmptyValue():Product{
-     return {
-        id:-1,
-        name: '',
-        nameAr: '',
-        barcode: '',
-        price: 0,
-        quantity: '0',
-        tax: 0,
-        status: 'Inactive',
-        variants:[],
-        variantsDetails:[]
-      };
+  deleteProductByIndex(index: number): boolean {
+    const current = [...this.products()];
+    if (index < 0 || index >= current.length) return false;
+
+    current.splice(index, 1);
+    const sorted = this.sortProductsDesc(current);
+    this.products.set(sorted);
+    this.commonService.saveToStorage('products', sorted);
+    return true;
   }
 
+  findProductByName(name: string): Product[] {
+    const query = name.trim().toLowerCase();
+    return this.usedProducts.filter(p =>
+      p.name.toLowerCase().includes(query) || p.nameAr.toLowerCase().includes(query)
+    );
+  }
 
+  findProductByBarcode(barcode: string): Product[] {
+    const code = barcode.trim().toLowerCase();
+    return this.usedProducts.filter(p => p.barcode.toLowerCase() === code);
+  }
+
+  getProductLength(): number {
+    return this.products()[0]?.id ?? 0;
+  }
+
+  private sortProductsDesc(products: Product[]): Product[] {
+    return [...products].sort((a, b) => b.id - a.id);
+  }
+
+   getEmptyProduct(): Product {
+    return {
+      id: -1,
+      name: '',
+      nameAr: '',
+      barcode: '',
+      price: 0,
+      quantity: '0',
+      tax: 0,
+      status: 'Inactive',
+      variants: [],
+      variantsDetails: []
+    };
+  }
 }
