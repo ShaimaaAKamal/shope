@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, EventEmitter, inject, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Product } from '../../../Interfaces/product';
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { ProductService } from '../../../Services/Product/product.service';
 
 @Component({
   selector: 'app-product-details-pop',
@@ -9,10 +10,6 @@ import { InputComponent } from '../../../shared/components/input/input.component
   styleUrl: './product-details-pop.component.scss'
 })
 export class ProductDetailsPopComponent {
-   // Inputs
-@Input() product!:Product;
-@Input() saveInfo!:boolean;
-
   // ViewChild references
 @ViewChild('productWeight') productWeight!:InputComponent;
 @ViewChild('productCostPrice') productCostPrice!:InputComponent;
@@ -22,36 +19,36 @@ export class ProductDetailsPopComponent {
 
     // Outputs
 @Output() updated=new EventEmitter<boolean>();
+// @Output() close=new EventEmitter<boolean>();
 
+private __ProductService=inject(ProductService);
+product=this.__ProductService.currentProduct;
 weightDropDownSelection:string='KG';
 dropdownSelection:string="No.Doesn't Require Delivery";
 shippingOptions:any[]=[
-  {title:'Yes,Require Shipping.', value:true},
+ {title:'Yes,Require Shipping.', value:true},
  {title: "No.Doesn't Require Delivery",value:false}
 ]
 weightOptions:any[]=[
-  {title:'KG', value:'KG'},
+{title:'KG', value:'KG'},
  {title: "gram",value:'gram'}
 ]
 
 
-constructor(private cdr:ChangeDetectorRef){}
-
-ngAfterViewInit() {
-      this.displayProductInfo();
-     this.cdr.detectChanges();
+constructor(){
+   effect(() => {
+    setTimeout(() => this.displayProductInfo());
+  });
 }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['saveInfo']) {
-      const current = changes['saveInfo'].currentValue;
+closeProductPopscreen(){
+this.updated.emit()
+}
+saveProductDetails(){
+  this.getProductInfo();
+}
 
-      if (current === true) {
-        this.getProductInfo();
-      }
-    }
-  }
 displayProductInfo(){
-  const { weight, productCostPrice, salePrice, salePriceEndDate,weightUnit,barcode,requireShipping} = this.product ?? {};
+  const { weight, productCostPrice, salePrice, salePriceEndDate,weightUnit,barcode,requireShipping} = this.product() ?? {};
   this.productWeight.value = weight?.toString() ?? '';
   this.productCostPrice.value = productCostPrice?.toString() ?? '';
   this.barcode.value = barcode ?? null;
@@ -64,7 +61,7 @@ displayProductInfo(){
   }
 
 changeSelect(method:any,key:string){
-  this.product[key]=method.value;
+  this.product()[key]=method.value;
   if(key == 'weightUnit') this.weightDropDownSelection=method.value;
 }
 
@@ -74,7 +71,8 @@ getProductInfo(): void {
   const salePrice = parseFloat(this.salePrice.value);
   const salePriceEndDate =this.salePriceEndDate.value? new Date(this.salePriceEndDate.value).toISOString().split('T')[0]:'';
   const barcode = this.barcode.value;
-  Object.assign(this.product, {
+  this.__ProductService.currentProduct.set({
+    ...this.product(),
     weight,
     weightUnit: weight ? this.weightDropDownSelection : '',
     productCostPrice: costPrice,
@@ -82,7 +80,6 @@ getProductInfo(): void {
     barcode,
     salePriceEndDate
   });
-
   this.updated.emit(true);
 }
 }

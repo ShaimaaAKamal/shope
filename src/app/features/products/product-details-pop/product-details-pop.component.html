@@ -1,3 +1,11 @@
+<app-pop-screen
+  [headerLabel]="'Product Details'"
+  btnLabel="Save Product Details"
+  (closeChange)="closeProductPopscreen()"
+  (doneChange)="saveProductDetails()"
+  #productInfo
+ >
+  <div class="px-3 bg-white pb-3"   >
 
 <div class="row gy-3 py-2">
   <!-- <div class="col-12">
@@ -93,3 +101,5 @@
         </app-input>
   </div>
 </div>
+</div>
+</app-pop-screen>
