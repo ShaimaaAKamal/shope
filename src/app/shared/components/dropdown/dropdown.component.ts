@@ -14,7 +14,8 @@ export class DropdownComponent {
 @Input() noBorder:boolean=false;
 @Output() changeSelect=new EventEmitter<any>();
 selectOption(option:any){
-  this.dropdownSelection=option[this.key];
+  this.dropdownSelection=option[this.key] || option;
   this.changeSelect.emit(option);
 }
 }
+

@@ -18,13 +18,12 @@
              </div>
             </button>
 
-            <!-- Dropdown Menu -->
             <ul class="dropdown-menu w-100">
               <li *ngIf="optionsArray.length === 0">
                 <a class="dropdown-item fs-verySmall">{{'No Categories' | translate}}</a>
               </li>
               <li *ngFor="let option of optionsArray" (click)="selectOption(option)">
-                <a class="dropdown-item fs-verySmall">{{ option[key] |translate | titlecase }}</a>
+                <a class="dropdown-item fs-verySmall">{{( option[key] || option) |translate | titlecase }}</a>
               </li>
             </ul>
   </div>
