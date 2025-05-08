@@ -33,14 +33,11 @@ updateItemInArray<T extends { name?: string }>(
   array: T[],
   matchFn: (item: T) => boolean,
   newValue: T,
-  type: string = ''
 ): { updated: boolean; array: T[] } {
   const index = array.findIndex(matchFn);
   const updated = index !== -1;
-
   if (updated) {
     const isDuplicate = array.some((item, i) => i !== index && item.name === newValue.name);
-
     if (!isDuplicate) {
       array[index] = newValue;
     } else {
@@ -63,14 +60,5 @@ findItemInArray<T extends { name?: string,code?:string }>(
 controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: string = 'open'): void {
   ref?.togglePopScreen?.(action);
 }
-getTimeFromDate(dateInput: string | Date): string {
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
 
-  const hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = (hours % 12 || 12).toString().padStart(2, '0'); // 0 becomes 12
-
-  return `${formattedHours}:${minutes} ${ampm}`;
-}
 }
