@@ -19,6 +19,8 @@ import { NewDatePipe } from '../pipes/date/date.pipe';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { LayoutComponent } from './components/layout/layout.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 @NgModule({
@@ -38,13 +40,15 @@ import { FormsModule } from '@angular/forms';
     InputCheckboxComponent,
     NewDatePipe,
     DropdownComponent,
+    LayoutComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     TranslateModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    ColorPickerModule
   ],
   exports:[
         NavitemComponent,
@@ -62,7 +66,8 @@ import { FormsModule } from '@angular/forms';
         TranslateModule,
         NewDatePipe,
         DropdownComponent,
-
+        LayoutComponent,
+        ColorPickerModule
   ],
   providers:[
     DatePipe,

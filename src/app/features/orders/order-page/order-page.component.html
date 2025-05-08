@@ -1,1 +1,149 @@
-<p>order-page works!</p>
+<!-- <div class="container-fluid py-3">
+  <div class="d-flex align-item-center justify-content-between mb-3" id="navigationButtons">
+      <app-site-button [BtnName]="'previous Order' | translate" [route]="previousRoute">
+        <i class="fa-solid fa-arrow-left"
+          [class.fa-rotate-180]="isRtl()"
+          [class.ps-1]="isRtl()"
+          [class.pe-1]="!isRtl()"></i>
+      </app-site-button>
+      <app-site-button [BtnName]="'Next Order' | translate" [route]="nextRoute" [iconDir]="'last'">
+        <i class="fa-solid fa-arrow-right"
+          [class.fa-rotate-180]="isRtl()"
+          [class.pe-1]="isRtl()"
+          [class.ps-1]="!isRtl()"></i>
+      </app-site-button>
+
+  </div>
+  <div class="card" id="order details">
+  <div class="card-header">
+            <i class="fa-solid fa-users"></i>
+            <span class="ps-1">{{'Sales Person' | translate}}</span>
+            <i class="fa-solid fa-circle-plus fa-xl ps-2"></i>
+  </div>
+   <div class="card-body">
+    <div class="container-fluid w-100">
+       <div class="row gy-1 py-2">
+      <div class="col-xl-4">
+            <div class="d-flex justify-content-between flex-md-column text-start  text-md-start">
+              <span class="small fw-bold"># {{'Order Number' | translate}}</span>
+              <span class="text-secondary small">{{order.code}}</span>
+            </div>
+          </div>
+      <div class="col-xl-4">
+          <div class="d-flex justify-content-between flex-md-column text-start text-md-center">
+              <span class="small fw-bold">
+                <i class="fa-solid fa-calendar-days pe-1"></i>  {{'Order Date' | translate}}
+              </span>
+              <span class="text-secondary small">{{ order.time | newDate: isRtl() }}</span>
+          </div>
+      </div>
+      <div class="col-xl-4 ">
+            <div class="d-flex justify-content-between flex-md-column text-start text-md-end">
+               <span class="small fw-bold">
+                <i class="fa-solid fa-font-awesome"
+                 [class.fa-rotate-180]="isRtl()"
+                 [class.ps-1]="isRtl()"
+                 [class.pe-1]="!isRtl()"></i>{{'Order Status' | translate}}
+              </span>
+                <span class="small d-flex align-items-center justify-content-md-end justify-content-center text-secondary" (click)="showUpdateOrderStatusForm()">
+                  <i
+                      class="fa fa-circle fs-xxs pe-1"
+                      [ngClass]="{
+                        'text-warning': order.status === 'hold',
+                        'text-semi-dark': order.status === 'paid',
+                        'text-danger': order.status === 'cancalled',
+                        'text-info': order.status === 'processing'
+                      }"
+                      aria-hidden="true">
+                    </i>
+                   <span class="small">{{ order.status | translate }}</span>
+                   <i class="fa-solid fa-angle-right  fa-xs"
+                    [class.fa-rotate-180]="isRtl()"
+                    [class.pe-1]="isRtl()"
+                    [class.ps-1]="!isRtl()"></i>
+                </span>
+            </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  </div>
+  <div id="clientShippingPaymentDetails" class="py-3">
+      <div class="row gy-3">
+    <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <div>
+              <span>
+                  {{'client' | translate |titlecase}}
+              </span>
+              <div>
+
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <app-client-info [order]=order [additionalInfo]="order.customer.phone ?? '' "></app-client-info>
+          </div>
+        </div>
+    </div>
+     <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header">
+            {{'shipping' | translate | titlecase}}
+          </div>
+          <div class="card-body">
+
+          </div>
+        </div>
+    </div>
+     <div class="col-lg-4">
+           <div class="card h-100">
+          <div class="card-header">
+            {{'payment' | translate | titlecase}}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+<app-pop-screen
+  *ngIf="showOrderStatus"
+  headerLabel="Update Order Status"
+  btnLabel="Update Status"
+  (closeChange)="clearStatusForm()"
+  (doneChange)="updateStatus()"
+  #updateOrderStatusForm
+>
+  <div class="bg-white p-3">
+
+    <div class="pb-2">
+      <app-dropdown
+          class="flex-grow-1"
+          [title]="'choose order status' | translate"
+          [dropdownSelection]="orderStatusSelection"
+          [optionsArray]="OrderStatuses"
+          [key]="'name'"
+          (changeSelect)="chooseStatus($event)"
+          >
+    </app-dropdown>
+    </div>
+
+    <app-input
+      [label]="'Client Additional Notes'| translate "
+      id="clientNotes"
+      [placeholder]="'Enter Notes' | translate"
+      vertCLass="col-12"
+      #orderStatus
+    >
+      <i class="fa-solid fa-text-width"></i>
+    </app-input>
+  </div>
+</app-pop-screen>
+ -->

@@ -1,7 +1,7 @@
 <div class="card w-100" *ngIf="!removeProduct">
   <div class="position-relative">
-      <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(product)"></i>
-      <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(product)"></i>
+      <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(currentProduct())"></i>
+      <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(currentProduct())"></i>
 
     <!-- Close Button -->
     <i *ngIf="!displayCheck"
@@ -100,7 +100,7 @@
   <!-- Product Details Alert -->
 <div class="card-footer  py-0">
    <div class="row ">
-    <div class="col-6  " *ngIf="!type">
+    <div class="col-6  " *ngIf="product.name">
       <div class="d-flex align-items-center justify-content-center   border-end py-2 "  >
         <span class="fs-verySmall pe-2">{{'More' | translate}}</span>
         <i class="fa-solid fa-chevron-down fa-xs"></i>
@@ -169,29 +169,9 @@
 </app-pop-screen>
 
 <!-- product details pop screen -->
-<app-pop-screen
-  *ngIf="showProductInfo"
-  [headerLabel]="'Product Details'"
-  btnLabel="Save Product Details"
-  (closeChange)="closeProductPopscreen()"
-  (doneChange)="saveProductDetails()"
-  #productInfo
->
-  <div class="px-3 bg-white pb-3">
-      <app-product-details-pop [product]="product" [saveInfo]="saveInfo" (updated)="saveAdditionalInfo($event)"></app-product-details-pop>
+<app-product-details-pop  *ngIf="showProductInfo"  (updated)="saveAdditionalInfo($event)"  #productInfo ></app-product-details-pop>
 
-  </div>
-</app-pop-screen>
 
 <!-- product variant pop screen -->
-<app-pop-screen
-  *ngIf="showVariantPopScreen"
-  headerLabel="Product Variants"
-  btnLabel="Save"
-  (doneChange)="saveProductVariants()"
-  (closeChange)="closeVraianTpopScreen()"
-  [hideCancalBtn]="true"
-  #variantsPopScreen
->     <app-variants [product]="product" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)" ></app-variants>
-
-</app-pop-screen>
+<!-- <app-variants *ngIf="showVariantPopScreen" [product]="product" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)"  #variantsPopScreen></app-variants> -->
+<app-variants *ngIf="showVariantPopScreen" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)"  #variantsPopScreen></app-variants>

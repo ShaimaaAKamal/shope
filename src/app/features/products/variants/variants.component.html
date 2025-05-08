@@ -1,3 +1,11 @@
+<app-pop-screen
+  headerLabel="Product Variants"
+  btnLabel="Save"
+  (doneChange)="saveProductVariants()"
+  (closeChange)="closeVarianTpopScreen()"
+  [hideCancalBtn]="true"
+  #variantsPopScreen
+>
 <div class="variantsContainer bg-white p-3">
        <span class=" small">{{'Product Variants' | translate}}</span>
         <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="!displayVariant && variants.length == 0" >
@@ -44,11 +52,13 @@
           </div>
         </div>
         <div *ngIf="displayVariant" class="border p-3 rounded-3">
-           <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)" [alreadyExist]="alreadyExist" [saveVariants]="saveVariants"></app-add-variant>
+          <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)"  [saveVariants]="saveVariants"></app-add-variant>
+           <!-- <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)" [alreadyExist]="alreadyExist" [saveVariants]="saveVariants"></app-add-variant> -->
         </div>
         <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
-                <app-variant-options-values-quantity [variants]="variants" [variantsDetails]="variantsDetails" [product]="product"
+                <app-variant-options-values-quantity [variants]="variants" [variantsDetails]="variantsDetails" [product]="product()"
                   (updated)="addProductVariantsDetails($event)" [saveVariants]="saveVariants"></app-variant-options-values-quantity>
 
         </div>
-    </div>
+</div>
+</app-pop-screen>

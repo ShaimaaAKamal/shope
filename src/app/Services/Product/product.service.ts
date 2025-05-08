@@ -11,8 +11,8 @@ export class ProductService {
   type = signal<string>('');
   usedProducts: Product[] = [];
   variantOptions = signal<VariantOption[]>([
-    { id: 1, name: 'color', nameAr: 'لون' },
-    { id: 2, name: 'text', nameAr: 'نص' }
+    { id: 1, name: 'size', nameAr: 'اللون', values: ['L','XL','XXL'] },
+    { id: 2, name: 'color', nameAr: 'المقاس' ,values: ['red', 'blue', 'green'] },
   ]);
   currentProduct = signal<Product>(this.getEmptyProduct());
 
