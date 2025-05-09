@@ -1,4 +1,6 @@
-<div class="card w-100" *ngIf="!removeProduct">
+<!-- <div class="card w-100" *ngIf="!removeProduct"> -->
+  <div class="card w-100">
+
   <div class="position-relative">
       <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(currentProduct())"></i>
       <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(currentProduct())"></i>
@@ -173,5 +175,8 @@
 
 
 <!-- product variant pop screen -->
-<!-- <app-variants *ngIf="showVariantPopScreen" [product]="product" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)"  #variantsPopScreen></app-variants> -->
-<app-variants *ngIf="showVariantPopScreen" [variants]="variants" [saveVariants]="saveVariants" (updatedProduct)="updatedVariants($event)"  #variantsPopScreen></app-variants>
+<app-variants *ngIf="showVariantPopScreen"
+ [variants]="variants"
+ (controlVariantsPopup)="controlVariantsPopup($event)"
+ (variantDetailsHandled)="variantDetailsHandled()"
+   #variantsPopScreen></app-variants>

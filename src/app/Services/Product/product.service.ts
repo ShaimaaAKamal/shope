@@ -9,6 +9,7 @@ import { VariantOption } from '../../Interfaces/variant-option';
 export class ProductService {
   products = signal<Product[]>([]);
   type = signal<string>('');
+  getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
   variantOptions = signal<VariantOption[]>([
     { id: 1, name: 'size', nameAr: 'اللون', values: ['L','XL','XXL'] },
