@@ -39,7 +39,20 @@ export class ProductService {
     return true;
   }
 
-  updateProductInfo(product: Product): boolean {
+  // updateProductInfo(product: Product): boolean {
+  //   const updatedArray = this.commonService.updateItemInArray(
+  //     this.products(),
+  //     p => p.id === product.id,
+  //     product
+  //   );
+
+  //   if (updatedArray.updated) {
+  //     this.updateProducts(updatedArray.array);
+  //     return true;
+  //   }
+  //   return false;
+  // }
+   updateProductInfo(product: Product): {status:boolean,message:string} {
     const updatedArray = this.commonService.updateItemInArray(
       this.products(),
       p => p.id === product.id,
@@ -48,10 +61,11 @@ export class ProductService {
 
     if (updatedArray.updated) {
       this.updateProducts(updatedArray.array);
-      return true;
+      return {status:true,message:'updated'};
     }
-    return false;
+     return {status:false,message:updatedArray.message ?? ''};;
   }
+
 
   updateProducts(products: Product[]): void {
     const sorted = this.sortProductsDesc(products);
