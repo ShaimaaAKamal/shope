@@ -1,5 +1,4 @@
 import { Component, EventEmitter, inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { OrderService } from '../../../../Services/order/order.service';
 import { Order } from '../../../../Interfaces/order';
 import { InputComponent } from '../../../../shared/components/input/input.component';
@@ -171,61 +170,5 @@ enterKey(key: string) {
   }
 this.getPaidAmount();
 }
-// pay_Order(){
-// if(this.getPaidAmount() >= this.getGrossTotal() && this.products().length >0)
-// {  this.setoOrderDetails('paid');
-//   this.mustBePaid=true;
-// }
-// else this.mustBePaid=false;
-// }
-
-// hold_Order(){
-//     this.setoOrderDetails('hold');
-// }
-
-// cancal_Order(){
-// this.clearOrder();
-// }
-
-// setoOrderDetails(status:string){
-// let order={
-//   code:this.code,
-//   customer:this.__OrderService.invoiveCustomer,
-//   // salesPerson:this.__OrderCalculationsService.getSalesPerson(),
-//   salesPerson:"don't forget",
-//   products:this.products(),
-//   grossTotal:this.getGrossTotal(),
-//   discount:parseFloat(this.inputMap['_discountValue']?.value || '0'),
-//   paymentMethods:{
-//     cash: parseFloat(this.inputMap['_Cash']?.value || '0'),
-//     network: parseFloat(this.inputMap['_Network']?.value || '0'),
-//     masterCard: parseFloat(this.inputMap['_Master_Card']?.value || '0')
-//   },
-//  status:status,
-//  time:new Date()
-//  }
-//  if(this.__OrderService.addNewOrder(order))
-//  {     this.clearOrder();
-//        this.code=this.generateOrderCode();
-//  }
-// }
-// private generateOrderCode(){
-//      return this.__CommonService.generate10CharCode();
-//    }
-
-// private clearOrder(): void {
-//   this.__OrderService.orderProducts.set([]);
-
-
-//   Object.values(this.inputMap).forEach((input: HTMLInputElement) => {
-//     input.value = '';
-//     input.dispatchEvent(new Event('input'));
-//   });
-//   this.__OrderService.setPaidAmount(0);
-//   this.__OrderService.discount.set(0);
-//   this.inputMap = {};
-//   this.activeInputEl = null!;
-//   this.activeInputKey = '';
-// }
 
 }
