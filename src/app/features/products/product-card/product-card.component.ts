@@ -24,6 +24,7 @@ export class ProductCardComponent {
   @ViewChild('CategoryArabicName') CategoryArabicName!: InputComponent;
   @ViewChild('addDetailsAlert') addDetailsAlert!: PopScreenComponent;
   @ViewChild('productTitle') productTitleInput!: InputComponent;
+  @ViewChild('productArabicTitle') productArabicTitleInput!: InputComponent;
   @ViewChild('price') productPriceInput!: InputComponent;
   @ViewChild('quantity') productQuantityInput!: InputComponent;
   @ViewChild('productInfo') productInfo!: PopScreenComponent;
@@ -34,7 +35,7 @@ export class ProductCardComponent {
   @Input() product!: Product;
   @Input() type:string='';
   @Output() deleteProduct=new EventEmitter<boolean>();
-
+currency:string='SAR';
 showCategory:boolean=false;
 showDetailsAlert:boolean=false;
 showProductInfo:boolean=false;
@@ -119,19 +120,21 @@ updateQuantityLabel(): void {
 
   // Product Functions
   displayProductInfo(): void {
-  if (!this.productTitleInput || !this.productPriceInput || !this.productQuantityInput) {
+  if (!this.productTitleInput || !this.productArabicTitleInput || !this.productPriceInput || !this.productQuantityInput) {
     console.warn('Input components are not available yet');
     return;
   }
 
-  const { name, price, quantity } = this.currentProduct() ?? {};
+  const { name, price, quantity ,nameAr} = this.currentProduct() ?? {};
   this.productTitleInput.value = name ?? '';
+  this.productArabicTitleInput.value = nameAr ?? '';
   this.productPriceInput.value = price?.toString() ?? '';
   this.productQuantityInput.value = quantity ?? '';
 }
 
-  setProductBasicInfo(title:string,price:string){
+  setProductBasicInfo(title:string,Arabictitle:string,price:string){
         this.product.name= title,
+        this.product.nameAr= Arabictitle,
         this.product.price= parseFloat(price),
         this.product.quantity= this.productQuantityInput.value
 
@@ -155,7 +158,7 @@ updateQuantityLabel(): void {
   }
 
 private handleSaveResult(
-  result: 'success' | 'missing_title' | 'missing_price' | 'duplicate',
+  result: 'success' | 'missing_title' | 'missing_Arabic_title' | 'missing_price'  | 'duplicate' | 'rightVariantsData'|'Duplicate_Arabic_Name' | 'Duplicate_English_Name',
   messages: {
     success: string;
     duplicate: string;
@@ -167,44 +170,58 @@ private handleSaveResult(
     case 'missing_title':
       this.__ToastingMessagesService.showToast('Product Title Field Is Required', 'error');
       break;
+      case 'missing_Arabic_title':
+      this.__ToastingMessagesService.showToast('Product Arabic Title Field Is Required', 'error');
+      break;
     case 'missing_price':
       this.__ToastingMessagesService.showToast('Product Price Field Is Required', 'error');
       break;
-    case 'duplicate':
-      if (onDuplicate) onDuplicate();
-      this.__ToastingMessagesService.showToast(messages.duplicate, 'error');
+    case 'rightVariantsData':
+      this.__ToastingMessagesService.showToast('Enter Desired Product Details', 'error');
       break;
+      case 'duplicate':
+      case 'Duplicate_Arabic_Name':
+      case 'Duplicate_English_Name':
+        if (onDuplicate) onDuplicate();
+        this.__ToastingMessagesService.showToast(messages.duplicate, 'error');
+        break;
     case 'success':
       if (onSuccess) onSuccess();
       this.__ToastingMessagesService.showToast(messages.success, 'success');
       break;
   }
 }
-private handleProductSave(): 'success' | 'missing_title' | 'missing_price' | 'duplicate' {
+
+private handleProductSave(): 'success' | 'missing_title' |'missing_Arabic_title' |'missing_price' | 'duplicate'| 'Duplicate_Arabic_Name' | 'Duplicate_English_Name' | 'rightVariantsData'{
   const title = this.productTitleInput.value;
+  const Arabictitle = this.productArabicTitleInput.value;
   const price = this.productPriceInput.value;
 
   if (!title) return 'missing_title';
+  if (!Arabictitle) return 'missing_Arabic_title';
   if (!price) return 'missing_price';
 
-  this.setProductBasicInfo(title, price);
+  this.setProductBasicInfo(title,Arabictitle, price);
+  // if( this.currentProduct().id != this.product.id)  return 'rightVariantsData';
     this.currentProduct.update(current => ({
         ...current,
       ...this.product
       }));
   const isSaved = this.productService.updateProductInfo(this.currentProduct());
-  // const isSaved = this.productService.updateProductInfo(this.product);
-  return isSaved ? 'success' : 'duplicate';
+
+  // return isSaved ? 'success' : 'duplicate';
+  return isSaved.status ? 'success' : isSaved?.message as 'duplicate' | 'Duplicate_Arabic_Name' | 'Duplicate_English_Name';
+
 }
 
 addProduct(): void {
   const result = this.handleProductSave();
-
+  const dublicateMessag=result == 'Duplicate_Arabic_Name' ? 'Arabic Name': "English Name"
   this.handleSaveResult(
     result,
     {
       success: 'Product has been added successfully',
-      duplicate: 'Product already exists',
+      duplicate: `Another Product already exists with this ${dublicateMessag}`,
     },
     () => {
       this.displayCheck = true;
@@ -219,11 +236,12 @@ addProduct(): void {
 updateProduct(): void {
 
   const result = this.handleProductSave();
+  const dublicateMessag=result == 'Duplicate_Arabic_Name' ? 'Arabic Name is already Exist': "English Name is already Exist"
   this.handleSaveResult(
     result,
     {
       success: 'Product data has been saved successfully',
-      duplicate: "Product data hasn't been saved successfully",
+      duplicate: `Product data hasn't been saved successfully as ${dublicateMessag}`,
     }
   );
 }
