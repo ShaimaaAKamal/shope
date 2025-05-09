@@ -14,7 +14,7 @@
                 <span><i class="fa-solid fa-square-plus pe-1"></i></span>
                 <div class="d-flex align-utems-center">
                   <ng-container *ngFor="let key of getFullVariantName(variant) ;let last=last;">
-                      <span *ngIf="variant[key].type != 'color' ;else displayColorIcon">{{variant[key].value}}</span>
+                      <span *ngIf="key != 'color' ;else displayColorIcon">{{variant[key].value}}</span>
                       <span *ngIf="!last" class="px-1">/</span>
                       <ng-template #displayColorIcon>
                            <span  class="rounded-3 d-inline-block"
@@ -42,7 +42,9 @@
           [class.show]="rowIndex === 0"
           data-bs-parent="#accordionExample">
           <div class="accordion-body">
-                 <app-variant-value-details   [displayedVariants]="displayedVariants" [index]="rowIndex" (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
+                 <app-variant-value-details
+                 [displayedVariants]="displayedVariants" [index]="rowIndex"
+                 (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
           </div>
         </div>
       </div>

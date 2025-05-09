@@ -1,7 +1,10 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+
+
+import {  Component, effect, EventEmitter, inject, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { Variant } from '../../../Interfaces/variant';
 import { Product } from '../../../Interfaces/product';
 import { VariantValueDetailsComponent } from '../variant-value-details/variant-value-details.component';
+import { ProductService } from '../../../Services/Product/product.service';
 
 @Component({
   selector: 'app-variant-options-values-quantity',
@@ -10,35 +13,35 @@ import { VariantValueDetailsComponent } from '../variant-value-details/variant-v
   styleUrl: './variant-options-values-quantity.component.scss'
 })
 export class VariantOptionsValuesQuantityComponent {
-
+private __ProductService=inject(ProductService);
+product=this.__ProductService.currentProduct;
 displayedVariants:any[]=[];
 displayedKeys:string[]=[];
 @ViewChildren('variantValueDetails') variantValueDetailsRefs!: QueryList<VariantValueDetailsComponent>;
 @Input() variants:Variant[]=[];
-@Input() product!:Product;
 @Input() variantsDetails:any[]=[];
-@Input() saveVariants:boolean=false
-@Output() updated=new EventEmitter<any>();
+@Output() variantDetailsHandled = new EventEmitter<void>();
 
+constructor(){
+  effect(() => {
+          const data = this.__ProductService.getVariantDetailsData();
+          if (data) {
+            this.getAllVariantValues();
+            this.variantDetailsHandled.emit();
+          }
+        });
+}
 ngOnInit(): void {
-    this.displayedVariants = this.product?.variantsDetails?.length
-      ? [...this.product.variantsDetails]
+    this.displayedVariants = this.product()?.variantsDetails?.length
+      ? [...this.product()?.variantsDetails ?? []]
       : this.generateCombinations();
-
   }
-constructor(private cdRef: ChangeDetectorRef){}
 ngOnChanges(changes: SimpleChanges) {
 
     if (changes['variants'] && !changes['variants'].firstChange){
       this.displayedVariants=this.generateCombinations();
       this.getAllVariantValues();
     }
-      if(changes['saveVariants'] && changes['saveVariants'].currentValue){
-      this.getAllVariantValues();
-    }
-    //   if(changes['product']){
-    //   console.log('product chnges');
-    // }
 }
 
 generateCombinations(): any[] {
@@ -91,15 +94,9 @@ getAllVariantValues() {
       };
     });
     this.displayedVariants = [...updatedVariants];
-    this.product.variantsDetails = this.displayedVariants;
-        this.cdRef.detectChanges();
-        if(this.saveVariants)
-             this.emitNewValue();
+    this.product().variantsDetails = this.displayedVariants;
+    this.product.set ({...this.product()})
   });
-}
-
-emitNewValue(){
-this.updated.emit(true);
 }
 
 setQuantity(newQuantity:number,index:number){
@@ -107,20 +104,8 @@ setQuantity(newQuantity:number,index:number){
     this.displayedVariants[index].details.quantity = newQuantity;
   }
 }
-// Incase we save one by one
-// updateVariantDetailsValue(variantDetails:any,updatedIndex:number){
-//   this.displayedVariants = this.displayedVariants.map((variant, index) => {
-//     if (index === updatedIndex) {
-//       return {
-//         ...variant,
-//         details: {
-//           ...variant.details,
-//           ...variantDetails
-//         }
-//       };
-//     }
-//     return variant;
-//   });
-//   this.updated.emit(this.displayedVariants);
-// }
+
 }
+
+
+

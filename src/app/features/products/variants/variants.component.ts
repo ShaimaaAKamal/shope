@@ -10,19 +10,16 @@ import { Product } from '../../../Interfaces/product';
   styleUrl: './variants.component.scss'
 })
 export class VariantsComponent {
-// @Input() product!:Product;
 private __ProductService=inject(ProductService);
 product=this.__ProductService.currentProduct;
+
 displayVariant:boolean=false;
 variantsDetails!:any[];
-addNewVariantVar:boolean=false;
-alreadyExist:boolean=false;
 
-@Input() saveVariants:boolean=false;
-@Output() updatedProduct=new EventEmitter<boolean>();
+@Output() controlVariantsPopup=new EventEmitter<string>();
+@Output() variantDetailsHandled = new EventEmitter<void>();
 
 @Input() variants!:Variant[];
-
 
 
 ngOnInit(): void {
@@ -36,46 +33,22 @@ ngOnChanges(changes: SimpleChanges): void {
 showOptionsSection(){
    this.displayVariant=true;
 }
-getVariantValue(variant:any){
-  // const trimmedName = variant.name.trim();
-  // const exists = this.variants.some(v => v.name.toLowerCase() === trimmedName.toLowerCase());
-  // if (trimmedName && !exists) {
-  //   if(variant.values.length > 0)
-  //   this.variants=[...this.variants,variant]
-  //   this.displayVariant=false;
-  //   this.alreadyExist=false;
-  //   this.product().variants=this.variants;
-  // }
-  // else this.alreadyExist=true;
-    const trimmedName = variant.name.trim();
-  const exists = this.variants.some(v => v.name.toLowerCase() === trimmedName.toLowerCase());
-  if (trimmedName && !exists) {
-    if(variant.values.length > 0)
-    this.variants=[...this.variants,variant]
-    this.displayVariant=false;
-    this.alreadyExist=false;
-    this.product().variants=this.variants;
-  }
-  else this.alreadyExist=true;
+setProductVariants(event:any){
+  this.variants = event;
+  this.product().variants = this.variants;
 }
-deleteAddVariant(del:boolean){
-  this.displayVariant=!del;
-}
+
 deleteVariant(index:number){
     this.variants =[... this.variants.filter((_, i) => i !== index)];
     this.product().variants=this.variants;
     if(this.variants.length == 0)
       this.product().variantsDetails=[];
+    this.product.set(this.product());
 }
-updateVariant(index:number){}
-
-addNewVariant(){
-this.addNewVariantVar=true;
+controlVariantsPopupScreen(action:string){
+this.controlVariantsPopup.emit(action);
 }
-
-addProductVariantsDetails(updated:boolean){
-  this.updatedProduct.emit(updated);
+variantDetailsHandledFn(){
+  this.variantDetailsHandled.emit();
 }
-saveProductVariants(){}
-closeVarianTpopScreen(){}
 }

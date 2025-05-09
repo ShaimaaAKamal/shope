@@ -1,5 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Input, Output, QueryList, ViewChild, ViewChildren, signal } from '@angular/core';
-import { Variant } from '../../../Interfaces/variant';
+import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChildren, signal } from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
@@ -24,37 +23,20 @@ export class AddVariantComponent {
 
   values: any[] =  [];
   showColorPickerContainer: boolean = false;
-  // addNewVariant:boolean=false
-  ProductVariantOptions= signal<any>([]);
+  ProductVariantOptions= signal<any>(this.__ProductService.currentProduct().variants);
   showColorPicker: boolean[] = [];
-  showDeleteIcon: boolean = false;
-  type:string='text';
 
-  @Input() saveVariants:boolean=false;
-  // @Input() alreadyExist:boolean=false;
-  @Output() variantDetails = new EventEmitter<any>();
-  @Output() deleteAddVariant = new EventEmitter<boolean>();
+  type:string='text';
+  @Output() variants = new EventEmitter<any>();
 
   @ViewChildren('variantValue') variantValuesRefs!: QueryList<InputComponent>;
-  @ViewChild('optionName') optionName!:InputComponent;
   @ViewChildren('colorPick') colorPickInputs!: QueryList<ElementRef>;
-
-  constructor() {
-  }
 
   ngOnInit(): void {
   this.showColorPicker = this.values.map(() => false);
 }
 
-//  ngOnChanges(changes: SimpleChanges) {
-//     if (changes['alreadyExist']) {
-//        if(changes['alreadyExist'].currentValue)
-//         this.nameErrorMessage='Name already exist'
-//       else  this.nameErrorMessage='';
-//     }
-//   }
-
-  chooseVariantName(event: any){
+ chooseVariantName(event: any){
     this.variantValues=event.values;
     this.variantSelectValue=event.values[0];
     this.variantSelection=event.name;
@@ -63,7 +45,6 @@ export class AddVariantComponent {
  chooseOption(event: any) {
     const name=event.name || event;
     this.variantSelectValue=name;
-    // this.type=name;
   }
 
 toggleColorPicker(index: number): void {
@@ -100,6 +81,7 @@ addNewValue() {
   );
   this.insertVariantNewValue=false;
   this.values.pop();
+  this.variantSelectValue=variantNewValue;
   this.variantValues=[...this.variantValues,variantNewValue]
   }
 
@@ -110,39 +92,64 @@ removeValue(id: string,type:string=''): void {
 }
 
 addVariant() {
-  const productVariant={
-    name:this.variantSelection,
-    values:[this.variantSelectValue]
-  }
-      this.variantDetails.emit(productVariant);
+  const newValue = this.variantSelectValue;
+  const newVariant = {
+    name: this.variantSelection,
+    values: [newValue]
+  };
+  this.ProductVariantOptions.update(options => {
+    const updatedOptions = [...options];
+    const existingIndex = updatedOptions.findIndex(variant => variant.name === newVariant.name);
 
-//    if(this.showColorPickerContainer)
-//      this.values[0]['type']='color';
-//   const variantValues = [
-//   ...new Set(
-//     this.variantValuesRefs.map((inputComponent, index) => {
-//       const value = this.values[index];
-//       return value.type === 'color' ? value.color : inputComponent.value?.trim();
-//     }).filter(Boolean)
-//   )
-// ];
+    if (existingIndex !== -1) {
+      const existingValues = Array.isArray(updatedOptions[existingIndex].values)
+        ? updatedOptions[existingIndex].values
+        : [updatedOptions[existingIndex].values];
 
-//   const variantName = this.optionName.value?.trim();
-
-//   if (variantName) {
-//     this.nameErrorMessage = '';
-//     const variant: Variant = {
-//       name: variantName,
-//       type:this.type,
-//       values: variantValues
-//     };
-//     this.variantDetails.emit(variant);
-//   } else {
-//     this.nameErrorMessage = "Name can't be empty";
-//   }
+      if (!existingValues.includes(newValue)) {
+        updatedOptions[existingIndex].values = [...existingValues, newValue];
+      }
+      return updatedOptions;
+    } else {
+      return [...options, newVariant];
+    }
+  });
+  this.updateProductVariants();
+  this.variants.emit(this.ProductVariantOptions());
 }
 
-  deleteVariant() {
-    this.deleteAddVariant.emit(true);
-  }
+deleteVariant() {
+  const valueToRemove = this.variantSelectValue;
+  const variantName = this.variantSelection;
+
+  this.ProductVariantOptions.update(options => {
+    const updatedOptions = [...options];
+    const existingIndex = updatedOptions.findIndex(variant => variant.name === variantName);
+
+    if (existingIndex !== -1) {
+      const existingValues = Array.isArray(updatedOptions[existingIndex].values)
+        ? updatedOptions[existingIndex].values
+        : [updatedOptions[existingIndex].values];
+
+      const filteredValues = existingValues.filter((value:any) => value !== valueToRemove);
+
+      if (filteredValues.length > 0) {
+        updatedOptions[existingIndex].values = filteredValues;
+      } else {
+        updatedOptions.splice(existingIndex, 1);
+      }
+    }
+
+    return updatedOptions;
+  });
+    this.updateProductVariants();
+  this.variants.emit(this.ProductVariantOptions());
+}
+
+updateProductVariants() {
+  this.__ProductService.currentProduct.update(currentValue => {
+  const updatedValue = { ...currentValue, variants: this.ProductVariantOptions() };
+  return updatedValue;
+});
+}
 }

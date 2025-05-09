@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import {  Component, EventEmitter, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
@@ -17,7 +17,6 @@ variantDetail:any;
 @ViewChildren('inputRef') inputComponentRefs!: QueryList<InputComponent>;
 @Output() variantProductDetaills=new EventEmitter<any>();
 
-constructor(private cdr:ChangeDetectorRef){}
 
 ngOnChanges(changes: SimpleChanges) {
     if (changes['displayedVariants']){
@@ -57,8 +56,4 @@ variantDetailsValue['quantity']=this.quantity;
 return variantDetailsValue;
 }
 
-// updateVariantDetails(){
-// const variantDetailsValue =this.getVariantDetails();
-// this.variantProductDetaills.emit(variantDetailsValue);
-// }
 }

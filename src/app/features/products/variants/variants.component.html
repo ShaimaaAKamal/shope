@@ -1,8 +1,8 @@
 <app-pop-screen
   headerLabel="Product Variants"
   btnLabel="Save"
-  (doneChange)="saveProductVariants()"
-  (closeChange)="closeVarianTpopScreen()"
+  (doneChange)="controlVariantsPopupScreen('save')"
+  (closeChange)="controlVariantsPopupScreen('close')"
   [hideCancalBtn]="true"
   #variantsPopScreen
 >
@@ -20,7 +20,7 @@
                   <span class="small pe-3">{{variant.name | translate |titlecase}}:</span>
                   <div class="d-flex align-items-center">
                    <span *ngFor="let value of variant.values; let last = last" [class.me-2]="!last">
-                        <ng-container *ngIf="variant.type !== 'color'; else coloredVariant">
+                        <ng-container *ngIf="variant.name !== 'color'; else coloredVariant">
                           <span class="px-3 variantValuebg py-1 text-white fw-light fs-verySmall rounded-3 d-inline-block">
                             {{ value | translate | titlecase}}
                           </span>
@@ -40,7 +40,6 @@
                   </div>
                  </div>
                  <div>
-                        <span (click)="updateVariant(index)" class="pe-2"><i class="fa-solid fa-pen-to-square  text-semi-dark"></i></span>
                         <span (click)="deleteVariant(index)"><i class="fa-solid fa-trash-can text-semi-dark"></i></span>
                  </div>
             </div>
@@ -52,13 +51,19 @@
           </div>
         </div>
         <div *ngIf="displayVariant" class="border p-3 rounded-3">
-          <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)"  [saveVariants]="saveVariants"></app-add-variant>
-           <!-- <app-add-variant (variantDetails)="getVariantValue($event)" (deleteAddVariant)="deleteAddVariant($event)" [alreadyExist]="alreadyExist" [saveVariants]="saveVariants"></app-add-variant> -->
+            <app-add-variant (variants)="setProductVariants($event)"
+            ></app-add-variant>
         </div>
         <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
-                <app-variant-options-values-quantity [variants]="variants" [variantsDetails]="variantsDetails" [product]="product()"
-                  (updated)="addProductVariantsDetails($event)" [saveVariants]="saveVariants"></app-variant-options-values-quantity>
+                   <!-- <app-variant-options-values-quantity
+                   [variants]="variants" [variantsDetails]="variantsDetails" [product]="product()">
+                   </app-variant-options-values-quantity> -->
+                     <app-variant-options-values-quantity
+                   [variants]="variants" [variantsDetails]="variantsDetails"
+                    (variantDetailsHandled)="variantDetailsHandledFn()">
+                   </app-variant-options-values-quantity>
 
         </div>
+
 </div>
 </app-pop-screen>
