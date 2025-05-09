@@ -174,5 +174,9 @@
        "Variant has been saved successfully":"تم حفظ المتغير بنجاح",
       "Something went wrong":"حدث خطأ ما",
        "Product data has been saved successfully":"بيانات المنتج قد تم حفظها بنجاح",
-       "Product data hasn't been saved successfully":"بيانات المنتج لم يتم حفظها بنجاح"
+       "Product data hasn't been saved successfully":"بيانات المنتج لم يتم حفظها بنجاح",
+      "Enter Desired Product Details":"أدخل تفاصيل المنتج المطلوبة",
+      "Enter Product Arabic Name":"أدخل اسم المنتج باللغة العربية",
+      "Product Arabic Title Field Is Required":"حقل عنوان المنتج باللغة العربية مطلوب"
+
 }

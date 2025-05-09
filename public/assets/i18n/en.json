@@ -173,6 +173,8 @@
   "Variant has been saved successfully":"Variant has been saved successfully",
   "Something went wrong":"Something went wrong",
   "Product data has been saved successfully":"Product data has been saved successfully",
-  "Product data hasn't been saved successfully":"Product data hasn't been saved successfully"
-
+  "Product data hasn't been saved successfully":"Product data hasn't been saved successfully",
+  "Enter Desired Product Details":"Enter Desired Product Details",
+  "Enter Product Arabic Name":"Enter Product Arabic Name",
+  "Product Arabic Title Field Is Required":  "Product Arabic Title Field Is Required"
 }
