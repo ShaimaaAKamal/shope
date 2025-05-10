@@ -1,0 +1,67 @@
+<app-pop-screen
+  headerLabel="Add Product Variant"
+  btnLabel="Add Variant"
+  (doneChange)="add()"
+  (closeChange)="close()"
+  [hideCancalBtn]="true"
+  #addDetailsAlert
+>
+<div class="container-fluid bg-white">
+   <div class="row g-2 align-items-start  addNewVariant py-3">
+      <div class="col-lg-6">
+         <app-input
+          id="optionName"
+          placeholder="Option Name"
+          [hideLabel]="true"
+          [errorMessage]="nameErrorMessage"
+          vertCLass="col-12"
+          #optionName
+        >
+          <i class="fa-solid fa-text-width"></i>
+        </app-input>
+      </div>
+        <div class="col-lg-6">
+         <app-input
+          id="optionArabicName"
+          placeholder="Option Arabic Name"
+          [hideLabel]="true"
+          [errorMessage]="arabicNameErrorMessage"
+          vertCLass="col-12"
+          #optionArabicName
+        >
+          <i class="fa-solid fa-text-width"></i>
+        </app-input>
+      </div>
+      <div class="col-12" >
+      <ng-container *ngFor="let value of values; let index = index;">
+        <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
+          <div class="d-flex align-items-center flex-grow-1">
+            <div class="pe-2">
+              <i class="fa-solid fa-location-arrow text-semi-dark"></i>
+            </div>
+            <div class="flex-grow-1 position-relative">
+              <app-input
+                placeholder="Variant Value"
+                [hideLabel]="true"
+                vertCLass="col-12"
+                #variantValue
+              >
+                <i class="fa-solid fa-text-width"></i>
+              </app-input>
+            </div>
+          </div>
+
+          <div class="ps-2 align-self-end pt-2 pt-sm-0" *ngIf="values.length > 1" (click)="removeValue(value.id)">
+            <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
+          </div>
+        </div>
+      </ng-container>
+      <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" (click)="addNewValue()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add Another Value' | translate}}</span>
+       </div>
+     </div>
+  </div>
+</div>
+</app-pop-screen>
+
