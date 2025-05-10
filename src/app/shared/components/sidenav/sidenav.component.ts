@@ -1,8 +1,7 @@
-import { Component, computed, ElementRef, HostListener, inject, signal, Signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { NavitemComponent } from '../navitem/navitem.component';
 import { Navitem } from '../../../Interfaces/navitem';
 import { CommonService } from '../../../Services/CommonService/common.service';
-import { LanguageService } from '../../../Services/Language/language.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -32,6 +31,7 @@ export class SidenavComponent {
   sectionTwoNavItems: Navitem[] = [
     { name: 'Settings', icon: 'fa-solid fa-gear' },
     { name: this.lang, icon: 'fa-solid fa-globe' },
+    { name: 'Add_Variant', icon: 'fa-solid fa-palette' },
     { name: 'Return_Order', icon: 'fa-solid fa-right-left' },
     { name: 'End_Day', icon: 'fa-solid fa-rectangle-xmark' },
     { name: 'Hold_Orders', icon: 'fa-solid fa-hourglass-start' },

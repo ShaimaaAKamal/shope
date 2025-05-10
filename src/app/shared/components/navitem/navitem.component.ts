@@ -31,6 +31,9 @@ handleSpecialClick(name: string) {
     case 'Return_Order':
       this.__Router.navigateByUrl('Orders/create?popup=return_orders');
       break;
+    case 'Add_Variant':
+        this.__Router.navigateByUrl('Products?popup=add_variant');
+      break;
     case 'End_Day':
       console.log('End Day clicked!');
       break;
