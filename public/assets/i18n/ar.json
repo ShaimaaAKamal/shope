@@ -177,6 +177,17 @@
        "Product data hasn't been saved successfully":"بيانات المنتج لم يتم حفظها بنجاح",
       "Enter Desired Product Details":"أدخل تفاصيل المنتج المطلوبة",
       "Enter Product Arabic Name":"أدخل اسم المنتج باللغة العربية",
-      "Product Arabic Title Field Is Required":"حقل عنوان المنتج باللغة العربية مطلوب"
+      "Product Arabic Title Field Is Required":"حقل عنوان المنتج باللغة العربية مطلوب",
+        "Price is Required":"السعر مطلوب",
+        "Arabic Name is Required":"الاسم مطلوب باللغة العربية",
+        "Name is Required":"الاسم مطلوب باللغة الإنجليزية",
+        "Add Product Variant":"إضافة متغير للمنتج",
+        "Delete Product Varaiant":"حذف متغير للمنتج",
+        "Available No":"الكمية المتاحة",
+        "Name is already Exist":"الاسم موجود بالفعل",
+        "Product has been added successfully":"تمت إضافة المنتج بنجاح",
+        "Another Product already exists with this":"يوجد منتج آخر  بالفعل",
+        "Add New Product":"إضافة منتج جديد"
+
 
 }

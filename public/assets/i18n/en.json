@@ -176,5 +176,16 @@
   "Product data hasn't been saved successfully":"Product data hasn't been saved successfully",
   "Enter Desired Product Details":"Enter Desired Product Details",
   "Enter Product Arabic Name":"Enter Product Arabic Name",
-  "Product Arabic Title Field Is Required":  "Product Arabic Title Field Is Required"
+  "Product Arabic Title Field Is Required":  "Product Arabic Title Field Is Required",
+  "Price is Required":"Price is Required",
+  "Arabic Name is Required":"Arabic Name is Required",
+  "Name is Required":"Name is Required",
+  "Add Product Variant":"Add Product Variant",
+  "Delete Product Varaiant":"Delete Product Varaiant",
+  "Available No":"Available No",
+  "Name is already Exist":"Name is already Exist",
+  "Product has been added successfully":"Product has been added successfully",
+  "Another Product already exists with this":"Another Product already exists with this",
+  "Add New Product":"Add New Product"
+
 }
