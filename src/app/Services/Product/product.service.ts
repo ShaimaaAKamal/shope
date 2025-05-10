@@ -11,21 +11,32 @@ export class ProductService {
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-  variantOptions = signal<VariantOption[]>([
+  defaultVariants=[
     { id: 1, name: 'size', nameAr: 'اللون', values: ['L','XL','XXL'] },
     { id: 2, name: 'color', nameAr: 'المقاس' ,values: ['red', 'blue', 'green'] },
-  ]);
+  ];
+  variantOptions = signal<VariantOption[]>([]);
   currentProduct = signal<Product>(this.getEmptyProduct());
 
   constructor(private commonService: CommonService) {
-    const storedProducts = this.commonService.getItemsFromStorage<Product[]>('products', [])
-      .filter(p => p.name && p.price);
-
-    const sortedProducts = this.sortProductsDesc(storedProducts);
-    this.products.set(sortedProducts);
+    const storedProducts = this.commonService.getItemsFromStorage<Product[]>('products', []);
+    const storedVariants = this.commonService.getItemsFromStorage<any[]>('variantOptions', this.defaultVariants);
+    this.variantOptions.set(storedVariants);
+    const sortedProducts=this.removeEmptyProduct(storedProducts);
     this.commonService.saveToStorage('products', sortedProducts);
 
     this.usedProducts = [...sortedProducts];
+  }
+
+ removeEmptyProduct(products:Product[]){
+    const filterProducts = products.filter(p => p.name && p.price);
+
+    const sortedProducts = this.sortProductsDesc(filterProducts);
+    this.products.set(sortedProducts);
+    return sortedProducts
+}
+ private sortProductsDesc(products: Product[]): Product[] {
+    return [...products].sort((a, b) => b.id - a.id);
   }
 
   addNewProduct(newProduct: Product): boolean {
@@ -66,14 +77,16 @@ export class ProductService {
      return {status:false,message:updatedArray.message ?? ''};;
   }
 
-
   updateProducts(products: Product[]): void {
     const sorted = this.sortProductsDesc(products);
     this.products.set(sorted);
     this.type.set('');
     this.commonService.saveToStorage('products', sorted);
   }
-
+  updateVariants(variant:any){
+      this.variantOptions.update(current => [...current, variant]);
+      this.commonService.saveToStorage('variantOptions', this.variantOptions());
+  }
   deleteProductByIndex(index: number): boolean {
     const current = [...this.products()];
     if (index < 0 || index >= current.length) return false;
@@ -99,10 +112,6 @@ export class ProductService {
 
   getProductLength(): number {
     return this.products()[0]?.id ?? 0;
-  }
-
-  private sortProductsDesc(products: Product[]): Product[] {
-    return [...products].sort((a, b) => b.id - a.id);
   }
 
    getEmptyProduct(): Product {

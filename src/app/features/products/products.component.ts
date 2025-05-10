@@ -1,7 +1,9 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, Signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { ProductService } from '../../Services/Product/product.service';
 import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-products',
@@ -12,12 +14,22 @@ import { ToastingMessagesService } from '../../Services/ToastingMessages/toastin
 export class ProductsComponent {
   private productService = inject(ProductService);
   private toastService = inject(ToastingMessagesService);
+  private __Route=inject(ActivatedRoute);
+  private __Router = inject(Router);
+
+  queryParamsSignal= toSignal(this.__Route.queryParamMap);
+  popupVisible = signal(false);
 
   products: Signal<Product[]>;
   newProduct!: Product;
   type = this.productService.type;
+  checkedProducts:Product[]=[];
 
   constructor() {
+     effect(() => {
+    const popup = this.queryParamsSignal()?.get('popup');
+    this.popupVisible.set(popup === 'add_variant');
+  });
     this.products = computed(() =>
       [...this.productService.products()].sort((a, b) => b.id - a.id)
     );
@@ -41,7 +53,35 @@ export class ProductsComponent {
   }
 
   deleteSelected(_del: boolean): void {
-    console.log('deleteSelected');
+   const remainingProducts = this.products().filter(product =>
+  !this.checkedProducts.some(checked => checked.id === product.id)
+);
+
+  this.productService.updateProducts(remainingProducts);
+  }
+
+  closeAddVariantPopScreen(){
+    this.popupVisible.set(false);
+    this.__Router.navigateByUrl('Products');
+  }
+  checkedProductFn(event:any){
+  const product:Product=event.product;
+  const unchecked=event.checked
+  const index = this.checkedProducts.findIndex(p => p.id === product.id);
+
+  if (!unchecked) {
+    if (index === -1) {
+      this.checkedProducts.push(product);
+    }
+  } else {
+    if (index !== -1) {
+      this.checkedProducts.splice(index, 1);
+    }
+  }
+}
+  ngOnDestroy(): void {
+    this.type.set('');
+    this.productService.removeEmptyProduct(this.products());
   }
 }
 

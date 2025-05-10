@@ -10,6 +10,7 @@ import { VariantsComponent } from './variants/variants.component';
 import { AddVariantComponent } from './add-variant/add-variant.component';
 import { VariantOptionsValuesQuantityComponent } from './variant-options-values-quantity/variant-options-values-quantity.component';
 import { VariantValueDetailsComponent } from './variant-value-details/variant-value-details.component';
+import { CreateVariantComponent } from './create-variant/create-variant.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { VariantValueDetailsComponent } from './variant-value-details/variant-va
     VariantsComponent,
     AddVariantComponent,
     VariantOptionsValuesQuantityComponent,
-    VariantValueDetailsComponent
+    VariantValueDetailsComponent,
+    CreateVariantComponent
   ],
   imports: [
     CommonModule,

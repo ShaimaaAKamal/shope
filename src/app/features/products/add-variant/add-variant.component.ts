@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChi
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-add-variant',
@@ -12,7 +13,7 @@ import { LanguageService } from '../../../Services/Language/language.service';
 export class AddVariantComponent {
   private __ProductService=inject(ProductService);
   private __LanguageService=inject(LanguageService);
-
+ private __CommonService=inject(CommonService);
   isRtl=this.__LanguageService.rtlClassSignal;
   preSetVariants=this.__ProductService.variantOptions;
   defaultSelection =  this.preSetVariants().filter((option) => option.name === 'size')[0]
@@ -25,6 +26,7 @@ export class AddVariantComponent {
   showColorPickerContainer: boolean = false;
   ProductVariantOptions= signal<any>(this.__ProductService.currentProduct().variants);
   showColorPicker: boolean[] = [];
+
 
   type:string='text';
   @Output() variants = new EventEmitter<any>();
@@ -79,6 +81,7 @@ addNewValue() {
       return option;
     })
   );
+  this.__CommonService.saveToStorage('variantOptions',this.preSetVariants());
   this.insertVariantNewValue=false;
   this.values.pop();
   this.variantSelectValue=variantNewValue;

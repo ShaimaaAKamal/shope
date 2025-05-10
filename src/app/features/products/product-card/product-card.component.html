@@ -1,9 +1,9 @@
-<!-- <div class="card w-100" *ngIf="!removeProduct"> -->
-  <div class="card w-100">
+  <!-- <div class="card  w-100"> -->
+   <div class="card  w-100 h-100">
 
   <div class="position-relative">
-      <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(currentProduct())"></i>
-      <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(currentProduct())"></i>
+      <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(product)"></i>
+      <i class="fa-solid fa-square-check icon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(product)"></i>
 
     <!-- Close Button -->
     <i *ngIf="!displayCheck"
@@ -26,7 +26,9 @@
   </div>
 
   <!-- Card Body -->
-  <div class="card-body py-2 px-2">
+  <!-- <div class="card-body d-flex  py-2 px-2"> -->
+  <div class="card-body d-flex  py-2 px-2">
+
     <div class="row gy-2">
 
       <!-- Product Title -->
@@ -34,6 +36,7 @@
         <app-input
           id="productTitle"
           placeholder="Enter Product Name"
+          [errorMessage]="englishNameErrorMessage"
           [hideLabel]="true"
           vertCLass="col-12"
           #productTitle
@@ -46,6 +49,7 @@
         <app-input
           id="productArabicTitle"
           placeholder="Enter Product Arabic Name"
+          [errorMessage]="arabicNameErrorMessage"
           [hideLabel]="true"
           vertCLass="col-12"
           #productArabicTitle
@@ -55,11 +59,12 @@
       </div>
       <!-- Price -->
       <div class="col-12">
-        <app-input
+             <app-input
           id="price"
-          type="number"
+          type="text"
           [spanLabel]="currency | translate "
           placeholder="Price"
+          [errorMessage]="priceErrorMessage"
           [inputGroup]="true"
           [hideLabel]="true"
           vertCLass="col-12"

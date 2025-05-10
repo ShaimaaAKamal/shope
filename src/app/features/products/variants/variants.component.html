@@ -55,9 +55,6 @@
             ></app-add-variant>
         </div>
         <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
-                   <!-- <app-variant-options-values-quantity
-                   [variants]="variants" [variantsDetails]="variantsDetails" [product]="product()">
-                   </app-variant-options-values-quantity> -->
                      <app-variant-options-values-quantity
                    [variants]="variants" [variantsDetails]="variantsDetails"
                     (variantDetailsHandled)="variantDetailsHandledFn()">

@@ -41,6 +41,7 @@ createCategory(categoryName: string,categoryArabicName:string) {
 
     return {
       message: 'Category has been added successfully',
+      catergory:newCategory,
       status: true,
     };
   } catch (error) {

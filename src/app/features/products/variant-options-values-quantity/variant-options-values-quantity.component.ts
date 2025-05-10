@@ -26,6 +26,7 @@ constructor(){
   effect(() => {
           const data = this.__ProductService.getVariantDetailsData();
           if (data) {
+            console.log('in effect',data);
             this.getAllVariantValues();
             this.variantDetailsHandled.emit();
           }
