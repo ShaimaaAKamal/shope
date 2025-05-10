@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, Output, Signal, ViewChild } from '@angular/core';
-import { LanguageService } from '../../../Services/Language/language.service';
 
 @Component({
   selector: 'app-input',

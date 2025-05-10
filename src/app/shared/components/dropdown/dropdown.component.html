@@ -23,7 +23,7 @@
                 <a class="dropdown-item fs-verySmall">{{'No Categories' | translate}}</a>
               </li>
               <li *ngFor="let option of optionsArray" (click)="selectOption(option)">
-                <a class="dropdown-item fs-verySmall">{{( option[key] || option) |translate | titlecase }}</a>
+                <a class="dropdown-item fs-verySmall">{{( option[key] || option) |translate }}</a>
               </li>
             </ul>
   </div>
