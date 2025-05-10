@@ -1,5 +1,5 @@
 import {  Component, EventEmitter, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
-import { InputComponent } from '../../../shared/components/input/input.component';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-variant-value-details',

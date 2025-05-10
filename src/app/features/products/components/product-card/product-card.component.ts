@@ -323,16 +323,16 @@
 
 
 import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, Signal, ViewChild } from '@angular/core';
-import { PopScreenComponent } from '../../../shared/components/pop-screen/pop-screen.component';
-import { InputComponent } from '../../../shared/components/input/input.component';
-import { Product } from '../../../Interfaces/product';
-import { Category } from '../../../Interfaces/category';
-import { Variant } from '../../../Interfaces/variant';
-import { ProductService } from '../../../Services/Product/product.service';
-import { CommonService } from '../../../Services/CommonService/common.service';
-import { CategoryService } from '../../../Services/Category/category.service';
-import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
-import { LanguageService } from '../../../Services/Language/language.service';
+import { PopScreenComponent } from '../../../../shared/components/pop-screen/pop-screen.component';
+import { InputComponent } from '../../../../shared/components/input/input.component';
+import { Product } from '../../../../Interfaces/product';
+import { Category } from '../../../../Interfaces/category';
+import { Variant } from '../../../../Interfaces/variant';
+import { ProductService } from '../../../../Services/Product/product.service';
+import { CommonService } from '../../../../Services/CommonService/common.service';
+import { CategoryService } from '../../../../Services/Category/category.service';
+import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
+import { LanguageService } from '../../../../Services/Language/language.service';
 
 type SaveResult =
   | 'success'

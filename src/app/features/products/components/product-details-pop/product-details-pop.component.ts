@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, effect, EventEmitter, inject, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Product } from '../../../Interfaces/product';
-import { InputComponent } from '../../../shared/components/input/input.component';
-import { ProductService } from '../../../Services/Product/product.service';
+import {  Component, effect, EventEmitter, inject, Output, ViewChild } from '@angular/core';
+import { InputComponent } from '../../../../shared/components/input/input.component';
+import { ProductService } from '../../../../Services/Product/product.service';
 
 @Component({
   selector: 'app-product-details-pop',

@@ -1,10 +1,9 @@
 
 
 import {  Component, effect, EventEmitter, inject, Input, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
-import { Variant } from '../../../Interfaces/variant';
-import { Product } from '../../../Interfaces/product';
 import { VariantValueDetailsComponent } from '../variant-value-details/variant-value-details.component';
-import { ProductService } from '../../../Services/Product/product.service';
+import { ProductService } from '../../../../Services/Product/product.service';
+import { Variant } from '../../../../Interfaces/variant';
 
 @Component({
   selector: 'app-variant-options-values-quantity',

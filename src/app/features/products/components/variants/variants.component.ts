@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
-import { Variant } from '../../../Interfaces/variant';
-import { ProductService } from '../../../Services/Product/product.service';
-import { Product } from '../../../Interfaces/product';
+import { ProductService } from '../../../../Services/Product/product.service';
+import { Variant } from '../../../../Interfaces/variant';
+
 
 @Component({
   selector: 'app-variants',

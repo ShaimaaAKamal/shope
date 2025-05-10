@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChildren, signal } from '@angular/core';
-import { InputComponent } from '../../../shared/components/input/input.component';
-import { ProductService } from '../../../Services/Product/product.service';
-import { LanguageService } from '../../../Services/Language/language.service';
-import { CommonService } from '../../../Services/CommonService/common.service';
+import { InputComponent } from '../../../../shared/components/input/input.component';
+import { ProductService } from '../../../../Services/Product/product.service';
+import { LanguageService } from '../../../../Services/Language/language.service';
+import { CommonService } from '../../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-add-variant',
