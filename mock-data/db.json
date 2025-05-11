@@ -1,0 +1,70 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "samsung a35",
+      "nameAr": "سامسونج ٣٥s",
+      "barcode": "6789054321790",
+      "price": 3000,
+      "quantity": "5",
+      "tax": 0,
+      "status": "Inactive",
+      "variants": [
+        {
+          "name": "size",
+          "values": [
+            "L"
+          ]
+        },
+        {
+          "name": "color",
+          "values": [
+            "red"
+          ]
+        }
+      ],
+      "variantsDetails": [
+        {
+          "size": {
+            "value": "L"
+          },
+          "details": {
+            "price": "30000",
+            "costPrice": "",
+            "salePrice": "",
+            "weight": "",
+            "barcode": "",
+            "notify": "",
+            "quantity": "2"
+          },
+          "color": {
+            "value": "red"
+          }
+        }
+      ],
+      "category": {
+        "id": 2,
+        "name": "laptops",
+        "nameAr": "لابتوب"
+      },
+      "requireShipping": false,
+      "weight": 10,
+      "weightUnit": "KG",
+      "productCostPrice": 1500,
+      "salePrice": 2500,
+      "salePriceEndDate": ""
+    },
+    {
+      "id": 2,
+      "name": "dell",
+      "nameAr": "ديل",
+      "barcode": "",
+      "price": 20000,
+      "quantity": "",
+      "tax": 0,
+      "status": "Inactive",
+      "variants": [],
+      "variantsDetails": []
+    }
+  ]
+}
