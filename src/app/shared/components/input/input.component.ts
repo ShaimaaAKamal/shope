@@ -23,8 +23,10 @@ export class InputComponent {
 @ViewChild('inputRef2') groupInputElement!: ElementRef;
 
  @Output() focus = new EventEmitter<string>();
- @Output() showVariant = new EventEmitter<boolean>();
+ @Output() blur = new EventEmitter<string>();
 
+ @Output() showVariant = new EventEmitter<boolean>();
+@Input() enableFocusBlurTracking=false
 hideIconVar:boolean=false;
 InputQuantity:number=0;
 
@@ -32,7 +34,10 @@ InputQuantity:number=0;
     this.focus.emit(event.target.id);
   }
 
-get nativeInput(): HTMLInputElement | null {
+  onBlur(event:any){
+    this.blur.emit(event.target.id);
+  }
+  get nativeInput(): HTMLInputElement | null {
   if (this.inputGroup && this.groupInputElement) {
     return this.groupInputElement.nativeElement;
   }

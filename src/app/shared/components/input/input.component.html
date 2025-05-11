@@ -11,10 +11,12 @@
            <ng-content #name></ng-content>
           </span>
           <div class="input-group" *ngIf="inputGroup">
-            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder|translate" [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="onFocus($event)" #inputRef2>
+            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder|translate"
+            [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="enableFocusBlurTracking ? onFocus($event) : null"  #inputRef2>
              <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="spanLabel | translate" (click)="handleClick($event)"></span>
           </div>
-         <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id"  (focus)="onFocus($event)"  [readonly]="readonly" [placeholder]="placeholder | translate" #inputRef
+         <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id" [readonly]="readonly" [placeholder]="placeholder | translate"
+         (blur)="enableFocusBlurTracking ? onBlur($event) : null"   (focus)="enableFocusBlurTracking ? onFocus($event) : null"  #inputRef
          />
       </div>
     </div>
