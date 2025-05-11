@@ -29,32 +29,6 @@ isCollapse=signal<boolean>(false);
       localStorage.setItem(key, JSON.stringify(data));
   }
 
-
-// updateItemInArray<T extends { name?: string , nameAr?:string}>(
-//   array: T[],
-//   matchFn: (item: T) => boolean,
-//   newValue: T,
-// ): { updated: boolean; array: T[] } {
-//   const index = array.findIndex(matchFn);
-//   const updated = index !== -1;
-//   if (updated) {
-//     // const isDuplicate = array.some((item, i) => i !== index && (item.name === newValue.name || item.nameAr === newValue.nameAr));
-//           const isDuplicate = array.some((item, i) =>
-//         i !== index &&
-//         (
-//           (item.name && item.name === newValue.name) ||
-//           (item.nameAr && item.nameAr === newValue.nameAr)
-//         )
-//       );
-//     if (!isDuplicate) {
-//       array[index] = newValue;
-//     } else {
-//       console.warn('Duplicate name found. Update aborted.');
-//       return { updated: false, array };
-//     }
-//   }
-//   return { updated, array };
-// }
 updateItemInArray<T extends { name?: string; nameAr?: string }>(
   array: T[],
   matchFn: (item: T) => boolean,
@@ -97,6 +71,42 @@ updateItemInArray<T extends { name?: string; nameAr?: string }>(
   return { updated, array };
 }
 
+ checkDuplicateInArray<T extends { name?: string; nameAr?: string }>(
+  array: T[],
+  matchFn: (item: T) => boolean,
+  newValue: T
+): { isDuplicate: boolean; message?: string } {
+  const index = array.findIndex(matchFn);
+  if (index !== -1) {
+    let duplicateField: 'name' | 'nameAr' | null = null;
+
+    const isDuplicate = array.some((item, i) => {
+      if (i === index) return false;
+
+      if (item.name && item.name === newValue.name) {
+        duplicateField = 'name';
+        return true;
+      }
+
+      if (item.nameAr && item.nameAr === newValue.nameAr) {
+        duplicateField = 'nameAr';
+        return true;
+      }
+
+      return false;
+    });
+
+    if (isDuplicate) {
+      const message =
+        duplicateField === 'nameAr'
+          ? 'Duplicate_Arabic_Name'
+          : 'Duplicate_English_Name';
+      return { isDuplicate: true, message };
+    }
+  }
+
+  return { isDuplicate: false };
+}
 findItemInArray<T extends { name?: string,code?:string }>(
   array: T[], matchFn: (item: T) => boolean) :{exists:boolean; ind: number; item:any }{
   const index = array.findIndex(matchFn);

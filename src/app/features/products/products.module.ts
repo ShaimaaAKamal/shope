@@ -7,7 +7,6 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { SharedModule } from '../../shared/shared.module';
 import { AddVariantComponent } from './components/add-variant/add-variant.component';
 import { CreateVariantComponent } from './components/create-variant/create-variant.component';
-import { ProductsAPIService } from './Services/api/products-api.service';
 import { ProductDetailsPopComponent } from './components/product-details-pop/product-details-pop.component';
 import { VariantsComponent } from './components/variants/variants.component';
 import { VariantOptionsValuesQuantityComponent } from './components/variant-options-values-quantity/variant-options-values-quantity.component';
@@ -30,6 +29,5 @@ import { VariantValueDetailsComponent } from './components/variant-value-details
     ProductsRoutingModule,
     SharedModule
   ],
-  providers:[ProductsAPIService]
 })
 export class ProductsModule { }

@@ -56,15 +56,65 @@
     },
     {
       "id": 2,
-      "name": "dell",
-      "nameAr": "ديل",
+      "name": "delldd",
+      "nameAr": "ديلd",
       "barcode": "",
       "price": 20000,
-      "quantity": "",
+      "quantity": "5",
+      "tax": 0,
+      "status": "Inactive",
+      "variants": [
+        {
+          "name": "storage",
+          "values": [
+            "125gb"
+          ]
+        }
+      ],
+      "variantsDetails": [
+        {
+          "storage": {
+            "value": "125gb"
+          },
+          "details": {
+            "price": "",
+            "costPrice": "",
+            "salePrice": "",
+            "weight": "",
+            "barcode": "",
+            "notify": "",
+            "quantity": "0"
+          }
+        }
+      ],
+      "category": {
+        "id": 2,
+        "name": "laptops",
+        "nameAr": "لابتوب"
+      },
+      "requireShipping": false,
+      "weight": 10,
+      "weightUnit": "KG",
+      "productCostPrice": 1500,
+      "salePrice": 2500,
+      "salePriceEndDate": ""
+    },
+    {
+      "id": 3,
+      "name": "samsung a35r",
+      "nameAr": "سامسونج ٣٥d",
+      "barcode": "",
+      "price": 30000,
+      "quantity": "2",
       "tax": 0,
       "status": "Inactive",
       "variants": [],
-      "variantsDetails": []
+      "variantsDetails": [],
+      "category": {
+        "id": 7,
+        "name": "testttt",
+        "nameAr": "تيتتتتتتتتت"
+      }
     }
   ]
 }

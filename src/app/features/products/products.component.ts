@@ -16,20 +16,25 @@ export class ProductsComponent {
   private toastService = inject(ToastingMessagesService);
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
-
+  private apiError=this.productService.error;
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
 
   products: Signal<Product[]>;
   newProduct!: Product;
   type = this.productService.type;
-  checkedProducts:Product[]=[];
+  checkedProducts:number[]=[];
 
-  constructor() {
+  constructor(private __ToastingMessagesService:ToastingMessagesService) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
   });
+  effect(() => {
+  const error = this.apiError();
+  if (error) {
+    this.__ToastingMessagesService.showToast(error,'error')  }
+});
     this.products = computed(() =>
       [...this.productService.products()].sort((a, b) => b.id - a.id)
     );
@@ -53,11 +58,8 @@ export class ProductsComponent {
   }
 
   deleteSelected(_del: boolean): void {
-   const remainingProducts = this.products().filter(product =>
-  !this.checkedProducts.some(checked => checked.id === product.id)
-);
-
-  this.productService.updateProducts(remainingProducts);
+      this.productService.deleteProducts(this.checkedProducts);
+      // this.productService.deleteProduct(this.checkedProducts[0].id);
   }
 
   closeAddVariantPopScreen(){
@@ -67,11 +69,11 @@ export class ProductsComponent {
   checkedProductFn(event:any){
   const product:Product=event.product;
   const unchecked=event.checked
-  const index = this.checkedProducts.findIndex(p => p.id === product.id);
+  const index = this.checkedProducts.findIndex(id => id === product.id);
 
   if (!unchecked) {
     if (index === -1) {
-      this.checkedProducts.push(product);
+      this.checkedProducts.push(product.id);
     }
   } else {
     if (index !== -1) {

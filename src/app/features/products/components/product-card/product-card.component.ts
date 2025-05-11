@@ -616,7 +616,7 @@ private emptyBasicInfoErrorMessage(): void {
   this.priceErrorMessage = '';
 }
 
-private handleProductSave(): SaveResult {
+private handleProductSave(action:string): SaveResult {
   this.emptyBasicInfoErrorMessage();
 
   const title = this.productTitleInput.value;
@@ -635,20 +635,17 @@ private handleProductSave(): SaveResult {
     this.priceErrorMessage = 'Price is Required';
     return 'missing_price';
   }
-
   this.setProductBasicInfo(title, arabicTitle, price);
-
   this.currentProduct.update(current => ({
     ...current,
     ...this.product
   }));
-
-  const result = this.productService.updateProductInfo(this.currentProduct());
+  const result = this.productService.updateProductInfo(this.currentProduct(),action);
   return result.status ? 'success' : result.message as SaveResult;
 }
 
 private processProductSave(  action: 'add' | 'update', successMessage: string, duplicatePrefix: string ): void {
-  const result = this.handleProductSave();
+  const result = this.handleProductSave(action);
 
   if (result === 'Duplicate_Arabic_Name') {
     this.arabicNameErrorMessage = 'Name is already Exist';
@@ -723,7 +720,6 @@ controlVariantsPopup(type:string){
      else     this.controlPopScreen('variantsPopScreen','close');
  }
 variantDetailsHandled(){
-        console.log(this.product);
    this.controlPopScreen('variantsPopScreen','close');
    this.getVariantDetailsData.set(false);
 }

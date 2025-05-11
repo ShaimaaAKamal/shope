@@ -1,7 +1,7 @@
 import { Variant } from "./variant";
 
 export interface Product {
-  id:number,
+  id:number  ,
   name:string,
   nameAr:string,
   barcode:string,
