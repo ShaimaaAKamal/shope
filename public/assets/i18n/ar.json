@@ -187,7 +187,11 @@
         "Name is already Exist":"الاسم موجود بالفعل",
         "Product has been added successfully":"تمت إضافة المنتج بنجاح",
         "Another Product already exists with this":"يوجد منتج آخر  بالفعل",
-        "Add New Product":"إضافة منتج جديد"
+        "Add New Product":"إضافة منتج جديد",
+        "Failed to create product":"فشل في إنشاء المنتج",
+        "Failed to update product":"فشل تحديث المنتج",
+        "Failed to delete product":"فشل في حذف المنتج",
+         "Failed to delete products":"فشل في حذف المنتجات"
 
 
 }
