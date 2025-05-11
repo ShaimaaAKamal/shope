@@ -48,6 +48,10 @@ searchProductsByName($event:any){
 const searchKey=$event.target.value;
  this.searchItems=this.__ProductsService.findProductByName(searchKey);
 }
+handleSearchByNameFocus(type:string){
+  console.log(type);
+  this.searchItems=type == 'focus' ?this.__ProductsService.products().slice(0, 10):[];
+}
 
 searchProductsByBarcode($event:any){
   const searchKey=$event.target.value;

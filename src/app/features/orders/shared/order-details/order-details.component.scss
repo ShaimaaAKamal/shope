@@ -3,10 +3,20 @@
      z-index:100001;
 }
 .list-group{
-    top:28px;
-    width:75%;
-    inset-inline-start:25%;
+    border-radius: 4px !important;
+    top:54px;
+    width:100%;
+    inset-inline-start:0px;
     z-index:100001;
+     @media (min-width: 768px) {
+        top:27px;
+        width:66%;
+        inset-inline-start:34%;
+      }
+    @media (min-width: 1400px) {
+        width:75%;
+        inset-inline-start:25%;
+      }
    li{
     color:$semi-dark  !important;
     border-color: $semi-dark !important;

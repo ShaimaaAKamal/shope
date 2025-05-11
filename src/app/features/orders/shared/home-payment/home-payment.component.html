@@ -23,6 +23,7 @@
                 [inputGroup]="true"
                 [hideLabel]="true"
                 [vertCLass]="'col-12'"
+                [enableFocusBlurTracking]="true"
                 (focus)="setActiveInput(method.focusKey, inputRef)"
                 (input)="setValueFromInputEvent(method.focusKey, $event)"
               >

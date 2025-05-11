@@ -5,18 +5,18 @@
     <div class="flex-grow-0 searchInputs border-bottom">
      <div class="position-relative w-100 searchContainer">
       <app-input [id]="'findProductByName'" [label]="'Find By Name' | translate"
-      (input)="searchProductsByName($event)"     #searchInputByName>
+      (input)="searchProductsByName($event)"  (focus)="handleSearchByNameFocus('focus')" [enableFocusBlurTracking]="true" (blur)="handleSearchByNameFocus('blur')"  #searchInputByName>
         <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="nameSearch"></i> -->
         <i class="fa-solid fa-magnifying-glass" ></i>
 
       </app-input>
           <ul
-            class="list-group position-absolute shadow-sm z-3"
+            class="list-group  position-absolute shadow-sm z-3"
             *ngIf="searchItems.length > 0"
             style="max-height: 330px; overflow-y: auto;"
           >
             <li
-              class="list-group-item list-group-item-action"
+              class="list-group-item py-1 list-group-item-action"
               *ngFor="let item of searchItems"
               (click)="selectItem(item)"
             >
