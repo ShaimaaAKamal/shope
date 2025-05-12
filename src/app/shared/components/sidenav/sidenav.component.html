@@ -22,8 +22,14 @@
     </li>
   </ul>
   </div>
-  <app-nav-sales-person [isCollapsed]="isCollapsed"  [personImage]="personImage" [salesPersonName]="salesPersonName">
-  </app-nav-sales-person>
+  <app-nav-sales-person [NavSalesPersonComponent]="
+        {
+        isCollapsed:isCollapsed,
+        personImage:personImage,
+        salesPersonName:salesPersonName
+      }"
+    >
+</app-nav-sales-person>
  </div>
  </div>
 </div>
