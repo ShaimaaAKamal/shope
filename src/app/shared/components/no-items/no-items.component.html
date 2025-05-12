@@ -1,6 +1,6 @@
         <div class="d-flex flex-column">
-          <h6 class="mb-1 ">{{NoItemsComponentData.header}}</h6>
-          <span class="fw-light fs-medium mb-4">{{NoItemsComponentData.subTitle}}</span>
+          <h6 class="mb-1 ">{{NoItemsComponentData.header | translate}}</h6>
+          <span class="fw-light fs-medium mb-4">{{NoItemsComponentData.subTitle | translate}}</span>
           <app-site-button
            [BtnData]="{BtnName:NoItemsComponentData.BtnName,route:NoItemsComponentData.route,iconDir:''}"
            *ngIf="NoItemsComponentData.route ; else noRoute;">
@@ -10,7 +10,7 @@
           <ng-template #noRoute>
                  <div class="spanBtn d-flex text-white px-3 py-2 small align-items-center rounded-3 bg-semi-dark" (click)="AddNew()">
                     <i class="fa-solid fa-plus pe-1"></i>
-                    <span>{{NoItemsComponentData.BtnName}}</span>
+                    <span>{{NoItemsComponentData.BtnName | translate}}</span>
                  </div>
           </ng-template>
 

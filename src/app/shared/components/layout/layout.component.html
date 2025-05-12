@@ -2,8 +2,8 @@
   <div class="row flex-column flex-grow-1">
     <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
       <app-page-controls
-        [items]="items"
-        [sortKey]="sortKey"
+        [items]="LayoutComponentDate.items"
+        [sortKey]="LayoutComponentDate.sortKey"
         [type]="'product'"
         (addNewVar)="addNew($event)"
          (displayedItems)="handleDispalyedItems($event)"
@@ -11,12 +11,12 @@
       </app-page-controls>
     </div>
 
-    <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': items.length > 0 }">
+    <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': LayoutComponentDate.items.length > 0 }">
       <app-no-items
         [NoItemsComponentData]="{
-            header:header,
-            subTitle:subTitle,
-            BtnName:BtnName,
+            header:LayoutComponentDate.header,
+            subTitle:LayoutComponentDate.subTitle,
+            BtnName:LayoutComponentDate.btnName,
             route:''
         }"
         (addNewVar)="addNew($event)"

@@ -1,16 +1,20 @@
 <div class="h-100 w-100">
 <app-layout
-[items]="products()"
-[sortKey]="'price'"
-[header]="'Add New Products' |translate"
-[subTitle]="'Start by stocking your store with products your customers will love' | translate"
-[BtnName]="'Add New Product' | translate"
+[LayoutComponentDate]="{
+  route: '',
+  items: products(),
+  sortKey: 'price',
+  header: 'Add New Products',
+  subTitle: 'Start by stocking your store with products your customers will love',
+  btnName: 'Add New Product',
+  columns: [],
+  serviceType: '',
+}"
 (addNewVar)="addNew($event)"
 (deleteSelected)="deleteSelected($event)" >
 
       <div class="row gy-3">
         <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let product of products()">
-          <!-- <div> -->
           <div class="h-100">
             <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" ></app-product-card>
           </div>
@@ -21,3 +25,4 @@
 
 
 <app-create-variant  *ngIf="popupVisible()" (closeAddVariantPopScreen)="closeAddVariantPopScreen()"></app-create-variant>
+
