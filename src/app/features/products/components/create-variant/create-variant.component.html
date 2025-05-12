@@ -12,11 +12,20 @@
    <div class="row g-2 align-items-start  addNewVariant py-3">
       <div class="col-lg-6">
          <app-input
-          id="optionName"
-          placeholder="Option Name"
-          [hideLabel]="true"
-          [errorMessage]="nameErrorMessage"
-          vertCLass="col-12"
+          [InputComponentData]="{
+                type: 'text',
+                id: 'optionName',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Option Name',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage:  nameErrorMessage | translate,
+                enableFocusBlurTracking: false,
+              }"
           #optionName
         >
           <i class="fa-solid fa-text-width"></i>
@@ -24,11 +33,20 @@
       </div>
         <div class="col-lg-6">
          <app-input
-          id="optionArabicName"
-          placeholder="Option Arabic Name"
-          [hideLabel]="true"
-          [errorMessage]="arabicNameErrorMessage"
-          vertCLass="col-12"
+           [InputComponentData]="{
+                type: 'text',
+                id: 'optionArabicName',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Option Arabic Name',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage:  arabicNameErrorMessage | translate,
+                enableFocusBlurTracking: false,
+              }"
           #optionArabicName
         >
           <i class="fa-solid fa-text-width"></i>
@@ -43,9 +61,20 @@
             </div>
             <div class="flex-grow-1 position-relative">
               <app-input
-                placeholder="Variant Value"
-                [hideLabel]="true"
-                vertCLass="col-12"
+                [InputComponentData]="{
+                type: 'text',
+                id: '',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Variant Value',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
                 #variantValue
               >
                 <i class="fa-solid fa-text-width"></i>

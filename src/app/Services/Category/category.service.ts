@@ -18,6 +18,18 @@ createCategory(categoryName: string,categoryArabicName:string) {
   const normalizedArabicName = categoryArabicName.trim().toLowerCase();
 
   try {
+    if(! normalizedName )
+       return {
+        message: 'Name is Required',
+        status: false,
+       errorType:"missing_Name"
+      };
+        if(! normalizedArabicName )
+       return {
+        message: 'Arabic Name is Required',
+        status: false,
+        errorType:"missing_Arabic_Name"
+      };
     const exists = this.categories().some(
       (category: Category) => category.name.toLowerCase() === normalizedName || category.nameAr === normalizedArabicName
     );
@@ -26,6 +38,7 @@ createCategory(categoryName: string,categoryArabicName:string) {
       return {
         message: 'Category already exists',
         status: false,
+        errorType:"already_Exist"
       };
     }
 

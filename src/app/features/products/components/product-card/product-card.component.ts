@@ -374,7 +374,7 @@ showCategory:boolean=false;
 showDetailsAlert:boolean=false;
 showProductInfo:boolean=false;
 showVariantPopScreen:boolean=false;
-errorMessage: string = '';
+
 displayCheck!:boolean;
 unchecked:boolean=true;
 categories!:Signal<Category[]>;
@@ -382,6 +382,8 @@ quantityLabel!:string;
 variants!:Variant[];
 isRtl!:Signal<boolean>;
 
+errorMessage: string = '';
+errorArabicrMessage:string='';
 priceErrorMessage:string='';
 englishNameErrorMessage:string='';
 arabicNameErrorMessage:string='';
@@ -442,7 +444,8 @@ updateQuantityLabel(): void {
       this.product.category=result.catergory;
 
     } else {
-      this.errorMessage = result.message;
+      this.errorMessage =( result.errorType == "missing_Name" || result.errorType == "already_Exist" )?result.message : '';
+      this.errorArabicrMessage = result.errorType == "missing_Arabic_Name" ?result.message : '';
     }
   }
 

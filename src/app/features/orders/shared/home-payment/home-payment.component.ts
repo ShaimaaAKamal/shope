@@ -77,8 +77,8 @@ inputMap: { [key: string]: InputComponent } = {};
 
 private populateInputMap() {
   this.inputComponents.forEach(comp => {
-    if (comp.id) {
-      this.inputMap[comp.id] = comp;
+    if (comp.InputComponentData.id) {
+      this.inputMap[comp.InputComponentData.id] = comp;
     }
   });
 }

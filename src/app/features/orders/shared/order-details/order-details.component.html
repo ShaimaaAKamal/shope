@@ -4,8 +4,23 @@
   <div class="d-flex flex-column section-style rounded rounded-3 px-4 py-3" style="height: 100%;">
     <div class="flex-grow-0 searchInputs border-bottom">
      <div class="position-relative w-100 searchContainer">
-      <app-input [id]="'findProductByName'" [label]="'Find By Name' | translate"
-      (input)="searchProductsByName($event)"  (focus)="handleSearchByNameFocus('focus')" [enableFocusBlurTracking]="true" (blur)="handleSearchByNameFocus('blur')"  #searchInputByName>
+      <app-input
+                [InputComponentData]="{
+                type: 'text',
+                id: 'findProductByName',
+                label: 'Find By Name',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: '',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: true,
+              }"
+      (input)="searchProductsByName($event)"  (focus)="handleSearchByNameFocus('focus')"
+     (blur)="handleSearchByNameFocus('blur')"  #searchInputByName>
         <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="nameSearch"></i> -->
         <i class="fa-solid fa-magnifying-glass" ></i>
 
@@ -31,7 +46,21 @@
   >
 </zxing-scanner> -->
       <div class="py-3">
-        <app-input [id]="'findProductByBarcode'" [label]="'Find By Barcode' | translate"  (input)="searchProductsByBarcode($event)" #searchInputByBarcode >
+        <app-input  [InputComponentData]="{
+                type: 'text',
+                id: 'findProductByBarcode',
+                label: 'Find By Barcode',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: '',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          (input)="searchProductsByBarcode($event)" #searchInputByBarcode >
         <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="barcodeSearch"></i> -->
          <i class="fa-solid fa-magnifying-glass"></i>
       </app-input>

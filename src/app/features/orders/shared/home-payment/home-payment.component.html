@@ -16,14 +16,20 @@
                <div class="w-100">
               <app-input
                 #inputRef
-                [id]="method.focusKey"
-                type="text"
-                [spanLabel]="currency | translate "
-                placeholder="0.00"
-                [inputGroup]="true"
-                [hideLabel]="true"
-                [vertCLass]="'col-12'"
-                [enableFocusBlurTracking]="true"
+                [InputComponentData]="{
+                type: 'text',
+                id: method.focusKey,
+                label: '',
+                spanLabel: currency,
+                placeholder: '0.00',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking:true,
+              }"
                 (focus)="setActiveInput(method.focusKey, inputRef)"
                 (input)="setValueFromInputEvent(method.focusKey, $event)"
               >

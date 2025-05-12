@@ -1,26 +1,27 @@
 
  <div class="container-fluid  px-0">
   <div class="row align-items-center gx-2 gy-0">
-    <div  [class.mb-0]="true"   [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-4 col-xxl-3'" [class.d-none]="hideLabel">
+    <div  [class.mb-0]="true"   [ngClass]="InputComponentData.vertCLass ? InputComponentData.vertCLass : 'col-12 col-md-4 col-xxl-3'" [class.d-none]="InputComponentData.hideLabel">
 
-            <label [for]="id" class="form-label mb-1 small">{{label | translate}}</label>
+            <label [for]=InputComponentData.id class="form-label mb-1 small">{{InputComponentData.label | translate}}</label>
     </div>
-    <div  [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'">
+    <div  [ngClass]="InputComponentData.vertCLass ? InputComponentData.vertCLass : 'col-12 col-md-8 col-xxl-9'">
         <div class="position-relative flex-grow-1">
          <span class="position-absolute input-icon" [class.d-none]="hideIconVar">
            <ng-content #name></ng-content>
           </span>
-          <div class="input-group" *ngIf="inputGroup">
-            <input [type]="type"  class="form-control border border-end-0" [placeholder]="placeholder|translate"
-            [readonly]="readonly"  [id]="id"  aria-describedby="basic-addon2" (focus)="enableFocusBlurTracking ? onFocus($event) : null"  #inputRef2>
-             <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="spanLabel | translate" (click)="handleClick($event)"></span>
+          <div class="input-group" *ngIf="InputComponentData.inputGroup">
+            <input [type]="InputComponentData.type"  class="form-control border border-end-0" [placeholder]="InputComponentData.placeholder|translate"
+            [readonly]="InputComponentData.readonly"  [id]=InputComponentData.id  aria-describedby="basic-addon2" (focus)="InputComponentData.enableFocusBlurTracking ? onFocus($event) : null"  #inputRef2>
+             <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="InputComponentData.spanLabel | translate" (click)="handleClick($event)"></span>
           </div>
-         <input *ngIf="!inputGroup" [type]="type" class="form-control form-control-sm rounded-1" [id]="id" [readonly]="readonly" [placeholder]="placeholder | translate"
-         (blur)="enableFocusBlurTracking ? onBlur($event) : null"   (focus)="enableFocusBlurTracking ? onFocus($event) : null"  #inputRef
+         <input *ngIf="!InputComponentData.inputGroup" [type]="InputComponentData.type" class="form-control form-control-sm rounded-1" [id]=InputComponentData.id
+         [readonly]="InputComponentData.readonly" [placeholder]="InputComponentData.placeholder | translate"
+         (blur)="InputComponentData.enableFocusBlurTracking ? onBlur($event) : null"   (focus)="InputComponentData.enableFocusBlurTracking ? onFocus($event) : null"  #inputRef
          />
       </div>
     </div>
-    <div class="fs-verySmall mb-0 pt-1 text-danger" *ngIf="errorMessage">{{errorMessage | translate}}</div>
+    <div class="fs-verySmall mb-0 pt-1 text-danger" *ngIf="InputComponentData.errorMessage">{{InputComponentData.errorMessage | translate}}</div>
 
   </div>
  </div>

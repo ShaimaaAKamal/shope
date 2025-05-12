@@ -1,13 +1,20 @@
 <div class="row g-2">
   <div class="col-12">
-        <app-input
-          id="price"
-          type="text"
-          spanLabel="SAR"
-          placeholder="Price"
-          [inputGroup]="true"
-          [hideLabel]="true"
-          vertCLass="col-12"
+          <app-input
+            [InputComponentData]="{
+                type: 'text',
+                id: 'price',
+                label: '',
+                spanLabel: 'SAR',
+                placeholder: 'Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
@@ -15,65 +22,104 @@
       </div>
        <div class="col-12 col-md-6">
         <app-input
-          id="costPrice"
-          type="text"
-          spanLabel="SAR"
-          placeholder="Cost Price"
-          [inputGroup]="true"
-          [hideLabel]="true"
-          vertCLass="col-12"
+            [InputComponentData]="{
+                type: 'text',
+                id: 'costPrice',
+                label: '',
+                spanLabel: 'SAR',
+                placeholder: 'Cost Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
       </div>
        <div class="col-12 col-md-6">
-        <app-input
-          id="salePrice"
-          type="text"
-          spanLabel="SAR"
-          placeholder="Sale Price"
-          [inputGroup]="true"
-          [hideLabel]="true"
-          vertCLass="col-12"
+          <app-input
+             [InputComponentData]="{
+                type: 'text',
+                id: 'salePrice',
+                label: '',
+                spanLabel: 'SAR',
+                placeholder: 'Sale Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
       </div>
        <div class="col-12 col-md-4">
-        <app-input
-          id="weight"
-          type="text"
-          spanLabel="Kg"
-          placeholder="Weight"
-          [inputGroup]="true"
-          [hideLabel]="true"
-          vertCLass="col-12"
+          <app-input
+            [InputComponentData]="{
+                type: 'text',
+                id: 'weight',
+                label: '',
+                spanLabel: 'Kg',
+                placeholder: 'Weight',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
           <i class="fa-solid fa-weight-scale"></i>
         </app-input>
       </div>
        <div class="col-12 col-md-4">
-     <app-input
-          [id]="'barcode'"
-          [placeholder]="'Barcode'"
-          [label]="'Barcode'"
-          [hideLabel]="true"
-          vertCLass="col-12"
+                <app-input
+                    [InputComponentData]="{
+                type: 'text',
+                id: 'barcode',
+                label: 'Barcode',
+                spanLabel: '',
+                placeholder: 'Barcode',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
          <i class="fa-solid fa-barcode"></i>
         </app-input>
        </div>
         <div class="col-12 col-md-4">
-          <app-input
-          [id]="'notify'"
-          [placeholder]="'Notify Quantity'"
-          [label]="'Notify'"
-          [hideLabel]="true"
-          vertCLass="col-12"
+            <app-input
+             [InputComponentData]="{
+                type: 'text',
+                id: 'notify',
+                label: 'Notify',
+                spanLabel: '',
+                placeholder: 'Notify Quantity',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #inputRef
         >
         <i class="fa-solid fa-bell"></i>

@@ -31,7 +31,7 @@ ngOnChanges(changes: SimpleChanges) {
 
 displayVariantDetails(){
   this.inputComponentRefs.forEach(inputComponent => {
-   inputComponent.value=this.variantDetail?.details[inputComponent.id] ?? '';
+   inputComponent.value=this.variantDetail?.details[inputComponent.InputComponentData.id] ?? '';
   });
 this.quantity=this.variantDetail?.details['quantity'] ?? '0';
 }
@@ -46,7 +46,7 @@ getVariantDetails(){
   const variantDetailsValue: Record<string, any> = {};
 
   this.inputComponentRefs.forEach(inputComponent => {
-    const id = inputComponent.id;
+    const id = inputComponent.InputComponentData.id;
     const value = inputComponent.value?.trim?.() ?? null;
     if (id) {
       variantDetailsValue[id] = value;

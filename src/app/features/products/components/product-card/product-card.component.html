@@ -34,11 +34,20 @@
       <!-- Product Title -->
       <div class="col-12">
         <app-input
-          id="productTitle"
-          placeholder="Enter Product Name"
-          [errorMessage]="englishNameErrorMessage"
-          [hideLabel]="true"
-          vertCLass="col-12"
+         [InputComponentData]="{
+                type: 'text',
+                id: 'productTitle',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Enter Product Name',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: englishNameErrorMessage,
+                enableFocusBlurTracking: false,
+              }"
           #productTitle
         >
           <i class="fa-solid fa-box-open"></i>
@@ -47,11 +56,20 @@
 
         <div class="col-12">
         <app-input
-          id="productArabicTitle"
-          placeholder="Enter Product Arabic Name"
-          [errorMessage]="arabicNameErrorMessage"
-          [hideLabel]="true"
-          vertCLass="col-12"
+         [InputComponentData]="{
+                type: 'text',
+                id: 'productArabicTitle',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Enter Product Arabic Name',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: arabicNameErrorMessage,
+                enableFocusBlurTracking: false,
+              }"
           #productArabicTitle
         >
           <i class="fa-solid fa-box-open"></i>
@@ -59,15 +77,21 @@
       </div>
       <!-- Price -->
       <div class="col-12">
-             <app-input
-          id="price"
-          type="text"
-          [spanLabel]="currency | translate "
-          placeholder="Price"
-          [errorMessage]="priceErrorMessage"
-          [inputGroup]="true"
-          [hideLabel]="true"
-          vertCLass="col-12"
+          <app-input
+           [InputComponentData]="{
+                type: 'text',
+                id: 'price',
+                label: '',
+                spanLabel: currency,
+                placeholder: 'Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: priceErrorMessage,
+                enableFocusBlurTracking: false,
+              }"
           #price
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
@@ -77,15 +101,21 @@
       <!-- Quantity -->
       <div class="col-12">
         <app-input
-          id="quantity"
-          type="text"
-          [spanLabel]="quantityLabel"
-          placeholder="Unlimited Quantity"
-          clickMessage="Infinity"
-          [inputGroup]="true"
-          [hideLabel]="true"
+        [InputComponentData]="{
+                type: 'text',
+                id: 'quantity',
+                label: '',
+                spanLabel: quantityLabel,
+                placeholder: 'Unlimited Quantity',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: 'Infinity',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           (showVariant)="showVariant($event)"
-          vertCLass="col-12"
           #quantity
         >
 
@@ -159,19 +189,39 @@
 >
   <div class="px-3 bg-white pb-3">
     <app-input
-      id="categoryName"
-      [placeholder]="'Enter Category Name' | translate"
-      [errorMessage]="errorMessage | translate"
-      vertCLass="col-12"
+    [InputComponentData]="{
+                type: 'text',
+                id: 'categoryName',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Enter Category Name',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage:  errorMessage | translate,
+                enableFocusBlurTracking: false,
+              }"
       #CategoryName
     >
       <i class="fa-solid fa-text-width"></i>
     </app-input>
     <app-input
-      id="categoryName"
-      [placeholder]="'Enter Category Arabic Name' | translate"
-      [errorMessage]="errorMessage | translate"
-      vertCLass="col-12"
+    [InputComponentData]="{
+                type: 'text',
+                id: 'categoryArabicName',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Enter Category Arabic Nam',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage:  errorArabicrMessage | translate,
+                enableFocusBlurTracking: false,
+              }"
       #CategoryArabicName
     >
       <i class="fa-solid fa-text-width"></i>

@@ -32,11 +32,21 @@
       <span class="small">{{'Product Weight' | translate}}</span>
       <div class="d-flex">
         <app-input
+          [InputComponentData]="{
+                type: 'text',
+                id: 'ProducWeight',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Product Weight',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           class="flex-grow-1"
-          id="ProducWeight"
-          placeholder="Product Weight"
-          [hideLabel]="true"
-          vertCLass="col-12"
           #productWeight
         >
          <i class="fa-solid fa-weight-scale"></i>
@@ -58,11 +68,20 @@
   </div>
   <div class="col-12">
      <app-input
-          [id]="'productCostPrice'"
-          [placeholder]="'Cost Price'"
-          [label]="'Cost Price'"
-          [hideLabel]="false"
-          vertCLass="col-12"
+       [InputComponentData]="{
+                type: 'text',
+                id: 'productCostPrice',
+                label: 'Cost Price',
+                spanLabel: '',
+                placeholder: 'Cost Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #productCostPrice
         >
          <i class="fa-solid fa-money-bill-1-wave"></i>
@@ -72,11 +91,20 @@
     <div class="row gx-2">
       <div class="col-6">
          <app-input
-          [id]="'salePrice'"
-          [placeholder]="'Sale Price'"
-          [hideLabel]="false"
-          [vertCLass]="'col-12'"
-          [label]="'Sale Price'"
+            [InputComponentData]="{
+                type: 'text',
+                id: 'salePrice',
+                label: 'Sale Price',
+                spanLabel: '',
+                placeholder: 'Sale Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #salePrice
         >
          <i class="fa-solid fa-money-bill-1-wave"></i>
@@ -84,12 +112,20 @@
       </div>
          <div class="col-6">
          <app-input
-          [id]="'SaleEndDate'"
-          [placeholder]="'Sale Price end date'"
-          [hideLabel]="false"
-          [vertCLass]="'col-12'"
-          [type]="'Date'"
-            [label]="'Valid till'"
+           [InputComponentData]="{
+                type: 'Date',
+                id: 'SaleEndDate',
+                label: 'Valid till',
+                spanLabel: '',
+                placeholder: 'Sale Price end date',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #salePriceEndDate
         >
         <i class="fa-solid fa-calendar"></i>
@@ -99,11 +135,20 @@
   </div>
     <div class="col-12">
      <app-input
-          [id]="'barcode'"
-          [placeholder]="'Product Barcode'"
-          [label]="'Product Barcode'"
-          [hideLabel]="false"
-          vertCLass="col-12"
+        [InputComponentData]="{
+                type: 'text',
+                id: 'barcode',
+                label: 'Product Barcode',
+                spanLabel: '',
+                placeholder: 'Product Barcode',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
           #barcode
         >
         <i class="fa-solid fa-barcode"></i>

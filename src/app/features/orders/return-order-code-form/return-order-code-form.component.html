@@ -9,12 +9,23 @@
   #addDetailsAlert
 >
 <div class="bg-white p-4">
-<app-input [id]="'returnOrderByCode'"
-[label]="'Enter Order Code' | translate"
-[vertCLass]="'col-12'"
-(input)="clearErrorMessage()"
-[errorMessage]="errorMessage"
-#orderCode>
+<app-input
+   [InputComponentData]="{
+                type: 'text',
+                id: 'returnOrderByCode',
+                label: 'Enter Order Code',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: errorMessage,
+                enableFocusBlurTracking:true,
+              }"
+        (input)="clearErrorMessage()"
+        #orderCode>
 <i class="fa-solid fa-magnifying-glass" ></i>
 </app-input>
 </div>

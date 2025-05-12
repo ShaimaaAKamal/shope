@@ -8,24 +8,54 @@
   (closeChange)="close()"
 >
 <div class="bg-white p-4">
-<app-input [id]="'customerName'"
-[label]="'Customer Name' | translate"
-[vertCLass]="'col-12'"
-[errorMessage]="customerNameError"
+<app-input [InputComponentData]="{
+                type: 'text',
+                id: 'customerName',
+                label: 'Customer Name',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: customerNameError,
+                enableFocusBlurTracking:false,
+              }"
 #customerName>
 <i class="fa-solid fa-signature"></i>
 </app-input>
-<app-input [id]="'customerArabicName'"
-[label]="'Customer Arabic Name' | translate"
-[vertCLass]="'col-12'"
-[errorMessage]="customerArabicNameError"
+<app-input [InputComponentData]="{
+                type: 'text',
+                id: 'customerArabicName',
+                label: 'Customer Arabic Name',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: customerArabicNameError,
+                enableFocusBlurTracking:false,
+              }"
 #customeArabicrName>
 <i class="fa-solid fa-signature"></i>
 </app-input>
-<app-input [id]="'customerPhone'"
-[label]="'Customer Phone' | translate"
-[vertCLass]="'col-12'"
-[errorMessage]="customerPhoneError"
+<app-input InputComponentData]="{
+                type: 'text',
+                id: 'customerPhone',
+                label: 'Customer Phone',
+                spanLabel: '',
+                placeholder: '',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: customerPhoneError,
+                enableFocusBlurTracking:false,
+              }"
 #customerPhone>
 <i class="fa-solid fa-phone-volume"></i>
 </app-input>

@@ -41,9 +41,20 @@
             </div>
             <div class="flex-grow-1 position-relative">
               <app-input
-                placeholder="Variant Value"
-                [hideLabel]="true"
-                vertCLass="col-12"
+                [InputComponentData]="{
+                type: 'text',
+                id: '',
+                label: '',
+                spanLabel: '',
+                placeholder: 'Variant Value',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
                 #variantValue
               >
                 <i class="fa-solid fa-text-width"></i>
