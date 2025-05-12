@@ -148,8 +148,11 @@
 <!-- Add Category Popup -->
 <app-pop-screen
  *ngIf="showCategory"
-  [headerLabel]="'Add New Category'"
-  [btnLabel]="'Add Categrory'"
+     [PopScreenComponentData]="{
+      headerLabel:'Add New Category',
+      btnLabel:'Add Categrory',
+      hideCancalBtn:false
+    }"
   (closeChange)="clearCategoryForm()"
   (doneChange)="createCategory()"
   #addCategory
@@ -179,10 +182,12 @@
 <!-- Alert Message Popup -->
 <app-pop-screen
   *ngIf="showDetailsAlert"
-  [headerLabel]="'Alert' "
-  [btnLabel]="'Accept'"
+     [PopScreenComponentData]="{
+      headerLabel:'Alert',
+      btnLabel:'Accept',
+      hideCancalBtn:true
+    }"
   (doneChange)="controlPopScreen('addDetailsAlert','close')"
-  [hideCancalBtn]="true"
   #addDetailsAlert
 >
   <div class="px-3 bg-white small p-3">

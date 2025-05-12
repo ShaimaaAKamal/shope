@@ -1,10 +1,11 @@
 <app-pop-screen
-  [headerLabel]="'Add Customer' | translate"
-  btnLabel="Done"
+ [PopScreenComponentData]="{
+      headerLabel:'Add Customer',
+      btnLabel:'Done',
+      hideCancalBtn:true
+    }"
   (doneChange)="done()"
   (closeChange)="close()"
-  [hideCancalBtn]="true"
-
 >
 <div class="bg-white p-4">
 <app-input [id]="'customerName'"

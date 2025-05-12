@@ -1,9 +1,11 @@
 <app-pop-screen
-  [headerLabel]="'Return Order' | translate"
-  btnLabel="Done"
+     [PopScreenComponentData]="{
+      headerLabel:'Return Order',
+      btnLabel:'Done',
+      hideCancalBtn:true
+    }"
   (doneChange)="done()"
   (closeChange)="close()"
-  [hideCancalBtn]="true"
   #addDetailsAlert
 >
 <div class="bg-white p-4">

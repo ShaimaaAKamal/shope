@@ -1,6 +1,9 @@
 <app-pop-screen
-  [headerLabel]="'Product Details'"
-  btnLabel="Save Product Details"
+   [PopScreenComponentData]="{
+  headerLabel:'Product Details',
+  btnLabel:'Save Product Details',
+  hideCancalBtn:false
+ }"
   (closeChange)="closeProductPopscreen()"
   (doneChange)="saveProductDetails()"
   #productInfo

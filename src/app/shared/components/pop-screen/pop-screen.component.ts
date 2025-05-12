@@ -1,5 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
+interface PopScreenInterface{
+ headerLabel:string,
+ btnLabel:string,
+ hideCancalBtn:boolean
+}
 @Component({
   selector: 'app-pop-screen',
   standalone: false,
@@ -7,9 +12,11 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
   styleUrl: './pop-screen.component.scss'
 })
 export class PopScreenComponent {
-@Input() headerLabel:string='';
-@Input() btnLabel:string='';
-@Input() hideCancalBtn:boolean=false;
+@Input() PopScreenComponentData:PopScreenInterface={
+  headerLabel:'',
+  btnLabel:'',
+  hideCancalBtn:false
+}
 @Output() doneChange=new EventEmitter<boolean>();
 @Output() closeChange=new EventEmitter<boolean>();
 @ViewChild('popScreen') popScreen!:ElementRef;

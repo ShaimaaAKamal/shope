@@ -1,9 +1,11 @@
 <app-pop-screen
-  headerLabel="Add Product Variant"
-  btnLabel="Add Variant"
+   [PopScreenComponentData]="{
+      headerLabel:'Add Product Variant',
+      btnLabel:'Add Variant',
+      hideCancalBtn:true
+    }"
   (doneChange)="add()"
   (closeChange)="close()"
-  [hideCancalBtn]="true"
   #addDetailsAlert
 >
 <div class="container-fluid bg-white">

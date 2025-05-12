@@ -1,9 +1,11 @@
 <app-pop-screen
-  headerLabel="Product Variants"
-  btnLabel="Save"
+[PopScreenComponentData]="{
+  headerLabel:'Product Variants',
+  btnLabel:'Save',
+  hideCancalBtn:true
+ }"
   (doneChange)="controlVariantsPopupScreen('save')"
   (closeChange)="controlVariantsPopupScreen('close')"
-  [hideCancalBtn]="true"
   #variantsPopScreen
 >
 <div class="variantsContainer bg-white p-3">

@@ -1,9 +1,11 @@
 <app-pop-screen
-  headerLabel="Hold Orders"
-  btnLabel="Done"
+   [PopScreenComponentData]="{
+      headerLabel:'Hold Orders',
+      btnLabel:'Done',
+      hideCancalBtn:true
+    }"
   (doneChange)="done()"
   (closeChange)="done()"
-  [hideCancalBtn]="true"
   #addDetailsAlert
 >
 <div class="p-4 bg-white overflow-scroll" >
