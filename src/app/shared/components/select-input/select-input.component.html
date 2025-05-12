@@ -1,27 +1,20 @@
-  <div class="container-fluid px-0" [class.mb-3]="!vertCLass">
+  <div class="container-fluid px-0" [class.mb-3]="!SelectInputComponentData.vertCLass">
   <div class="row align-items-center gx-2">
-    <div   [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-4 col-xxl-3'" >
-                <label [id]="id" class="form-label small">{{label}}</label>
+    <div   [ngClass]="SelectInputComponentData.vertCLass ? SelectInputComponentData.vertCLass : 'col-12 col-md-4 col-xxl-3'" >
+                <label [id]="SelectInputComponentData.id" class="form-label small">{{SelectInputComponentData.label}}</label>
     </div>
-    <div    [ngClass]="vertCLass ? vertCLass : 'col-12 col-md-8 col-xxl-9'" >
-        <!-- <select class="form-select form-select-sm" [id]="id" [name]="id" (change)="onSelectionChange($event)">
-            <option [value]="noOption" selected>{{noOption | translate}}</option>
-            <option  *ngFor="let option of options"
-            [value]="option[value]"
-            [selected]="selected && option[value] === selected[value]">
-            {{option[prop]}}</option>
-          </select> -->
+    <div    [ngClass]="SelectInputComponentData.vertCLass ? SelectInputComponentData.vertCLass : 'col-12 col-md-8 col-xxl-9'" >
           <ng-select
           class="small "
-          [items]="options"
-          [bindLabel]="prop"
-          [bindValue]="value"
-          [ngModel]="selected?.[value]"
+          [items]="SelectInputComponentData.options"
+          [bindLabel]="SelectInputComponentData.prop"
+          [bindValue]="SelectInputComponentData.value"
+          [ngModel]="SelectInputComponentData.selected?.[SelectInputComponentData.value]"
           [clearable]="false"
           [searchable]="true"
           (change)="onSelectionChange($event)"
           >
-          <ng-option [value]="null">{{ noOption | translate }}</ng-option>
+          <ng-option [value]="null">{{ SelectInputComponentData.noOption | translate }}</ng-option>
         </ng-select>
     </div>
   </div>

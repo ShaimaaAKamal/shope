@@ -1,5 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+interface selectInterface<T extends Record<string, any>>{
+  selected: T | null;
+  label: string,
+  id: string ,
+  options: T[],
+  prop: string,
+  value: string,
+  vertCLass:string,
+  noOption:string,
+}
 @Component({
   selector: 'app-select-input',
   standalone: false,
@@ -7,25 +16,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './select-input.component.scss'
 })
 export class SelectInputComponent<T extends Record<string, any>>{
-  @Input() selected: T | null = null;
-  @Input() label: string = '';
-  @Input() id: string = '';
-  @Input() options: T[] = [];
-  // @Input() prop:keyof T='';
-  // @Input() value:keyof T='';
-  @Input() prop: string = '';
-@Input() value: string = '';
-  @Input() vertCLass:string='';
-  @Input() noOption:string='';
+  @Input() SelectInputComponentData:selectInterface<T>={
+  selected:null,
+   label: '',
+   id:'',
+   options: [],
+   prop:  '',
+   value: '',
+   vertCLass:'',
+  noOption:''
+  }
   @Output() selectedOption: EventEmitter<T> = new EventEmitter<T>();
 
   onSelectionChange(event: any): void {
-    // const value = (event.target as HTMLSelectElement).value;
-    //     const selected = this.options.find((opt: any) => String((opt as any)?.id) === value ||  String((opt as any)?.code) === value);
-    // if (selected) {
-    //   this.selectedOption.emit(selected);
-    // }
    this.selectedOption.emit(event);
-
   }
 }

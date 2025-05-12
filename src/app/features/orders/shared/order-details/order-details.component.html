@@ -49,9 +49,17 @@
   <div class="section_2 section-style rounded rounded-3 h-100 pt-3 px-4 d-flex flex-column">
     <div class="d-flex mb-3  align-items-center  selectCustomerContainer flex-grow-0">
       <app-select-input
-        [label]="'Select Customer' | translate" [id]="'customer'" [noOption]="'Select Customer'"
-        [options]="customers()" (selectedOption)="selectedCustomerEvent($event)"
-        [prop]="isRtl()?'nameAr' :'name'" [value]="'id'" [vertCLass]="'col-12'"   [selected]="selectedCustomer"
+      [SelectInputComponentData]="{
+        selected:selectedCustomer,
+        label: 'Select Customer',
+        id:'customer',
+        options: customers(),
+        prop:  isRtl()?'nameAr' :'name',
+        value: 'id',
+        vertCLass:'col-12',
+        noOption:'Select Customer'
+        }"
+        (selectedOption)="selectedCustomerEvent($event)"
         class="flex-grow-1">
       </app-select-input>
       <button class="btn bg-dark  align-self-end ms-2" (click)="showAddNewCustomerForm()">
