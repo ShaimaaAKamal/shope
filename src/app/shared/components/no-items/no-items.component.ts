@@ -7,11 +7,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './no-items.component.scss'
 })
 export class NoItemsComponent {
-@Input() header:string='';
-@Input() subTitle:string='';
-@Input() BtnName:string='';
-@Input() route:string='';
+@Input() NoItemsComponentData={
+  header:'',
+  subTitle:'',
+  BtnName:'',
+  route:''
+}
 @Output() addNewVar=new EventEmitter<boolean>()
+
 
   AddNew(){
      this.addNewVar.emit(true);

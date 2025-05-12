@@ -1,14 +1,19 @@
-  <div class="d-flex flex-column">
-          <h6 class="mb-1 ">{{header}}</h6>
-          <span class="fw-light fs-medium mb-4">{{subTitle}}</span>
-          <app-site-button [BtnName]="BtnName" [route]="route" *ngIf="route ; else noRoute;">
+        <div class="d-flex flex-column">
+          <h6 class="mb-1 ">{{NoItemsComponentData.header}}</h6>
+          <span class="fw-light fs-medium mb-4">{{NoItemsComponentData.subTitle}}</span>
+          <app-site-button
+           [BtnData]="{BtnName:NoItemsComponentData.BtnName,route:NoItemsComponentData.route,iconDir:''}"
+           *ngIf="NoItemsComponentData.route ; else noRoute;">
+
             <i class="fa-solid fa-plus pe-1"></i>
           </app-site-button>
           <ng-template #noRoute>
                  <div class="spanBtn d-flex text-white px-3 py-2 small align-items-center rounded-3 bg-semi-dark" (click)="AddNew()">
                     <i class="fa-solid fa-plus pe-1"></i>
-                    <span>{{BtnName}}</span>
+                    <span>{{NoItemsComponentData.BtnName}}</span>
                  </div>
           </ng-template>
 
       </div>
+
+

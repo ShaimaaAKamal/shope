@@ -13,13 +13,15 @@
 
     <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': items.length > 0 }">
       <app-no-items
-        [header]="header"
+        [NoItemsComponentData]="{
+            header:header,
+            subTitle:subTitle,
+            BtnName:BtnName,
+            route:''
+        }"
         (addNewVar)="addNew($event)"
-        [subTitle]="subTitle"
-        [BtnName]="BtnName"
         *ngIf="noItems; else ProductTable">
       </app-no-items>
-
       <ng-template #ProductTable>
             <ng-content #name></ng-content>
       </ng-template>

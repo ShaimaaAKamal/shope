@@ -11,14 +11,16 @@
     </app-page-controls>
     </div>
       <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': orders().length > 0 }">
-     <app-no-items
-        [header]="'Orders'"
+           <app-no-items
+        [NoItemsComponentData]="{
+            header:'Orders',
+            subTitle:'Efficiency in every order. Excellence in every delivery.',
+            BtnName:'Add New Order',
+            route:''
+        }"
         (addNewVar)="addNew($event)"
-        [subTitle]="'Efficiency in every order. Excellence in every delivery.'"
-        [BtnName]="'Add New Order'"
         *ngIf="orders().length == 0; else orderContainer">
       </app-no-items>
-
       <ng-template #orderContainer>
         <div class="container-fluid border-bottom mb-2">
            <div class="d-flex align-items-center">
