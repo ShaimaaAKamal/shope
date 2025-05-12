@@ -58,7 +58,10 @@
         </div>
         <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
                      <app-variant-options-values-quantity
-                   [variants]="variants" [variantsDetails]="variantsDetails"
+                     [variantOptionsData]="{
+                      variants:variants,
+                      variantsDetails:variantsDetails
+                     }"
                     (variantDetailsHandled)="variantDetailsHandledFn()">
                    </app-variant-options-values-quantity>
 
