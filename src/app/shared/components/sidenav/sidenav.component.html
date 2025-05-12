@@ -1,12 +1,21 @@
 <div class="sidebar  p-2 d-flex flex-column" [class.collapsed]="isCollapsed" #sideNav>
-  <app-navitem [isCollapsed]="isCollapsed" [navItemName]="'Shopping'"  #logo [classes]="'mb-3  px-3 logo px-2 py-3 '" (click)="toggleSidebar()" class="flex-grow-0">
+   <app-navitem  [NavitemComponentData]="{
+              isCollapsed:isCollapsed,
+                navItemName:'Shopping',
+                classes:'mb-3  px-3 logo px-2 py-3'
+              }"
+    (click)="toggleSidebar()" class="flex-grow-0"   #logo >
    <img src="assets/images/Logo.png" alt="Logo Image" width="20px;"/>
   </app-navitem>
  <div class="flex-grow-1 d-flex flex-column overflow-auto  navOptions" [class.pt-4]="smallScreen">
    <div class="sidenav-section-one pb-3">
    <ul  *ngFor="let navItem of sectionOneNavItems;">
     <li>
-        <app-navitem [isCollapsed]="isCollapsed" [navItemName]="navItem.name"   [classes]="'py-2'">
+           <app-navitem  [NavitemComponentData]="{
+              isCollapsed:isCollapsed,
+                navItemName:navItem.name,
+                classes:'py-2'
+              }">
              <i [ngClass]="navItem.icon"></i>
         </app-navitem>
     </li>
@@ -16,7 +25,11 @@
   <div >
    <ul  *ngFor="let navItem of sectionTwoNavItems;">
     <li >
-        <app-navitem [isCollapsed]="isCollapsed" [navItemName]="navItem.name"   [classes]="'py-2'">
+           <app-navitem  [NavitemComponentData]="{
+              isCollapsed:isCollapsed,
+                navItemName:navItem.name,
+                classes:'py-2'
+              }" >
              <i [ngClass]="navItem.icon"></i>
         </app-navitem>
     </li>

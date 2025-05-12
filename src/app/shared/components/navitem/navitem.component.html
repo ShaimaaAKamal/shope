@@ -1,40 +1,40 @@
 
 <ng-template #content>
   <ng-content></ng-content>
-  <span class="fw-light ps-2" [class.d-none]="isCollapsed"
+  <span class="fw-light ps-2" [class.d-none]="NavitemComponentData.isCollapsed"
 
       >
-    {{ navItemName.split('_').join(' ') | translate }}
+    {{ NavitemComponentData.navItemName.split('_').join(' ') | translate }}
   </span>
 </ng-template>
 
-<ng-container *ngIf="navItemName === 'Shopping'">
+<ng-container *ngIf="NavitemComponentData.navItemName === 'Shopping'">
   <div class="d-flex align-items-center rounded rounded-4 hover-bg"
-       [ngClass]="classes"
-       [class.justify-content-center]="isCollapsed"
-       [title]="navItemName | translate"
+       [ngClass]="NavitemComponentData.classes"
+       [class.justify-content-center]="NavitemComponentData.isCollapsed"
+       [title]="NavitemComponentData.navItemName | translate"
        #shopping>
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
 </ng-container>
 
-<ng-container *ngIf="['Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(navItemName)">
+<ng-container *ngIf="['Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(NavitemComponentData.navItemName)">
   <div class="d-flex align-items-center rounded px-3 mb-2 rounded-4 hover-bg"
-       [ngClass]="classes"
-       [class.justify-content-center]="isCollapsed"
-       [title]="navItemName | translate"
-       (click)="handleSpecialClick(navItemName)">
+       [ngClass]="NavitemComponentData.classes"
+       [class.justify-content-center]="NavitemComponentData.isCollapsed"
+       [title]="NavitemComponentData.navItemName | translate"
+       (click)="handleSpecialClick(NavitemComponentData.navItemName)">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
 </ng-container>
 
-<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(navItemName)">
+<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(NavitemComponentData.navItemName)">
   <div class="d-flex align-items-center px-3 mb-2 rounded rounded-4 hover-bg"
-       [ngClass]="classes"
-       [class.justify-content-center]="isCollapsed"
-       [routerLink]="navItemName"
+       [ngClass]="NavitemComponentData.classes"
+       [class.justify-content-center]="NavitemComponentData.isCollapsed"
+       [routerLink]="NavitemComponentData.navItemName"
        routerLinkActive="router-link-active"
-       [title]="navItemName | translate">
+       [title]="NavitemComponentData.navItemName | translate">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </div>
 </ng-container>

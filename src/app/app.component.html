@@ -2,7 +2,11 @@
 <div class="container-fluid  px-0">
    <div class="bg-dark p-3 pe-4 w-100  d-flex d-md-none align-items-center justify-content-between">
     <i class="fa-solid ps-3 fa-bars text-white fa-lg" (click)="showSideNav()"></i>
-    <app-navitem  [isCollapsed]="true" [navItemName]="'Shopping'" [classes]="'text-white pe-1 logo'" >
+     <app-navitem    [NavitemComponentData]="{
+              isCollapsed:true,
+                navItemName:'Shopping',
+                classes:'text-white pe-1 logo'
+              }" >
             <img src="assets/images/Logo.png" alt="Logo Image" width="20px;"/>
     </app-navitem >
   </div>

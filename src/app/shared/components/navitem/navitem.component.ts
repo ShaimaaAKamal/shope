@@ -3,6 +3,11 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../Services/Language/language.service';
 
+interface NavitemInterface{
+  isCollapsed:boolean,
+  navItemName:string,
+  classes:string
+}
 @Component({
   selector: 'app-navitem',
   standalone: false,
@@ -10,9 +15,11 @@ import { LanguageService } from '../../../Services/Language/language.service';
   styleUrl: './navitem.component.scss'
 })
 export class NavitemComponent {
-@Input() isCollapsed:boolean=false;
-@Input() navItemName:string='';
-@Input() classes:string='';
+@Input() NavitemComponentData:NavitemInterface={
+ isCollapsed:false,
+  navItemName:'',
+  classes:''
+}
 @ViewChild('shopping') shopping!:ElementRef;
 
 constructor(private __Router:Router, private __LanguageService:LanguageService){}
