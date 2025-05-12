@@ -17,9 +17,9 @@ export class ProductsComponent {
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
   private apiError=this.productService.error;
+  
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
-
   products: Signal<Product[]>;
   newProduct!: Product;
   type = this.productService.type;

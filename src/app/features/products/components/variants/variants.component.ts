@@ -12,7 +12,6 @@ import { Variant } from '../../../../Interfaces/variant';
 export class VariantsComponent {
 private __ProductService=inject(ProductService);
 product=this.__ProductService.currentProduct;
-
 displayVariant:boolean=false;
 variantsDetails!:any[];
 
@@ -20,7 +19,6 @@ variantsDetails!:any[];
 @Output() variantDetailsHandled = new EventEmitter<void>();
 
 @Input() variants!:Variant[];
-
 
 ngOnInit(): void {
 this.variants=this.product().variants ?? [];

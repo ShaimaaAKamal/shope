@@ -43,7 +43,11 @@
           data-bs-parent="#accordionExample">
           <div class="accordion-body">
                  <app-variant-value-details
-                 [displayedVariants]="displayedVariants" [index]="rowIndex"
+                 [VariantValueDetailsComponentData]="{
+                  quantity:'0',
+                  displayedVariants:displayedVariants,
+                  index:rowIndex
+                }"
                  (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
           </div>
         </div>
