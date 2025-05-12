@@ -1,10 +1,10 @@
 <div class="controls d-flex  justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <span class="me-2" *ngIf="type != 'product'">{{'All' | translate}}</span>
+            <span class="me-2" *ngIf="PageControlsComponentData.type != 'product'">{{'All' | translate}}</span>
             <span (click)="AddNew()"><i class="fa-solid fa-plus"></i></span>
         </div>
         <div class="d-flex align-items-center">
-          <span class="me-2" *ngIf="type != 'product'"><i class="fa-solid fa-filter"></i></span>
+          <span class="me-2" *ngIf="PageControlsComponentData.type != 'product'"><i class="fa-solid fa-filter"></i></span>
           <span (click)="sort()"><i class="fa-solid fa-arrow-up-a-z"></i></span>
           <span class="ms-2" (click)="deleteSelected()"><i class="fa-solid fa-trash"></i></span>
         </div>

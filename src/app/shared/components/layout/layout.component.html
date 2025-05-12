@@ -1,11 +1,15 @@
 <div class="container-fluid p-4 vh-100 overflow-auto d-flex flex-column">
   <div class="row flex-column flex-grow-1">
     <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
-      <app-page-controls
-        [items]="LayoutComponentDate.items"
-        [sortKey]="LayoutComponentDate.sortKey"
-        [type]="'product'"
-        (addNewVar)="addNew($event)"
+
+     <app-page-controls
+         [PageControlsComponentData]="{
+            route: '',
+            type:'product' ,
+            items: LayoutComponentDate.items,
+            sortKey: LayoutComponentDate.sortKey
+            }"
+          (addNewVar)="addNew($event)"
          (displayedItems)="handleDispalyedItems($event)"
          (deleteEvent)="handleDelete($event)">
       </app-page-controls>

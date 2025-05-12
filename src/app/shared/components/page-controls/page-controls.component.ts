@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
+interface PageControlsInterface {
+  route: string;
+  type: string;
+  items: any[];
+  sortKey: string;
+}
 @Component({
   selector: 'app-page-controls',
   standalone: false,
@@ -8,10 +14,12 @@ import { Router } from '@angular/router';
   styleUrl: './page-controls.component.scss'
 })
 export class PageControlsComponent {
- @Input()  route:string='';
-  @Input() type:string='';
-  @Input() items:any[]=[];
-  @Input()  sortKey:string='';
+  @Input() PageControlsComponentData:PageControlsInterface={
+  route: '',
+  type: '',
+  items: [],
+  sortKey: ''
+  }
   @Output() displayedItems=new EventEmitter<any[]>()
   @Output() deleteEvent=new EventEmitter<boolean>()
   @Output() addNewVar=new EventEmitter<boolean>()
@@ -19,20 +27,17 @@ export class PageControlsComponent {
   constructor(private __Router:Router){}
 
 AddNew(){
-    switch(this.type){
+    switch(this.PageControlsComponentData.type){
       case 'product': this.addNewVar.emit(true); break;
-      case 'order':   this.__Router.navigateByUrl(this.route); break;
+      case 'order':   this.__Router.navigateByUrl(this.PageControlsComponentData.route); break;
       default:break;
 
     }
-    // if(this.type == 'product' )
-    // this.addNewVar.emit(true);
-    // this.__Router.navigateByUrl(this.route);
   }
 
 sort(){
-this.items.sort((a, b) => a[this.sortKey] - b[this.sortKey]);
-this.displayedItems.emit(this.items);
+this.PageControlsComponentData.items.sort((a, b) => a[this.PageControlsComponentData.sortKey] - b[this.PageControlsComponentData.sortKey]);
+this.displayedItems.emit(this.PageControlsComponentData.items);
 }
 deleteSelected(){
   this.deleteEvent.emit(true)

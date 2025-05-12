@@ -1,12 +1,14 @@
 <div class="container-fluid p-4 vh-100 overflow-auto d-flex flex-column">
    <div class="row flex-column flex-grow-1">
     <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
-     <app-page-controls
-        [items]="orders()"
-        [sortKey]="'status'"
-        [type]="'order'"
-        [route]="'Orders/create'"
-        (displayedItems)="handleDispalyedItems($event)"
+       <app-page-controls
+        [PageControlsComponentData]="{
+            route: 'Orders/create',
+            type:'order' ,
+            items:orders(),
+            sortKey: 'grossTotal'
+            }"
+         (displayedItems)="handleDispalyedItems($event)"
          (deleteEvent)="handleDelete($event)">
     </app-page-controls>
     </div>
