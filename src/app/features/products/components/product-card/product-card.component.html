@@ -96,14 +96,18 @@
       <!-- Category Dropdown -->
       <div class="col-12">
         <div class="d-flex border rounded">
-
-          <app-dropdown
-          class="flex-grow-1"
-          [dropdownSelection]="dropdownSelection"
-          [optionsArray]="categories()"
-          [key]="isRtl()?'nameAr':'name'"
+        <app-dropdown
+             class="flex-grow-1"
+            [DropdownComponentData]="{
+                  title:'',
+                  dropdownSelection:dropdownSelection,
+                  optionsArray:categories(),
+                  key:isRtl()?'nameAr':'name',
+                  noBorder:false
+            }"
           (changeSelect)="chooseCategory($event)"
-          ></app-dropdown>
+          >
+        </app-dropdown>
           <div>
               <span class="bg-second fs-verySmall p-2" (click)="controlPopScreen('category')">
               {{'Add new' | translate}}

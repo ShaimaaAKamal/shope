@@ -7,14 +7,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './dropdown.component.scss'
 })
 export class DropdownComponent {
-@Input() title:string='';
-@Input() dropdownSelection:string='';
-@Input() optionsArray:any[]=[];
-@Input() key:string='';
-@Input() noBorder:boolean=false;
+@Input() DropdownComponentData:{
+   title:string,dropdownSelection:string,optionsArray:any[],key:string,noBorder:boolean}={
+  title:'',
+  dropdownSelection:'',
+  optionsArray:[],
+  key:'',
+  noBorder:false
+};
 @Output() changeSelect=new EventEmitter<any>();
 selectOption(option:any){
-  this.dropdownSelection=option[this.key] || option;
+  this.DropdownComponentData.dropdownSelection=option[this.DropdownComponentData.key] || option;
   this.changeSelect.emit(option);
 }
 }

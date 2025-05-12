@@ -12,14 +12,17 @@
     <span class="small text-danger" *ngIf="errorMessage">Check your details or internet connection</span>
   </div> -->
   <div class="col-12">
-  <app-dropdown
-          [title]="'Require Shipping/Delivery?'"
-          [dropdownSelection]="dropdownSelection"
-          [optionsArray]="shippingOptions"
-          [key]="'title'"
+<app-dropdown
+            [DropdownComponentData]="{
+                  title:'Require Shipping/Delivery?',
+                  dropdownSelection:dropdownSelection,
+                  optionsArray:shippingOptions,
+                  key:'title',
+                  noBorder:false
+            }"
           (changeSelect)="changeSelect($event,'requireShipping')"
           >
-  </app-dropdown>
+        </app-dropdown>
   </div>
   <div class="col-12">
     <div class="d-fles flex-column">
@@ -35,12 +38,15 @@
         >
          <i class="fa-solid fa-weight-scale"></i>
         </app-input>
-            <app-dropdown
+      <app-dropdown
             class="ms-1 bg-second rounded-1"
-            [noBorder]="true"
-          [dropdownSelection]="weightDropDownSelection"
-          [optionsArray]="weightOptions"
-          [key]="'title'"
+            [DropdownComponentData]="{
+                  title:'',
+                  dropdownSelection:weightDropDownSelection,
+                  optionsArray:weightOptions,
+                  key:'title',
+                  noBorder:true
+            }"
           (changeSelect)="changeSelect($event,'weightUnit')"
           >
         </app-dropdown>

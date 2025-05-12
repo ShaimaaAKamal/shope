@@ -2,11 +2,15 @@
    <div class="row g-2 align-items-start">
      <div class="col-lg-6 ">
          <div class="border rounded-1 h-100">
-          <app-dropdown
-          [dropdownSelection]="variantSelection"
-          [optionsArray]="preSetVariants()"
-          [key]="'name'"
-          (changeSelect)="chooseVariantName($event)"
+             <app-dropdown
+            [DropdownComponentData]="{
+                  title:'',
+                  dropdownSelection:variantSelection,
+                  optionsArray:preSetVariants(),
+                  key:'name',
+                  noBorder:false
+            }"
+           (changeSelect)="chooseVariantName($event)"
           >
             <i class="fa-solid fa-clipboard-check fa-sm text-secondary pe-2"></i>
         </app-dropdown>
@@ -15,9 +19,13 @@
        <div class="col-lg-6 ">
          <div class="border rounded-1 h-100">
             <app-dropdown
-          [dropdownSelection]="variantSelectValue"
-          [optionsArray]="variantValues"
-          [key]="'name'"
+            [DropdownComponentData]="{
+                  title:'',
+                  dropdownSelection:variantSelectValue,
+                  optionsArray:variantValues,
+                  key:'name',
+                  noBorder:false
+            }"
           (changeSelect)="chooseOption($event)"
           >
             <i class="fa-solid fa-clipboard-check fa-sm text-secondary pe-2"></i>
