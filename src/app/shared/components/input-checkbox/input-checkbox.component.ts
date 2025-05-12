@@ -7,9 +7,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './input-checkbox.component.scss'
 })
 export class InputCheckboxComponent {
-@Input() value:string='';
-@Input() id:string='';
-@Input() label:string='';
+@Input() InputCheckboxComponentData={
+  value:'',
+  id:'',
+  label:''
+}
 @Output() checked=new EventEmitter<any>();
 
 onCheckboxChange($event:any){

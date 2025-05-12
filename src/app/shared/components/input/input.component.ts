@@ -18,6 +18,7 @@ export class InputComponent {
 @Input() inputGroup:boolean=false;
 @Input() clickMessage:string='';
 @Input() errorMessage:string='';
+@Input() enableFocusBlurTracking=false
 
 @ViewChild('inputRef') inputElement!: ElementRef;
 @ViewChild('inputRef2') groupInputElement!: ElementRef;
@@ -26,11 +27,10 @@ export class InputComponent {
  @Output() blur = new EventEmitter<string>();
 
  @Output() showVariant = new EventEmitter<boolean>();
-@Input() enableFocusBlurTracking=false
 hideIconVar:boolean=false;
 InputQuantity:number=0;
 
-  onFocus(event:any) {
+onFocus(event:any) {
     this.focus.emit(event.target.id);
   }
 

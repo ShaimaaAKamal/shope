@@ -24,7 +24,8 @@
       <ng-template #orderContainer>
         <div class="container-fluid border-bottom mb-2">
            <div class="d-flex align-items-center">
-          <app-input-checkbox  [value]="'checkAll'" [id]="'checkAll'"></app-input-checkbox>
+               <app-input-checkbox   [InputCheckboxComponentData]="{ value:'checkAll',  id:'checkAll', label:''}">
+              </app-input-checkbox>
             <div class="row align-items-center flex-grow-1">
             <div class="col-8 col-md-5 col-lg-7 col-xl-8 text-start">
               <span class="ps-4">Client Info</span>
