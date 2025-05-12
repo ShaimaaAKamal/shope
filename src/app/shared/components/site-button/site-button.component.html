@@ -1,6 +1,6 @@
 <button
 class="btn bg-semi-dark fs-medium text-light d-flex align-items-center"
-[routerLink]="route"  [class.flex-row-reverse]="iconDir=='last'">
+[routerLink]="BtnData.route"  [class.flex-row-reverse]="BtnData.iconDir=='last'">
 <ng-content #name></ng-content>
-<span>{{BtnName | translate}}</span>
+<span>{{BtnData.BtnName | translate}}</span>
 </button>

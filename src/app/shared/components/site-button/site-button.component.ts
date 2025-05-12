@@ -7,7 +7,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './site-button.component.scss'
 })
 export class SiteButtonComponent {
-@Input() BtnName:string='';
-@Input() route:string='';
-@Input() iconDir:string='';
+@Input() BtnData={
+  BtnName:'',
+  route:'',
+  iconDir:''
+}
 }
