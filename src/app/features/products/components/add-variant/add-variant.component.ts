@@ -13,7 +13,7 @@ import { CommonService } from '../../../../Services/CommonService/common.service
 export class AddVariantComponent {
   private __ProductService=inject(ProductService);
   private __LanguageService=inject(LanguageService);
- private __CommonService=inject(CommonService);
+  private __CommonService=inject(CommonService);
   isRtl=this.__LanguageService.rtlClassSignal;
   preSetVariants=this.__ProductService.variantOptions;
   defaultSelection =  this.preSetVariants().filter((option) => option.name === 'size')[0]

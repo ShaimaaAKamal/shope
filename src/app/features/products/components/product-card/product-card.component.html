@@ -250,8 +250,12 @@
 
 
 <!-- product variant pop screen -->
-<app-variants *ngIf="showVariantPopScreen"
+<!-- <app-variants *ngIf="showVariantPopScreen"
  [variants]="variants"
+ (controlVariantsPopup)="controlVariantsPopup($event)"
+ (variantDetailsHandled)="variantDetailsHandled()"
+   #variantsPopScreen></app-variants> -->
+<app-variants *ngIf="showVariantPopScreen"
  (controlVariantsPopup)="controlVariantsPopup($event)"
  (variantDetailsHandled)="variantDetailsHandled()"
    #variantsPopScreen></app-variants>

@@ -10,13 +10,13 @@
 >
 <div class="variantsContainer bg-white p-3">
        <span class=" small">{{'Product Variants' | translate}}</span>
-        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="!displayVariant && variants.length == 0" >
+        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="!displayVariant() && localVariants().length == 0" >
           <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
           <span class="small">{{'Add Options' | translate}}</span>
         </div>
-          <div class="variants mb-3" *ngIf="variants.length > 0">
+          <div class="variants mb-3" *ngIf="localVariants().length > 0">
           <div class="variantContainer">
-            <div *ngFor="let variant of variants; let index=index;">
+            <div *ngFor="let variant of localVariants(); let index=index;">
             <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0">
                  <div class="d-flex align-items-center  flex-grow-1">
                   <span class="small pe-3">{{variant.name | translate |titlecase}}:</span>
@@ -52,14 +52,14 @@
             </div>
           </div>
         </div>
-        <div *ngIf="displayVariant" class="border p-3 rounded-3">
+        <div *ngIf="displayVariant()" class="border p-3 rounded-3">
             <app-add-variant (variants)="setProductVariants($event)"
             ></app-add-variant>
         </div>
-        <div class="variantValuesQuantityContainer mt-3" *ngIf="variants.length > 0">
+        <div class="variantValuesQuantityContainer mt-3" *ngIf="localVariants().length > 0">
                      <app-variant-options-values-quantity
                      [variantOptionsData]="{
-                      variants:variants,
+                      variants:localVariants(),
                       variantsDetails:variantsDetails
                      }"
                     (variantDetailsHandled)="variantDetailsHandledFn()">
