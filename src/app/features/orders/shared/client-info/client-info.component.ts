@@ -2,6 +2,12 @@ import { Component, effect, EventEmitter, Input, Output, Signal } from '@angular
 import { Order } from '../../../../Interfaces/order';
 import { LanguageService } from '../../../../Services/Language/language.service';
 
+ interface OrderInputInterface {
+  order: Order;
+  additionalInfo: string;
+  flexGrow?: boolean;
+}
+
 @Component({
   selector: 'app-client-info',
   standalone: false,
@@ -9,9 +15,12 @@ import { LanguageService } from '../../../../Services/Language/language.service'
   styleUrl: './client-info.component.scss'
 })
 export class ClientInfoComponent {
-@Input() order!:Order;
-@Input() additionalInfo!:string;
-@Input() flexGrow:boolean=false;
+
+  @Input() ClientInfoData: OrderInputInterface={
+  order: {} as Order,
+  additionalInfo: '',
+  flexGrow: false,
+};
 personImage:string='person.jpg';
 isRtl!:Signal<boolean>;
 customerName:string='';
@@ -23,10 +32,10 @@ constructor(private __LanguageService:LanguageService){
     });
 }
 ngOnInit(): void {
-   this.personImage=this.order.customer.image ?? 'person.jpg';
+   this.personImage=this.ClientInfoData.order.customer.image ?? 'person.jpg';
 }
 getCustomerName(){
-    this.customerName= this.isRtl() ? this.order.customer.nameAr : this.order.customer.name;
+    this.customerName= this.isRtl() ? this.ClientInfoData.order.customer.nameAr : this.ClientInfoData.order.customer.name;
 }
 
 }

@@ -5,7 +5,13 @@
      </app-input-checkbox>
   <div class="row align-items-center flex-grow-1" (click)="showOrder(order.id)">
     <div class="col-8 col-md-6 col-lg-7 col-xl-8  text-start">
-       <app-client-info [order]=order [additionalInfo]="order.code" [flexGrow]="true" (checkedItemCode)="getOrderCode($event)">
+       <app-client-info
+       [ClientInfoData]="{
+        order: order,
+        additionalInfo: order.code,
+        flexGrow: true,
+      }"
+      (checkedItemCode)="getOrderCode($event)">
           <span class="small d-flex align-items-center  text-secondary">
         <i
             class="fa fa-circle fs-xxs pe-1"
