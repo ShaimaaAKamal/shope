@@ -71,11 +71,14 @@
 
        <div class="col-12">
         <app-payment-buttons
-         [order]="order"
-         [inputMap]="inputMap"
+        [PaymentButtonsData] ="{
+        getPaidAmount:getPaidAmount.bind(this),
+        inputMap: inputMap,
+        order: order,
+      }"
         (mustBePaid)="setMustbePaid($event)"
         (clearCustomer)="clearCustomerFn()"
-        [getPaidAmount]="getPaidAmount.bind(this)"></app-payment-buttons>
+        ></app-payment-buttons>
       </div>
     </div>
   </div>
