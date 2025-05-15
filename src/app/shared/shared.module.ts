@@ -1,8 +1,5 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { NavitemComponent } from './components/navitem/navitem.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { NavSalesPersonComponent } from './components/nav-sales-person/nav-sales-person.component';
 import { InputComponent } from './components/input/input.component';
 import { SelectInputComponent } from './components/select-input/select-input.component';
 import { QuantityControlComponent } from './components/quantity-control/quantity-control.component';
@@ -25,9 +22,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
-    NavitemComponent,
-    SidenavComponent,
-    NavSalesPersonComponent,
     InputComponent,
     SelectInputComponent,
     QuantityControlComponent,
@@ -51,9 +45,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ColorPickerModule
   ],
   exports:[
-        NavitemComponent,
-        SidenavComponent,
-        NavSalesPersonComponent,
          InputComponent,
         SelectInputComponent,
         QuantityControlComponent,

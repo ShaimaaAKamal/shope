@@ -1,8 +1,7 @@
-import { Component, computed, effect, ElementRef, HostListener, signal, Signal, ViewChild } from '@angular/core';
-import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
-
+import { Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
   import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from './Services/Language/language.service';
+import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-root',

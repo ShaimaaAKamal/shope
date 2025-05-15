@@ -14,6 +14,10 @@ import { provideHttpClient } from '@angular/common/http';
 import localeAr from '@angular/common/locales/ar';
 import { registerLocaleData } from '@angular/common';
 
+import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
+import { NavSalesPersonComponent } from './components/sideNavComponents/nav-sales-person/nav-sales-person.component';
+import { NavitemComponent } from './components/sideNavComponents/navitem/navitem.component';
+
 registerLocaleData(localeAr);
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -22,6 +26,10 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    SidenavComponent,
+    NavitemComponent,
+    NavSalesPersonComponent,
+
   ],
   imports: [
     BrowserModule,
