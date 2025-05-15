@@ -1,7 +1,11 @@
-import { Component, inject, Input, Signal } from '@angular/core';
+import { Component, inject, Input, signal, Signal } from '@angular/core';
 import { Product } from '../../../../Interfaces/product';
 import { OrderService } from '../../../../Services/order/order.service';
 
+ interface orderProductsInterface {
+  isRtl: Signal<boolean>;
+  displayQtySection: boolean;
+}
 @Component({
   selector: 'app-order-products',
   standalone: false,
@@ -9,8 +13,11 @@ import { OrderService } from '../../../../Services/order/order.service';
   styleUrl: './order-products.component.scss'
 })
 export class OrderProductsComponent {
- @Input() isRtl!:Signal<boolean>;
- @Input() displayQtySection:boolean=true;
+
+  @Input() OrderProductsData: orderProductsInterface = {
+  isRtl: signal(false),
+  displayQtySection: true,
+};
  private __OrderService=inject(OrderService);
  currency:string='SAR';
  products= this.__OrderService.orderProducts;
@@ -29,6 +36,6 @@ getProductQuantity(product:Product){
   return Number(product.quantity);
 }
 getOrderName(product:Product){
-return this.isRtl()?product.nameAr:product.name;
+return this.OrderProductsData.isRtl()?product.nameAr:product.name;
 }
 }

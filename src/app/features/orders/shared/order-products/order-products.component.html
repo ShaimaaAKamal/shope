@@ -2,9 +2,9 @@
  <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row justify-content-between align-items-sm-center  align-items-xl-center  align-items-lg-start   border-bottom p-3">
    <div class="d-flex align-item-center ">
    <h6 class="mb-0 small fw-bold">{{'Order Products' | translate}}</h6>
-   <span class="badge bg-semi-dark ms-2 " *ngIf="displayQtySection">{{'New' | translate}}</span>
+   <span class="badge bg-semi-dark ms-2 " *ngIf="OrderProductsData.displayQtySection">{{'New' | translate}}</span>
   </div>
-  <div class="qty small d-flex align-items-center" *ngIf="displayQtySection">
+  <div class="qty small d-flex align-items-center" *ngIf="OrderProductsData.displayQtySection">
     <div class="pe-2"><span>{{'Items No' | translate }}: </span> <span>{{products().length}}</span></div>
     <div><span>{{'Total Qty' | translate}}: </span> <span>{{getTotalQuantity()}}</span></div>
   </div>

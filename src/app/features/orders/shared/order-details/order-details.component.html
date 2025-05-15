@@ -67,7 +67,12 @@
       </div>
     </div>
     <div class="flex-grow-1 pb-3" style="min-height: 0;">
-      <app-order-products [isRtl]="isRtl"></app-order-products>
+      <app-order-products 
+       [OrderProductsData] = "{
+        isRtl: isRtl,
+        displayQtySection: true,
+      }"
+      ></app-order-products>
     </div>
     <div class="flex-grow-0 mt-3 border-top">
       <app-summary></app-summary>

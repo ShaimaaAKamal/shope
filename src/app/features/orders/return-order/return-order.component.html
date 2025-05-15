@@ -3,7 +3,13 @@
   <div class="col-12  col-lg flex-grow-1 py-3" style="height: 100vh;">
   <div class="d-flex flex-column section-style rounded rounded-3 px-4 py-2" style="height: 100%;">
     <div class="flex-grow-1 pb-3" style="min-height: 0;">
-      <app-order-products [isRtl]="isRtl" [displayQtySection]="false"></app-order-products>
+
+        <app-order-products
+       [OrderProductsData] = "{
+        isRtl: isRtl,
+        displayQtySection: false,
+      }"
+      ></app-order-products>
     </div>
 
   </div>
