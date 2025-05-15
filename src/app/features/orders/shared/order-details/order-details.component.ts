@@ -8,6 +8,10 @@ import { ProductService } from '../../../../Services/Product/product.service';
 import { OrderService } from '../../../../Services/order/order.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 
+interface OrderInputs {
+  order: Order | null;
+  selectedCustomer: Customer;
+}
 @Component({
   selector: 'app-order-details',
   standalone: false,
@@ -19,8 +23,14 @@ export class OrderDetailsComponent {
 @ViewChild('searchInputByName') searchInputByName!: InputComponent;
 @ViewChild('searchInputByBarcode') searchInputByBarcode!: InputComponent;
 
-@Input() order:Order|null=null;
-@Input()selectedCustomer:Customer={name:'',nameAr:'' , id:-1};
+@Input() OrderDetailsData: OrderInputs = {
+  order: null,
+  selectedCustomer: {
+    id: -1,
+    name: '',
+    nameAr: ''
+  }
+};
 
 isRtl!:Signal<boolean>;
 customers!:Signal<Customer[]>;
@@ -36,11 +46,11 @@ constructor(private __CustomerService:CustomerService
 
 ngOnInit(): void {
  this.customers=this.__CustomerService.customers;
- if(this.selectedCustomer) this.__OrderService.setInvoiveCustomer(this.selectedCustomer);
+ if(this.OrderDetailsData.selectedCustomer) this.__OrderService.setInvoiveCustomer(this.OrderDetailsData.selectedCustomer);
 }
 
 selectedCustomerEvent(customer:Customer){
-  this.selectedCustomer=customer;
+  this.OrderDetailsData.selectedCustomer=customer;
   this.__OrderService.setInvoiveCustomer(customer);
 }
 
@@ -87,7 +97,7 @@ closeCustomerForm(){
     this.addNewCustomer=false ;
 }
 clearCustomerFn(){
-  this.selectedCustomer={name:'',nameAr:'' , id:-1};
-  this.__OrderService.setInvoiveCustomer(this.selectedCustomer);
+  this.OrderDetailsData.selectedCustomer={name:'',nameAr:'' , id:-1};
+  this.__OrderService.setInvoiveCustomer(this.OrderDetailsData.selectedCustomer);
 }
 }

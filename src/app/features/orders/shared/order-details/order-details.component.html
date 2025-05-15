@@ -79,7 +79,7 @@
     <div class="d-flex mb-3  align-items-center  selectCustomerContainer flex-grow-0">
       <app-select-input
       [SelectInputComponentData]="{
-        selected:selectedCustomer,
+        selected:OrderDetailsData.selectedCustomer,
         label: 'Select Customer',
         id:'customer',
         options: customers(),
@@ -97,7 +97,7 @@
     </div>
     <div class="flex-grow-1 overflow-auto" style="min-height: 0;">
       <div class="d-flex flex-column h-100">
-        <app-home-payment class="flex-grow-1 h-100" [order]="order" (clearCustomer)="clearCustomerFn()"></app-home-payment>
+        <app-home-payment class="flex-grow-1 h-100" [order]="OrderDetailsData.order" (clearCustomer)="clearCustomerFn()"></app-home-payment>
       </div>
     </div>
 
