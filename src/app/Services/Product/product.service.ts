@@ -9,7 +9,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ProductService {
-  // products = signal<Product[]>([]);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
@@ -21,7 +20,7 @@ export class ProductService {
   currentProduct = signal<Product>(this.getEmptyProduct());
 
 
-  private apiUrl = 'http://localhost:3000/products'; // Replace with your API endpoint
+  private apiUrl = 'http://localhost:3000/products';
 
   // Signals for state management
   private productsSignal = signal<Product[]>([]);

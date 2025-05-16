@@ -362,7 +362,7 @@ export class ProductCardComponent {
   @ViewChild('quantity') productQuantityInput!: InputComponent;
   @ViewChild('productInfo') productInfo!: PopScreenComponent;
   @ViewChild('variantsPopScreen') variantsPopScreen!: PopScreenComponent;
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  // @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   // Inputs
   @Input() product!: Product;
@@ -459,10 +459,10 @@ updateQuantityLabel(): void {
 
   // Product Functions
   displayProductInfo(): void {
-  if (!this.productTitleInput || !this.productArabicTitleInput || !this.productPriceInput || !this.productQuantityInput) {
-    console.warn('Input components are not available yet');
-    return;
-  }
+  // if (!this.productTitleInput || !this.productArabicTitleInput || !this.productPriceInput || !this.productQuantityInput) {
+  //   console.warn('Input components are not available yet');
+  //   return;
+  // }
 
   const { name, price, quantity ,nameAr} = this.currentProduct() ?? {};
   this.productTitleInput.value = name ?? '';

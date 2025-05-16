@@ -33,15 +33,20 @@ private __TranslateService: TranslateService,
 private __CommonService:CommonService) {
   const nav = this.__Router.getCurrentNavigation();
   const data = nav?.extras?.state;
-  this.order = data?.['order'];
+  this.order = {...data?.['order']};
 
   if(this.order && this.order.status == 'hold')
   {
     this.__ToastingMessagesService.showToast("This is a hold order",'error');
     this.__Router.navigateByUrl('Orders');
   }
-  else  if(this.order && this.order.hasARetrun )
+   else if(this.order && this.order.status == 'return')
   {
+    this.__ToastingMessagesService.showToast("This is a return order",'error');
+    this.__Router.navigateByUrl('Orders');
+  }
+  else  if(this.order && this.order.hasARetrun )
+  {  console.log('in side if', this.order);
     this.__ToastingMessagesService.showToast("This order has already been rerurned before",'error');
     this.__Router.navigateByUrl('Orders');
   }
@@ -61,22 +66,47 @@ returnOrder(){
   }
   else{
     const valid=this.validateReturnOrder(this.__OrderService.orderProducts());
+    console.log('valid',valid);
     if(valid){
+      console.log('in valid');
        this.order.hasARetrun=true;
-       const result=this.__OrderService.updateOrderHasReturn(this.order);
-       if(result.status)
-      {
-        const code=this.__CommonService.generate10CharCode();
-        const returnOrder=this.__OrderService.buildOrder(code,0,'return');
-        const result=this.__OrderService.addNewOrder(returnOrder);
-        this.__ToastingMessagesService.showToast(result.message, result.status ? 'success' : 'error');
+      //  const result=this.__OrderService.updateOrderHasReturn(this.order);
+        const result$=this.__OrderService.updateOrder(this.order);
+  result$.subscribe((result) => {
+    console.log('i result');
+  if (result.status) {
+    const code = this.__CommonService.generate10CharCode();
+    const returnOrder = this.__OrderService.buildOrder(this.order, code, 0, 'return');
+
+    this.__OrderService.addNewOrder(returnOrder).subscribe((addResult) => {
+      console.log('addResult',addResult);
+      this.__ToastingMessagesService.showToast(addResult.message, addResult.status ? 'success' : 'error');
+      if (addResult.status) {
         this.__Router.navigateByUrl('Orders/create');
       }
+    });
+  } else {
+    this.__ToastingMessagesService.showToast(result.message, 'error');
+  }
+});
+
+//        if(result.status)
+//       {
+//         const code=this.__CommonService.generate10CharCode();
+//         const returnOrder=this.__OrderService.buildOrder(this.order,code,0,'return');
+//         // const result=this.__OrderService.addNewOrder(returnOrder);
+//         // this.__ToastingMessagesService.showToast(result.message, result.status ? 'success' : 'error');
+//         this.__OrderService.addNewOrder(returnOrder).subscribe((result) => {
+//            this.__ToastingMessagesService.showToast(result.message, result.status ? 'success' : 'error');
+// });
+//         this.__Router.navigateByUrl('Orders/create');
+//       }
     }
   }
 }
 
 validateReturnOrder(newReturnProducts:any): boolean {
+  console.log(this.order);
   if (this.order.hasARetrun) {
       this.__ToastingMessagesService.showToast(
       `A return order already exists for Order #${this.order.code}.`,

@@ -47,6 +47,7 @@ constructor(private __CustomerService:CustomerService
 ngOnInit(): void {
  this.customers=this.__CustomerService.customers;
  if(this.OrderDetailsData.selectedCustomer) this.__OrderService.setInvoiveCustomer(this.OrderDetailsData.selectedCustomer);
+ console.log(this.OrderDetailsData.order);
 }
 
 selectedCustomerEvent(customer:Customer){

@@ -5,6 +5,7 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 import { Order } from '../../../../Interfaces/order';
 import { Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
+import { of } from 'rxjs';
 
   interface paymentButtonsInterface {
   getPaidAmount: () => number;
@@ -52,22 +53,41 @@ export class PaymentButtonsComponent {
     this.__Router.navigateByUrl('Orders/create');
   }
 
-  setOrderDetails(status: string) {
+//   setOrderDetails(status: string) {
+//   const order = this.buildOrder(status);
+//   const actionSuccess = this.PaymentButtonsData.order
+//     ? this.__OrderService.updateOrder(order)
+//     : this.__OrderService.addNewOrder(order);
+
+//   if (actionSuccess.status) {
+//     this.__ToastingMessagesService.showToast(actionSuccess.message,'success');
+//     if(!this.PaymentButtonsData.order)
+//        this.resetOrder();
+//     else  this.__Router.navigateByUrl('Orders/create');
+//   } else
+//     this.__ToastingMessagesService.showToast(actionSuccess.message,'error');
+
+// }
+
+setOrderDetails(status: string) {
   const order = this.buildOrder(status);
-  const actionSuccess = this.PaymentButtonsData.order
+
+  const action$ = this.PaymentButtonsData.order
     ? this.__OrderService.updateOrder(order)
     : this.__OrderService.addNewOrder(order);
 
-  if (actionSuccess.status) {
-    this.__ToastingMessagesService.showToast(actionSuccess.message,'success');
-    if(!this.PaymentButtonsData.order)
-       this.resetOrder();
-    else  this.__Router.navigateByUrl('Orders/create');
-  } else
-    this.__ToastingMessagesService.showToast(actionSuccess.message,'error');
-
+  action$.subscribe((actionSuccess) => {
+    if (actionSuccess.status) {
+      this.__ToastingMessagesService.showToast(actionSuccess.message, 'success');
+      if (!this.PaymentButtonsData.order)
+        this.resetOrder();
+      else
+        this.__Router.navigateByUrl('Orders/create');
+    } else {
+      this.__ToastingMessagesService.showToast(actionSuccess.message, 'error');
+    }
+  });
 }
-
 private buildOrder(status: string): Order {
   const   code= this.code;
   const discount=this.getInputValue('_discountValue');
@@ -76,7 +96,7 @@ private buildOrder(status: string): Order {
       network: this.getInputValue('_Network'),
       masterCard: this.getInputValue('_Master_Card')
     }
- return this.__OrderService.buildOrder(code,discount,status,paymentMethods)
+ return this.__OrderService.buildOrder(this.PaymentButtonsData.order,code,discount,status,paymentMethods)
   // return {
   //   id:this.__OrderService.orders().length +1,
   //   code: this.code,

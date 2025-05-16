@@ -22,5 +22,4 @@ __Router=inject(Router);
  }
  handleDelete(event:any){}
  getCheckedItemCode(code:string){}
-
 }
