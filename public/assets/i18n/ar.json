@@ -191,7 +191,8 @@
         "Failed to create product":"فشل في إنشاء المنتج",
         "Failed to update product":"فشل تحديث المنتج",
         "Failed to delete product":"فشل في حذف المنتج",
-         "Failed to delete products":"فشل في حذف المنتجات"
+         "Failed to delete products":"فشل في حذف المنتجات",
+         "This is a return order":"هذه بالفعل قاتورة استرجاع"
 
 
 }
