@@ -1,0 +1,176 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+  font-size: 16px;
+}
+html[dir=rtl] .arrowIcon {
+  transform: rotate(180deg) !important;
+}
+html body {
+  font-family: "Poppins", sans-serif;
+}
+html .bg-gray {
+  background-color: #EBEDEE;
+}
+html .bg-light {
+  background-color: #eefffb;
+}
+html .bg-semi-light {
+  background-color: #c5fff6;
+}
+html .bg-second {
+  background-color: #F8F9FA;
+}
+html .fs-verySmall {
+  font-size: 10px !important;
+}
+html .fs-medium {
+  font-size: 14px !important;
+}
+html .fs-xxs {
+  font-size: 6px !important;
+}
+html .bg-dark {
+  background-color: #003535 !important;
+}
+html .bg-semi-dark {
+  background-color: #00857d;
+}
+html .hover-bg:hover {
+  background-color: #00857d;
+  transition: background-color 0.3s ease;
+}
+html .router-link-active {
+  background-color: #00b7a7;
+}
+html .bg-white {
+  background-color: white;
+}
+html .text-semi-dark {
+  color: #00857d;
+}
+html .section-style {
+  border: 0.5px solid rgba(252, 249, 249, 0.416);
+  background-color: white;
+}
+html ::-webkit-scrollbar-track {
+  background: transparent;
+}
+html ::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+html input {
+  padding-inline-start: 2rem !important;
+  font-size: 0.7rem !important;
+}
+html input::-moz-placeholder {
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+html input::placeholder {
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+html input:focus {
+  border-color: #00857d !important;
+  box-shadow: none !important;
+}
+html input[type=number]::-webkit-outer-spin-button, html input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+html input[type=number] {
+  -webkit-appearance: textfield;
+          appearance: textfield;
+  -moz-appearance: textfield;
+}
+html input[type=checkbox] {
+  padding: 10px !important;
+}
+html .dropdown-menu {
+  z-index: 999999;
+}
+html .popScreenContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 20000000 !important;
+  background: rgba(0, 133, 124, 0.4352941176);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+html .popScreenContent {
+  max-width: 50%;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 768px) {
+  html .popScreenContent {
+    max-width: 90%;
+  }
+}
+html .toast-success {
+  background-color: #00857d !important;
+}
+html #toast-container.toast-top-right {
+  z-index: 999999999 !important;
+}
+html .closeIcon {
+  position: absolute;
+  inset-inline-start: 10px;
+  top: 10px;
+}
+html .summary input, html .payment input {
+  border-radius: 8px;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid transparent;
+  background-color: #f0f0f0;
+}
+html .summary input:focus, html .payment input:focus {
+  border: 1px solid #00857d;
+  box-shadow: 1px 1px 1px #00857d !important;
+  outline: none;
+}
+html .paymentButtons button, html .keypad button {
+  padding: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+}
+html .paymentButtons button:hover, html .keypad button:hover {
+  background-color: #00857d;
+  color: #eefffb;
+}
+html .section_2 {
+  width: 100%;
+}
+html .section_2 .btn {
+  padding: 0.36rem 1.5rem;
+}
+html .section_2 .btn:hover {
+  background-color: #00857d !important;
+  color: #eefffb !important;
+}
+@media screen and (min-width: 992px) {
+  html .section_2 {
+    width: 400px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  html .section_2 {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  html .section_2 {
+    width: 700px;
+  }
+}/*# sourceMappingURL=styles.css.map */
