@@ -1,5 +1,4 @@
 import { Customer } from "./customer"
-import { OrderStatus } from "./order-status"
 import { Product } from "./product"
 import { SalesPerson } from "./sales-person"
 

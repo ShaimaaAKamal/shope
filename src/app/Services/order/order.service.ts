@@ -21,9 +21,9 @@ export class OrderService {
  invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
 
 constructor(private __CommonService:CommonService,private __SalesPersonsService:SalesPersonsService){
-  // this.orders.set(this.__CommonService.getItemsFromStorage<Order[]>('orders',[]));
   this.getOrders();
 }
+
 
 // api functions
 getOrders(): void {
@@ -37,22 +37,9 @@ getOrders(): void {
   });
 }
 
-// createOrderApi(order: Order): void {
-//   this.http.post<Order>(this.baseUrl, order).subscribe({
-//     next: (created) => {
-//       console.log(created);
-//       this.orders.update((orders) => [...orders, created]);
-//     },
-//     error: (err) => {
-//       console.error('Failed to create order:', err);
-//     }
-//   });
-// }
-
 createOrderApi(order: Order): Observable<{ status: boolean, message: string }> {
   return this.http.post<Order>(this.baseUrl, order).pipe(
     tap((createdOrder) => {
-      console.log('createdOrder',createdOrder);
       this.orders.update((orders) => [...orders, createdOrder]);
     }),
     map(() => ({
@@ -69,10 +56,8 @@ createOrderApi(order: Order): Observable<{ status: boolean, message: string }> {
 }
 
 updateOrderApi(order: Order): Observable<{ status: boolean, message: string }> {
-  console.log(order);
   return this.http.put<Order>(`${this.baseUrl}/${order.id}`, order).pipe(
     tap((updatedOrder) => {
-      console.log(updatedOrder);
       this.orders.update((orders) =>
         orders.map((o) => (o.code === updatedOrder.code ? updatedOrder : o))
       );
@@ -86,21 +71,6 @@ updateOrderApi(order: Order): Observable<{ status: boolean, message: string }> {
       return of({ status: false, message: 'Failed to update order!' });
     })
   );
-}
-
-getOrderByIdFromApi(id: number): void {
-  this.http.get<Order>(`${this.baseUrl}/${id}`).subscribe({
-    next: (order) => {
-      // Optionally add to signal state
-      this.orders.update((orders) => {
-        const exists = orders.some((o) => o.id === order.id);
-        return exists ? orders : [...orders, order];
-      });
-    },
-    error: (err) => {
-      console.error('Failed to get order:', err);
-    }
-  });
 }
 
 deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
@@ -120,21 +90,10 @@ deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
     })
   );
 }
-// deleteOrderApi(id: number): void {
-//   this.http.delete(`${this.baseUrl}/${id}`).subscribe({
-//     next: () => {
-//       this.orders.update((orders) => orders.filter((o) => o.id !== id));
-//     },
-//     error: (err) => {
-//       console.error('Failed to delete order:', err);
-//     }
-//   });
-// }
-/////////////////////////
+///// Crud Methods
 
-  addNewOrder(order: Order): Observable<{ status: boolean, message: string }> {
+addNewOrder(order: Order): Observable<{ status: boolean, message: string }> {
   let result = this.__CommonService.findItemInArray(this.orders(), o => o.code == order.code);
-   console.log(result);
   if (result.exists) {
     return of({ status: false, message: 'This order already exists!' });
   } else {
@@ -142,35 +101,7 @@ deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
   }
 }
 
-  // addNewOrder(order:Order):{status:boolean,message:string}{
-  //   let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code);
-  //   if(result.exists) return {status:false , message : 'This order is already exist!'};
-  //   else{
-  //        this.createOrderApi(order);
-  //       // this.setOrders([...this.orders(),order]);
-  //       return {
-  //           status: true,
-  //           message: order.status === 'return'
-  //             ? 'Order has been returned successfully!'
-  //             : 'Order has been added successfully!'
-  //         };
-  //   }
-  // }
-
-  // updateOrder(order:Order):{status:boolean,message:string}{
-  //   // let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code && o.status == 'hold');
-  //   let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code && o.status != 'paid');
-  //   if(result.exists){
-  //     this.orders()[result.ind]=order;
-  //     this.setOrders([...this.orders()]);
-  //     return  {status:true , message : 'Order has been updated successfully!'};;
-  //   }else
-  //     return (order.status == 'paid') ?
-  //     {status:false , message : 'This Order is already been paid !'} :
-  //     {status:false , message : "This Order  hasn't been updated !"};
-  // }
-  updateOrder(order: Order): Observable<{ status: boolean, message: string }> {
-    console.log('this.orders()',this.orders());
+updateOrder(order: Order): Observable<{ status: boolean, message: string }> {
   const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === order.code);
 
   if (!result.exists) {
@@ -178,20 +109,13 @@ deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
   }
 
   const existingOrder = result.item;
-  console.log('order',order);
-  console.log('existingOrder',existingOrder);
   const canUpdate =
     (order.status === 'paid' && existingOrder.status === 'hold') ||
     (order.status === 'hold' && existingOrder.status === 'hold') ||
     (order.status === 'paid' && !existingOrder.hasARetrun && order.hasARetrun)
-        console.log('canUpdate',canUpdate);
   if (!canUpdate) {
-    console.log('canUpdate',canUpdate);
     return of({
       status: false,
-      // message: existingOrder.status === 'paid'
-      //   ? 'This Order has already been paid!'
-      //   : "This Order hasn't been updated!"
       message: existingOrder.hasARetrun
       ? 'This Order has already been returned before!'
       : existingOrder.status === 'paid'
@@ -202,48 +126,13 @@ deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
 
   return this.updateOrderApi(order);
 }
-  //   updateOrder(order:Order):{status:boolean,message:string}{
-  //   let result=this.__CommonService.findItemInArray(this.orders(),o => o.code == order.code);
-  //   if((result.exists && order.status == 'paid' && result.item.status == 'hold') || (result.exists && order.status == 'hold' && result.item.status == 'hold')){
-  //     this.orders()[result.ind]=order;
-  //     this.setOrders([...this.orders()]);
-  //     return  {status:true , message : 'Order has been updated successfully!'};;
-  //   }else
-  //     return (result.item.status == 'paid') ?
-  //     {status:false , message : 'This Order is already been paid !'} :
-  //     {status:false , message : "This Order  hasn't been updated !"};
-  // }
 
-  //   updateOrderHasReturn(order:Order){
-  //     let result=this.__CommonService.findItemInArray(this.orders(),o => o.id == order.id);
-  //     if(result.exists){
-  //     this.orders()[result.ind]=order;
-  //     this.setOrders([...this.orders()]);
-  //     return  {status:true , message : 'Order has been updated successfully!'};;
-  //   }else
-  //     return {status:false , message : "This Order  hasn't been updated !"};
-  // }
-
-  // updateOrderHasReturn(order:Order){
-  //     let result=this.__CommonService.findItemInArray(this.orders(),o => o.id == order.id);
-  //     if(result.exists){
-  //     this.orders()[result.ind]=order;
-  //     this.setOrders([...this.orders()]);
-  //     return  {status:true , message : 'Order has been updated successfully!'};;
-  //   }else
-  //     return {status:false , message : "This Order  hasn't been updated !"};
-  // }
-
-  getOrderByCode(code:string){
+getOrderByCode(code:string){
    const result=this.__CommonService.findItemInArray(this.orders(), p => p.code == code)
    return result.exists?result.item:null
   }
-  getOrderById(id:number){
-   const result=this.__CommonService.findItemInArray(this.orders(), p => p.id == id)
-   return result.exists?result.item:null
-  }
 
-  deleteOrderBycode(code: string): Observable<{ status: boolean, message: string }> {
+deleteOrderBycode(code: string): Observable<{ status: boolean, message: string }> {
   const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === code);
 
   if (!result.exists) {
@@ -253,10 +142,11 @@ deleteOrderApi(id: number): Observable<{ status: boolean, message: string }> {
   return this.deleteOrderApi(result.item.id);
 }
 
-UpdateProducts(products:Product[]){
-  this.orderProducts.set([...products]);
-}
+HoldOrders = computed(() => {
+      return this.orders().filter(o => o.status=='hold');
+  });
 
+/// Order Invoice Calculations
 getNetTotal = computed(() => {
     if (this.orderProducts().length === 0) return 0;
     return this.orderProducts().reduce((total, product) => total + (parseFloat(product.quantity) * product.price), 0);
@@ -291,23 +181,17 @@ reminder = computed(() => {
     return remaining < 0 ? 0 : remaining;
   });
 
-HoldOrders = computed(() => {
-      return this.orders().filter(o => o.status=='hold');
-  });
-
 setInvoiveCustomer(customer:Customer){
 this.invoiveCustomer=customer;
 }
 
-  setPaidAmount(value: number) {
+setPaidAmount(value: number) {
     this.paidAmount.set(value);
   }
 
-  setOrders(orders:Order[]){
-      this.orders.set(orders);
-      this.__CommonService.saveToStorage('orders',orders);
-  }
-
+UpdateProducts(products:Product[]){
+  this.orderProducts.set([...products]);
+}
 buildOrder(
   order:Order | null,
   code:string,
@@ -321,7 +205,6 @@ buildOrder(
   const products = this.orderProducts();
   const grossTotal = this.getGrossTotal();
   const time = new Date();
-  console.log(customer);
   return {
     id,
     code,

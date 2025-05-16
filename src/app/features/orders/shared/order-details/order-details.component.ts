@@ -47,7 +47,6 @@ constructor(private __CustomerService:CustomerService
 ngOnInit(): void {
  this.customers=this.__CustomerService.customers;
  if(this.OrderDetailsData.selectedCustomer) this.__OrderService.setInvoiveCustomer(this.OrderDetailsData.selectedCustomer);
- console.log(this.OrderDetailsData.order);
 }
 
 selectedCustomerEvent(customer:Customer){
@@ -60,7 +59,6 @@ const searchKey=$event.target.value;
  this.searchItems=this.__ProductsService.findProductByName(searchKey);
 }
 handleSearchByNameFocus(type:string){
-  console.log(type);
   this.searchItems=type == 'focus' ?this.__ProductsService.products().slice(0, 10):[];
 }
 

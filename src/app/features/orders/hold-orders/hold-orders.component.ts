@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Order } from '../../../Interfaces/order';
 import { Router } from '@angular/router';
-import { CommonService } from '../../../Services/CommonService/common.service';
 import { OrderService } from '../../../Services/order/order.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
@@ -32,9 +31,6 @@ showOrder(order:Order){
 this.__Router.navigateByUrl(`Orders/Order/${order.code}`)
 }
 
-// deleteOrder(order:Order){
-//  this.__OrderService.deleteOrderBycode(order.code);
-// }
 
 deleteOrder(order: Order) {
   this.__OrderService.deleteOrderBycode(order.code).subscribe((res) => {
