@@ -1,0 +1,65 @@
+<div class="h-100 w-100">
+<app-layout
+[LayoutComponentDate]="{
+  route: '',
+  items: VariantOptions(),
+  sortKey: 'name',
+  header: 'Add New Variant',
+  subTitle: 'Start by stocking your store with products your customers will love',
+  btnName: 'Add New Variant',
+  columns: [],
+  serviceType: '',
+}"
+(addNewVar)="showOptionsSection()"
+(deleteSelected)="deleteSelected($event)" >
+
+<div>
+       <span class=" small fw-bold">{{'Variants Library' | translate}}</span>
+        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="VariantOptions().length == 0" >
+          <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
+          <span class="small">{{'Add New Variant' | translate}}</span>
+        </div>
+          <div class="variants my-2" *ngIf="VariantOptions().length > 0">
+          <div class="variantContainer">
+            <div *ngFor="let variant of VariantOptions(); let index=index;">
+            <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0">
+                 <div class="d-flex align-items-center  flex-grow-1">
+                  <span class="small pe-3">{{!isRtl() ? variant.name : variant.nameAr  |titlecase}}:</span>
+                  <div class="d-flex align-items-center">
+                   <span *ngFor="let value of variant.values; let last = last" [class.mx-1]="!last">
+                        <ng-container *ngIf="variant.name !== 'color'; else coloredVariant">
+                           <span class="variantValuebg py-1 fw-light small rounded-3 d-inline-block">
+                            {{value| titlecase}} <span *ngIf="!last">-</span>
+                          </span>
+                        </ng-container>
+                            <ng-template #coloredVariant>
+                              <span class="variantValuebg rounded-3 d-inline-block"
+                                    [ngStyle]="{
+                                      'background-color': value,
+                                      'width': '36px',
+                                      'height': '20px',
+                                      'display': 'inline-block'
+                                    }"
+                                    [title]="value">
+                              </span>
+                            </ng-template>
+                          </span>
+                  </div>
+                 </div>
+                 <div class="d-flex align-items-center">
+                        <span (click)="editVariant(variant)" class="pe-2"><i class="fa-solid fa-pen-to-square  text-semi-dark"></i></span>
+                        <span (click)="deleteVariant(variant)"><i class="fa-solid fa-trash-can text-semi-dark"></i></span>
+                 </div>
+            </div>
+           </div>
+          </div>
+        </div>
+</div>
+<app-edit-variant [variant]="editedVariant" (updated)="updatedVariant()" *ngIf="editedVariant.name"></app-edit-variant>
+</app-layout>
+</div>
+
+<app-create-variant  *ngIf="popupVisible"  (closeAddVariantPopScreen)="closeAddVariantPopScreen()"></app-create-variant>
+
+
+
