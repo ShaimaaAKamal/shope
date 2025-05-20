@@ -16,6 +16,7 @@ export class ToastingMessagesService {
     const titleKey = `TOAST.${type.toUpperCase()}`;
     const translatedTitle = this.translateService.instant(titleKey);
     const message=this.translateService.instant(toastMessage);
+      this._ToastrService.clear();
     switch (type) {
       case 'success':
         this._ToastrService.success(message, translatedTitle);
