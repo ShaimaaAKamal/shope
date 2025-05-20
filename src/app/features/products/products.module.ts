@@ -11,6 +11,8 @@ import { ProductDetailsPopComponent } from './components/product-details-pop/pro
 import { VariantsComponent } from './components/variants/variants.component';
 import { VariantOptionsValuesQuantityComponent } from './components/variant-options-values-quantity/variant-options-values-quantity.component';
 import { VariantValueDetailsComponent } from './components/variant-value-details/variant-value-details.component';
+import { VariantsLibraryComponent } from './variants-library/variants-library.component';
+import { EditVariantComponent } from './edit-variant/edit-variant.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { VariantValueDetailsComponent } from './components/variant-value-details
     AddVariantComponent,
     VariantOptionsValuesQuantityComponent,
     VariantValueDetailsComponent,
-    CreateVariantComponent
+    CreateVariantComponent,
+    VariantsLibraryComponent,
+    EditVariantComponent
   ],
   imports: [
     CommonModule,

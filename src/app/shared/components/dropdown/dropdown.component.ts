@@ -13,7 +13,7 @@ export class DropdownComponent {
   dropdownSelection:'',
   optionsArray:[],
   key:'',
-  noBorder:false
+  noBorder:false,
 };
 @Output() changeSelect=new EventEmitter<any>();
 selectOption(option:any){

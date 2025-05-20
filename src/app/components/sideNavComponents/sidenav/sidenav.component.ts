@@ -22,6 +22,7 @@ export class SidenavComponent {
   sectionOneNavItems: Navitem[] = [
     { name: 'Home', icon: 'fa-solid fa-house' },
     { name: 'Products', icon: 'fa-solid fa-tags' },
+    { name: 'Variants_Library', icon: 'fa-solid fa-photo-film' },
     { name: 'Orders', icon: 'fa-solid fa-credit-card' },
     { name: 'Customers', icon: 'fa-solid fa-users' },
     { name: 'Discounts', icon: 'fa-solid fa-percent' },

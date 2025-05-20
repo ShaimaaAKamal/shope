@@ -17,7 +17,7 @@ export class ProductsComponent {
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
   private apiError=this.productService.error;
-  
+
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
   products: Signal<Product[]>;
@@ -58,8 +58,9 @@ export class ProductsComponent {
   }
 
   deleteSelected(_del: boolean): void {
-      this.productService.deleteProducts(this.checkedProducts);
-      // this.productService.deleteProduct(this.checkedProducts[0].id);
+     this.productService.deleteProducts(this.checkedProducts).then(() => {
+  this.__ToastingMessagesService.showToast('Products has been deleted successfully', 'success');
+});
   }
 
   closeAddVariantPopScreen(){

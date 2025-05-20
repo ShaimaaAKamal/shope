@@ -2,7 +2,6 @@
 <ng-template #content>
   <ng-content></ng-content>
   <span class="fw-light ps-2" [class.d-none]="NavitemComponentData.isCollapsed"
-
       >
     {{ NavitemComponentData.navItemName.split('_').join(' ') | translate }}
   </span>
@@ -28,7 +27,7 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(NavitemComponentData.navItemName)">
+<ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order','End_Day','Arabic','اللغة الإنجليزية','Add_Variant'].includes(NavitemComponentData.navItemName)">
   <div class="d-flex align-items-center px-3 mb-2 rounded rounded-4 hover-bg"
        [ngClass]="NavitemComponentData.classes"
        [class.justify-content-center]="NavitemComponentData.isCollapsed"

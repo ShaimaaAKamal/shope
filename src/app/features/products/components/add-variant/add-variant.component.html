@@ -1,4 +1,5 @@
  <div class="option border-bottom py-2 px-1  mb-3">
+  <div class="fs-verySmall text-success" *ngIf="successMessage">New Value has been added Successfully</div>
    <div class="row g-2 align-items-start">
      <div class="col-lg-6 ">
          <div class="border rounded-1 h-100">
@@ -24,7 +25,7 @@
                   dropdownSelection:variantSelectValue,
                   optionsArray:variantValues,
                   key:'name',
-                  noBorder:false
+                  noBorder:false,
             }"
           (changeSelect)="chooseOption($event)"
           >
@@ -36,7 +37,7 @@
       <ng-container *ngFor="let value of values; let index = index;">
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">
-            <div class="pe-2">
+            <div class="pe-2 align-self-start">
                   <i class="fa-solid fa-location-arrow text-semi-dark"></i>
             </div>
             <div class="flex-grow-1 position-relative">
@@ -52,7 +53,7 @@
                 hideLabel: true,
                 inputGroup: false,
                 clickMessage: '',
-                errorMessage: '',
+                errorMessage: exitstErrorMessage,
                 enableFocusBlurTracking: false,
               }"
                 #variantValue
@@ -75,7 +76,7 @@
             </div>
           </div>
 
-          <div class="ps-2 align-self-end pt-2 pt-sm-0" *ngIf="values.length > 0" (click)="removeValue(value.id)">
+          <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values.length > 0" (click)="removeValue(value.id)">
             <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
           </div>
         </div>
