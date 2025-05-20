@@ -192,7 +192,20 @@
         "Failed to update product":"فشل تحديث المنتج",
         "Failed to delete product":"فشل في حذف المنتج",
          "Failed to delete products":"فشل في حذف المنتجات",
-         "This is a return order":"هذه بالفعل قاتورة استرجاع"
+         "This is a return order":"هذه بالفعل قاتورة استرجاع",
+         "Variant created successfully":"تم إنشاء المتغير بنجاح",
+         "Falied to create Variant":"فشل في إنشاء المتغير",
+
+         "Variants Library":"مكتبة المتغيرات",
+         "Variant has been deleted successfully":"تم حذف المتغير بنجاح",
+          "Failed to delete variant":"فشل في حذف المتغير",
+          "Default Variant can't be deleted.":"لا يمكن حذف المتغير الافتراضي",
+         "Failed to update variant":"فشل تحديث المتغير",
+         "This Value is already Exist":"هذه القيمة موجودة بالفعل",
+         "Update Variant":"تحديث المتغير",
+         "Variant updated successfully":"تم تحديث المتغير بنجاح",
+         "Variant with this name already exist.":"يوجد بالفعل متغير بهذا الاسم",
+         "Variant values can't be empty":"لا يمكن أن تكون القيم المتغيرة فارغة"
 
 
 }

@@ -191,6 +191,18 @@
   "Failed to update product":"Failed to update product",
   "Failed to delete product":"Failed to delete product",
   "Failed to delete products":"Failed to delete products",
-  "This is a return order":"This is a return order"
+  "This is a return order":"This is a return order",
+  "Variant created successfully":"Variant created successfully",
+  "Falied to create Variant":"Falied to create Variant",
 
+  "Variants Library":"Variants Library",
+  "Variant has been deleted successfully":"Variant has been deleted successfully",
+  "Failed to delete variant":"Failed to delete variant",
+  "Default Variant can't be deleted.":"Default Variant can't be deleted.",
+  "Failed to update variant":"Failed to update variant",
+  "This Value is already Exist":"This Value is already Exist",
+  "Update Variant":"Update Variant",
+  "Variant updated successfully":"Variant updated successfully",
+  "Variant with this name already exist.":"Variant with this name already exist.",
+  "Variant values can't be empty":"Variant values can't be empty"
 }
