@@ -2,25 +2,21 @@ import { Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
 import { VariantOption } from '../../Interfaces/variant-option';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+ private apiUrlBase = 'http://localhost:3000/';
+  private apiUrl = `${this.apiUrlBase}products`;
+  private variantApiUrl = `${this.apiUrlBase}variants`;
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-  defaultVariants=[
-    { id: 1, name: 'size', nameAr: 'اللون', values: ['L','XL','XXL'] },
-    { id: 2, name: 'color', nameAr: 'المقاس' ,values: ['red', 'blue', 'green'] },
-  ];
   variantOptions = signal<VariantOption[]>([]);
   currentProduct = signal<Product>(this.getEmptyProduct());
-
-
-  private apiUrl = 'http://localhost:3000/products';
 
   // Signals for state management
   private productsSignal = signal<Product[]>([]);
@@ -34,11 +30,78 @@ export class ProductService {
 
   constructor(private commonService: CommonService,private http: HttpClient) {
     this.init();
-    const storedVariants = this.commonService.getItemsFromStorage<any[]>('variantOptions', this.defaultVariants);
-    this.variantOptions.set(storedVariants);
   }
 
+//Variant Api
+  async getVariants(): Promise<void> {
+  try {
+      const data = await firstValueFrom(this.http.get<VariantOption[]>(this.variantApiUrl));
+      this.variantOptions.set([...data]);
+    } catch (error: any) {
+      this.handleApiError(error,'Failed to fetch variants');
+    }
+  }
+
+  async createVariant(variant: VariantOption): Promise<void> {
+   this.errorSignal.set(null);
+    try {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const newVariant = await firstValueFrom(
+        this.http.post<VariantOption>(this.variantApiUrl, variant, { headers })
+      );
+      this.variantOptions.update(variants => this.addOrReplaceItemById(variants, newVariant));
+    } catch (error: any) {
+       this.handleApiError(error,'Failed to create variant');
+    }
+  }
+
+  async deleteVariant(id: number): Promise<void> {
+   this.loadingSignal.set(true);
+   this.errorSignal.set(null);
+
+    try {
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      await firstValueFrom(this.http.delete<void>(`${this.variantApiUrl}/${id}`, { headers }));
+      this.variantOptions.update(variants => variants.filter(p => p.id !== id));
+    } catch (error: any) {
+          this.handleApiError(error,'Failed to delete variant');
+    } finally {
+      this.loadingSignal.set(false);
+    }
+  }
+
+  async updateVariant(variant: VariantOption): Promise<void> {
+   this.loadingSignal.set(true);
+   this.errorSignal.set(null);
+    try {
+        const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id)
+        if (existingVariant) {
+          throw new Error(`Variant with this name already exist.`);
+        }
+        if (variant.values.length == 0  || !variant.name || !variant.nameAr) {
+          throw new Error(`Variant values can't be empty.`);
+        }
+
+
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const updatedVariant = await firstValueFrom(
+        this.http.put<VariantOption>(`${this.variantApiUrl}/${variant.id}`, variant, { headers })
+      );
+      this.variantOptions.update(variants =>
+        variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
+      );
+    } catch (error: any) {
+        throwError;
+        console.log(error);
+          this.handleApiError(error,'Failed to update variant');
+    } finally {
+      this.loadingSignal.set(false);
+    }
+  }
+
+  //Product Api
   private async init(): Promise<void> {
+  await this.getVariants();
   await this.getProducts();
   this.handleLoadingAllowProducts();
 }
@@ -50,14 +113,13 @@ export class ProductService {
 
   //Api calls
   async getProducts(): Promise<void> {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-
+   this.loadingSignal.set(true);
+   this.errorSignal.set(null);
     try {
       const data = await firstValueFrom(this.http.get<{ products: Product[] }>(this.apiUrl));
       this.productsSignal.set(data?.products || data || []);
     } catch (error: any) {
-      this.errorSignal.set(error.message || 'Failed to fetch products');
+      this.handleApiError(error,'Failed to fetch products');
     } finally {
       this.loadingSignal.set(false);
     }
@@ -65,7 +127,7 @@ export class ProductService {
 
   async createProduct(product: Product): Promise<void> {
     this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+   this.errorSignal.set(null);
 
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -85,7 +147,7 @@ export class ProductService {
   async updateProduct(product: Product): Promise<void> {
 
     this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+   this.errorSignal.set(null);
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const updatedProduct = await firstValueFrom(
@@ -103,7 +165,7 @@ export class ProductService {
 
    async deleteProduct(id: number): Promise<void> {
     this.loadingSignal.set(true);
-    this.errorSignal.set(null);
+   this.errorSignal.set(null);
 
     try {
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -119,7 +181,7 @@ export class ProductService {
 
   async deleteProducts(ids: number[]): Promise<void> {
   this.loadingSignal.set(true);
-  this.errorSignal.set(null);
+ this.errorSignal.set(null);
 
   try {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -140,9 +202,11 @@ export class ProductService {
   }
 }
  private handleApiError(error:any,message:string){
-      console.log(error.message);
-      this.errorSignal.set( message);
+     this.errorSignal.set( message);
+     throw error;
   }
+
+
   private addOrReplaceItemById<T extends { id: number | string }>(array: T[], newItem: T): T[] {
   const index = array.findIndex(item => item.id === newItem.id);
   const updated = [...array];
@@ -160,7 +224,6 @@ export class ProductService {
   addNewProduct(newProduct: Product): boolean {
     const exists = this.products().some(p => p.name === newProduct.name);
     if (exists) return false;
-
     const updated = [...this.products(), newProduct];
     const sorted = this.sortProductsDesc(updated);
     this.productsSignal.set(sorted);
@@ -168,20 +231,24 @@ export class ProductService {
     return true;
   }
 
-  updateProductInfo(product: Product,actionType:string): {status:boolean,message:string} {
-    const result = this.commonService.checkDuplicateInArray(
-      this.products(),
-      p => p.id === product.id,
-      product
-    );
-    if (!result.isDuplicate) {
-      if(actionType == 'add') this.createProduct(product);
-        else this.updateProduct(product);
-      return {status:true,message:'updated'};
-    }
-     return {status:false,message:result.message ?? ''};
+  async updateProductInfo(product: Product, actionType: string): Promise<{ status: boolean; message: string }> {
+  const result = this.commonService.checkDuplicateInArray(
+    this.products(),
+    p => p.id === product.id,
+    product
+  );
+
+  if (!result.isDuplicate) {
+    const action = actionType === 'add'
+      ? this.createProduct(product)
+      : this.updateProduct(product);
+    return action
+      .then(() => ({ status: true, message: 'updated' }))
+      .catch(error => ({ status: false, message: error?.message || 'Save failed' }));
   }
 
+  return { status: false, message: result.message ?? '' };
+}
 
   updateProducts(products: Product[]): void {
     const sorted = this.sortProductsDesc(products);
@@ -189,10 +256,12 @@ export class ProductService {
     this.type.set('');
     this.commonService.saveToStorage('products', sorted);
   }
+
   updateVariants(variant:any){
       this.variantOptions.update(current => [...current, variant]);
       this.commonService.saveToStorage('variantOptions', this.variantOptions());
   }
+
   deleteProductByIndex(index: number): boolean {
     const current = [...this.products()];
     if (index < 0 || index >= current.length) return false;
@@ -240,6 +309,7 @@ export class ProductService {
      this.productsSignal.set(sortedProducts);
     return sortedProducts
 }
+
  private sortProductsDesc(products: Product[]): Product[] {
     return [...products].sort((a, b) => b.id - a.id);
   }
