@@ -3,6 +3,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { CustomerService } from '../../../Services/Customer/customer.service';
 import { Customer } from '../../../Interfaces/customer';
 import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-add-in-voice-new-customer',
@@ -20,7 +21,7 @@ export class AddInVoiceNewCustomerComponent {
 
 private __CustomerService=inject(CustomerService);
 private __ToastingMessagesService=inject(ToastingMessagesService);
-
+private __CommonService=inject(CommonService);
 customerNameError:string='';
 customerPhoneError:string='';
 customerArabicNameError:string='';
@@ -55,7 +56,7 @@ customerArabicNameError:string='';
     if (!this.validate()) return;
 
     const customer: Customer = {
-      id: this.__CustomerService.customers().length + 1,
+      id: this.__CommonService.getId(),
       name: this.customerName.value,
       nameAr: this.customeArabicrName.value,
       phone: this.customerPhone.value

@@ -199,7 +199,8 @@ buildOrder(
   status: string,
   paymentMethods: { cash: number; network: number; masterCard: number } = { cash: 0, network: 0, masterCard: 0 }
 ): Order {
-  const id = (order && order.id && status != 'return') ? order.id : this.orders().length + 1;
+  // const id = (order && order.id && status != 'return') ? order.id : this.orders().length + 1;
+  const id = (order && order.id && status != 'return') ? order.id : this.__CommonService.getId();
   const customer = this.invoiveCustomer;
   const salesPerson = this.__SalesPersonsService.currentSalesPerson();
   const products = this.orderProducts();

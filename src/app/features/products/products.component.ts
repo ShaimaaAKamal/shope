@@ -4,6 +4,7 @@ import { ProductService } from '../../Services/Product/product.service';
 import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonService } from '../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-products',
@@ -25,7 +26,7 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
 
-  constructor(private __ToastingMessagesService:ToastingMessagesService) {
+  constructor(private __ToastingMessagesService:ToastingMessagesService,private __CommonService:CommonService) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
@@ -43,7 +44,8 @@ export class ProductsComponent {
   addNew(_value: boolean): void {
     this.type.set('new');
     this.newProduct = this.productService.getEmptyProduct();
-    this.newProduct.id = this.products().length + 1;
+    // this.newProduct.id = this.products().length + 1;
+    this.newProduct.id = this.__CommonService.getId();
     this.productService.addNewProduct(this.newProduct);
   }
 

@@ -120,4 +120,8 @@ controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: str
   ref?.togglePopScreen?.(action);
 }
 
+getId():number{
+  return Date.now() + Math.floor(Math.random() * 1000);
+}
+
 }

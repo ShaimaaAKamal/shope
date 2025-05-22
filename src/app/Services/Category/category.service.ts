@@ -43,7 +43,8 @@ createCategory(categoryName: string,categoryArabicName:string) {
     }
 
     const newCategory: Category = {
-      id: this.categories().length + 1,
+      // id: this.categories().length + 1,
+      id: this.__CommonService.getId(),
       name: categoryName.trim(),
       nameAr:categoryArabicName.trim()
     };

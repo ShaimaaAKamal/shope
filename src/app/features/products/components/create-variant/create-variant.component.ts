@@ -55,7 +55,7 @@ async add() {
   }
 
   const newVariant = {
-    id: Date.now() + Math.floor(Math.random() * 1000),
+    id: this.__CommonService.getId(),
     name: variantName,
     nameAr: variantArabicName,
     values: variantValues
