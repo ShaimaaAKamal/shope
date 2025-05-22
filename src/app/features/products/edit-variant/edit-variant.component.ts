@@ -40,14 +40,18 @@ export class EditVariantComponent implements OnDestroy {
   values = signal<string[]>([]);
 
   insertVariantNewValue = false;
-  showColorPickerContainer = false;
-  showColorPicker: boolean[] = [];
-  color = '';
+  showColorPickerContainer =signal<boolean>(false);
+  // showColorPicker: boolean[] = [];
+  color = '#000';
   viewInitialized:boolean=false;
   errorMessage='';
 
 displayVariantValues(){
       const currentValues = this.values();
+      if(this.variant.name == 'color' || this.variant.nameAr == 'اللون'){
+         this.showColorPickerContainer.set(true);
+      }
+      else
       this.variantValues?.forEach((inputComponent, index) => {
         inputComponent.value = currentValues[index];
       });
@@ -63,11 +67,12 @@ ngOnChanges(changes: SimpleChanges): void {
 
     if (this.viewInitialized) {
           this.displayVariantBasicInfo();
-
-      this.displayVariantValues();
+    this.resetColorPicker();
+    this.displayVariantValues();
     }
   }
 }
+
 ngAfterViewInit(): void {
     this.viewInitialized=true;
       this.displayVariantBasicInfo();
@@ -76,20 +81,25 @@ ngAfterViewInit(): void {
       });
   }
 
-  toggleColorPicker(index: number): void {
-    this.showColorPicker[index] = true;
+  resetColorPicker(){
+        this.insertVariantNewValue=false;
+        if(this.variant.name != 'color' )
+    {   this.showColorPickerContainer.set(false)}
   }
+  // toggleColorPicker(index: number): void {
+  //   this.showColorPicker[index] = true;
+  // }
 
-  hideColorPicker(index: number): void {
-    this.showColorPicker[index] = false;
-  }
+  // hideColorPicker(index: number): void {
+  //   this.showColorPicker[index] = false;
+  // }
 
-  onColorChange(color: string, index: number): void {
-    const updated = [...this.values()];
-    updated[index] = color;
-    this.values.set(updated);
-    this.hideColorPicker(index);
-  }
+  // onColorChange(color: string, index: number): void {
+  //   const updated = [...this.values()];
+  //   updated[index] = color;
+  //   this.values.set(updated);
+  //   this.hideColorPicker(index);
+  // }
 
   removeValue(index: number): void {
   const updated = [...this.values()]
@@ -98,22 +108,37 @@ ngAfterViewInit(): void {
   }
 
   showNewValueInput() {
-    this.values.update(current => [...current,''])
+    const newValue=(this.variant.name == 'color') ? '#000' : '';
+    this.values.update(current => [...current,newValue])
     this.insertVariantNewValue=true;
     this.errorMessage='';
-
   }
+
   addNewValue() {
-  this.errorMessage='';
-   const currentValues:string[]=[];
-  this.variantValues?.forEach((inputComponent, index) => {
-        currentValues[index] =inputComponent.value ;
-      });
-  const uniqueValues = [...new Set(currentValues.filter(v => v.trim() !== ''))];
-   this.values.set([...uniqueValues]);
-   this.insertVariantNewValue=false;
+  this.errorMessage = '';
+
+  if (this.variant.name !== 'color') {
+    const currentValues = this.variantValues?.map(vc => vc.value.trim()) || [];
+    const uniqueValues = Array.from(new Set(currentValues.filter(v => v !== '')));
+
+    if (uniqueValues.length < currentValues.length) {
+      this.errorMessage = 'This New added Value is already existed';
+    }
+
+    this.values.set(uniqueValues);
+  } else {
+    const allValues = this.values().map(v => v.trim());
+    const uniqueValues = Array.from(new Set(allValues));
+
+    if (uniqueValues.length < allValues.length) {
+      this.errorMessage = 'This New added Value is already existed';
+    }
+
+    this.values.set(uniqueValues);
   }
 
+  this.insertVariantNewValue = false;
+}
 
 updateVariant(){
 const newVariant={
@@ -134,7 +159,7 @@ const newVariant={
 
   }
 
-  ngOnDestroy(): void {
+ngOnDestroy(): void {
     this.changesSub?.unsubscribe();
   }
 }

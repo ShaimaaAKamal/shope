@@ -34,7 +34,7 @@
          </div>
       </div>
       <div class="col-12" >
-      <ng-container *ngFor="let value of values; let index = index;">
+      <ng-container *ngFor="let value of values(); let index = index;">
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">
             <div class="pe-2 align-self-start">
@@ -62,21 +62,23 @@
               </app-input>
 
               <div class="colorPickerContainer" *ngIf="showColorPickerContainer">
-              <input
-                [colorPicker]="value.color"
-                [style.background]="value.color"
+              <!-- <input
+                [colorPicker]="value"
+                [style.background]="value"
                 [cpToggle]="showColorPicker[index]"
                 (click)="toggleColorPicker(index)"
                 (colorPickerChange)="onColorChange($event, index);"
                 (colorPickerClose)="hideColorPicker(index)"
                 class="circle-picker rounded-2"
                 #colorPick
-              />
+              /> -->
+                <app-color-picking   [ColorPickingData]="{
+                value:value,index:index,values:values} "#colorPick></app-color-picking>
             </div>
             </div>
           </div>
 
-          <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values.length > 0" (click)="removeValue(value.id)">
+          <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values().length > 0" (click)="removeValue(index)">
             <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
           </div>
         </div>
