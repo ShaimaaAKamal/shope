@@ -53,22 +53,6 @@ export class PaymentButtonsComponent {
     this.__Router.navigateByUrl('Orders/create');
   }
 
-//   setOrderDetails(status: string) {
-//   const order = this.buildOrder(status);
-//   const actionSuccess = this.PaymentButtonsData.order
-//     ? this.__OrderService.updateOrder(order)
-//     : this.__OrderService.addNewOrder(order);
-
-//   if (actionSuccess.status) {
-//     this.__ToastingMessagesService.showToast(actionSuccess.message,'success');
-//     if(!this.PaymentButtonsData.order)
-//        this.resetOrder();
-//     else  this.__Router.navigateByUrl('Orders/create');
-//   } else
-//     this.__ToastingMessagesService.showToast(actionSuccess.message,'error');
-
-// }
-
 setOrderDetails(status: string) {
   const order = this.buildOrder(status);
 
@@ -97,22 +81,6 @@ private buildOrder(status: string): Order {
       masterCard: this.getInputValue('_Master_Card')
     }
  return this.__OrderService.buildOrder(this.PaymentButtonsData.order,code,discount,status,paymentMethods)
-  // return {
-  //   id:this.__OrderService.orders().length +1,
-  //   code: this.code,
-  //   customer: this.__OrderService.invoiveCustomer,
-  //   salesPerson: this.__SalesPersonsService.currentSalesPerson(),
-  //   products: this.__OrderService.orderProducts(),
-  //   grossTotal: this.__OrderService.getGrossTotal(),
-  //   discount: this.getInputValue('_discountValue'),
-  //   paymentMethods: {
-  //     cash: this.getInputValue('_Cash'),
-  //     network: this.getInputValue('_Network'),
-  //     masterCard: this.getInputValue('_Master_Card')
-  //   },
-  //   status,
-  //   time: new Date()
-  // };
 }
 private getInputValue(key: string): number {
   return parseFloat(this.PaymentButtonsData.inputMap[key]?.value || '0');

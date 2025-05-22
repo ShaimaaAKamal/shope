@@ -43,7 +43,6 @@ if(variant.name == 'color')  { this.__ToastingMessagesService.showToast("Default
 
 editVariant(variant:VariantOption){
  this.editedVariant=variant;
- console.log(variant);
 }
 updatedVariant(){
   this.editedVariant={} as VariantOption;
