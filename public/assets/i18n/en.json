@@ -184,6 +184,7 @@
   "Delete Product Varaiant":"Delete Product Varaiant",
   "Available No":"Available No",
   "Name is already Exist":"Name is already Exist",
+  "Arabic Name is already Exist":"Arabic Name is already Exist",
   "Product has been added successfully":"Product has been added successfully",
   "Another Product already exists with this":"Another Product already exists with this",
   "Add New Product":"Add New Product",
@@ -204,5 +205,6 @@
   "Update Variant":"Update Variant",
   "Variant updated successfully":"Variant updated successfully",
   "Variant with this name already exist.":"Variant with this name already exist.",
-  "Variant values can't be empty":"Variant values can't be empty"
+  "Variant values can't be empty":"Variant values can't be empty",
+  "Variant Name can't be empty.":"Variant Name can't be empty."
 }

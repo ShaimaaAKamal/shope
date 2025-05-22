@@ -185,6 +185,7 @@
         "Delete Product Varaiant":"حذف متغير للمنتج",
         "Available No":"الكمية المتاحة",
         "Name is already Exist":"الاسم موجود بالفعل",
+         "Arabic Name is already Exist":"الاسم العربي موجود بالفعل",
         "Product has been added successfully":"تمت إضافة المنتج بنجاح",
         "Another Product already exists with this":"يوجد منتج آخر  بالفعل",
         "Add New Product":"إضافة منتج جديد",
@@ -205,7 +206,6 @@
          "Update Variant":"تحديث المتغير",
          "Variant updated successfully":"تم تحديث المتغير بنجاح",
          "Variant with this name already exist.":"يوجد بالفعل متغير بهذا الاسم",
-         "Variant values can't be empty":"لا يمكن أن تكون القيم المتغيرة فارغة"
-
-
+         "Variant values can't be empty":"لا يمكن أن تكون القيم المتغيرة فارغة",
+         "Variant Name can't be empty.":"لا يمكن أن يكون اسم المتغير فارغًا"
 }
