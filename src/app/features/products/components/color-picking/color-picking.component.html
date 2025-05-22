@@ -1,0 +1,12 @@
+<div class="position-relative">
+    <input
+                [colorPicker]="ColorPickingData.value"
+                [style.background]="ColorPickingData.value"
+                [cpToggle]="showColorPicker[ColorPickingData.index]"
+                (click)="toggleColorPicker(ColorPickingData.index)"
+                (colorPickerChange)="onColorChange($event, ColorPickingData.index);"
+                (colorPickerClose)="hideColorPicker(ColorPickingData.index)"
+                class="circle-picker rounded-2"
+                #colorPick
+/>
+</div>
