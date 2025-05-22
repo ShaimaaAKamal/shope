@@ -74,14 +74,17 @@ export class ProductService {
    this.loadingSignal.set(true);
    this.errorSignal.set(null);
     try {
-        const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id)
+        const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id )
         if (existingVariant) {
           throw new Error(`Variant with this name already exist.`);
         }
-        if (variant.values.length == 0  || !variant.name || !variant.nameAr) {
+        if (variant.values.length == 0) {
           throw new Error(`Variant values can't be empty.`);
         }
 
+        if( !variant.name || !variant.nameAr) {
+          throw new Error(`Variant Name can't be empty.`);
+        }
 
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const updatedVariant = await firstValueFrom(
@@ -216,7 +219,6 @@ export class ProductService {
   } else {
     updated.push(newItem);
   }
-
   return updated;
 }
 
@@ -237,7 +239,6 @@ export class ProductService {
     p => p.id === product.id,
     product
   );
-
   if (!result.isDuplicate) {
     const action = actionType === 'add'
       ? this.createProduct(product)

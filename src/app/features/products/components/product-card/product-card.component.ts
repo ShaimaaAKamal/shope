@@ -239,7 +239,7 @@ private async processProductSave(
   const result = await this.handleProductSave(action);
 
   if (result === 'Duplicate_Arabic_Name') {
-    this.arabicNameErrorMessage = 'Name is already Exist';
+    this.arabicNameErrorMessage = 'Arabic Name is already Exist';
   }
 
   if (result === 'Duplicate_English_Name') {
