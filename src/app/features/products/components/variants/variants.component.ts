@@ -19,7 +19,6 @@ export class VariantsComponent {
   @Output() controlVariantsPopup = new EventEmitter<string>();
   @Output() variantDetailsHandled = new EventEmitter<void>();
 
-  // variants = input<Variant[]>([]);
   localVariants = signal<Variant[]>([]);
   private firstChange=true;
   constructor() {
@@ -48,6 +47,7 @@ export class VariantsComponent {
     this.localVariants.set(event);
     const product = this.product();
     product.variants = event;
+    this.displayVariant.set(false);
   }
 
   deleteVariant(index: number) {

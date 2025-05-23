@@ -173,7 +173,7 @@
 // }
 
 
-import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChildren, signal, Input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChildren, signal, Input, effect } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
@@ -190,6 +190,7 @@ export class AddVariantComponent {
   private __LanguageService=inject(LanguageService);
   private __CommonService=inject(CommonService);
   isRtl=this.__LanguageService.rtlClassSignal;
+
   preSetVariants=this.__ProductService.variantOptions;
   defaultSelection =  this.preSetVariants().filter((option) => option.name === 'size')[0];
   variantSelection = this.isRtl()? this.defaultSelection.nameAr:this.defaultSelection.name;
@@ -197,21 +198,23 @@ export class AddVariantComponent {
   variantSelectValue=this.defaultSelection.values[0];
   insertVariantNewValue:boolean=false;
 
-  // values: any[] =  [];
   values=signal<string[]>([]);
   showColorPickerContainer: boolean = false;
-  // showColorPicker: boolean[] = [];
-  ProductVariantOptions= signal<any>(this.__ProductService.currentProduct().variants);
+  // ProductVariantOptions= signal<any>(this.__ProductService.currentProduct().variants);
+  ProductVariantOptions = signal<any[]>([]);
   exitstErrorMessage:string=''
   successMessage:boolean=false;
-  // type:string='text';
   @Output() variants = new EventEmitter<any>();
 
   @ViewChildren('variantValue') variantValuesRefs!: QueryList<InputComponent>;
   @ViewChildren('colorPick') colorPickInputs!: QueryList<ElementRef>;
 
-  ngOnInit(): void {
-  // this.showColorPicker = this.values().map(() => false);
+constructor(){
+   effect(() => {
+    console.log('in effeect');
+    const variants:any = this.__ProductService.currentProduct().variants;
+    this.ProductVariantOptions.set(variants);
+  });
 }
 
  chooseVariantName(event: any){
@@ -225,21 +228,8 @@ export class AddVariantComponent {
     this.variantSelectValue=name;
   }
 
-// toggleColorPicker(index: number): void {
-//   this.showColorPicker[index] = true;
-// }
-
-// hideColorPicker(index: number): void {
-//   this.showColorPicker[index] = false;
-// }
-
-// onColorChange(color:string,index:number){
-//   this.values()[index]=color;
-//   this.hideColorPicker(index);
-// }
 showNewValueInput(){
-    // this.values.push({id: crypto.randomUUID(),value:'',color:'#000',type:this.type});
-    this.values.update(current => [...current, '']); // Adds a new value
+    this.values.update(current => [...current, '']); 
     this.insertVariantNewValue=true;
 }
 
@@ -262,7 +252,11 @@ this.__ProductService.updateVariant(result.item)
     this.successMessage=false;
   });
   this.insertVariantNewValue=false;
-  this.values().pop();
+  this.values.update(current => {
+  const updated = [...current];
+  updated.pop();
+  return updated;
+});;
   this.variantSelectValue=variantNewValue;
   }
 }
@@ -271,10 +265,6 @@ else    { this.exitstErrorMessage="This Value is already Exist";
       }
   }
 
-// removeValue(id: string,type:string=''): void {
-//   if(!type) this.insertVariantNewValue=false;
-//   this.values.set(this.values().filter(v => v.id !== id));
-// }
 
   removeValue(index: number): void {
   const updated = [...this.values()]
@@ -284,7 +274,11 @@ else    { this.exitstErrorMessage="This Value is already Exist";
 
 addVariant() {
   this.hideMessages();
-  if(this.values.length ==1) {this.values().pop(); this.insertVariantNewValue=false}
+  if(this.values().length ==1) {this.values.update(current => {
+  const updated = [...current];
+  updated.pop()
+  return updated;
+});; this.insertVariantNewValue=false}
   const newValue = this.variantSelectValue;
   const newVariant = {
     name: this.variantSelection,
@@ -315,7 +309,6 @@ deleteVariant() {
   this.hideMessages();
   const valueToRemove = this.variantSelectValue;
   const variantName = this.variantSelection;
-
   this.ProductVariantOptions.update(options => {
     const updatedOptions = [...options];
     const existingIndex = updatedOptions.findIndex(variant => variant.name === variantName);

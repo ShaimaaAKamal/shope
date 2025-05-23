@@ -1,17 +1,4 @@
-import {
-  Component,
-  Input,
-  QueryList,
-  signal,
-  effect,
-  ViewChildren,
-  OnDestroy,
-  inject,
-  Output,
-  EventEmitter,
-  ViewChild,
-  SimpleChanges
-} from '@angular/core';
+import {Component,Input,QueryList,signal,ViewChildren,OnDestroy,inject,Output,EventEmitter,ViewChild,SimpleChanges} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { VariantOption } from '../../../Interfaces/variant-option';
 import { InputComponent } from '../../../shared/components/input/input.component';
@@ -41,7 +28,6 @@ export class EditVariantComponent implements OnDestroy {
 
   insertVariantNewValue = false;
   showColorPickerContainer =signal<boolean>(false);
-  // showColorPicker: boolean[] = [];
   color = '#000';
   viewInitialized:boolean=false;
   errorMessage='';
@@ -86,20 +72,6 @@ ngAfterViewInit(): void {
         if(this.variant.name != 'color' )
     {   this.showColorPickerContainer.set(false)}
   }
-  // toggleColorPicker(index: number): void {
-  //   this.showColorPicker[index] = true;
-  // }
-
-  // hideColorPicker(index: number): void {
-  //   this.showColorPicker[index] = false;
-  // }
-
-  // onColorChange(color: string, index: number): void {
-  //   const updated = [...this.values()];
-  //   updated[index] = color;
-  //   this.values.set(updated);
-  //   this.hideColorPicker(index);
-  // }
 
   removeValue(index: number): void {
   const updated = [...this.values()]

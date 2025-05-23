@@ -24,8 +24,9 @@
                   title:'',
                   dropdownSelection:variantSelectValue,
                   optionsArray:variantValues,
-                  key:'name',
+                  key:'',
                   noBorder:false,
+                  type:variantSelection == 'color' ? 'color' : ''
             }"
           (changeSelect)="chooseOption($event)"
           >
@@ -62,16 +63,6 @@
               </app-input>
 
               <div class="colorPickerContainer" *ngIf="showColorPickerContainer">
-              <!-- <input
-                [colorPicker]="value"
-                [style.background]="value"
-                [cpToggle]="showColorPicker[index]"
-                (click)="toggleColorPicker(index)"
-                (colorPickerChange)="onColorChange($event, index);"
-                (colorPickerClose)="hideColorPicker(index)"
-                class="circle-picker rounded-2"
-                #colorPick
-              /> -->
                 <app-color-picking   [ColorPickingData]="{
                 value:value,index:index,values:values} "#colorPick></app-color-picking>
             </div>

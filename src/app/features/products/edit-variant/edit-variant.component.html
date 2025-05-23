@@ -46,7 +46,6 @@
         </div>
         <div class="col-12">
              <ng-container *ngFor="let value of values(); let index = index;">
-              {{values | json}}
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">
             <div class="pe-2 align-self-start">
@@ -72,18 +71,7 @@
               >
                 <i class="fa-solid fa-text-width"></i>
               </app-input>
-
               <div class="colorPickerContainer" *ngIf="showColorPickerContainer()">
-              <!-- <input
-                [colorPicker]="value"
-                [style.background]="value"
-                [cpToggle]="showColorPicker[index]"
-                (click)="toggleColorPicker(index)"
-                (colorPickerChange)="onColorChange($event, index);"
-                (colorPickerClose)="hideColorPicker(index)"
-                class="circle-picker rounded-2"
-                #colorPick
-              /> -->
               <app-color-picking   [ColorPickingData]="{
                 value:value,index:index,values:values} "#colorPick></app-color-picking>
             </div>

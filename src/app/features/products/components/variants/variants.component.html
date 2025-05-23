@@ -46,7 +46,7 @@
                  </div>
             </div>
            </div>
-            <div class="d-flex align-items-center py-2 px-3 border border-top-0 rounded-bottom-3" (click)="showOptionsSection()" >
+            <div class="d-flex align-items-center py-2 px-3 border border-top-0 rounded-bottom-3" (click)="showOptionsSection()" *ngIf="!displayVariant()">
               <i class="fa-regular fa-square-plus pe-2"></i>
               <span class="small">{{'Add Options' | translate}}</span>
             </div>
