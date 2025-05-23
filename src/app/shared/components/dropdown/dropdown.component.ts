@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 interface DropdownInterface{
  title:string,
@@ -6,6 +6,7 @@ interface DropdownInterface{
  optionsArray:any[],
  key:string,
  noBorder:boolean,
+ type?:string
   [key: string]: any;
 
 }
@@ -22,8 +23,23 @@ export class DropdownComponent {
   optionsArray:[],
   key:'',
   noBorder:false,
+  type:''
 };
+colorField:boolean=false;
 @Output() changeSelect=new EventEmitter<any>();
+
+ngAfterViewInit(): void {
+  if(this.DropdownComponentData.type == 'color') this.colorField=true;
+      else {this.colorField=false;}
+}
+
+ngOnChanges(changes: SimpleChanges): void {
+ if (changes['DropdownComponentData']) {
+        if(this.DropdownComponentData.type == 'color') this.colorField=true;
+      else {this.colorField=false;}
+    }
+}
+
 selectOption(option:any){
   this.DropdownComponentData.dropdownSelection=option[this.DropdownComponentData.key] || option;
   this.changeSelect.emit(option);
@@ -32,9 +48,8 @@ selectOption(option:any){
 getOption(option:any) {
   const key = this.DropdownComponentData.key;
   if (key)
-    return option[key]
-  else return option;
-
-  }
+      return option[key]
+    else
+      return option;}
 
 }

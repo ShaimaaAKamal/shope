@@ -12,9 +12,21 @@
             >
              <div class="d-flex align-items-center">
               <ng-content #name></ng-content>
+              <!-- <span class="fs-verySmall text-muted text-start"  *ngIf="!colorField">
+                {{ DropdownComponentData.dropdownSelection | translate }}
+              </span> -->
+              <ng-container *ngIf="colorField; else textLabel">
+              <span
+                class="circle-picker rounded-3 border mx-1"
+                [style.background]="DropdownComponentData.dropdownSelection"
+                style="width: 50px; height: 15px; display: inline-block;"
+              ></span>
+            </ng-container>
+            <ng-template #textLabel>
               <span class="fs-verySmall text-muted text-start">
                 {{ DropdownComponentData.dropdownSelection | translate }}
               </span>
+            </ng-template>
              </div>
             </button>
 
@@ -22,8 +34,10 @@
               <li *ngIf="DropdownComponentData.optionsArray.length === 0">
                 <a class="dropdown-item fs-verySmall">{{'No Categories' | translate}}</a>
               </li>
-              <li *ngFor="let option of DropdownComponentData.optionsArray" (click)="selectOption(option)">
-                <a class="dropdown-item fs-verySmall">{{ getOption(option)|translate }}</a>
+              <li  *ngFor="let option of DropdownComponentData.optionsArray" (click)="selectOption(option)">
+                <a class="dropdown-item fs-verySmall " *ngIf="!colorField">{{ getOption(option)|translate }}</a>
+                <a class="dropdown-item fs-verySmall circle-picker rounded-3 mx-auto my-1" [style.background]="getOption(option)" *ngIf="colorField">
+                </a>
               </li>
             </ul>
   </div>
