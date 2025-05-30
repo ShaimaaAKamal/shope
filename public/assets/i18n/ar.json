@@ -207,5 +207,9 @@
          "Variant updated successfully":"تم تحديث المتغير بنجاح",
          "Variant with this name already exist.":"يوجد بالفعل متغير بهذا الاسم",
          "Variant values can't be empty":"لا يمكن أن تكون القيم المتغيرة فارغة",
-         "Variant Name can't be empty.":"لا يمكن أن يكون اسم المتغير فارغًا"
+         "Variant Name can't be empty.":"لا يمكن أن يكون اسم المتغير فارغًا",
+
+         "Failed to fetch orders":"فشل في إيجاد الطلبات",
+         "Efficiency in every order. Excellence in every delivery.":"كفاءة في كل طلب. تميز في كل تسليم",
+          "Add New Order":"إضافة طلب جديد"
 }

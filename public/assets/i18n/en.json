@@ -206,5 +206,11 @@
   "Variant updated successfully":"Variant updated successfully",
   "Variant with this name already exist.":"Variant with this name already exist.",
   "Variant values can't be empty":"Variant values can't be empty",
-  "Variant Name can't be empty.":"Variant Name can't be empty."
+  "Variant Name can't be empty.":"Variant Name can't be empty.",
+
+
+ "Failed to fetch orders":"Failed to fetch orders",
+ "Efficiency in every order. Excellence in every delivery.":"Efficiency in every order. Excellence in every delivery.",
+ "Add New Order": "Add New Order"
+
 }
