@@ -46,7 +46,7 @@ private __CommonService:CommonService) {
     this.__Router.navigateByUrl('Orders');
   }
   else  if(this.order && this.order.hasARetrun )
-  { 
+  {
     this.__ToastingMessagesService.showToast("This order has already been rerurned before",'error');
     this.__Router.navigateByUrl('Orders');
   }
@@ -57,6 +57,36 @@ private __CommonService:CommonService) {
   }
 }
 
+// returnOrder(){
+//   if(this.__OrderService.orderProducts().length === 0)
+//   {
+//     this.__ToastingMessagesService.showToast("Products count must be > 0",'error');
+//     this.__Router.navigateByUrl('Orders/create');
+//   }
+//   else{
+//     const valid=this.validateReturnOrder(this.__OrderService.orderProducts());
+//     if(valid){
+//        this.order.hasARetrun=true;
+//         const result$=this.__OrderService.updateOrder(this.order);
+//   result$.subscribe((result) => {
+//   if (result.status) {
+//     const code = this.__CommonService.generate10CharCode();
+//     const returnOrder = this.__OrderService.buildOrder(this.order, code, 0, 'return');
+
+//     this.__OrderService.addNewOrder(returnOrder).subscribe((addResult) => {
+//       this.__ToastingMessagesService.showToast(addResult.message, addResult.status ? 'success' : 'error');
+//       if (addResult.status) {
+//         this.__Router.navigateByUrl('Orders/create');
+//       }
+//     });
+//   } else {
+//     this.__ToastingMessagesService.showToast(result.message, 'error');
+//   }
+// });
+
+//     }
+//   }
+// }
 
 returnOrder(){
   if(this.__OrderService.orderProducts().length === 0)
@@ -69,20 +99,14 @@ returnOrder(){
     if(valid){
        this.order.hasARetrun=true;
         const result$=this.__OrderService.updateOrder(this.order);
-  result$.subscribe((result) => {
-  if (result.status) {
+  result$.subscribe(() => {
     const code = this.__CommonService.generate10CharCode();
     const returnOrder = this.__OrderService.buildOrder(this.order, code, 0, 'return');
 
-    this.__OrderService.addNewOrder(returnOrder).subscribe((addResult) => {
-      this.__ToastingMessagesService.showToast(addResult.message, addResult.status ? 'success' : 'error');
-      if (addResult.status) {
+    this.__OrderService.addNewOrder(returnOrder).subscribe(() => {
         this.__Router.navigateByUrl('Orders/create');
-      }
     });
-  } else {
-    this.__ToastingMessagesService.showToast(result.message, 'error');
-  }
+
 });
 
     }

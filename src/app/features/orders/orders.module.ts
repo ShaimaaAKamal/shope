@@ -13,7 +13,6 @@ import { OrderDetailsComponent } from './shared/order-details/order-details.comp
 import { OrderComponent } from './order/order.component';
 import { HoldOrdersComponent } from './hold-orders/hold-orders.component';
 import { OrderItemComponent } from './shared/order-item/order-item.component';
-import { OrderPageComponent } from './order-page/order-page.component';
 import { ClientInfoComponent } from './shared/client-info/client-info.component';
 import { ReturnOrderComponent } from './return-order/return-order.component';
 import { ReturnOrderCodeFormComponent } from './return-order-code-form/return-order-code-form.component';
@@ -32,7 +31,6 @@ import { AddInVoiceNewCustomerComponent } from './add-in-voice-new-customer/add-
     OrderComponent,
     HoldOrdersComponent,
     OrderItemComponent,
-    OrderPageComponent,
     ClientInfoComponent,
     ReturnOrderComponent,
     ReturnOrderCodeFormComponent,

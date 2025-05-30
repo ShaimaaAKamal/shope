@@ -4,9 +4,6 @@ import { CommonService } from '../../../../Services/CommonService/common.service
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Order } from '../../../../Interfaces/order';
 import { Router } from '@angular/router';
-import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
-import { of } from 'rxjs';
-
   interface paymentButtonsInterface {
   getPaidAmount: () => number;
   inputMap: { [key: string]: InputComponent };
@@ -26,7 +23,6 @@ export class PaymentButtonsComponent {
 
   constructor( private __OrderService: OrderService,
     private __CommonService: CommonService ,
-    private __ToastingMessagesService:ToastingMessagesService,
    private __Router:Router) {}
 
   ngOnInit() {
@@ -53,6 +49,25 @@ export class PaymentButtonsComponent {
     this.__Router.navigateByUrl('Orders/create');
   }
 
+// setOrderDetails(status: string) {
+//   const order = this.buildOrder(status);
+
+//   const action$ = this.PaymentButtonsData.order
+//     ? this.__OrderService.updateOrder(order)
+//     : this.__OrderService.addNewOrder(order);
+
+//   action$.subscribe((actionSuccess) => {
+//     if (actionSuccess.status) {
+//       this.__ToastingMessagesService.showToast(actionSuccess.message, 'success');
+//       if (!this.PaymentButtonsData.order)
+//         this.resetOrder();
+//       else
+//         this.__Router.navigateByUrl('Orders/create');
+//     } else {
+//       this.__ToastingMessagesService.showToast(actionSuccess.message, 'error');
+//     }
+//   });
+// }
 setOrderDetails(status: string) {
   const order = this.buildOrder(status);
 
@@ -60,16 +75,12 @@ setOrderDetails(status: string) {
     ? this.__OrderService.updateOrder(order)
     : this.__OrderService.addNewOrder(order);
 
-  action$.subscribe((actionSuccess) => {
-    if (actionSuccess.status) {
-      this.__ToastingMessagesService.showToast(actionSuccess.message, 'success');
+  action$.subscribe(() => {
       if (!this.PaymentButtonsData.order)
         this.resetOrder();
       else
         this.__Router.navigateByUrl('Orders/create');
-    } else {
-      this.__ToastingMessagesService.showToast(actionSuccess.message, 'error');
-    }
+
   });
 }
 private buildOrder(status: string): Order {

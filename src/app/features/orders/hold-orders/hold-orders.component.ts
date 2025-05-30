@@ -3,7 +3,6 @@ import { Order } from '../../../Interfaces/order';
 import { Router } from '@angular/router';
 import { OrderService } from '../../../Services/order/order.service';
 import { LanguageService } from '../../../Services/Language/language.service';
-import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-hold-orders',
@@ -12,7 +11,6 @@ import { ToastingMessagesService } from '../../../Services/ToastingMessages/toas
   styleUrl: './hold-orders.component.scss'
 })
 export class HoldOrdersComponent {
-private __ToastingMessagesService=inject(ToastingMessagesService)
 
 __OrderService=inject(OrderService);
 holdOrders=this.__OrderService.HoldOrders;
@@ -32,10 +30,14 @@ this.__Router.navigateByUrl(`Orders/Order/${order.code}`)
 }
 
 
+// deleteOrder(order: Order) {
+//   this.__OrderService.deleteOrderBycode(order.code).subscribe((res) => {
+//     this.__ToastingMessagesService.showToast(res.message, res.status ? 'success' : 'error');
+//   });
+// }
+
 deleteOrder(order: Order) {
-  this.__OrderService.deleteOrderBycode(order.code).subscribe((res) => {
-    this.__ToastingMessagesService.showToast(res.message, res.status ? 'success' : 'error');
-  });
+  this.__OrderService.deleteOrderBycode(order.code).subscribe({});
 }
 
 getLocalizedTime(date: string | Date | null | undefined): string {

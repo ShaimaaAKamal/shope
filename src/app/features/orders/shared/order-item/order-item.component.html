@@ -35,7 +35,8 @@
         </span>
       </div>
       <div class="col-12 col-lg-4 text-end text-lg-center">
-        <span class="fs-verySmall text-secondary">{{'since' | translate}} {{timeDifference.value}} {{timeDifference.unit | translate}}</span>
+        <span class="fs-verySmall text-secondary">{{order.time  | newDate:isRtl()}}</span>
+        <!-- <span class="fs-verySmall text-secondary">{{'since' | translate}} {{timeDifference.value}} {{timeDifference.unit | translate}}</span> -->
       </div>
          <div class="col-12 col-lg-3 text-end text-lg-center">
         <span class="fs-verySmall text-secondary">

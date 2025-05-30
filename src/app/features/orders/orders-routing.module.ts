@@ -9,7 +9,6 @@ const routes: Routes = [
   { path: '', component: OrdersComponent  },
   { path: 'create', component: CreateNewOrderComponent },
   { path: 'Return_Order', component: ReturnOrderComponent },
-  // { path: ':id', component: OrderPageComponent },
   { path: 'Order/:code', component: OrderComponent }
 
 ];
