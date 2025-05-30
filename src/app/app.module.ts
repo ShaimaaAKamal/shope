@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,10 +17,16 @@ import { registerLocaleData } from '@angular/common';
 import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
 import { NavSalesPersonComponent } from './components/sideNavComponents/nav-sales-person/nav-sales-person.component';
 import { NavitemComponent } from './components/sideNavComponents/navitem/navitem.component';
+import { ApiConfigService } from './Services/apiConfigService/api-config-service.service';
+import { firstValueFrom } from 'rxjs';
 
 registerLocaleData(localeAr);
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+export function loadApiConfig(apiConfigService: ApiConfigService) {
+  return () => firstValueFrom(apiConfigService.loadConfig());
 }
 
 @NgModule({
@@ -55,6 +61,12 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
    providers: [
     provideHttpClient(),
+      {
+      provide: APP_INITIALIZER,
+      useFactory: loadApiConfig,
+      deps: [ApiConfigService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
