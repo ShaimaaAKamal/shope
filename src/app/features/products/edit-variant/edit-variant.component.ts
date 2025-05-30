@@ -4,6 +4,7 @@ import { VariantOption } from '../../../Interfaces/variant-option';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { ProductService } from '../../../Services/Product/product.service';
 import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
+import { _ } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-variant',
@@ -119,16 +120,10 @@ const newVariant={
   nameAr:this.variantArabicName.value.trim(),
   values:[...new Set(this.values().filter(v => v.trim() !== ''))]
 }
- this.__ProductService.updateVariant(newVariant)
-  .then(() => {
-    this.__ToastingMessagesService.showToast("Variant updated successfully", 'success');
-    this.errorMessage='';
-    this.updated.emit();
-  })
-  .catch(error => {
-    this.errorMessage=error.message;
-  });
-
+this.__ProductService.updateVariant(newVariant).subscribe({
+  next:()=>{this.errorMessage='';this.updated.emit();},
+  error:(err)=>    this.errorMessage=err.message
+})
   }
 
 ngOnDestroy(): void {

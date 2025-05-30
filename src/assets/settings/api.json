@@ -3,6 +3,7 @@
     "endpoints": {
                 "Products": "/Products",
                 "Orders": "/Orders",
+                "Variants":"/Variants",
                 "createOrder":"/Orders/create"
                 }
 }

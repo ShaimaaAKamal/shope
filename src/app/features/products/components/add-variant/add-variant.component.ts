@@ -229,43 +229,52 @@ constructor(){
   }
 
 showNewValueInput(){
-    this.values.update(current => [...current, '']); 
+    this.values.update(current => [...current, '']);
     this.insertVariantNewValue=true;
 }
 
+
 addNewValue() {
   let variantNewValue: any = (this.variantSelection !== 'color')
-  ? this.variantValuesRefs.first?.value?.trim()
-  : this.values()[0];
+    ? this.variantValuesRefs.first?.value?.trim()
+    : this.values()[0];
 
-if (!this.variantValues.includes(variantNewValue)) {
- this.variantValues.push(variantNewValue);
-const result = this.__CommonService.findItemInArray(this.preSetVariants(),(p) => p.name == this.variantSelection || p.nameAr==this.variantSelection );
-if(result.exists){
-this.__ProductService.updateVariant(result.item)
-  .then(() => {
-    this.exitstErrorMessage='';
-    this.successMessage=true;
-  })
-  .catch(() => {
-    this.exitstErrorMessage='Something went wrong';
-    this.successMessage=false;
-  });
-  this.insertVariantNewValue=false;
-  this.values.update(current => {
-  const updated = [...current];
-  updated.pop();
-  return updated;
-});;
-  this.variantSelectValue=variantNewValue;
+  if (!this.variantValues.includes(variantNewValue)) {
+    this.variantValues.push(variantNewValue);
+
+    const result = this.__CommonService.findItemInArray(
+      this.preSetVariants(),
+      (p) => p.name == this.variantSelection || p.nameAr == this.variantSelection
+    );
+
+    if (result.exists) {
+      this.__ProductService.updateVariant(result.item).subscribe({
+        next: () => {
+          this.exitstErrorMessage = '';
+          this.successMessage = true;
+        },
+        error: () => {
+          this.exitstErrorMessage = 'Something went wrong';
+          this.successMessage = false;
+        },
+        complete: () => {
+          this.insertVariantNewValue = false;
+
+          this.values.update(current => {
+            const updated = [...current];
+            updated.pop();
+            return updated;
+          });
+
+          this.variantSelectValue = variantNewValue;
+        }
+      });
+    }
+  } else {
+    this.exitstErrorMessage = "This Value is already Exist";
+    this.successMessage = false;
   }
 }
-else    { this.exitstErrorMessage="This Value is already Exist";
-          this.successMessage=false;
-      }
-  }
-
-
   removeValue(index: number): void {
   const updated = [...this.values()]
   updated.splice(index, 1);

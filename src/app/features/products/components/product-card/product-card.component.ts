@@ -9,6 +9,7 @@ import { CommonService } from '../../../../Services/CommonService/common.service
 import { CategoryService } from '../../../../Services/Category/category.service';
 import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 
 type SaveResult =
   | 'success'
@@ -130,7 +131,8 @@ updateQuantityLabel(): void {
   }
   clearErrorMessage(){
     this.errorMessage = '';
-  }
+    this.arabicNameErrorMessage=''
+   }
 
   // Product Functions
   displayProductInfo(): void {
@@ -162,48 +164,14 @@ updateQuantityLabel(): void {
     };
   }
 
-  async handleSave(): Promise<void> {
-  try {
-    if (!this.type) {
-      await this.updateProduct();
-    } else {
-      await this.addProduct();
-    }
-  } catch (error) {
-    this.__ToastingMessagesService.showToast('Error during save:', 'error');
-  }
+ handleSave() {
+    if (!this.type)
+      this.updateProduct().subscribe();
+    else  this.addProduct().subscribe( );
 }
 
-private handleSaveResult(result: SaveResult,messages: {success: string;duplicate: string;}, onSuccess?: () => void, onDuplicate?: () => void): void {
-  const noopCases: SaveResult[] = [
-    'missing_title',
-    'missing_Arabic_title',
-    'missing_price',
-    'duplicate',
-    'Duplicate_Arabic_Name',
-    'Duplicate_English_Name',
-  ];
 
-  if (noopCases.includes(result)) return;
-
-  if (result === 'rightVariantsData') {
-    this.__ToastingMessagesService.showToast('Enter Desired Product Details', 'error');
-    return;
-  }
-
-  if (result === 'success') {
-    onSuccess?.();
-    this.__ToastingMessagesService.showToast(messages.success, 'success');
-  }
-}
-
-private emptyBasicInfoErrorMessage(): void {
-  this.arabicNameErrorMessage = '';
-  this.englishNameErrorMessage = '';
-  this.priceErrorMessage = '';
-}
-
-private async  handleProductSave(action:string): Promise<SaveResult> {
+private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
   this.emptyBasicInfoErrorMessage();
 
   const title = this.productTitleInput.value;
@@ -212,77 +180,65 @@ private async  handleProductSave(action:string): Promise<SaveResult> {
 
   if (!title) {
     this.englishNameErrorMessage = 'Name is Required';
-    return 'missing_title';
+    return of('missing_title' as SaveResult);
   }
   if (!arabicTitle) {
     this.arabicNameErrorMessage = 'Arabic Name is Required';
-    return 'missing_Arabic_title';
+    return of('missing_Arabic_title' as SaveResult);
   }
   if (!price) {
     this.priceErrorMessage = 'Price is Required';
-    return 'missing_price';
+    return of('missing_price' as SaveResult);
   }
+
   this.setProductBasicInfo(title, arabicTitle, price);
   this.currentProduct.update(current => ({
     ...current,
     ...this.product
   }));
-  const result =await this.productService.updateProductInfo(this.currentProduct(),action);
-  return result.status ? 'success' : result.message as SaveResult;
+
+  return this.productService.updateProductInfo(this.currentProduct(), action).pipe(
+    switchMap((result) => {
+      if (!result.status) {
+        if (result.message === 'Duplicate_Arabic_Name') return of('Duplicate_Arabic_Name' as SaveResult);
+        if (result.message === 'Duplicate_English_Name') return of('Duplicate_English_Name' as SaveResult);
+        return of('error' as SaveResult);
+      }
+      return of('success' as SaveResult);
+    }),
+    catchError(() => of('error' as SaveResult))
+  );
 }
 
-private async processProductSave(
+private processProductSave(
   action: 'add' | 'update',
-  successMessage: string,
-  duplicatePrefix: string
-): Promise<void> {
-  const result = await this.handleProductSave(action);
+): Observable<void> {
+  return this.handleProductSave(action).pipe(
+    tap((result: SaveResult) => {
+      if (result === 'Duplicate_Arabic_Name') {
+        this.arabicNameErrorMessage = 'Arabic Name is already Exist';
+      }
 
-  if (result === 'Duplicate_Arabic_Name') {
-    this.arabicNameErrorMessage = 'Arabic Name is already Exist';
-  }
-
-  if (result === 'Duplicate_English_Name') {
-    this.englishNameErrorMessage = 'Name is already Exist';
-  }
-
-  const duplicateDetail =
-    result === 'Duplicate_Arabic_Name' ? 'Arabic Name' : 'English Name';
-
-  this.handleSaveResult(
-    result,
-    {
-      success: successMessage,
-      duplicate: `${duplicatePrefix} ${duplicateDetail}`,
-    },
-    action === 'add'
-      ? () => {
-          this.displayCheck = true;
-          this.updateQuantityLabel();
-        }
-      : undefined,
-    action === 'add'
-      ? () => {
-          this.displayCheck = false;
-        }
-      : undefined
+      if (result === 'Duplicate_English_Name') {
+        this.englishNameErrorMessage = 'Name is already Exist';
+      }
+    }),
+    map(() => void 0)
   );
 }
 
-async addProduct(): Promise<void> {
-  await this.processProductSave(
-    'add',
-    'Product has been added successfully',
-    'Another Product already exists with this'
-  );
+addProduct(): Observable<void> {
+  return this.processProductSave('add');
 }
 
-async updateProduct(): Promise<void> {
-  await this.processProductSave(
-    'update',
-    'Product data has been saved successfully',
-    "Product data hasn't been saved successfully as"
-  );
+updateProduct(): Observable<void> {
+  return this.processProductSave('update');
+}
+
+private emptyBasicInfoErrorMessage(): void {
+  this.arabicNameErrorMessage = '';
+  this.englishNameErrorMessage = '';
+  this.priceErrorMessage = '';
 }
 
 saveAdditionalInfo(done:boolean){
@@ -342,6 +298,5 @@ toggleCheck(product:Product){
     this.unchecked=!this.unchecked;
     this.checkedProduct.emit({product:product,checked: this.unchecked})
   }
-
 
 }

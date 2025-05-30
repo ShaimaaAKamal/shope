@@ -60,11 +60,9 @@ async add() {
     nameAr: variantArabicName,
     values: variantValues
   };
-  this.__ProductService.createVariant(newVariant).then(() => {
-  this.__ToastingMessagesService.showToast('Variant created successfully', 'success');
-  this.closeAddVariantPopScreen.emit();
-});
-}
+  this.__ProductService.createVariant(newVariant).subscribe({
+    next:()=>this.closeAddVariantPopScreen.emit()
+  })}
 private getUniqueTrimmedValues(): string[] {
   return Array.from(new Set(
     this.variantValuesRefs

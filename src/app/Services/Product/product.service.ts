@@ -1,17 +1,18 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
 import { VariantOption } from '../../Interfaces/variant-option';
-import { firstValueFrom, throwError } from 'rxjs';
+import { catchError, concatMap, finalize, firstValueFrom, forkJoin, map, of, tap, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SharedService } from '../Shared/shared.service';
+import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
- private apiUrlBase = 'http://localhost:3000/';
-  private apiUrl = `${this.apiUrlBase}products`;
-  private variantApiUrl = `${this.apiUrlBase}variants`;
+private __SharedService=inject(SharedService);
+
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
@@ -21,92 +22,85 @@ export class ProductService {
   // Signals for state management
   private productsSignal = signal<Product[]>([]);
   private loadingSignal = signal<boolean>(false);
-  private errorSignal = signal<string | null>(null);
 
   // Expose signals as readonly
   products = this.productsSignal.asReadonly() ;
   loading = this.loadingSignal.asReadonly();
-  error = this.errorSignal.asReadonly();
 
-  constructor(private commonService: CommonService,private http: HttpClient) {
+  constructor(private commonService: CommonService) {
     this.init();
   }
 
 //Variant Api
-  async getVariants(): Promise<void> {
-  try {
-      const data = await firstValueFrom(this.http.get<VariantOption[]>(this.variantApiUrl));
-      this.variantOptions.set([...data]);
-    } catch (error: any) {
-      this.handleApiError(error,'Failed to fetch variants');
-    }
-  }
 
-  async createVariant(variant: VariantOption): Promise<void> {
-   this.errorSignal.set(null);
-    try {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const newVariant = await firstValueFrom(
-        this.http.post<VariantOption>(this.variantApiUrl, variant, { headers })
-      );
-      this.variantOptions.update(variants => this.addOrReplaceItemById(variants, newVariant));
-    } catch (error: any) {
-       this.handleApiError(error,'Failed to create variant');
-    }
-  }
+getVariants() {
+  this.loadingSignal.set(true);
 
-  async deleteVariant(id: number): Promise<void> {
+  return this.__SharedService.getAll<VariantOption>('Variants', 'variants').pipe(
+    tap({
+      next: (data) => this.variantOptions.set([...data]),
+      complete: () => this.loadingSignal.set(false),
+    })
+  );
+}
+
+createVariant(variant: VariantOption){
    this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-
-    try {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      await firstValueFrom(this.http.delete<void>(`${this.variantApiUrl}/${id}`, { headers }));
-      this.variantOptions.update(variants => variants.filter(p => p.id !== id));
-    } catch (error: any) {
-          this.handleApiError(error,'Failed to delete variant');
-    } finally {
-      this.loadingSignal.set(false);
-    }
+   return this.__SharedService.create<VariantOption>('Variants', variant, 'Variant').pipe(
+    tap({
+      next: (newVariant) => this.variantOptions.update(variants => this.addOrReplaceItemById(variants, newVariant)),
+      complete: () => this.loadingSignal.set(false),
+    })
+  );
   }
 
-  async updateVariant(variant: VariantOption): Promise<void> {
+deleteVariant(id: number) {
+    this.loadingSignal.set(true);
+    return  this.__SharedService.delete<VariantOption>('Variants', id, 'variant').pipe(
+        tap({
+          next: () =>      this.variantOptions.update(variants => variants.filter(p => p.id !== id)),
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
+
+
+updateVariant(variant: VariantOption){
    this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-    try {
-        const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id )
-        if (existingVariant) {
-          throw new Error(`Variant with this name already exist.`);
-        }
-        if (variant.values.length == 0) {
-          throw new Error(`Variant values can't be empty.`);
-        }
+    const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id )
+                    if (existingVariant) {
+                      throw new Error(`Variant with this name already exist.`);
+                    }
+                    if (variant.values.length == 0) {
+                      throw new Error(`Variant values can't be empty.`);
+                    }
 
-        if( !variant.name || !variant.nameAr) {
-          throw new Error(`Variant Name can't be empty.`);
-        }
-
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const updatedVariant = await firstValueFrom(
-        this.http.put<VariantOption>(`${this.variantApiUrl}/${variant.id}`, variant, { headers })
+                    if( !variant.name || !variant.nameAr) {
+                      throw new Error(`Variant Name can't be empty.`);
+                    }
+    return this.__SharedService.update<VariantOption>('Variants', variant.id, variant, 'variant').pipe(
+        tap({
+          next: (updatedVariant) =>  {
+                this.variantOptions.update(variants =>
+                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
+                );},
+          complete: () => this.loadingSignal.set(false),
+        })
       );
-      this.variantOptions.update(variants =>
-        variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
-      );
-    } catch (error: any) {
-        throwError;
-        console.log(error);
-          this.handleApiError(error,'Failed to update variant');
-    } finally {
-      this.loadingSignal.set(false);
-    }
   }
 
   //Product Api
-  private async init(): Promise<void> {
-  await this.getVariants();
-  await this.getProducts();
-  this.handleLoadingAllowProducts();
+private init(): void {
+  this.getVariants().pipe(
+    concatMap(() => this.getProducts())
+  ).subscribe({
+    next: () => {
+      this.handleLoadingAllowProducts();
+    },
+    error: (err) => {
+      console.error('Error loading data:', err);
+    }
+  });
 }
   private handleLoadingAllowProducts(){
     const sortedProducts=this.removeEmptyProduct(this.products());
@@ -115,101 +109,83 @@ export class ProductService {
   }
 
   //Api calls
-  async getProducts(): Promise<void> {
-   this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-    try {
-      const data = await firstValueFrom(this.http.get<{ products: Product[] }>(this.apiUrl));
-      this.productsSignal.set(data?.products || data || []);
-    } catch (error: any) {
-      this.handleApiError(error,'Failed to fetch products');
-    } finally {
-      this.loadingSignal.set(false);
-    }
-  }
-
-  async createProduct(product: Product): Promise<void> {
-    this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-
-    try {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const newProduct = await firstValueFrom(
-        this.http.post<Product>(this.apiUrl, product, { headers })
-      );
-      this.productsSignal.update(products => this.addOrReplaceItemById(products, newProduct));
-      this.type.set('');
-      this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-    } catch (error: any) {
-       this.handleApiError(error,'Failed to create product')
-    } finally {
-      this.loadingSignal.set(false);
-    }
-  }
-
-  async updateProduct(product: Product): Promise<void> {
-
-    this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-    try {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const updatedProduct = await firstValueFrom(
-        this.http.put<Product>(`${this.apiUrl}/${product.id}`, product, { headers })
-      );
-      this.productsSignal.update(products =>
-        products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
-      );
-    } catch (error: any) {
-          this.handleApiError(error,'Failed to update product');
-    } finally {
-      this.loadingSignal.set(false);
-    }
-  }
-
-   async deleteProduct(id: number): Promise<void> {
-    this.loadingSignal.set(true);
-   this.errorSignal.set(null);
-
-    try {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      await firstValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`, { headers }));
-      this.productsSignal.update(products => products.filter(p => p.id !== id));
-      this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-    } catch (error: any) {
-          this.handleApiError(error,'Failed to delete product');
-    } finally {
-      this.loadingSignal.set(false);
-    }
-  }
-
-  async deleteProducts(ids: number[]): Promise<void> {
+getProducts() {
   this.loadingSignal.set(true);
- this.errorSignal.set(null);
-
-  try {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    await Promise.all(
-      ids.map(id =>
-        firstValueFrom(this.http.delete<void>(`${this.apiUrl}/${id}`, { headers }))
-      )
-    );
-    this.productsSignal.update(products =>
-      products.filter(product => !ids.includes(product.id))
-    );
-    this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-  } catch (error: any) {
-    this.handleApiError(error,'Failed to delete products');
-  } finally {
-    this.loadingSignal.set(false);
-  }
+  return this.__SharedService.getAll<Product>('Products', 'products').pipe(
+    tap({
+      next: (products) => {
+        this.productsSignal.set(products || []);
+      },
+      complete: () => {
+        this.loadingSignal.set(false);
+      }
+    })
+  );
 }
- private handleApiError(error:any,message:string){
-     this.errorSignal.set( message);
-     throw error;
+
+
+createProduct(product: Product){
+    this.loadingSignal.set(true);
+    this.loadingSignal.set(true);
+    return this.__SharedService.create<Product>('Products', product, 'product').pipe(
+        tap({
+          next: (newProduct) => {
+                  this.productsSignal.update(products => this.addOrReplaceItemById(products, newProduct));
+                   this.type.set('');
+                   this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
+          },
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
+updateProduct(product: Product) {
+
+    this.loadingSignal.set(true);
+    return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
+        tap({
+          next: (updatedProduct) =>  {
+                 this.productsSignal.update(products =>
+        products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
+      );},
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
   }
 
+   deleteProduct(id: number) {
+    this.loadingSignal.set(true);
 
+      return  this.__SharedService.delete<Product>('Products', id, 'product').pipe(
+        tap({
+          next: () =>  {
+                 this.productsSignal.update(products => products.filter(p => p.id !== id));
+                this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
+                },
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
+
+deleteProducts(ids: number[]) {
+  this.loadingSignal.set(true);
+
+  const deleteRequests = ids.map(id =>
+    this.__SharedService.delete<Product>('Products', id, 'product')
+  );
+
+  return forkJoin(deleteRequests).pipe(
+    tap(() => {
+      this.productsSignal.update(products =>
+        products.filter(product => !ids.includes(product.id))
+      );
+      this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
+    }),
+    finalize(() => {
+      this.loadingSignal.set(false);
+    }),
+    map(() => void 0)
+  );
+}
   private addOrReplaceItemById<T extends { id: number | string }>(array: T[], newItem: T): T[] {
   const index = array.findIndex(item => item.id === newItem.id);
   const updated = [...array];
@@ -233,22 +209,24 @@ export class ProductService {
     return true;
   }
 
-  async updateProductInfo(product: Product, actionType: string): Promise<{ status: boolean; message: string }> {
+updateProductInfo(product: Product, actionType: string) {
   const result = this.commonService.checkDuplicateInArray(
     this.products(),
     p => p.id === product.id,
     product
   );
+
   if (!result.isDuplicate) {
-    const action = actionType === 'add'
+    const action$ = actionType === 'add'
       ? this.createProduct(product)
       : this.updateProduct(product);
-    return action
-      .then(() => ({ status: true, message: 'updated' }))
-      .catch(error => ({ status: false, message: error?.message || 'Save failed' }));
-  }
 
-  return { status: false, message: result.message ?? '' };
+    return action$.pipe(
+      map(() => ({ status: true, message: 'updated' })),
+      catchError(error => of({ status: false, message: error?.message || 'Save failed' }))
+    );
+  }
+  return of({ status: false, message: result.message ?? '' });
 }
 
   updateProducts(products: Product[]): void {

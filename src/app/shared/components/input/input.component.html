@@ -16,7 +16,7 @@
              <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="InputComponentData.spanLabel | translate" (click)="handleClick($event)"></span>
           </div>
          <input *ngIf="!InputComponentData.inputGroup" [type]="InputComponentData.type" class="form-control form-control-sm rounded-1" [id]=InputComponentData.id
-         [readonly]="InputComponentData.readonly" [placeholder]="InputComponentData.placeholder | translate"
+         [readonly]="InputComponentData.readonly"   [placeholder]="InputComponentData.placeholder | translate"
          (blur)="InputComponentData.enableFocusBlurTracking ? onBlur($event) : null"   (focus)="InputComponentData.enableFocusBlurTracking ? onFocus($event) : null"  #inputRef
          />
       </div>

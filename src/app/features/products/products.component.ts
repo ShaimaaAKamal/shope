@@ -17,7 +17,6 @@ export class ProductsComponent {
   private toastService = inject(ToastingMessagesService);
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
-  private apiError=this.productService.error;
 
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
@@ -26,16 +25,12 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
 
-  constructor(private __ToastingMessagesService:ToastingMessagesService,private __CommonService:CommonService) {
+  constructor(private __CommonService:CommonService) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
   });
-  effect(() => {
-  const error = this.apiError();
-  if (error) {
-    this.__ToastingMessagesService.showToast(error,'error')  }
-});
+
     this.products = computed(() =>
       [...this.productService.products()].sort((a, b) => b.id - a.id)
     );
@@ -44,7 +39,6 @@ export class ProductsComponent {
   addNew(_value: boolean): void {
     this.type.set('new');
     this.newProduct = this.productService.getEmptyProduct();
-    // this.newProduct.id = this.products().length + 1;
     this.newProduct.id = this.__CommonService.getId();
     this.productService.addNewProduct(this.newProduct);
   }
@@ -60,9 +54,7 @@ export class ProductsComponent {
   }
 
   deleteSelected(_del: boolean): void {
-     this.productService.deleteProducts(this.checkedProducts).then(() => {
-  this.__ToastingMessagesService.showToast('Products has been deleted successfully', 'success');
-});
+         this.productService.deleteProducts(this.checkedProducts).subscribe();
   }
 
   closeAddVariantPopScreen(){

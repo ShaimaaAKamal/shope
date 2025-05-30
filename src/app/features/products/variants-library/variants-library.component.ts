@@ -34,11 +34,8 @@ deleteVariant(variant:VariantOption){
 if(variant.name == 'color')  { this.__ToastingMessagesService.showToast("Default Variant can't be deleted.", 'error');
   return;
 }
- this.__ProductService.deleteVariant(variant.id).then(() => {
-  this.__ToastingMessagesService.showToast('Variant has been deleted successfully', 'success');
-}).catch(() => {
-  this.__ToastingMessagesService.showToast('Failed to delete variant.', 'error');
-});
+
+this.__ProductService.deleteVariant(variant.id).subscribe();
 }
 
 editVariant(variant:VariantOption){
