@@ -18,5 +18,6 @@ export interface Order {
   customer:Customer,
   time:Date,
   currency?:string,
-  hasARetrun?:boolean
+  hasARetrun?:boolean,
+  remainingQty?:number
 }

@@ -30,8 +30,13 @@ export class ReturnOrderCodeFormComponent {
     return;
   }
 
-  if (result.hasARetrun) {
-    this.errorMessage = 'This Order has been already returned before';
+   if (result.status == 'return') {
+    this.errorMessage = 'This is a return order';
+    return;
+  }
+
+  if (result.status == 'paid' && (this.__OrderService.calculateTotalProducts(result.products) <=0)) {
+    this.errorMessage = "There is no products to be returned";
     return;
   }
   this.__Router.navigate(['/Orders/Return_Order'], {

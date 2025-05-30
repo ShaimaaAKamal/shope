@@ -244,11 +244,7 @@ import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.s
   providedIn: 'root'
 })
 export class OrderService {
-  private http = inject(HttpClient);
   private __SharedService=inject(SharedService);
-  // private baseUrl = 'http://localhost:3000/orders';
-    private baseUrl !:string;
-
 
  orders=signal<Order[]>([])
  orderProducts=signal<Product[]>([]);
@@ -291,7 +287,6 @@ deleteOrderApi(id: number){
 
 
 addNewOrder(order: Order){
-  console.log(order);
   let result = this.__CommonService.findItemInArray(this.orders(), o => o.code == order.code);
   if (result.exists) {
     this.__ToastingMessagesService.showToast( 'This order already exists!' ,'error');
@@ -313,14 +308,19 @@ updateOrder(order: Order){
   const canUpdate =
     (order.status === 'paid' && existingOrder.status === 'hold') ||
     (order.status === 'hold' && existingOrder.status === 'hold') ||
-    (order.status === 'paid' && !existingOrder.hasARetrun && order.hasARetrun);
-
-  if (!canUpdate) {
-    const message = existingOrder.hasARetrun
-      ? 'This Order has already been returned before!'
-      : existingOrder.status === 'paid'
+    (order.status === 'paid' && !existingOrder.remainingQty) ||
+    (order.status === 'paid' && existingOrder.remainingQty && existingOrder.remainingQty > 0)
+  // if (!canUpdate) {
+  //   const message = existingOrder.hasARetrun
+  //     ? 'This Order has already been returned before!'
+  //     : existingOrder.status === 'paid'
+  //       ? 'This Order has already been paid!'
+  //       : "This Order hasn't been updated!";
+    if (!canUpdate) {
+    const message = existingOrder.status === 'paid'
         ? 'This Order has already been paid!'
         : "This Order hasn't been updated!";
+
 
     this.__ToastingMessagesService.showToast(message, 'error');
   }
@@ -367,8 +367,7 @@ getGrossTotal = computed(() => {
 
 getTotalQuantity = computed(() => {
     const products = this.orderProducts();
-    if (products.length === 0) return 0;
-    return products.reduce((total, product) => total + parseFloat(product.quantity), 0);
+    return this.calculateTotalProducts(products);
   });
 
 dueAmount = computed(() => {
@@ -415,7 +414,11 @@ buildOrder(
     discount,
     paymentMethods,
     status,
-    time
+    time,
   };
+}
+calculateTotalProducts(products:Product[]){
+   if (products.length === 0) return 0;
+    return products.reduce((total, product) => total + parseFloat(product.quantity), 0);
 }
 }

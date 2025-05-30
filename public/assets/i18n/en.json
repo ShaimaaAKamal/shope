@@ -211,6 +211,7 @@
 
  "Failed to fetch orders":"Failed to fetch orders",
  "Efficiency in every order. Excellence in every delivery.":"Efficiency in every order. Excellence in every delivery.",
- "Add New Order": "Add New Order"
+ "Add New Order": "Add New Order",
+ "There is no products to be returned":"There is no products to be returned"
 
 }

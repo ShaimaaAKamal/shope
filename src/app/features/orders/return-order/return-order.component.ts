@@ -45,9 +45,9 @@ private __CommonService:CommonService) {
     this.__ToastingMessagesService.showToast("This is a return order",'error');
     this.__Router.navigateByUrl('Orders');
   }
-  else  if(this.order && this.order.hasARetrun )
+  else if(this.order && this.order.status == 'paid' && (this.__OrderService.calculateTotalProducts(this.order.products) <=0))
   {
-    this.__ToastingMessagesService.showToast("This order has already been rerurned before",'error');
+    this.__ToastingMessagesService.showToast("There is no products to be returned",'error');
     this.__Router.navigateByUrl('Orders');
   }
   else {
@@ -89,6 +89,7 @@ private __CommonService:CommonService) {
 // }
 
 returnOrder(){
+
   if(this.__OrderService.orderProducts().length === 0)
   {
     this.__ToastingMessagesService.showToast("Products count must be > 0",'error');
@@ -97,7 +98,13 @@ returnOrder(){
   else{
     const valid=this.validateReturnOrder(this.__OrderService.orderProducts());
     if(valid){
-       this.order.hasARetrun=true;
+      if(!this.order.hasARetrun)
+               { this.order.remainingQty=this.__OrderService.calculateTotalProducts(this.order.products) - this.__OrderService.getTotalQuantity();
+                this.order.hasARetrun=true;
+              }
+      else
+        this.order.remainingQty=(this.order.remainingQty ?? 0) - this.__OrderService.getTotalQuantity();
+        this.calculateRemainingProducts();
         const result$=this.__OrderService.updateOrder(this.order);
   result$.subscribe(() => {
     const code = this.__CommonService.generate10CharCode();
@@ -107,21 +114,10 @@ returnOrder(){
         this.__Router.navigateByUrl('Orders/create');
     });
 
-});
-
-    }
-  }
+}); }}
 }
 
 validateReturnOrder(newReturnProducts:any): boolean {
-  if (this.order.hasARetrun) {
-      this.__ToastingMessagesService.showToast(
-      `A return order already exists for Order #${this.order.code}.`,
-      'error'
-     );
-    return false;
-  }
-
   for (const returnItem of newReturnProducts) {
     const originalProduct = this.orderProducts.find(
       p => p.id === returnItem.id
@@ -144,5 +140,28 @@ validateReturnOrder(newReturnProducts:any): boolean {
 
 cancalReturn(){
   this.__Router.navigateByUrl('Orders/create');
+}
+calculateRemainingProducts(){
+const updatedProducts:Product[] = [];
+const returnedProducts=this.__OrderService.orderProducts();
+const returnedItems:Product[] = []
+
+this.order.products.forEach(product => {
+  const returned = returnedProducts.find(p => p.id === product.id);
+
+  if (returned) {
+    const remainingQty:number = Number(product.quantity) - Number(returned.quantity);
+
+    if (remainingQty > 0) {
+      updatedProducts.push({ ...product, quantity: String(remainingQty) });
+    }
+
+    returnedItems.push({ ...product, quantity: String(returned.quantity) });
+  } else {
+    updatedProducts.push(product);
+  }
+});
+
+this.order.products = updatedProducts;
 }
 }

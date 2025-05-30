@@ -211,5 +211,6 @@
 
          "Failed to fetch orders":"فشل في إيجاد الطلبات",
          "Efficiency in every order. Excellence in every delivery.":"كفاءة في كل طلب. تميز في كل تسليم",
-          "Add New Order":"إضافة طلب جديد"
+          "Add New Order":"إضافة طلب جديد",
+          "There is no products to be returned":"لا يوجد منتجات للإرجاع"
 }
