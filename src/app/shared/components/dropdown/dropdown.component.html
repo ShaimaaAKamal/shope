@@ -32,7 +32,7 @@
 
             <ul class="dropdown-menu w-100">
               <li *ngIf="DropdownComponentData.optionsArray.length === 0">
-                <a class="dropdown-item fs-verySmall">{{'No Categories' | translate}}</a>
+                <a class="dropdown-item fs-verySmall">{{'Choose value' | translate}}</a>
               </li>
               <li  *ngFor="let option of DropdownComponentData.optionsArray" (click)="selectOption(option)">
                 <a class="dropdown-item fs-verySmall " *ngIf="!colorField">{{ getOption(option)|translate }}</a>
