@@ -107,7 +107,7 @@ updateItemInArray<T extends { name?: string; nameAr?: string }>(
 
   return { isDuplicate: false };
 }
-findItemInArray<T extends { name?: string,code?:string }>(
+findItemInArray<T extends { name?: string,code?:string,nameEn?: string, }>(
   array: T[], matchFn: (item: T) => boolean) :{exists:boolean; ind: number; item:any }{
   const index = array.findIndex(matchFn);
   const exists = index !== -1;
