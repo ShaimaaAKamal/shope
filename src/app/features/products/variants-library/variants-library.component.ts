@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
-import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
-import { VariantOption } from '../../../Interfaces/variant-option';
+import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 
 @Component({
   selector: 'app-variants-library',
@@ -19,8 +18,8 @@ isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
 
 
-editedVariant:VariantOption={} as VariantOption;
-private __ToastingMessagesService=inject(ToastingMessagesService);
+editedVariant:VariantMasterLookUP={} as VariantMasterLookUP;
+
 showOptionsSection(){
  this.popupVisible=true;
 }
@@ -29,22 +28,22 @@ closeAddVariantPopScreen(){
  this.popupVisible=false;
 }
 
-deleteVariant(variant:VariantOption){
+deleteVariant(variant:VariantMasterLookUP){
 
-if(variant.name == 'color')  { this.__ToastingMessagesService.showToast("Default Variant can't be deleted.", 'error');
-  return;
+ if (variant.id) {
+    this.__ProductService.deleteVariant(variant.id).subscribe();
+  }
 }
 
-this.__ProductService.deleteVariant(variant.id).subscribe();
-}
-
-editVariant(variant:VariantOption){
+editVariant(variant:VariantMasterLookUP){
  this.editedVariant=variant;
 }
+
 updatedVariant(){
-  this.editedVariant={} as VariantOption;
+  this.editedVariant={} as VariantMasterLookUP;
 }
 deleteSelected(event:any){
 
 }
 }
+
