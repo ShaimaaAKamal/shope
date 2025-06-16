@@ -215,7 +215,16 @@
  "There is no products to be returned":"There is no products to be returned",
  "Add New Variant":"Add New Variant",
   "Failed to fetch variants":"Failed to fetch variants",
-  "Failed to fetch products": "Failed to fetch products"
+  "Failed to fetch products": "Failed to fetch products",
 
-
+  "color":"color",
+  "text":"text",
+  "number":"number",
+  "Option Name": "Option Name",
+  "Option Arabic Name":  "Option Arabic Name",
+  "Variant Value": "Variant Value",
+  "Value detailed name":"Value detailed name",
+  "Value detailed arabic name" : "Value detailed arabic name",
+  "Add Value":"Add Value",
+  "Choose value":"Choose value"
 }

@@ -215,5 +215,17 @@
           "There is no products to be returned":"لا يوجد منتجات للإرجاع",
           "Add New Variant":"إضافة متغير جديد",
           "Failed to fetch variants":"فشل في إيجاد المتغيرات",
-          "Failed to fetch products":"فشل في إيجاد المنتجات"
-}
+          "Failed to fetch products":"فشل في إيجاد المنتجات",
+
+           "color":"اللون",
+          "text":"النص",
+          "number":"الرقم",
+           "Option Name":"اسم الخيار",
+           "Option Arabic Name":"اسم الخيار باللغة العربية",
+           "Variant Value":"قيمة المتغير",
+            "Value detailed name":"اسم القيمة التفصيلية",
+           "Value detailed arabic name" : "اسم القيمة التفصلية بالعربية",
+             "Add Value":"إضافة قيمة",
+             "Choose value":"اختر القيمة"
+
+        }
