@@ -18,12 +18,10 @@ export class ColorPickingComponent {
   values:signal<string[]>([])
 }
 
-@Output() valuesChange = new EventEmitter<string[]>();
+@Output() color = new EventEmitter<string>();
 showColorPicker: boolean[] = [];
 
-ngOnInit(): void {
-  this.showColorPicker = this.ColorPickingData.values().map(() => false)
-}
+
  toggleColorPicker(index: number): void {
     this.showColorPicker[index] = true;
   }
@@ -36,6 +34,8 @@ ngOnInit(): void {
     const updated = [...this.ColorPickingData.values()];
     updated[index] = color;
     this.ColorPickingData.values.set(updated);
+    this.ColorPickingData.value= color;
+     this.color.emit(color);
     this.hideColorPicker(index);
   }
 }
