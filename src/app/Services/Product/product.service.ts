@@ -2,10 +2,9 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
 import { VariantOption } from '../../Interfaces/variant-option';
-import { catchError, concatMap, finalize, firstValueFrom, forkJoin, map, of, tap, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, concatMap, finalize, forkJoin, map, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
-import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
+import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,9 @@ private __SharedService=inject(SharedService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-  variantOptions = signal<VariantOption[]>([]);
+  
+  variantOptions = signal<VariantMasterLookUP[]>([]);
+
   currentProduct = signal<Product>(this.getEmptyProduct());
 
   // Signals for state management
@@ -36,7 +37,7 @@ private __SharedService=inject(SharedService);
 getVariants() {
   this.loadingSignal.set(true);
 
-  return this.__SharedService.getAll<VariantOption>('Variants', 'variants').pipe(
+  return this.__SharedService.getAll<VariantMasterLookUP>('Variants', 'variants').pipe(
     tap({
       next: (data) => this.variantOptions.set([...data]),
       complete: () => this.loadingSignal.set(false),
@@ -44,9 +45,9 @@ getVariants() {
   );
 }
 
-createVariant(variant: VariantOption){
+createVariant(variant: VariantMasterLookUP){
    this.loadingSignal.set(true);
-   return this.__SharedService.create<VariantOption>('Variants', variant, 'Variant').pipe(
+   return this.__SharedService.create<VariantMasterLookUP>('Variants', variant, 'Variant').pipe(
     tap({
       next: (newVariant) => this.variantOptions.update(variants => this.addOrReplaceItemById(variants, newVariant)),
       complete: () => this.loadingSignal.set(false),
@@ -56,7 +57,7 @@ createVariant(variant: VariantOption){
 
 deleteVariant(id: number) {
     this.loadingSignal.set(true);
-    return  this.__SharedService.delete<VariantOption>('Variants', id, 'variant').pipe(
+    return  this.__SharedService.delete<VariantMasterLookUP>('Variants', id, 'variant').pipe(
         tap({
           next: () =>      this.variantOptions.update(variants => variants.filter(p => p.id !== id)),
           complete: () => this.loadingSignal.set(false),
@@ -64,21 +65,24 @@ deleteVariant(id: number) {
       );
   }
 
+updateVariant(variant: VariantMasterLookUP){
+    if (!variant.id) {
+    throw new Error('Variant ID is required for update.');
+  }
 
-updateVariant(variant: VariantOption){
    this.loadingSignal.set(true);
-    const existingVariant = this.variantOptions().find(v => (v.name === variant.name ||  v.nameAr === variant.nameAr) && v.id != variant.id )
+    const existingVariant = this.variantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
                     if (existingVariant) {
                       throw new Error(`Variant with this name already exist.`);
                     }
-                    if (variant.values.length == 0) {
+                    if (variant.variantDetails.length == 0) {
                       throw new Error(`Variant values can't be empty.`);
                     }
 
-                    if( !variant.name || !variant.nameAr) {
+                    if( !variant.nameEn || !variant.nameAr) {
                       throw new Error(`Variant Name can't be empty.`);
                     }
-    return this.__SharedService.update<VariantOption>('Variants', variant.id, variant, 'variant').pipe(
+    return this.__SharedService.update<VariantMasterLookUP>('Variants', variant.id, variant, 'variant').pipe(
         tap({
           next: (updatedVariant) =>  {
                 this.variantOptions.update(variants =>
@@ -88,6 +92,7 @@ updateVariant(variant: VariantOption){
         })
       );
   }
+
 
   //Product Api
 private init(): void {
@@ -152,6 +157,20 @@ updateProduct(product: Product) {
       );
   }
 
+  patchProduct(partialProduct: Partial<Product> & { id: number }) {
+  this.loadingSignal.set(true);
+
+  return this.__SharedService.patch<Product>('Products', partialProduct.id, partialProduct, 'product').pipe(
+    tap({
+      next: (updatedProduct) => {
+        this.productsSignal.update(products =>
+          products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
+        );
+      },
+      complete: () => this.loadingSignal.set(false),
+    })
+  );
+}
    deleteProduct(id: number) {
     this.loadingSignal.set(true);
 
@@ -186,7 +205,7 @@ deleteProducts(ids: number[]) {
     map(() => void 0)
   );
 }
-  private addOrReplaceItemById<T extends { id: number | string }>(array: T[], newItem: T): T[] {
+  private addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
   const index = array.findIndex(item => item.id === newItem.id);
   const updated = [...array];
 
