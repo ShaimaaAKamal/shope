@@ -1,5 +1,6 @@
 export interface Category {
-  id:number,
-  name:string,
-  nameAr:string
+  id?:number,
+  nameEn:string,
+  nameAr:string,
+  isActive:boolean
 }
