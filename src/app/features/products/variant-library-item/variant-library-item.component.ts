@@ -1,16 +1,16 @@
 import {
+  ChangeDetectorRef,
   Component,
-  effect,
   EventEmitter,
-  inject,
   Input,
   Output,
   QueryList,
-  signal,
   SimpleChanges,
   ViewChild,
   ViewChildren,
-  WritableSignal
+  effect,
+  inject,
+  signal,
 } from '@angular/core';
 import { CommonService } from '../../../Services/CommonService/common.service';
 import { ProductService } from '../../../Services/Product/product.service';
@@ -18,17 +18,10 @@ import { LanguageService } from '../../../Services/Language/language.service';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 
-
 interface VariantType {
   id: number;
   name: string;
   nameAr: string;
-}
-
-interface ColorPickingInterface {
-  value: string;
-  index: number;
-  values: WritableSignal<string[]>;
 }
 
 @Component({
@@ -41,33 +34,31 @@ export class VariantLibraryItemComponent {
   private __CommonService = inject(CommonService);
   private __ProductService = inject(ProductService);
   private __LanguageService = inject(LanguageService);
-  // @Input() variant!: VariantMasterLookUP;
-  isRtl = this.__LanguageService.dirSignal;
+  private cdRef = inject(ChangeDetectorRef);
 
+  isRtl = this.__LanguageService.dirSignal;
   variantOptions = this.__ProductService.variantOptions;
 
-  variantTypeSelection: string = 'text';
-  variantTypeArabicSelection: string = 'النص';
+  variantTypeSelection = 'text';
+  variantTypeArabicSelection = 'النص';
   variantTypes: VariantType[] = [
     { id: 1, name: 'color', nameAr: 'اللون' },
     { id: 2, name: 'text', nameAr: 'النص' },
     { id: 3, name: 'number', nameAr: 'الرقم' }
   ];
 
-  nameErrorMessage: string = '';
-  arabicNameErrorMessage: string = '';
+  nameErrorMessage = '';
+  arabicNameErrorMessage = '';
+  viewInitialized = false;
 
-  values: any[] = [
+  values = signal<any[]>([
     {
       id: crypto.randomUUID(),
       showColorPicker: false,
-      colorPickingData: {
-        value: '',
-        index: 0,
-        values: signal([])
-      }
+      colorPickingData: { value: '', index: 0, values: signal([]) },
+      variantDetails: []
     }
-  ];
+  ]);
 
   @ViewChild('optionName') optionName!: InputComponent;
   @ViewChild('optionArabicName') optionArabicName!: InputComponent;
@@ -75,159 +66,205 @@ export class VariantLibraryItemComponent {
   @ViewChildren('detailName') detailNameRefs!: QueryList<InputComponent>;
   @ViewChildren('variantValue') variantValueRefs!: QueryList<InputComponent>;
 
+  @Output() updated = new EventEmitter<void>();
   @Output() closeAddVariantPopScreen = new EventEmitter<void>();
+  @Input() variant!: VariantMasterLookUP;
+  @Input() action = signal<string>('');
 
-  @Input() action=signal<string>('');
-
-  // ngAfterViewInit(): void {
-  // if(this.variant) {
-  //     this.variantTypeSelection = this.variant.variantTypeEn || 'text';
-  //     this.variantTypeArabicSelection = this.variant.variantTypeAr || 'النص';
-  //     this.optionName.value = this.variant.nameEn || '';
-  //     this.optionArabicName.value = this.variant.nameAr || '';
-  //   //   this.values = this.variant.variantDetails.map((detail, index) => ({
-  //   //     id: crypto.randomUUID(),
-  //   //     showColorPicker: this.variantTypeSelection === 'color',
-  //   //     colorPickingData: {
-  //   //       value: detail.value,
-  //   //       index: index,
-  //   //       values: signal([])
-  //   //     }
-  //   //   }));
-  //   // }
-  //       //  this.values = this.variant.variantDetails
-  //   }
-  // }
-
-  constructor(){
-  effect(() => {
-      if(this.action() == 'add') this.add();
+  constructor() {
+    effect(() => {
+      if (this.action() === 'add') this.addOrUpdateVariant('add');
+      if (this.action() === 'update') this.addOrUpdateVariant('update');
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['variant']?.currentValue && this.viewInitialized) {
+      this.displayVariantBasicInfo();
+      this.displayVariantValues();
+    }
+  }
 
-  addNewValue() {
-    const showColorPickerVar = this.variantTypeSelection === 'color';
-    this.values.push({
+  ngAfterViewInit(): void {
+    if (!this.variant) return;
+    this.viewInitialized = true;
+    this.displayVariantBasicInfo();
+    this.displayVariantValues();
+  }
+
+  displayVariantBasicInfo(): void {
+    const {
+      variantTypeEn = 'text',
+      variantTypeAr = 'النص',
+      nameEn = '',
+      nameAr = '',
+      variantDetails = []
+    } = this.variant;
+
+    this.variantTypeSelection = variantTypeEn;
+    this.variantTypeArabicSelection = variantTypeAr;
+    this.optionName.value = nameEn;
+    this.optionArabicName.value = nameAr;
+
+    const newValues = variantDetails.map((detail, index) => ({
       id: crypto.randomUUID(),
-      showColorPicker: showColorPickerVar,
-      colorPickingData: {
-        value: '',
-        index: this.values.length,
-        values: signal([])
+      detail,
+      ...(variantTypeEn === 'color' && {
+        showColorPicker: true,
+        colorPickingData: {
+          value: detail.value,
+          index,
+          values: signal([])
+        }
+      })
+    }));
+
+    this.values.set(newValues);
+    this.cdRef.detectChanges();
+  }
+
+ displayVariantValues(): void {
+  this.variant.variantDetails.forEach((detail, i) => {
+    const nameRef = this.detailNameRefs.get(i);
+    const nameArRef = this.detailNameArRefs.get(i);
+    const valueRef = this.variantValueRefs.get(i);
+
+    if (nameRef) nameRef.value = detail.detailNameEn;
+    if (nameArRef) nameArRef.value = detail.detailNameAr;
+    if (valueRef) valueRef.value = detail.value;
+  });
+}
+
+  addNewValue(): void {
+    const showColorPicker = this.variantTypeSelection === 'color';
+    this.values.set([
+      ...this.values(),
+      {
+        id: crypto.randomUUID(),
+        showColorPicker,
+        colorPickingData: {
+          value: '',
+          index: this.values().length,
+          values: signal([])
+        }
       }
-    });
+    ]);
   }
 
   removeValue(id: string): void {
-    this.values = this.values.filter(v => v.id !== id);
+    this.values.set(this.values().filter(v => v.id !== id));
   }
 
-  add() {
-    const variantName: string = this.optionName.value?.trim();
-    const variantArabicName: string = this.optionArabicName.value?.trim();
+  private addOrUpdateVariant(mode: 'add' | 'update'): void {
+    const variantName = this.optionName.value?.trim();
+    const variantArabicName = this.optionArabicName.value?.trim();
 
     if (!this.validateNames(variantName, variantArabicName)) {
-this.action.set('');
-    return};
+      this.action.set('');
+      return;
+    }
 
-    if (this.isDuplicateVariant(variantName, variantArabicName)) {
+    // if (mode === 'add' && this.isDuplicateVariant(variantName, variantArabicName)) {
+      if (this.isDuplicateVariant(variantName, variantArabicName)) {
       this.nameErrorMessage = 'Variant already exists';
       this.action.set('');
       return;
     }
 
-    const detailNames = this.detailNameRefs.toArray();
-    const detailNamesAr = this.detailNameArRefs.toArray();
-    const variantValues = this.variantValueRefs.toArray();
-
-    const variantDetails = [];
-
-    for (let i = 0; i < variantValues.length; i++) {
-      const value = variantValues[i]?.value?.trim();
-      const detailName = detailNames[i]?.value?.trim() || '';
-      const detailNameAr = detailNamesAr[i]?.value?.trim() || '';
-
-      if (value) {
-        variantDetails.push({
-          detailNameEn: detailName,
-          detailNameAr: detailNameAr,
-          value: value
-        });
-      }
-    }
-
-    if (variantDetails.length === 0) {
+    const variantDetails = this.collectVariantDetails();
+    if (!variantDetails.length) {
       this.nameErrorMessage = 'At least one value is required';
-            this.action.set('');
+      this.action.set('');
       return;
     }
 
     const newVariant: VariantMasterLookUP = {
+      ...(mode === 'update' && { id: this.variant.id }),
       variantTypeEn: this.variantTypeSelection,
       variantTypeAr: this.variantTypeArabicSelection,
       nameAr: variantArabicName,
       nameEn: variantName,
       variantDetails
     };
-    this.__ProductService.createVariant(newVariant).subscribe({
-      next: () => this.closeAddVariantPopScreen.emit()
+
+    const serviceCall =
+      mode === 'add'
+        ? this.__ProductService.createVariant(newVariant)
+        : this.__ProductService.updateVariant(newVariant);
+
+    serviceCall.subscribe({
+      next: () => {
+        if (mode === 'add') {
+          this.closeAddVariantPopScreen.emit();
+        } else {
+          this.updated.emit();
+        }
+      }
     });
   }
 
-  addColorValue(color: string, index: number) {
-    const refAtIndex = this.variantValueRefs.get(index);
-    if (refAtIndex) {
-      refAtIndex.value = color;
+  private collectVariantDetails() {
+    const details = [];
+    const names = this.detailNameRefs.toArray();
+    const namesAr = this.detailNameArRefs.toArray();
+    const values = this.variantValueRefs.toArray();
+
+    for (let i = 0; i < values.length; i++) {
+      const value = values[i]?.value?.trim();
+      if (value) {
+        details.push({
+          detailNameEn: names[i]?.value?.trim() || '',
+          detailNameAr: namesAr[i]?.value?.trim() || '',
+          value
+        });
+      }
     }
-    this.values[index].colorPickingData.value = color;
+    return details;
   }
 
-  chooseVariantType(type: VariantType) {
+  addColorValue(color: string, index: number): void {
+    const ref = this.variantValueRefs.get(index);
+    if (ref) ref.value = color;
+
+    const updatedValues = [...this.values()];
+    updatedValues[index].colorPickingData.value = color;
+    this.values.set(updatedValues);
+  }
+
+  chooseVariantType(type: VariantType): void {
     this.variantTypeSelection = type.name;
     this.variantTypeArabicSelection = type.nameAr;
     if (type.name === 'color') this.setColorPickerValues();
   }
 
-  setColorPickerValues() {
-    this.values.forEach((value, index) => {
-      value.showColorPicker = true;
-      if (!value.colorPickingData) {
-        value.colorPickingData = {
-          value: '',
-          index: index,
-          values: signal([])
-        };
+  setColorPickerValues(): void {
+    const updated = this.values().map((v, i) => ({
+      ...v,
+      showColorPicker: true,
+      colorPickingData: v.colorPickingData || {
+        value: '',
+        index: i,
+        values: signal([])
       }
-    });
+    }));
+    this.values.set(updated);
   }
 
   private validateNames(name: string, arabicName: string): boolean {
     this.nameErrorMessage = '';
     this.arabicNameErrorMessage = '';
 
-    let isValid = true;
+    if (!name) this.nameErrorMessage = 'Name is required';
+    if (!arabicName) this.arabicNameErrorMessage = 'Arabic Name is required';
 
-    if (!name) {
-      this.nameErrorMessage = 'Name is required';
-      isValid = false;
-    }
-
-    if (!arabicName) {
-      this.arabicNameErrorMessage = 'Arabic Name is required';
-      isValid = false;
-    }
-
-    return isValid;
+    return !!name && !!arabicName;
   }
 
   private isDuplicateVariant(name: string, arabicName: string): boolean {
     const variants = this.variantOptions();
-    const result = this.__CommonService.findItemInArray(
+    return this.__CommonService.findItemInArray(
       variants,
-      v => v.nameEn === name || v.nameAr === arabicName
-    );
-    return result.exists;
+      v => (v.nameEn === name || v.nameAr === arabicName) && v.id !== this.variant?.id
+    ).exists;
   }
-
 }
