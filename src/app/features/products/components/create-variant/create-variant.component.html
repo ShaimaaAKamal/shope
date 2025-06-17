@@ -1,6 +1,6 @@
 <app-pop-screen
    [PopScreenComponentData]="{
-      headerLabel:'Add Product Variant',
+      headerLabel:'Add New Variant',
       btnLabel:'Add Variant',
       hideCancalBtn:true
     }"
@@ -8,91 +8,6 @@
   (closeChange)="close()"
   #addDetailsAlert
 >
-<div class="container-fluid bg-white">
-   <div class="row g-2 align-items-start  addNewVariant py-3">
-      <div class="col-lg-6">
-         <app-input
-          [InputComponentData]="{
-                type: 'text',
-                id: 'optionName',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Option Name',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: true,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage:  nameErrorMessage | translate,
-                enableFocusBlurTracking: false,
-              }"
-          #optionName
-        >
-          <i class="fa-solid fa-text-width"></i>
-        </app-input>
-      </div>
-        <div class="col-lg-6">
-         <app-input
-           [InputComponentData]="{
-                type: 'text',
-                id: 'optionArabicName',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Option Arabic Name',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: true,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage:  arabicNameErrorMessage | translate,
-                enableFocusBlurTracking: false,
-              }"
-          #optionArabicName
-        >
-          <i class="fa-solid fa-text-width"></i>
-        </app-input>
-      </div>
-      <div class="col-12" >
-      <ng-container *ngFor="let value of values; let index = index;">
-        <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
-          <div class="d-flex align-items-center flex-grow-1">
-            <div class="pe-2">
-              <i class="fa-solid fa-location-arrow text-semi-dark"></i>
-            </div>
-            <div class="flex-grow-1 position-relative">
-              <app-input
-                [InputComponentData]="{
-                type: 'text',
-                id: '',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Variant Value',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: true,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-                #variantValue
-              >
-                <i class="fa-solid fa-text-width"></i>
-              </app-input>
-            </div>
-          </div>
-
-          <div class="ps-2 align-self-end pt-2 pt-sm-0" *ngIf="values.length > 1" (click)="removeValue(value.id)">
-            <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
-          </div>
-        </div>
-      </ng-container>
-      <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" (click)="addNewValue()">
-        <i class="fa-solid fa-plus fa-sm pe-2"></i>
-         <span> {{'Add Another Value' | translate}}</span>
-       </div>
-     </div>
-  </div>
-</div>
+<app-variant-library-item (closeAddVariantPopScreen)="close()" [action]="action"></app-variant-library-item>
 </app-pop-screen>
 
