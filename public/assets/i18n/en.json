@@ -226,5 +226,18 @@
   "Value detailed name":"Value detailed name",
   "Value detailed arabic name" : "Value detailed arabic name",
   "Add Value":"Add Value",
-  "Choose value":"Choose value"
+  "Choose value":"Choose value",
+
+"Product Arabic Description": "Product Arabic Description",
+"Product English Description": "Product English Description",
+"Product Description (EN)":"Product Description (EN)",
+  "Product Description (AR)":"Product Description (AR)",
+  "Description is required":"Description is required",
+  "Compare Price":"Compare Price",
+  "Product SKU":"Product SKU",
+  "Active":"Active",
+  "Price Affecting":"Price Affecting",
+  "tax":"tax",
+  "vat value" : "vat value"
+
 }

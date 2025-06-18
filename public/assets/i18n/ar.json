@@ -226,6 +226,14 @@
             "Value detailed name":"اسم القيمة التفصيلية",
            "Value detailed arabic name" : "اسم القيمة التفصلية بالعربية",
              "Add Value":"إضافة قيمة",
-             "Choose value":"اختر القيمة"
+             "Choose value":"اختر القيمة",
 
+             "Product Arabic Description": "وصف المنتج باللغة العربية",
+            "Product English Description": "وصف المنتج باللغة الإنجليزية",
+              "Product Description (EN)":"وصف المنتج (EN)",
+              "Product Description (AR)":"وصف المنتج (AR)",
+              "Description is required":"الوصف مطلوب",
+              "Compare Price":"سعر المقارنة",
+               "tax":"ضريبة",
+                "vat value" : "ضريبة القيمة المضافة"
         }
