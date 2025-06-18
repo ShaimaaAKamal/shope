@@ -10,11 +10,8 @@
  >
   <div class="px-3 bg-white pb-3"   >
 
-<div class="row gy-3 py-2">
+<div class="row gy-3 gx-1 py-2">
   <!-- <div class="col-12">
-    <span class="small text-danger" *ngIf="errorMessage">Check your details or internet connection</span>
-  </div> -->
-  <div class="col-12">
 <app-dropdown
             [DropdownComponentData]="{
                   title:'Require Shipping/Delivery?',
@@ -26,8 +23,8 @@
           (changeSelect)="changeSelect($event,'requireShipping')"
           >
         </app-dropdown>
-  </div>
-  <div class="col-12">
+  </div> -->
+  <!-- <div class="col-12">
     <div class="d-fles flex-column">
       <span class="small">{{'Product Weight' | translate}}</span>
       <div class="d-flex">
@@ -65,8 +62,134 @@
         </app-dropdown>
       </div>
     </div>
+  </div> -->
+   <div class="col-12">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'descriptionEN',
+                label: 'Product Description (EN)',
+                spanLabel: '',
+                placeholder: 'Product English Description',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #descriptionEn
+        >
+        <i class="fa-solid fa-file-waveform"></i>
+        </app-input>
   </div>
-  <div class="col-12">
+   <div class="col-12">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'descriptionAr',
+                label: 'Product Description (Ar)',
+                spanLabel: '',
+                placeholder: 'Product Arabic Description',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #descriptionAr
+        >
+        <i class="fa-solid fa-file-waveform"></i>
+        </app-input>
+  </div>
+  <div class="col-lg-6">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'barcode',
+                label: 'Product Barcode',
+                spanLabel: '',
+                placeholder: 'Product Barcode',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #barcode
+        >
+        <i class="fa-solid fa-barcode"></i>
+        </app-input>
+  </div>
+  <div class="col-lg-6">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'sku',
+                label: 'Product SKU',
+                spanLabel: '',
+                placeholder: 'Product SKU',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #SKU
+        >
+        <i class="fa-solid fa-barcode"></i>
+        </app-input>
+  </div>
+   <div class="col-lg-4">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'tax',
+                label: 'Tax',
+                spanLabel: '',
+                placeholder: 'Tax',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #tax
+        >
+        <i class="fa-solid fa-file-waveform"></i>
+        </app-input>
+  </div>
+    <div class="col-lg-4">
+     <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'vatValue',
+                label: 'vat value',
+                spanLabel: '',
+                placeholder: 'vat value',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #vatValue
+        >
+        <i class="fa-solid fa-file-waveform"></i>
+        </app-input>
+  </div>
+  <!-- <div class="col-lg-6">
      <app-input
        [InputComponentData]="{
                 type: 'text',
@@ -86,8 +209,29 @@
         >
          <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
+  </div> -->
+   <div class="col-lg-4">
+     <app-input
+       [InputComponentData]="{
+                type: 'text',
+                id: 'productComparePrice',
+                label: 'Compare Price',
+                spanLabel: '',
+                placeholder: 'Compare Price',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: false,
+                inputGroup: false,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #productComparePrice
+        >
+         <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
   </div>
-   <div class="col-12">
+   <!-- <div class="col-12">
     <div class="row gx-2">
       <div class="col-6">
          <app-input
@@ -132,28 +276,59 @@
         </app-input>
       </div>
     </div>
+  </div> -->
+
+  <div class="col-12">
+    <div class="row gx-1 border-top pt-2">
+       <div class="col-lg-4">
+          <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'isActive',  id:'isActive', label:'Active'}" (checked)="checkActive($event)">
+            </app-input-checkbox> -->
+            <app-dropdown
+            [DropdownComponentData]="{
+                  title:'Active',
+                  dropdownSelection:ActiveDropDownSelection,
+                  optionsArray:ActiveOptions,
+                  key:'title',
+                  noBorder:false
+            }"
+          (changeSelect)="changeSelect($event,'isActive')"
+          >
+        </app-dropdown>
+        </div>
+        <div class="col-lg-4">
+          <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'chargeTax',  id:'chargeTax', label:'charge Tax'}">
+            </app-input-checkbox> -->
+                 <app-dropdown
+            [DropdownComponentData]="{
+                  title:'charge Tax',
+                  dropdownSelection:chargeTaxDropDownSelection,
+                  optionsArray:ChargeTax,
+                  key:'title',
+                  noBorder:false
+            }"
+          (changeSelect)="changeSelect($event,'chargeTax')"
+          >
+        </app-dropdown>
+        </div>
+          <div class="col-lg-4">
+          <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'isPriceAffecting',  id:'isPriceAffecting', label:'Price Affecting'}">
+            </app-input-checkbox> -->
+                  <app-dropdown
+            [DropdownComponentData]="{
+                  title:'Price Affecting',
+                  dropdownSelection:priceAffecringDropDownSelection,
+                  optionsArray:PriceAffecting,
+                  key:'title',
+                  noBorder:false
+            }"
+          (changeSelect)="changeSelect($event,'isPriceAffecting')"
+          >
+        </app-dropdown>
+
+        </div>
+    </div>
   </div>
-    <div class="col-12">
-     <app-input
-        [InputComponentData]="{
-                type: 'text',
-                id: 'barcode',
-                label: 'Product Barcode',
-                spanLabel: '',
-                placeholder: 'Product Barcode',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-          #barcode
-        >
-        <i class="fa-solid fa-barcode"></i>
-        </app-input>
-  </div>
+
 </div>
 </div>
 </app-pop-screen>
