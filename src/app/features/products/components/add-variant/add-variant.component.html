@@ -1,5 +1,9 @@
- <div class="option border-bottom py-2 px-1  mb-3">
-  <div class="fs-verySmall text-success" *ngIf="successMessage">New Value has been added Successfully</div>
+<div *ngIf="defaultSelection">
+   <div class="option border-bottom py-2 px-1  mb-3">
+     <div class="text-center text-decoration-underline mb-3 text-semi-dark fs-verySmall  rounded-2 d-flex"  (click)="displayCreateVariantLibrary()">
+         <span> {{'Add new variant to library' | translate}}</span>
+       </div>
+  <!-- <div class="fs-verySmall text-success" *ngIf="successMessage">New Value has been added Successfully</div> -->
    <div class="row g-2 align-items-start">
      <div class="col-lg-6 ">
          <div class="border rounded-1 h-100">
@@ -8,7 +12,7 @@
                   title:'',
                   dropdownSelection:variantSelection,
                   optionsArray:preSetVariants(),
-                  key:'name',
+                  key:'nameEn',
                   noBorder:false
             }"
            (changeSelect)="chooseVariantName($event)"
@@ -30,18 +34,67 @@
             }"
           (changeSelect)="chooseOption($event)"
           >
-            <i class="fa-solid fa-clipboard-check fa-sm text-secondary pe-2"></i>
+            <i class="fa-solid fa-clipqaq   board-check fa-sm text-secondary pe-2"></i>
         </app-dropdown>
          </div>
       </div>
-      <div class="col-12" >
-      <ng-container *ngFor="let value of values(); let index = index;">
+      <div class="col-12">
+      <!-- <ng-container *ngFor="let value of values(); let index = index;"> -->
+              <ng-container *ngIf="showNewlibraryVariantValue">
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">
             <div class="pe-2 align-self-start">
                   <i class="fa-solid fa-location-arrow text-semi-dark"></i>
             </div>
-            <div class="flex-grow-1 position-relative">
+            <div class="row gy-2 flex-grow-1">
+                 <div class="col-6">
+                   <div>
+                    <app-input
+                      [InputComponentData]="{
+                      type: 'text',
+                      id: '',
+                      label: '',
+                      spanLabel: '',
+                      placeholder: 'Value detailed name',
+                      vertCLass: 'col-12',
+                      readonly: false,
+                      hideLabel: true,
+                      inputGroup: false,
+                      clickMessage: '',
+                      errorMessage: '',
+                      enableFocusBlurTracking: false,
+                    }"
+                      #detailName
+                    >
+                      <i class="fa-solid fa-text-width"></i>
+                    </app-input>
+                  </div>
+              </div>
+              <div class="col-6">
+                   <div>
+                    <app-input
+                      [InputComponentData]="{
+                      type: 'text',
+                      id: '',
+                      label: '',
+                      spanLabel: '',
+                      placeholder: 'Value detailed arabic name',
+                      vertCLass: 'col-12',
+                      readonly: false,
+                      hideLabel: true,
+                      inputGroup: false,
+                      clickMessage: '',
+                      errorMessage: '',
+                      enableFocusBlurTracking: false,
+                    }"
+                      #detailNameAr
+                    >
+                      <i class="fa-solid fa-text-width"></i>
+                    </app-input>
+                  </div>
+              </div>
+              <div class="col-12">
+                  <div class=" position-relative">
               <app-input
                 [InputComponentData]="{
                 type: 'text',
@@ -62,18 +115,37 @@
                 <i class="fa-solid fa-text-width"></i>
               </app-input>
 
+              <!-- <div class="colorPickerContainer" *ngIf="showColorPickerContainer">
+                <app-color-picking   [ColorPickingData]="{value:value,index:index,values:values}"
+                (color)="setPickedColorValue($event)" #colorPick></app-color-picking>
+            </div> -->
+
               <div class="colorPickerContainer" *ngIf="showColorPickerContainer">
-                <app-color-picking   [ColorPickingData]="{
-                value:value,index:index,values:values} "#colorPick></app-color-picking>
+                <app-color-picking   [ColorPickingData]="{value:'#000',index:0,values:values}"
+                (color)="setPickedColorValue($event)" #colorPick></app-color-picking>
             </div>
+            </div>
+              </div>
             </div>
           </div>
 
-          <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values().length > 0" (click)="removeValue(index)">
+          <!-- <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values().length > 0" (click)="removeValue(index)"> -->
+        <!-- <div class="ps-2 align-self-start pt-3 pt-sm-0" *ngIf="values().length > 0" (click)="removeValue()"> -->
+        <div class="ps-2 align-self-start pt-3 pt-sm-0" (click)="removeValue()">
             <i class="fa-regular fa-trash-can text-secondary cursor-pointer"></i>
           </div>
         </div>
       </ng-container>
+      <!-- <div class="d-flex align-item-center justify-content-between">
+          <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center"   (click)="showNewValueInput()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add Another Value' | translate}}</span>
+       </div>
+        <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center"  (click)="addNewValue()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add All' | translate}}</span>
+       </div>
+      </div> -->
       <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" *ngIf="!insertVariantNewValue"    (click)="showNewValueInput()">
         <i class="fa-solid fa-plus fa-sm pe-2"></i>
          <span> {{'Add Another Value' | translate}}</span>
@@ -97,3 +169,11 @@
   </div>
  </div>
   </div>
+</div>
+<div *ngIf="!defaultSelection" >
+<div class="alert alert-danger fs-verySmall mb-0">
+ <span>You Must add variant to variant library first</span>
+ <span class="text-decoration-underline ms-2" (click)="displayCreateVariantLibrary()">Add Variant</span>
+</div>
+</div>
+<app-create-variant *ngIf="showAddLibraryVariant" (closeAddVariantPopScreen)="closeAddVariantPopScreen()"></app-create-variant>

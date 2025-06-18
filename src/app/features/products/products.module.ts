@@ -14,6 +14,7 @@ import { VariantValueDetailsComponent } from './components/variant-value-details
 import { VariantsLibraryComponent } from './variants-library/variants-library.component';
 import { EditVariantComponent } from './edit-variant/edit-variant.component';
 import { ColorPickingComponent } from './components/color-picking/color-picking.component';
+import { VariantLibraryItemComponent } from './variant-library-item/variant-library-item.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ColorPickingComponent } from './components/color-picking/color-picking.
     CreateVariantComponent,
     VariantsLibraryComponent,
     EditVariantComponent,
-    ColorPickingComponent
+    ColorPickingComponent,
+    VariantLibraryItemComponent
   ],
   imports: [
     CommonModule,

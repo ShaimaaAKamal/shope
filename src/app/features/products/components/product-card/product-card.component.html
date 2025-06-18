@@ -108,7 +108,7 @@
                 spanLabel: quantityLabel,
                 placeholder: 'Unlimited Quantity',
                 vertCLass: 'col-12',
-                readonly: false,
+                readonly: product.enfinity ? true : false,
                 hideLabel: true,
                 inputGroup: true,
                 clickMessage: 'Infinity',
@@ -118,7 +118,6 @@
           (showVariant)="showVariant($event)"
           #quantity
         >
-
           <i class="fa-solid fa-database"></i>
         </app-input>
       </div>
@@ -132,7 +131,7 @@
                   title:'',
                   dropdownSelection:dropdownSelection,
                   optionsArray:categories(),
-                  key:isRtl()?'nameAr':'name',
+                  key:isRtl()?'nameAr':'nameEn',
                   noBorder:false
             }"
           (changeSelect)="chooseCategory($event)"
@@ -152,7 +151,8 @@
   <!-- Product Details Alert -->
 <div class="card-footer  py-0">
    <div class="row ">
-    <div class="col-6  " *ngIf="product.name">
+    <!-- <div class="col-6  " *ngIf="product.name"> -->
+      <div class="col-6  " *ngIf="product.nameEn">
       <div class="d-flex align-items-center justify-content-center   border-end py-2 "  >
         <span class="fs-verySmall pe-2">{{'More' | translate}}</span>
         <i class="fa-solid fa-chevron-down fa-xs"></i>
@@ -246,15 +246,9 @@
 </app-pop-screen>
 
 <!-- product details pop screen -->
-<app-product-details-pop  *ngIf="showProductInfo"  (updated)="saveAdditionalInfo($event)"  #productInfo ></app-product-details-pop>
+<app-product-details-pop  *ngIf="showProductInfo"  (updated)="saveAdditionalInfo($event)" (close)="closeAdditionalInfoScreen()"  #productInfo ></app-product-details-pop>
 
 
-<!-- product variant pop screen -->
-<!-- <app-variants *ngIf="showVariantPopScreen"
- [variants]="variants"
- (controlVariantsPopup)="controlVariantsPopup($event)"
- (variantDetailsHandled)="variantDetailsHandled()"
-   #variantsPopScreen></app-variants> -->
 <app-variants *ngIf="showVariantPopScreen"
  (controlVariantsPopup)="controlVariantsPopup($event)"
  (variantDetailsHandled)="variantDetailsHandled()"

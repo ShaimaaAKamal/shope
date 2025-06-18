@@ -55,7 +55,7 @@ displayCheck!:boolean;
 unchecked:boolean=true;
 categories!:Signal<Category[]>;
 quantityLabel!:string;
-variants!:Variant[];
+// variants!:Variant[];
 isRtl!:Signal<boolean>;
 
 errorMessage: string = '';
@@ -80,13 +80,24 @@ dropdownSelection!: string ;
     effect(() => {
     this.updateQuantityLabel();
   });
+    effect(() => {
+      this.setCategoryInfo()
+    });
   }
 
-  ngOnInit(): void {
-      this.dropdownSelection = this.product.category ?  this.product.category.name : 'Choose Category';
+  // ngOnInit(): void {
+
+  //     this.dropdownSelection = this.product.category ?  this.product.category.nameEn : 'Choose Category';
+  //     this.displayCheck=(!this.type);
+  //     this.updateQuantityLabel();
+  // }
+   ngOnInit(): void {
       this.displayCheck=(!this.type);
       this.updateQuantityLabel();
   }
+
+
+
   ngAfterViewInit() {
    this.currentProduct.set(this.product);
   if(!this.type)
@@ -104,8 +115,21 @@ updateQuantityLabel(): void {
 }
 
   // Category Functions
-  chooseCategory(category: Category): void {
-     this.product.category=category;
+  // chooseCategory(category: Category): void {
+  //    this.product.category=category;
+  // }
+
+  setCategoryInfo() {
+  const category = this.product.category
+    ? this.categoryService.getCategoryById(this.product.category)
+    : null;
+
+  this.dropdownSelection = category?.nameEn ?? 'Choose Category';
+}
+
+    chooseCategory(category: Category): void {
+      if(category.id)
+          this.product.category=category.id;
   }
 
   createCategory(): void {
@@ -117,8 +141,9 @@ updateQuantityLabel(): void {
       this.clearCategoryForm();
       this.controlPopScreen('category','close');
       this.dropdownSelection=this.isRtl()? categoryArabicName : categoryName;
-      this.product.category=result.catergory;
-
+      // this.product.category=result.catergory;
+      if(result.catergory && result.catergory.id)
+      this.product.category=result.catergory.id;
     } else {
       this.errorMessage =( result.errorType == "missing_Name" || result.errorType == "already_Exist" )?result.message : '';
       this.errorArabicrMessage = result.errorType == "missing_Arabic_Name" ?result.message : '';
@@ -137,19 +162,33 @@ updateQuantityLabel(): void {
   // Product Functions
   displayProductInfo(): void {
 
-  const { name, price, quantity ,nameAr} = this.currentProduct() ?? {};
-  this.productTitleInput.value = name ?? '';
+  // const { name, price, quantity ,nameAr} = this.currentProduct() ?? {};
+  const { nameEn, price, quantity ,nameAr,enfinity} = this.currentProduct() ?? {};
+  this.productTitleInput.value = nameEn ?? '';
   this.productArabicTitleInput.value = nameAr ?? '';
   this.productPriceInput.value = price?.toString() ?? '';
-  this.productQuantityInput.value = quantity ?? '';
+  // this.productQuantityInput.value = quantity ?? '';
+  if(enfinity) this.productQuantityInput.value = 'Unlimited Quantity'
+  else
+    this.productQuantityInput.value = quantity.toString() ?? '';
+
 }
 
   setProductBasicInfo(title:string,Arabictitle:string,price:string){
-        this.product.name= title,
-        this.product.nameAr= Arabictitle,
-        this.product.price= parseFloat(price),
-        this.product.quantity= this.productQuantityInput.value
-
+        // this.product.name= title,
+        this.product.nameEn= title;
+        this.product.nameAr= Arabictitle;
+        this.product.price= parseFloat(price);
+        // this.product.quantity= this.productQuantityInput.value
+        if(this.productQuantityInput.value == 'Unlimited Quantity')
+        {
+          this.product.enfinity=true;
+          this.product.quantity=0;
+        }
+        else
+        {this.product.quantity= Number(this.productQuantityInput.value);
+          this.product.enfinity=false;
+        }
   }
 
   cancalProduct(): void {
@@ -157,7 +196,8 @@ updateQuantityLabel(): void {
   }
 
  openProductDetails(){
-    if(!this.product.name)
+    // if(!this.product.name)
+    if(!this.product.nameEn)
       this.controlPopScreen('addDetailsAlert');
     else {this.controlPopScreen('productInfo')
       this.setProduct(this.product);
@@ -200,6 +240,7 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
   return this.productService.updateProductInfo(this.currentProduct(), action).pipe(
     switchMap((result) => {
       if (!result.status) {
+        console.log(result);
         if (result.message === 'Duplicate_Arabic_Name') return of('Duplicate_Arabic_Name' as SaveResult);
         if (result.message === 'Duplicate_English_Name') return of('Duplicate_English_Name' as SaveResult);
         return of('error' as SaveResult);
@@ -242,10 +283,14 @@ private emptyBasicInfoErrorMessage(): void {
 }
 
 saveAdditionalInfo(done:boolean){
-    this.controlPopScreen('productInfo','close');
+    this.closeAdditionalInfoScreen();
     this.product=(this.currentProduct());
+    this.updateProduct().subscribe();
 }
 
+closeAdditionalInfoScreen(){
+      this.controlPopScreen('productInfo','close');
+}
 setProduct(product:Product){
     this.currentProduct.set(product);
   }
@@ -261,15 +306,17 @@ controlVariantsPopup(type:string){
       if(this.currentProduct()?.variants?.length == 0 && this.product.variants?.length == 0)
           this.controlPopScreen('variantsPopScreen','close');
       else{
-              this.product=this.currentProduct();
+             this.product=this.currentProduct();
              this.getVariantDetailsData.set(true);
+             this.productService.updateProduct(this.product).subscribe();
+
       }
      }
      else     this.controlPopScreen('variantsPopScreen','close');
  }
 variantDetailsHandled(){
    this.controlPopScreen('variantsPopScreen','close');
-   this.getVariantDetailsData.set(false);
+   this.getVariantDetailsData.set(false)
 }
 
 // Message functions

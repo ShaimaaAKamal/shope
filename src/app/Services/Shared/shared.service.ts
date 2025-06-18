@@ -57,4 +57,11 @@ export class SharedService {
     );
   }
 
+//   patch<T>(endpointKey: string,id: number | string,data: Partial<T>,entityName: string = 'item'): Observable<T> {
+//   const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
+//   return this.http.patch<T>(url, data).pipe(
+//     tap(() => this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')),
+//     catchError(err => this.handleError('patch', entityName, err))
+//   );
+// }
 }

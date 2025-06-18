@@ -103,6 +103,7 @@ ngOnInit(): void {
       this.displayedVariants = [...updatedVariants];
       this.product().variantsDetails = this.displayedVariants;
       this.product.set({ ...this.product() });
+      // this.__ProductService.updateProduct(this.product()).subscribe();
     });
   }
 

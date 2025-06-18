@@ -81,9 +81,13 @@ private addProductItem(proudct:Product){
 let products:Product[]=this.__OrderService.orderProducts();
  let existingProductIndex:number = products.findIndex(p => p.id === proudct.id);
 if (existingProductIndex > -1) {
-  products[existingProductIndex].quantity =( Number(products[existingProductIndex].quantity) +1).toString();
+  // products[existingProductIndex].quantity =( Number(products[existingProductIndex].quantity) +1).toString();
+    products[existingProductIndex].quantity =((products[existingProductIndex].quantity) +1);
+
 } else {
-  proudct.quantity = '1';
+  // proudct.quantity = '1';
+    proudct.quantity = 1;
+
   products.push(proudct);
 }
     this.__OrderService.UpdateProducts(products);

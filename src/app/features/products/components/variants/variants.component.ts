@@ -53,7 +53,6 @@ export class VariantsComponent {
   deleteVariant(index: number) {
     const updated = this.localVariants().filter((_, i) => i !== index);
     this.localVariants.set(updated);
-
     const product = this.product();
     product.variants = updated;
 

@@ -23,17 +23,6 @@ export interface Product {
   tax:number,
   variants?:Variant[],
   variantsDetails?:any[],
-  // weight?:number,
-  // weightUnit?:string,
-  // productCostPrice?:number,
-  // requireShipping?:boolean,
-  // salePrice?:number,
-  // salePriceEndDate?:string,
-  // description?:any,
-  // shopOutOfStock?:boolean,
-  // variants?:Variant[],
-  // variantsDetails?:any[],
-  // media?:any,
     [key: string]: any
 }
 

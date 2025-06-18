@@ -23,8 +23,12 @@ export class OrderProductsComponent {
  products= this.__OrderService.orderProducts;
  getTotalQuantity=this.__OrderService.getTotalQuantity;
 
-updateQuantity(index:number, newQuantity:string){
-        this.products()[index].quantity = newQuantity;
+// updateQuantity(index:number, newQuantity:string){
+//         this.products()[index].quantity = newQuantity;
+//       this.__OrderService.UpdateProducts(this.products());
+// }
+updateQuantity(index:number, newQuantity:number){
+      this.products()[index].quantity = newQuantity;
       this.__OrderService.UpdateProducts(this.products());
 }
 removeProduct(index:number){
@@ -36,6 +40,8 @@ getProductQuantity(product:Product){
   return Number(product.quantity);
 }
 getOrderName(product:Product){
-return this.OrderProductsData.isRtl()?product.nameAr:product.name;
+// return this.OrderProductsData.isRtl()?product.nameAr:product.name;
+return this.OrderProductsData.isRtl()?product.nameAr:product.nameEn;
+
 }
 }

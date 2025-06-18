@@ -130,8 +130,10 @@ validateReturnOrder(newReturnProducts:any): boolean {
     }
 
     if (returnItem.quantity > originalProduct.quantity) {
-      this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.quantity, name:originalProduct.name });
-      this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.quantity} of "${originalProduct.name}".`, 'error');
+      // this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.quantity, name:originalProduct.name });
+      // this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.quantity} of "${originalProduct.name}".`, 'error');
+       this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.quantity, name:originalProduct.nameEn });
+      this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.quantity} of "${originalProduct.nameEn}".`, 'error');
       return false;
     }
   }
@@ -153,10 +155,14 @@ this.order.products.forEach(product => {
     const remainingQty:number = Number(product.quantity) - Number(returned.quantity);
 
     if (remainingQty > 0) {
-      updatedProducts.push({ ...product, quantity: String(remainingQty) });
+      // updatedProducts.push({ ...product, quantity: String(remainingQty) });
+            updatedProducts.push({ ...product, quantity: (remainingQty) });
+
     }
 
-    returnedItems.push({ ...product, quantity: String(returned.quantity) });
+    // returnedItems.push({ ...product, quantity: String(returned.quantity) });
+        returnedItems.push({ ...product, quantity: (returned.quantity) });
+
   } else {
     updatedProducts.push(product);
   }

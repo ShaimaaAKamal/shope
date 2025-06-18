@@ -71,20 +71,20 @@ updateItemInArray<T extends { name?: string; nameAr?: string }>(
   return { updated, array };
 }
 
- checkDuplicateInArray<T extends { name?: string; nameAr?: string }>(
+ checkDuplicateInArray<T extends { name?: string; nameAr?: string; nameEn?: string }>(
   array: T[],
   matchFn: (item: T) => boolean,
   newValue: T
 ): { isDuplicate: boolean; message?: string } {
   const index = array.findIndex(matchFn);
   if (index !== -1) {
-    let duplicateField: 'name' | 'nameAr' | null = null;
+    let duplicateField: 'name' | 'nameAr' | 'nameEn' | null = null;
 
     const isDuplicate = array.some((item, i) => {
       if (i === index) return false;
 
-      if (item.name && item.name === newValue.name) {
-        duplicateField = 'name';
+      if ((item.name && item.name === newValue.name) || (item.nameEn && item.nameEn === newValue.nameEn) ) {
+        duplicateField = (item.name && item.name === newValue.name) ?'name':'nameEn' ;
         return true;
       }
 

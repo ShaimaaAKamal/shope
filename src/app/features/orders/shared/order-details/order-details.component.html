@@ -35,7 +35,9 @@
               *ngFor="let item of searchItems"
               (click)="selectItem(item)"
             >
-              {{ isRtl() ? item.nameAr : item.name }}
+              <!-- {{ isRtl() ? item.nameAr : item.name }} -->
+                              {{ isRtl() ? item.nameAr : item.nameEn }}
+
             </li>
           </ul>
       </div>
@@ -67,7 +69,7 @@
       </div>
     </div>
     <div class="flex-grow-1 pb-3" style="min-height: 0;">
-      <app-order-products 
+      <app-order-products
        [OrderProductsData] = "{
         isRtl: isRtl,
         displayQtySection: true,

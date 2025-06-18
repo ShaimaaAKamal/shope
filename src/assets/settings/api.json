@@ -4,6 +4,7 @@
                 "Products": "/Products",
                 "Orders": "/Orders",
                 "Variants":"/Variants",
+                "Categories": "/Categories",
                 "createOrder":"/Orders/create"
                 }
 }

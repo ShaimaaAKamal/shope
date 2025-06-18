@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Category } from '../../Interfaces/category';
 import { SharedService } from '../Shared/shared.service';
 import { tap } from 'rxjs';
@@ -131,5 +131,7 @@ createCategory(categoryName: string,categoryArabicName:string) {
   }
 }
 
-
+getCategoryById(id: number) {
+  return this.categories().find(category => category.id === id);
+}
 }

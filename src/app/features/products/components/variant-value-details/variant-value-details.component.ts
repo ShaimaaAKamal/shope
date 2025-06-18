@@ -4,8 +4,13 @@ import {
 import { Subject } from 'rxjs';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 
+// interface VariantValueDetailsInterface{
+// quantity:string,
+// displayedVariants:any[],
+// index:number
+// }
 interface VariantValueDetailsInterface{
-quantity:string,
+quantity:number,
 displayedVariants:any[],
 index:number
 }
@@ -18,8 +23,14 @@ index:number
 export class VariantValueDetailsComponent implements AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  private _inputData = signal<VariantValueDetailsInterface>({
-    quantity: '0',
+  // private _inputData = signal<VariantValueDetailsInterface>({
+  //   quantity: '0',
+  //   displayedVariants: [],
+  //   index: -1,
+  // });
+
+    private _inputData = signal<VariantValueDetailsInterface>({
+    quantity: 0,
     displayedVariants: [],
     index: -1,
   });
@@ -72,7 +83,15 @@ readonly _effect = effect(() => {
     });
   }
 
-  updateQuantity(newQuantity: string) {
+  // updateQuantity(newQuantity: string) {
+  //   const updated = this._inputData();
+  //   this._inputData.set({
+  //     ...updated,
+  //     quantity: newQuantity,
+  //   });
+  //   this.variantProductDetaills.emit(newQuantity);
+  // }
+    updateQuantity(newQuantity: number) {
     const updated = this._inputData();
     this._inputData.set({
       ...updated,

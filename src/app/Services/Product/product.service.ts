@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { VariantOption } from '../../Interfaces/variant-option';
 import { catchError, concatMap, finalize, forkJoin, map, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
@@ -15,7 +14,7 @@ private __SharedService=inject(SharedService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-  
+
   variantOptions = signal<VariantMasterLookUP[]>([]);
 
   currentProduct = signal<Product>(this.getEmptyProduct());
@@ -41,6 +40,7 @@ getVariants() {
     tap({
       next: (data) => this.variantOptions.set([...data]),
       complete: () => this.loadingSignal.set(false),
+
     })
   );
 }
@@ -132,19 +132,27 @@ getProducts() {
 createProduct(product: Product){
     this.loadingSignal.set(true);
     this.loadingSignal.set(true);
-    return this.__SharedService.create<Product>('Products', product, 'product').pipe(
+    const { id, ...productWithoutId } = product;
+    // return this.__SharedService.create<Product>('Products', product, 'product').pipe(
+        return this.__SharedService.create<Product>('Products', productWithoutId, 'product').pipe(
+
         tap({
           next: (newProduct) => {
-                  this.productsSignal.update(products => this.addOrReplaceItemById(products, newProduct));
-                   this.type.set('');
-                   this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
+            this.productsSignal.update(products =>
+                products.filter(product => product.id !== id)
+              );
+              this.productsSignal.update(products => this.addOrReplaceItemById(products, newProduct));
+              this.type.set('');
+              this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
           },
           complete: () => this.loadingSignal.set(false),
         })
       );
   }
 updateProduct(product: Product) {
-
+  if (!product.id) {
+    throw new Error('Product ID is required for update.');
+  }
     this.loadingSignal.set(true);
     return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
         tap({
@@ -157,20 +165,20 @@ updateProduct(product: Product) {
       );
   }
 
-  patchProduct(partialProduct: Partial<Product> & { id: number }) {
-  this.loadingSignal.set(true);
+//   patchProduct(partialProduct: Partial<Product> & { id: number }) {
+//   this.loadingSignal.set(true);
 
-  return this.__SharedService.patch<Product>('Products', partialProduct.id, partialProduct, 'product').pipe(
-    tap({
-      next: (updatedProduct) => {
-        this.productsSignal.update(products =>
-          products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
-        );
-      },
-      complete: () => this.loadingSignal.set(false),
-    })
-  );
-}
+//   return this.__SharedService.patch<Product>('Products', partialProduct.id, partialProduct, 'product').pipe(
+//     tap({
+//       next: (updatedProduct) => {
+//         this.productsSignal.update(products =>
+//           products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
+//         );
+//       },
+//       complete: () => this.loadingSignal.set(false),
+//     })
+//   );
+// }
    deleteProduct(id: number) {
     this.loadingSignal.set(true);
 
@@ -195,7 +203,8 @@ deleteProducts(ids: number[]) {
   return forkJoin(deleteRequests).pipe(
     tap(() => {
       this.productsSignal.update(products =>
-        products.filter(product => !ids.includes(product.id))
+        // products.filter(product => !ids.includes(product.id))
+        products.filter(product => product.id !== undefined && !ids.includes(product.id))
       );
       this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
     }),
@@ -219,7 +228,7 @@ deleteProducts(ids: number[]) {
 
   //Helper Functions
   addNewProduct(newProduct: Product): boolean {
-    const exists = this.products().some(p => p.name === newProduct.name);
+    const exists = this.products().some(p => p.nameEn === newProduct.nameEn);
     if (exists) return false;
     const updated = [...this.products(), newProduct];
     const sorted = this.sortProductsDesc(updated);
@@ -229,6 +238,7 @@ deleteProducts(ids: number[]) {
   }
 
 updateProductInfo(product: Product, actionType: string) {
+  console.log(product);
   const result = this.commonService.checkDuplicateInArray(
     this.products(),
     p => p.id === product.id,
@@ -273,7 +283,7 @@ updateProductInfo(product: Product, actionType: string) {
   findProductByName(name: string): Product[] {
     const query = name.trim().toLowerCase();
     return this.usedProducts.filter(p =>
-      p.name.toLowerCase().includes(query) || p.nameAr.toLowerCase().includes(query)
+      p.nameEn.toLowerCase().includes(query) || p.nameAr.toLowerCase().includes(query)
     );
   }
 
@@ -286,30 +296,57 @@ updateProductInfo(product: Product, actionType: string) {
     return this.products()[0]?.id ?? 0;
   }
 
+  //  getEmptyProduct(): Product {
+  //   return {
+  //     id: -1,
+  //     name: '',
+  //     nameAr: '',
+  //     barcode: '',
+  //     price: 0,
+  //     // quantity: '0',
+  //     quantity:0,
+  //     tax: 0,
+  //     status: 'Inactive',
+  //     variants: [],
+  //     variantsDetails: []
+  //   };
+  // }
    getEmptyProduct(): Product {
     return {
-      id: -1,
-      name: '',
-      nameAr: '',
-      barcode: '',
-      price: 0,
-      quantity: '0',
-      tax: 0,
-      status: 'Inactive',
-      variants: [],
-      variantsDetails: []
+      id:-1,
+      nameEn:'',
+      nameAr:'',
+      barcode:'',
+      sku:'',
+      isActive:true,
+      price:0,
+      quantity:0,
+      enfinity:false,
+      category:0,
+      descriptionEn:'',
+      descriptionAr:'',
+    imageUrl:'',
+    vatValue:0,
+      discountId:0,
+      comparePrice:0,
+      isPriceAffecting:false,
+      chargeTax:false,
+      tax:0,
     };
   }
 
  removeEmptyProduct(products:Product[]){
-    const filterProducts = products.filter(p => p.name && p.price);
+    const filterProducts = products.filter(p => p.nameEn && p.price);
     const sortedProducts = this.sortProductsDesc(filterProducts);
      this.productsSignal.set(sortedProducts);
     return sortedProducts
 }
 
- private sortProductsDesc(products: Product[]): Product[] {
-    return [...products].sort((a, b) => b.id - a.id);
-  }
+//  private sortProductsDesc(products: Product[]): Product[] {
+//     return [...products].sort((a, b) => b.id - a.id);
+//   }
 
+private sortProductsDesc(products: Product[]): Product[] {
+  return [...products].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+}
 }

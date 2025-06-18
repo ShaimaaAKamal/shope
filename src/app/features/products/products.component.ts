@@ -32,7 +32,8 @@ export class ProductsComponent {
   });
 
     this.products = computed(() =>
-      [...this.productService.products()].sort((a, b) => b.id - a.id)
+      // [...this.productService.products()].sort((a, b) => b.id - a.id)
+    [...this.productService.products()].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
     );
   }
 
@@ -67,7 +68,8 @@ export class ProductsComponent {
   const index = this.checkedProducts.findIndex(id => id === product.id);
 
   if (!unchecked) {
-    if (index === -1) {
+    // if (index === -1 ) {
+        if (index === -1 && product.id ) {
       this.checkedProducts.push(product.id);
     }
   } else {

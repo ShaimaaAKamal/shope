@@ -42,13 +42,20 @@
           [class.show]="rowIndex === 0"
           data-bs-parent="#accordionExample">
           <div class="accordion-body">
-                 <app-variant-value-details
+              <app-variant-value-details
+                 [VariantValueDetailsComponentData]="{
+                  quantity:0,
+                  displayedVariants:displayedVariants,
+                  index:rowIndex
+                }"
+                 (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
+                 <!-- <app-variant-value-details
                  [VariantValueDetailsComponentData]="{
                   quantity:'0',
                   displayedVariants:displayedVariants,
                   index:rowIndex
                 }"
-                 (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
+                 (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details> -->
           </div>
         </div>
       </div>
