@@ -21,3 +21,37 @@ export interface Order {
   hasARetrun?:boolean,
   remainingQty?:number
 }
+
+
+// {
+//   customerId: number,
+//   userId: string,
+//   shiftNumber: number,
+//   shiftId: number,
+//   invoiceDate: string,
+//   invoiceType: number,
+//   paymentMethodId: number,
+//   cashAmount: number,
+//   networkAmount: number,
+//   totalTax: number,
+//   totalDiscount: number,
+//   totalBeforeDiscount: number,
+//   totalAfterDiscount: number,
+//   totalBeforeTax: number,
+//   totalAfterTax: number,
+//   couponCode: string,
+//   stopChange: boolean,
+//   details: [
+//     {
+//       productId: number,
+//       productVariantMasterId: number,
+//       distributedDiscount: number,
+//       price: number,
+//       tax: number,
+//       discount: number,
+//       soldQuantity: number,
+//       remainingQuantity: number,
+//       returnStatus: number
+//     }
+//   ]
+// }
