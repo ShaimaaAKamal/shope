@@ -234,6 +234,8 @@
               "Product Description (AR)":"وصف المنتج (AR)",
               "Description is required":"الوصف مطلوب",
               "Compare Price":"سعر المقارنة",
-               "tax":"ضريبة",
-                "vat value" : "ضريبة القيمة المضافة"
+              "tax":"ضريبة",
+              "vat value" : "ضريبة القيمة المضافة",
+              "Profit":"الربح",
+              "Margin":"هامش الربح"
         }

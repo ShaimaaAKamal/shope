@@ -238,6 +238,7 @@
   "Active":"Active",
   "Price Affecting":"Price Affecting",
   "tax":"tax",
-  "vat value" : "vat value"
-
+  "vat value" : "vat value",
+  "Profit":"Profit",
+  "Margin":"Margin"
 }
