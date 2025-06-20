@@ -21,7 +21,8 @@ export class QuantityControlComponent {
 //     }
 //   }
 updateQuantity(change: number): void {
-    const newValue = (this.quantity) + change;
+
+    const newValue = Number(this.quantity) + change;
     if (newValue >= 1) {
       this.quantity = newValue;
       this.quantityChange.emit(this.quantity);
