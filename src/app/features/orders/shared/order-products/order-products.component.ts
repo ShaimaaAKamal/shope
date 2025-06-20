@@ -1,6 +1,9 @@
-import { Component, inject, Input, signal, Signal } from '@angular/core';
+import { Component, effect, inject, Input, signal, Signal } from '@angular/core';
 import { Product } from '../../../../Interfaces/product';
 import { OrderService } from '../../../../Services/order/order.service';
+import { OrderProduct } from '../../../../Interfaces/order-product';
+import { SharedService } from '../../../../Services/Shared/shared.service';
+import { catchError, forkJoin, map, of } from 'rxjs';
 
  interface orderProductsInterface {
   isRtl: Signal<boolean>;
@@ -19,16 +22,52 @@ export class OrderProductsComponent {
   displayQtySection: true,
 };
  private __OrderService=inject(OrderService);
+ private __SharedService=inject(SharedService);
  currency:string='SAR';
  products= this.__OrderService.orderProducts;
  getTotalQuantity=this.__OrderService.getTotalQuantity;
+  productNames = new Map<string, string>();
 
-// updateQuantity(index:number, newQuantity:string){
-//         this.products()[index].quantity = newQuantity;
-//       this.__OrderService.UpdateProducts(this.products());
-// }
+
+  constructor(){
+       effect(() => {
+                this.loadProductNames();
+    });
+
+    effect(() => {
+    const _ = this.OrderProductsData.isRtl(); // subscribe to language direction changes
+    this.loadProductNames();
+  });
+  }
+
+private loadProductNames(): void {
+  const requests = this.products().map((orderProduct) =>
+    this.__SharedService.getById<Product>('Products', orderProduct.productId).pipe(
+      map((product) => ({
+        id: orderProduct.productId,
+        name: this.OrderProductsData.isRtl() ? product.nameAr : product.nameEn
+      })),
+      catchError((err) => {
+        console.error(`Failed to load product ${orderProduct.productId}`, err);
+        return of({ id: orderProduct.productId, name: '' });
+      })
+    )
+  );
+
+  forkJoin(requests).subscribe((results) => {
+    const updatedMap = new Map<string, string>();
+    results.forEach(({ id, name }) => updatedMap.set(String(id), name));
+    this.productNames = updatedMap; // swap reference to trigger change detection if needed
+  });
+}
+
+getOrderName(product: OrderProduct): string {
+      return this.productNames.get(String(product.productId)) ?? '';  }
+
+
 updateQuantity(index:number, newQuantity:number){
-      this.products()[index].quantity = newQuantity;
+      // this.products()[index].quantity = newQuantity;
+      this.products()[index].soldQuantity = newQuantity;
       this.__OrderService.UpdateProducts(this.products());
 }
 removeProduct(index:number){
@@ -36,12 +75,7 @@ removeProduct(index:number){
         this.__OrderService.UpdateProducts(this.products());
 }
 
-getProductQuantity(product:Product){
-  return Number(product.quantity);
-}
-getOrderName(product:Product){
-// return this.OrderProductsData.isRtl()?product.nameAr:product.name;
-return this.OrderProductsData.isRtl()?product.nameAr:product.nameEn;
-
+getProductQuantity(product:OrderProduct){
+  return Number(product.soldQuantity);
 }
 }

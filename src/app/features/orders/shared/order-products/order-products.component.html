@@ -34,13 +34,17 @@
   <tbody *ngIf="products().length > 0; else noProducts">
   <ng-container *ngFor="let product of products() ; let index=index;">
     <tr>
+            <!-- <td colspan="4">{{ getOrderName(product)  | titlecase }}</td> -->
+
       <td colspan="4">{{ getOrderName(product) | titlecase }}</td>
     </tr>
     <tr>
       <td scope="row">{{ product.price }}  {{currency | translate}}</td>
       <td >
         <div class="d-flex justify-content-center">
-            <app-quantity-control [quantity]="product.quantity" (quantityChange)="updateQuantity(index, $event)">
+            <!-- <app-quantity-control [quantity]="product.quantity" (quantityChange)="updateQuantity(index, $event)">
+            </app-quantity-control> -->
+             <app-quantity-control [quantity]="product.soldQuantity" (quantityChange)="updateQuantity(index, $event)">
             </app-quantity-control>
         </div>
       </td>
