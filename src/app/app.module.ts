@@ -19,6 +19,7 @@ import { NavSalesPersonComponent } from './components/sideNavComponents/nav-sale
 import { NavitemComponent } from './components/sideNavComponents/navitem/navitem.component';
 import { ApiConfigService } from './Services/apiConfigService/api-config-service.service';
 import { firstValueFrom } from 'rxjs';
+import { ThemeComponent } from './components/theme/theme.component';
 
 registerLocaleData(localeAr);
 export function HttpLoaderFactory(http: HttpClient) {
@@ -35,7 +36,7 @@ export function loadApiConfig(apiConfigService: ApiConfigService) {
     SidenavComponent,
     NavitemComponent,
     NavSalesPersonComponent,
-
+    ThemeComponent,
   ],
   imports: [
     BrowserModule,

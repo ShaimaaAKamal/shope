@@ -1,0 +1,65 @@
+<div class="switcher-body">
+  <button
+    class="btn bg-semi-dark btn-switcher shadow-sm theme"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasScrolling"
+    aria-controls="offcanvasScrolling"
+  >
+  <i class="fa-solid fa-palette me-0 text-white"></i>
+  </button>
+
+  <div
+    class="offcanvas offcanvas-end shadow border-start-0 p-2"
+    data-bs-scroll="true"
+    data-bs-backdrop="false"
+    tabindex="-1"
+    id="offcanvasScrolling"
+  >
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title">Theme Customizer</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+      ></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <h6 class="mb-0">Theme Variation</h6>
+      <hr />
+      <div class="d-flex align-items-center justify-content-between">
+         <div class="form-check">
+        <input class="form-check-input" type="radio" name="Theme" id="light">
+        <label class="form-check-label" for="light">
+          Light Theme
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="Theme" id="dark" checked>
+        <label class="form-check-label" for="dark">
+          Dark Theme
+        </label>
+      </div>
+      </div>
+       <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'Light',  id:'light', label:'Light Theme'}">
+        </app-input-checkbox>
+       <app-input-checkbox   [InputCheckboxComponentData]="{ value:'Dark',  id:'dark', label:'Dark Theme'}">
+        </app-input-checkbox> -->
+      <hr />
+      <h6 class="mb-0">Header Colors</h6>
+      <hr />
+      <div class="header-colors-indigators">
+        <div class="row row-cols-auto g-3">
+          <div class="col" *ngFor="let color of homeHeaderColors">
+            <div
+              class="indigator"
+              [ngStyle]="{ 'background-color': color }"
+              (click)="changeHeaderColor(color)"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
