@@ -111,12 +111,17 @@
 
 
   "Add Customer":"Add Customer",
-  "Customer Name":"Customer Name",
-  "Customer Arabic Name":"Customer Arabic Name",
+  "First Name (En)":"First Name (En)",
+  "First Name (Ar)":"First Name (Ar)",
+  "Last Name (En)":"Last Name (En)",
+  "Last Name (Ar)":"Last Name (Ar)",
+  "First Arabic name is required": "First Arabic name is required",
+   "Last Arabic name is required":"Last Arabic name is required",
+   "Last name is required": "Last name is required",
+  "First name is required":"First name is required",
   "Customer Phone":"Customer Phone",
-  "Customer name is required":"Customer name is required",
-  "Customer Arabic name is required":"Customer Arabic name is required",
   "Phone number is required":"Phone number is required",
+  
 
   "Add New Products":"Add New Products",
   "Start by stocking your store with products your customers will love":"Start by stocking your store with products your customers will love",

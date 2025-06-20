@@ -111,11 +111,15 @@
   "This Order has been already returned before":"لقد تم إرجاع طلبه بالفعل من قبل",
 
   "Add Customer":"إضافة العميل",
-  "Customer Name":"اسم العميل",
-   "Customer Arabic Name":"اسم العميل باللغة الإنجليزية",
+   "First Name (En)":"الاسم الأول (الإنجليزية)",
+  "First Name (Ar)":" (العربية) الاسم الأول",
+  "Last Name (En)":"الاسم الأخير (الإنجليزية)",
+  "Last Name (Ar)":"الاسم الأخير (العربية)",
+  "First Arabic name is required": "الاسم العربي الأول مطلوب",
+   "Last Arabic name is required":"الاسم الأخير باللغة العربية مطلوب",
+   "Last name is required": "الاسم الأخير مطلوب",
+  "First name is required":"الاسم الأول مطلوب",
   "Customer Phone":"رقم العميل",
-    "Customer name is required":"اسم العميل مطلوب",
-  "Customer Arabic name is required":"اسم العميل باللغة الإنجليزية مطلوب",
   "Phone number is required":"رقم الهاتف مطلوب",
 
 
