@@ -1,6 +1,7 @@
 <div class="row g-2">
-  <div class="col-12">
+  <div class="col-lg-4">
           <app-input
+             (input)="recalculate()"
             [InputComponentData]="{
                 type: 'text',
                 id: 'price',
@@ -19,12 +20,13 @@
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
-      </div>
-       <div class="col-12 col-md-6">
+  </div>
+  <div class="col-lg-4">
         <app-input
+             (input)="recalculate()"
             [InputComponentData]="{
                 type: 'text',
-                id: 'costPrice',
+                id: 'costPerItem',
                 label: '',
                 spanLabel: 'SAR',
                 placeholder: 'Cost Price',
@@ -40,15 +42,15 @@
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
-      </div>
-       <div class="col-12 col-md-6">
+  </div>
+  <div class=" col-lg-4">
           <app-input
              [InputComponentData]="{
                 type: 'text',
-                id: 'salePrice',
+                id: 'comparePrice',
                 label: '',
                 spanLabel: 'SAR',
-                placeholder: 'Sale Price',
+                placeholder: 'Compare Price',
                 vertCLass: 'col-12',
                 readonly: false,
                 hideLabel: true,
@@ -61,15 +63,15 @@
         >
           <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
-      </div>
-       <div class="col-12 col-md-4">
-          <app-input
+  </div>
+  <div class="col-lg-4">
+        <app-input
             [InputComponentData]="{
                 type: 'text',
-                id: 'weight',
+                id: 'profit',
                 label: '',
-                spanLabel: 'Kg',
-                placeholder: 'Weight',
+                spanLabel: 'SAR',
+                placeholder: 'Profit',
                 vertCLass: 'col-12',
                 readonly: false,
                 hideLabel: true,
@@ -80,10 +82,52 @@
               }"
           #inputRef
         >
-          <i class="fa-solid fa-weight-scale"></i>
+          <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
-      </div>
-       <div class="col-12 col-md-4">
+  </div>
+  <div class=" col-lg-4">
+          <app-input
+             [InputComponentData]="{
+                type: 'text',
+                id: 'margin',
+                label: '',
+                spanLabel: '%',
+                placeholder: 'Margin',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #inputRef
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+  </div>
+   <div class=" col-lg-4">
+          <app-input
+             [InputComponentData]="{
+                type: 'text',
+                id: 'vatValue',
+                label: '',
+                spanLabel: 'SAR',
+                placeholder: 'Vat Value',
+                vertCLass: 'col-12',
+                readonly: false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: '',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          #inputRef
+        >
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+        </app-input>
+  </div>
+  <div class="col-lg-6">
                 <app-input
                     [InputComponentData]="{
                 type: 'text',
@@ -103,15 +147,15 @@
         >
          <i class="fa-solid fa-barcode"></i>
         </app-input>
-       </div>
-        <div class="col-12 col-md-4">
-            <app-input
-             [InputComponentData]="{
+  </div>
+  <div class="col-lg-6">
+                <app-input
+                    [InputComponentData]="{
                 type: 'text',
-                id: 'notify',
-                label: 'Notify',
+                id: 'sku',
+                label: '',
                 spanLabel: '',
-                placeholder: 'Notify Quantity',
+                placeholder: 'SkU',
                 vertCLass: 'col-12',
                 readonly: false,
                 hideLabel: true,
@@ -122,15 +166,42 @@
               }"
           #inputRef
         >
-        <i class="fa-solid fa-bell"></i>
+         <i class="fa-solid fa-barcode"></i>
         </app-input>
-       </div>
-        <div class="col-12">
+  </div>
+  <div class="col-lg-6">
+                 <app-dropdown
+            [DropdownComponentData]="{
+                  title:'charge Tax',
+                  dropdownSelection:chargeTaxDropDownSelection,
+                  optionsArray:ChargeTax,
+                  key:'title',
+                  noBorder:false
+            }"
+          (changeSelect)="changeSelect($event,'chargeTax')"
+          >
+        </app-dropdown>
+  </div>
+  <div class="col-lg-6">
+                  <app-dropdown
+            [DropdownComponentData]="{
+                  title:'Price Affecting',
+                  dropdownSelection:priceAffecringDropDownSelection,
+                  optionsArray:PriceAffecting,
+                  key:'title',
+                  noBorder:false
+            }"
+          (changeSelect)="changeSelect($event,'isPriceAffecting')"
+          >
+        </app-dropdown>
+
+  </div>
+  <div class="col-12">
         <div class="pt-2 pb-1">
-          <h6 class="pb-3 border-bottom">{{'Quantity' | translate}}</h6>
+          <h6 class="pb-1 border-bottom small ">{{'Quantity' | translate}}</h6>
           <div class="d-flex align-items-center justify-content-between">
-            <span>{{'Product Quantity' | translate}}</span>
-              <app-quantity-control [quantity]="VariantValueDetailsComponentData.quantity" (quantityChange)="updateQuantity($event)">
+            <span class="small">{{'Product Quantity' | translate}}</span>
+            <app-quantity-control [quantity]="VariantValueDetailsComponentData.quantity" (quantityChange)="updateQuantity($event)">
             </app-quantity-control>
           </div>
         </div>
