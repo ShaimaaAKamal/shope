@@ -1,11 +1,6 @@
 export interface ProductVariantMaster {
   id?:number,
   productId: number,
-  variantMasterLookUpId: number,
-  variantTypeEn: string,
-  variantTypeAr: string,
-  nameAr: string,
-  nameEn: string,
   price: number,
   comparePrice: number,
   chargeTax: boolean,
@@ -18,9 +13,13 @@ export interface ProductVariantMaster {
   imageUrl: string,
   vatValue: number,
   discountId: number,
+  quantity:number,
   variantDetails: [
     {
-      value: string
+      variantMasterLookUpId: number,
+      "variantDetailId": number
     }
   ]
 }
+
+
