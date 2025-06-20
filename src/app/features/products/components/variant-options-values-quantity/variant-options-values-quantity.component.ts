@@ -30,9 +30,12 @@ export class VariantOptionsValuesQuantityComponent {
   @ViewChildren('variantValueDetails') variantValueDetailsRefs!: QueryList<VariantValueDetailsComponent>;
    private firstChange=true;
 constructor() {
+
   effect(() => {
+    console.log('in variantOptionsData');
     const data = this.variantOptionsData();
     if (data.variants.length > 0 && !this.firstChange) {
+      console.log('genetate combonaton');
       this.displayedVariants = this.generateCombinations();
       this.getAllVariantValues();
     }
@@ -40,6 +43,7 @@ constructor() {
   });
 
     effect(() => {
+      console.log('in getVariantDetailsData');
       const data = this.__ProductService.getVariantDetailsData();
       if (data) {
         this.getAllVariantValues();
@@ -49,6 +53,7 @@ constructor() {
   }
 
 ngOnInit(): void {
+  console.log('details' ,this.product());
     const hasDetails = !!this.product()?.variantsDetails?.length;
     this.displayedVariants = hasDetails
       ? [...this.product()?.variantsDetails ?? []]
@@ -101,6 +106,7 @@ ngOnInit(): void {
         };
       });
       this.displayedVariants = [...updatedVariants];
+      console.log('displayedVariants',this.displayedVariants);
       this.product().variantsDetails = this.displayedVariants;
       this.product.set({ ...this.product() });
       // this.__ProductService.updateProduct(this.product()).subscribe();

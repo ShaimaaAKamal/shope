@@ -55,7 +55,7 @@ displayCheck!:boolean;
 unchecked:boolean=true;
 categories!:Signal<Category[]>;
 quantityLabel!:string;
-// variants!:Variant[];
+variants!:Variant[];
 isRtl!:Signal<boolean>;
 
 errorMessage: string = '';
@@ -307,7 +307,10 @@ controlVariantsPopup(type:string){
           this.controlPopScreen('variantsPopScreen','close');
       else{
              this.product=this.currentProduct();
+             console.log('current Product',this.currentProduct());
+             console.log(' Product',this.product);
              this.getVariantDetailsData.set(true);
+              console.log(' Product',this.product);
              this.productService.updateProduct(this.product).subscribe();
 
       }
@@ -316,6 +319,7 @@ controlVariantsPopup(type:string){
  }
 variantDetailsHandled(){
    this.controlPopScreen('variantsPopScreen','close');
+   console.log(this.currentProduct());
    this.getVariantDetailsData.set(false)
 }
 

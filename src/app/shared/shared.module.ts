@@ -58,7 +58,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
         NewDatePipe,
         DropdownComponent,
         LayoutComponent,
-        ColorPickerModule
+        ColorPickerModule,
+        FormsModule
   ],
   providers:[
     DatePipe,

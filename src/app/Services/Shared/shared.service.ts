@@ -43,8 +43,9 @@ export class SharedService {
 
   update<T>(endpointKey: string, id: number | string, data: T, entityName: string = 'item'): Observable<T> {
     const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
+    console.log('data',data);
     return this.http.put<T>(url, data).pipe(
-      tap(() => this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')),
+      tap(() => {this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')}),
       catchError(err => this.handleError('update', entityName, err))
     );
   }
@@ -57,11 +58,4 @@ export class SharedService {
     );
   }
 
-//   patch<T>(endpointKey: string,id: number | string,data: Partial<T>,entityName: string = 'item'): Observable<T> {
-//   const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
-//   return this.http.patch<T>(url, data).pipe(
-//     tap(() => this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')),
-//     catchError(err => this.handleError('patch', entityName, err))
-//   );
-// }
 }

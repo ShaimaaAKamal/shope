@@ -154,9 +154,11 @@ updateProduct(product: Product) {
     throw new Error('Product ID is required for update.');
   }
     this.loadingSignal.set(true);
+    console.log('api Product',product);
     return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
         tap({
           next: (updatedProduct) =>  {
+                  console.log('updatedProduct',updatedProduct);
                  this.productsSignal.update(products =>
         products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
       );},
@@ -164,21 +166,6 @@ updateProduct(product: Product) {
         })
       );
   }
-
-//   patchProduct(partialProduct: Partial<Product> & { id: number }) {
-//   this.loadingSignal.set(true);
-
-//   return this.__SharedService.patch<Product>('Products', partialProduct.id, partialProduct, 'product').pipe(
-//     tap({
-//       next: (updatedProduct) => {
-//         this.productsSignal.update(products =>
-//           products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
-//         );
-//       },
-//       complete: () => this.loadingSignal.set(false),
-//     })
-//   );
-// }
    deleteProduct(id: number) {
     this.loadingSignal.set(true);
 
