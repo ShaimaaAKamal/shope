@@ -6,8 +6,11 @@ import { SalesPerson } from '../../Interfaces/sales-person';
 })
 export class SalesPersonsService {
 
-   salesPersons=signal<SalesPerson[]>([]);
-  currentSalesPerson=signal<SalesPerson>({name:'',id:-1});
+  salesPersons=signal<SalesPerson[]>([]);
+  currentSalesPerson=signal<SalesPerson>({  id:-1,
+  startDate: new Date(),
+  openingBalance: 0,
+  userId: "icheowqifhveiow",shiftNumber: 122,status: 0});
 
   SetCurrentSalesPerson(salesPerson:SalesPerson){
     this.currentSalesPerson.set(salesPerson);

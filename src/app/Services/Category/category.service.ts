@@ -2,6 +2,7 @@ import { effect, Injectable, signal } from '@angular/core';
 import { Category } from '../../Interfaces/category';
 import { SharedService } from '../Shared/shared.service';
 import { tap } from 'rxjs';
+import { CommonService } from '../CommonService/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,10 @@ export class CategoryService {
 
 categories=signal<Category[]>([]);
 
-constructor(private __SharedService:SharedService) {
+constructor(private __SharedService:SharedService,private __CommonService:CommonService) {
   this.getCategories().subscribe({});
 }
 
-  private addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
-  const index = array.findIndex(item => item.id === newItem.id);
-  const updated = [...array];
-
-  if (index !== -1) {
-    updated[index] = newItem;
-  } else {
-    updated.push(newItem);
-  }
-  return updated;
-}
 // categoryAPiCall
 getCategories() {
   // this.loadingSignal.set(true);
@@ -41,7 +31,7 @@ createCategoryApi(category: Category){
   //  this.loadingSignal.set(true);
    return this.__SharedService.create<Category>('Categories', category, 'Category').pipe(
     tap({
-      next: (newCategory) => this.categories.update(categories => this.addOrReplaceItemById(categories, newCategory)),
+      next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory)),
       // complete: () => this.loadingSignal.set(false),
     })
   );

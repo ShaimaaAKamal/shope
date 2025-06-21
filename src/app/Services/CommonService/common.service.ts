@@ -9,17 +9,6 @@ export class CommonService {
 
 isCollapse=signal<boolean>(false);
 
- constructor() {}
-
-  generate10CharCode() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let code = '';
-  for (let i = 0; i < 10; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}
-
   getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
   const item = localStorage.getItem(key);
   return item ? (JSON.parse(item) as T) : defaultValue;
@@ -107,7 +96,7 @@ updateItemInArray<T extends { name?: string; nameAr?: string }>(
 
   return { isDuplicate: false };
 }
-findItemInArray<T extends { name?: string,code?:string,nameEn?: string, }>(
+findItemInArray<T extends { name?: string,code?:string,nameEn?: string,id?:number , firstNameEn?:string }>(
   array: T[], matchFn: (item: T) => boolean) :{exists:boolean; ind: number; item:any }{
   const index = array.findIndex(matchFn);
   const exists = index !== -1;
@@ -122,6 +111,18 @@ controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: str
 
 getId():number{
   return Date.now() + Math.floor(Math.random() * 1000);
+}
+
+addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
+  const index = array.findIndex(item => item.id === newItem.id);
+  const updated = [...array];
+
+  if (index !== -1) {
+    updated[index] = newItem;
+  } else {
+    updated.push(newItem);
+  }
+  return updated;
 }
 
 }
