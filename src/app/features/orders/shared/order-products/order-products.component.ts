@@ -30,12 +30,8 @@ export class OrderProductsComponent {
 
 
   constructor(){
-       effect(() => {
-                this.loadProductNames();
-    });
-
     effect(() => {
-    const _ = this.OrderProductsData.isRtl(); // subscribe to language direction changes
+    const _ = this.OrderProductsData.isRtl();
     this.loadProductNames();
   });
   }
@@ -57,7 +53,7 @@ private loadProductNames(): void {
   forkJoin(requests).subscribe((results) => {
     const updatedMap = new Map<string, string>();
     results.forEach(({ id, name }) => updatedMap.set(String(id), name));
-    this.productNames = updatedMap; // swap reference to trigger change detection if needed
+    this.productNames = updatedMap;
   });
 }
 
@@ -66,7 +62,6 @@ getOrderName(product: OrderProduct): string {
 
 
 updateQuantity(index:number, newQuantity:number){
-      // this.products()[index].quantity = newQuantity;
       this.products()[index].soldQuantity = newQuantity;
       this.__OrderService.UpdateProducts(this.products());
 }
