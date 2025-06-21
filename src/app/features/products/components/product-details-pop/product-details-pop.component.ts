@@ -33,7 +33,7 @@ private __ProductService=inject(ProductService);
 product=this.__ProductService.currentProduct;
 // weightDropDownSelection:string='KG';
 ActiveDropDownSelection:string='Active';
-chargeTaxDropDownSelection:string='Active';
+chargeTaxDropDownSelection:string='Charge';
 priceAffecringDropDownSelection:string='yes'
 // dropdownSelection:string="No.Doesn't Require Delivery";
 // shippingOptions:any[]=[
@@ -164,21 +164,6 @@ getProductInfo(): void {
      this.__ProductService.updateProduct(this.__ProductService.currentProduct()).subscribe({
     next:()=> this.close.emit(true)
   });
-  // this.__ProductService.patchProduct({
-  //   id,
-  //    descriptionEn,
-  //   descriptionAr,
-  //   tax,
-  //   barcode,
-  //   vatValue,
-  //   comparePrice,
-  //   isActive,
-  //   chargeTax,
-  //   isPriceAffecting
-  // }).subscribe({
-  //   next:()=> this.close.emit(true)
-  // });
-
 
 }
 }

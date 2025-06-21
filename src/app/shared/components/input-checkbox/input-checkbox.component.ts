@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+interface InputCheckboxInterface{
+  value:any,
+  id:any,
+  label:string
+}
 @Component({
   selector: 'app-input-checkbox',
   standalone: false,
@@ -7,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './input-checkbox.component.scss'
 })
 export class InputCheckboxComponent {
-@Input() InputCheckboxComponentData={
+@Input() InputCheckboxComponentData:InputCheckboxInterface={
   value:'',
   id:'',
   label:''

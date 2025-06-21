@@ -5,6 +5,7 @@ export interface VariantMasterLookUP {
   nameAr: string,
   nameEn: string,
   variantDetails:  {
+  id?:number
   detailNameAr: string;
   detailNameEn: string;
   value: string;

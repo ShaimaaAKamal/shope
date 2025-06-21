@@ -5,6 +5,8 @@
                 "Orders": "/Orders",
                 "Variants":"/Variants",
                 "Categories": "/Categories",
+                "Customers":"/Customers",
+                "ProductVariantMasters":"/productVariantMasters",
                 "createOrder":"/Orders/create"
                 }
 }

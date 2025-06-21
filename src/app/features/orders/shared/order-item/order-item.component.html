@@ -1,29 +1,42 @@
 <div class="container-fluid">
   <div class="d-flex align-items-center">
-     <app-input-checkbox   [InputCheckboxComponentData]="{ value:order.code,  id:order.code, label:''}"
+     <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:order.code,  id:order.code, label:''}"
       (checked)="getOrderCode($event)">
+     </app-input-checkbox> -->
+  <app-input-checkbox   [InputCheckboxComponentData]="{ value:order.id,  id:order.id, label:''}"
+      (checked)="getOrderId($event)">
      </app-input-checkbox>
-  <div class="row align-items-center flex-grow-1" (click)="showOrder(order.id)">
+  <!-- <div class="row align-items-center flex-grow-1" (click)="showOrder(order.id)"> -->
+  <div class="row align-items-center flex-grow-1">
     <div class="col-8 col-md-6 col-lg-7 col-xl-8  text-start">
        <app-client-info
        [ClientInfoData]="{
         order: order,
-        additionalInfo: order.code,
+        additionalInfo: 0,
         flexGrow: true,
       }"
-      (checkedItemCode)="getOrderCode($event)">
+      (checkedItemCode)="getOrderId($event)">
           <span class="small d-flex align-items-center  text-secondary">
-        <i
+        <!-- <i
             class="fa fa-circle fs-xxs pe-1"
             [ngClass]="{
               'text-warning': order.status === 'hold',
               'text-semi-dark': order.status === 'paid',
               'text-danger': order.status === 'cancalled',
-              'text-info': order.status === 'processing'
+            }"
+            aria-hidden="true">
+          </i> -->
+               <i
+            class="fa fa-circle fs-xxs pe-1"
+            [ngClass]="{
+              'text-warning': order.invoiceType === 1,
+              'text-semi-dark': order.invoiceType === 2,
+              'text-danger': order.invoiceType === 4,
             }"
             aria-hidden="true">
           </i>
-          <span class="fs-verySmall">{{ order.status | translate }}</span>
+          <!-- <span class="fs-verySmall">{{ order.status | translate }}</span> -->
+            <span class="fs-verySmall">{{ getStatus(order.invoiceType) | translate }}</span>
           </span>
      </app-client-info>
     </div>
@@ -31,12 +44,11 @@
        <div class="row ">
       <div class="col-12  col-lg-5 text-end text-lg-center">
         <span class="small">
-          {{order.grossTotal}} {{currency | translate}}
+          {{order.totalAfterTax}} {{currency | translate}}
         </span>
       </div>
       <div class="col-12 col-lg-4 text-end text-lg-center">
-        <span class="fs-verySmall text-secondary">{{order.time  | newDate:isRtl()}}</span>
-        <!-- <span class="fs-verySmall text-secondary">{{'since' | translate}} {{timeDifference.value}} {{timeDifference.unit | translate}}</span> -->
+                 <span class="fs-verySmall text-secondary">{{order.invoiceDate  | newDate:isRtl()}}</span>
       </div>
          <div class="col-12 col-lg-3 text-end text-lg-center">
         <span class="fs-verySmall text-secondary">

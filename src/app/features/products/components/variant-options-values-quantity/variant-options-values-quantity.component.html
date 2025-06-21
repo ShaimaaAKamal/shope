@@ -1,4 +1,4 @@
-<div class="py-3 border-top">
+<!-- <div class="py-3 border-top">
   <div class="accordion" id="accordionExample">
       <div class="accordion-item" *ngFor="let variant of displayedVariants ; let rowIndex=index;">
         <h2 class="accordion-header">
@@ -53,4 +53,63 @@
         </div>
       </div>
   </div>
+</div> -->
+
+
+<div class="py-3 border-top">
+  <div class="accordion" id="accordionExample">
+      <div class="accordion-item" *ngFor="let variant of displayedVariants ; let rowIndex=index;">
+        <h2 class="accordion-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapse' + rowIndex + variant.name"
+            [attr.aria-expanded]="rowIndex === 0 ? 'true' : 'false'"
+            [attr.aria-controls]="'collapse' + rowIndex + variant.name">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+              <div class="d-flex align-items-center small">
+                <span><i class="fa-solid fa-square-plus pe-1"></i></span>
+                <div class="d-flex align-utems-center">
+                  <ng-container *ngFor="let key of getFullVariantName(variant) ;let last=last;">
+                      <span *ngIf="key != 'color' ;else displayColorIcon">{{variant[key].value}}</span>
+                      <span *ngIf="!last" class="px-1">/</span>
+                      <ng-template #displayColorIcon>
+                           <span  class="rounded-3 d-inline-block"
+                                    [ngStyle]="{
+                                      'background-color': variant[key].value,
+                                      'width': '36px',
+                                      'height': '20px',
+                                      'display': 'inline-block'
+                                    }"
+                                    >
+                        </span>
+                      </ng-template>
+
+
+                  </ng-container>
+                </div>
+              </div>
+              <span class="fs-verySmall">{{'Available No' | translate}}: {{variant.quantity}}</span>
+            </div>
+          </button>
+        </h2>
+        <div
+          [id]="'collapse' + rowIndex + variant.name"
+          class="accordion-collapse collapse"
+          [class.show]="rowIndex === 0"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+              <app-variant-value-details
+                 [VariantValueDetailsComponentData]="{
+                  quantity:0,
+                  displayedVariants:displayedVariants,
+                  index:rowIndex
+                }"
+                 (variantProductDetaills)="setQuantity($event,rowIndex)" #variantValueDetails></app-variant-value-details>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>
+

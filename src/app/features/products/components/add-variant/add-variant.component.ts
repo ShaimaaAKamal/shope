@@ -3,6 +3,7 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 import { ProductService } from '../../../../Services/Product/product.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
+import { VariantMasterLookUP } from '../../../../Interfaces/variant-master-look-up';
 
 @Component({
   selector: 'app-add-variant',
@@ -18,7 +19,8 @@ export class AddVariantComponent {
 
   preSetVariants=this.__ProductService.variantOptions;
   defaultSelection = this.preSetVariants()[0];
-  variantSelection !:string
+  variantSelection !:string;
+  VariantMasterLookUPId!:number;
   variantValues!:any;
   variantSelectValue!:string;
   insertVariantNewValue:boolean=false;
@@ -45,7 +47,8 @@ export class AddVariantComponent {
 constructor(){
    effect(() => {
     const variants:any = this.__ProductService.currentProduct().variants;
-    this.ProductVariantOptions.set(variants);
+    // this.ProductVariantOptions.set(variants );
+        this.ProductVariantOptions.set(variants ?? [] );
   });
 }
 
@@ -58,6 +61,7 @@ displayCreateVariantLibrary(){
  setDefaultValues(){
   if(this.defaultSelection){
   this.variantSelection = this.isRtl()? this.defaultSelection.nameAr:this.defaultSelection.nameEn;
+  this.defaultSelection.id && (this.VariantMasterLookUPId = this.defaultSelection.id);
   this.variantValues=  this.getVariantValues(this.defaultSelection.variantDetails);
   this.variantSelectValue=this.defaultSelection.variantDetails[0].value;
     if(this.defaultSelection.nameEn == 'color' ) this.showColorPickerContainer=true;
@@ -67,6 +71,7 @@ displayCreateVariantLibrary(){
  chooseVariantName(event: any){
     this.variantValues=this.getVariantValues(event.variantDetails);
     this.variantSelectValue=this.variantValues[0];
+    this.VariantMasterLookUPId = event.id;
     this.variantSelection=event.nameEn;
     this.showColorPickerContainer = event.nameEn === 'color' || event.nameEn === 'اللون';
   }
@@ -85,7 +90,6 @@ showNewValueInput(){
 
 setPickedColorValue(color:string){
 this.variantValue.value=color;
-  console.log(this.variantValue.value);
 }
 addNewValue() {
 if(this.variantSelection == 'color' && !this.variantValue.value)
@@ -149,6 +153,7 @@ addVariant() {
 // });; this.insertVariantNewValue=false}
   const newValue = this.variantSelectValue;
   const newVariant = {
+    variantMasterLookUpId: this.VariantMasterLookUPId,
     name: this.variantSelection,
     values: [newValue]
   };

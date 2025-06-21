@@ -17,9 +17,10 @@ export class ReturnOrderCodeFormComponent {
  @ViewChild('orderCode') orderCode!:InputComponent;
 
  done(): void {
-  const code = this.orderCode.value?.trim();
-  const result = this.__OrderService.getOrderByCode(code);
-
+  // const code = this.orderCode.value?.trim();
+  // const result = this.__OrderService.getOrderByCode(code);
+ const id =this.orderCode.value?.trim();
+const result = this.__OrderService.getOrderById(Number(id));
   if (!result) {
     this.errorMessage = 'No Order Found with this code';
     return;

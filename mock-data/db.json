@@ -1,120 +1,453 @@
 {
   "products": [
     {
-      "id": 1,
-      "name": "samsung a35",
+      "nameEn": "samsung a35",
       "nameAr": "سامسونج ٣٥s",
-      "barcode": "6789054321790",
-      "price": 3000,
-      "quantity": "5",
+      "barcode": "",
+      "sku": "",
+      "isActive": true,
+      "price": 20000,
+      "quantity": 5,
+      "enfinity": false,
+      "category": 1,
+      "descriptionEn": "",
+      "descriptionAr": "",
+      "imageUrl": "",
+      "vatValue": 0,
+      "discountId": 0,
+      "comparePrice": 0,
+      "isPriceAffecting": false,
+      "chargeTax": false,
       "tax": 0,
-      "status": "Inactive",
+      "id": 1,
       "variants": [
         {
+          "variantMasterLookUpId": 2,
           "name": "size",
           "values": [
-            "L"
+            "xl",
+            "m"
           ]
         },
         {
+          "variantMasterLookUpId": 6,
           "name": "color",
           "values": [
-            "red"
+            "#de5757"
           ]
         }
-      ],
-      "variantsDetails": [
+      ]
+    },
+    {
+      "nameEn": "mac m3",
+      "nameAr": "ماك ام ٣",
+      "barcode": "6789054321790",
+      "sku": "",
+      "isActive": true,
+      "price": 50000,
+      "quantity": 3,
+      "enfinity": false,
+      "category": 9,
+      "descriptionEn": "",
+      "descriptionAr": "",
+      "imageUrl": "",
+      "vatValue": 0,
+      "discountId": 0,
+      "comparePrice": 0,
+      "isPriceAffecting": false,
+      "chargeTax": false,
+      "tax": 1000,
+      "id": 2
+    }
+  ],
+  "orders": [
+    {
+      "id": 1748609831397,
+      "code": "eJQkrtry5y",
+      "customer": {
+        "id": -1,
+        "name": "",
+        "nameAr": ""
+      },
+      "salesPerson": {
+        "name": "",
+        "id": -1
+      },
+      "products": [],
+      "grossTotal": 3000,
+      "discount": 0,
+      "paymentMethods": {
+        "cash": 3000,
+        "network": 0,
+        "masterCard": 0
+      },
+      "status": "paid",
+      "time": "2025-05-30T12:57:10.627Z",
+      "remainingQty": 0,
+      "hasARetrun": true
+    },
+    {
+      "id": 1748609850398,
+      "code": "azPgo0mKkm",
+      "customer": {
+        "id": -1,
+        "name": "",
+        "nameAr": ""
+      },
+      "salesPerson": {
+        "name": "",
+        "id": -1
+      },
+      "products": [
         {
-          "size": {
-            "value": "L"
-          },
-          "details": {
-            "price": "30000",
-            "costPrice": "",
-            "salePrice": "",
-            "weight": "",
-            "barcode": "",
-            "notify": "",
-            "quantity": "2"
-          },
-          "color": {
-            "value": "red"
-          }
+          "id": 1748292112799,
+          "name": "mac m3h",
+          "nameAr": "ديلh",
+          "barcode": "",
+          "price": 3000,
+          "quantity": "1",
+          "tax": 0,
+          "status": "Inactive",
+          "variants": [],
+          "variantsDetails": [],
+          "weight": null,
+          "weightUnit": "",
+          "productCostPrice": null,
+          "salePrice": null,
+          "salePriceEndDate": ""
         }
       ],
-      "category": {
-        "id": 2,
-        "name": "laptops",
-        "nameAr": "لابتوب"
+      "grossTotal": 3000,
+      "discount": 0,
+      "paymentMethods": {
+        "cash": 0,
+        "network": 0,
+        "masterCard": 0
       },
-      "requireShipping": false,
-      "weight": 10,
-      "weightUnit": "KG",
-      "productCostPrice": 1500,
-      "salePrice": 2500,
-      "salePriceEndDate": ""
+      "status": "hold",
+      "time": "2025-05-30T12:57:30.184Z"
+    },
+    {
+      "id": 1748609924355,
+      "code": "8b404tHAyS",
+      "customer": {
+        "id": -1,
+        "name": "",
+        "nameAr": ""
+      },
+      "salesPerson": {
+        "name": "",
+        "id": -1
+      },
+      "products": [
+        {
+          "id": 1748292112799,
+          "name": "mac m3h",
+          "nameAr": "ديلh",
+          "barcode": "",
+          "price": 3000,
+          "quantity": "1",
+          "tax": 0,
+          "status": "Inactive",
+          "variants": [],
+          "variantsDetails": [],
+          "weight": null,
+          "weightUnit": "",
+          "productCostPrice": null,
+          "salePrice": null,
+          "salePriceEndDate": ""
+        }
+      ],
+      "grossTotal": 3000,
+      "discount": 0,
+      "paymentMethods": {
+        "cash": 0,
+        "network": 0,
+        "masterCard": 0
+      },
+      "status": "return",
+      "time": "2025-05-30T12:58:44.175Z"
+    },
+    {
+      "customerId": 1,
+      "shiftId": -1,
+      "shiftNumber": 122,
+      "userId": "",
+      "paymentMethodId": 1,
+      "cashAmount": 0,
+      "networkAmount": 0,
+      "totalTax": 1000,
+      "totalDiscount": 5000,
+      "totalBeforeDiscount": 50000,
+      "totalAfterDiscount": 45000,
+      "totalBeforeTax": 45000,
+      "totalAfterTax": 46000,
+      "couponCode": "",
+      "stopChange": false,
+      "invoiceType": 1,
+      "invoiceDate": "2025-06-21T16:10:36.128Z",
+      "details": [
+        {
+          "productId": 2,
+          "returnStatus": 0,
+          "soldQuantity": 1,
+          "remainingQuantity": 2,
+          "tax": 1000,
+          "price": 50000,
+          "discount": 100,
+          "productVariantMasterId": 0,
+          "distributedDiscount": 100
+        }
+      ],
+      "id": 1748609924358
+    },
+    {
+      "customerId": 2,
+      "shiftId": -1,
+      "shiftNumber": 122,
+      "userId": "",
+      "paymentMethodId": 1,
+      "cashAmount": 20000,
+      "networkAmount": 0,
+      "totalTax": 0,
+      "totalDiscount": 0,
+      "totalBeforeDiscount": 20000,
+      "totalAfterDiscount": 20000,
+      "totalBeforeTax": 20000,
+      "totalAfterTax": 20000,
+      "couponCode": "",
+      "stopChange": false,
+      "invoiceType": 2,
+      "invoiceDate": "2025-06-21T16:26:14.033Z",
+      "details": [
+        {
+          "productId": 1,
+          "returnStatus": 0,
+          "soldQuantity": 1,
+          "remainingQuantity": 4,
+          "tax": 0,
+          "price": 20000,
+          "discount": 100,
+          "productVariantMasterId": 0,
+          "distributedDiscount": 100
+        }
+      ],
+      "id": 1748609924359
+    },
+    {
+      "customerId": 0,
+      "shiftId": -1,
+      "shiftNumber": 122,
+      "userId": "",
+      "paymentMethodId": 1,
+      "cashAmount": 193000,
+      "networkAmount": 0,
+      "totalTax": 3000,
+      "totalDiscount": 0,
+      "totalBeforeDiscount": 190000,
+      "totalAfterDiscount": 190000,
+      "totalBeforeTax": 190000,
+      "totalAfterTax": 193000,
+      "couponCode": "",
+      "stopChange": false,
+      "invoiceType": 2,
+      "invoiceDate": "2025-06-21T17:22:03.262Z",
+      "details": [
+        {
+          "productId": 2,
+          "returnStatus": 0,
+          "soldQuantity": 3,
+          "remainingQuantity": 2,
+          "tax": 1000,
+          "price": 50000,
+          "discount": 100,
+          "productVariantMasterId": 0,
+          "distributedDiscount": 100
+        },
+        {
+          "productId": 1,
+          "returnStatus": 0,
+          "soldQuantity": 2,
+          "remainingQuantity": 4,
+          "tax": 0,
+          "price": 20000,
+          "discount": 100,
+          "productVariantMasterId": 0,
+          "distributedDiscount": 100
+        }
+      ],
+      "id": 1748609924360
+    }
+  ],
+  "variants": [
+    {
+      "id": 1,
+      "variantTypeEn": "text",
+      "variantTypeAr": "النص",
+      "nameAr": "المقاس",
+      "nameEn": "size",
+      "variantDetails": [
+        {
+          "id": 1750418496311,
+          "detailNameEn": "l",
+          "detailNameAr": "l",
+          "value": "l"
+        },
+        {
+          "id": 1750418496237,
+          "detailNameEn": "s",
+          "detailNameAr": "s",
+          "value": "s"
+        },
+        {
+          "id": 1750418496431,
+          "detailNameEn": "m",
+          "detailNameAr": "m",
+          "value": "m"
+        }
+      ]
     },
     {
       "id": 2,
-      "name": "delldd",
-      "nameAr": "ديلd",
-      "barcode": "",
-      "price": 20000,
-      "quantity": "5",
-      "tax": 0,
-      "status": "Inactive",
-      "variants": [
+      "variantTypeEn": "color",
+      "variantTypeAr": "اللون",
+      "nameAr": "اللون",
+      "nameEn": "color",
+      "variantDetails": [
         {
-          "name": "storage",
-          "values": [
-            "125gb"
-          ]
-        }
-      ],
-      "variantsDetails": [
+          "id": 1750418511156,
+          "detailNameEn": "black",
+          "detailNameAr": "black",
+          "value": "#000000"
+        },
         {
-          "storage": {
-            "value": "125gb"
-          },
-          "details": {
-            "price": "",
-            "costPrice": "",
-            "salePrice": "",
-            "weight": "",
-            "barcode": "",
-            "notify": "",
-            "quantity": "0"
-          }
+          "id": 1750418511356,
+          "detailNameEn": "red",
+          "detailNameAr": "red",
+          "value": "#da1e1e"
+        },
+        {
+          "id": 1750418510961,
+          "detailNameEn": "green",
+          "detailNameAr": "green",
+          "value": "#2fcf2f"
+        },
+        {
+          "id": 1750418511304,
+          "detailNameEn": "blue",
+          "detailNameAr": "blue",
+          "value": "#0000ff"
         }
-      ],
-      "category": {
-        "id": 2,
-        "name": "laptops",
-        "nameAr": "لابتوب"
-      },
-      "requireShipping": false,
-      "weight": 10,
-      "weightUnit": "KG",
-      "productCostPrice": 1500,
-      "salePrice": 2500,
-      "salePriceEndDate": ""
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "nameEn": "test",
+      "nameAr": "نحاول",
+      "isActive": true,
+      "id": 1
     },
     {
-      "id": 3,
-      "name": "samsung a35r",
-      "nameAr": "سامسونج ٣٥d",
-      "barcode": "",
-      "price": 30000,
-      "quantity": "2",
-      "tax": 0,
-      "status": "Inactive",
-      "variants": [],
-      "variantsDetails": [],
-      "category": {
-        "id": 7,
-        "name": "testttt",
-        "nameAr": "تيتتتتتتتتت"
-      }
+      "nameEn": "try1",
+      "nameAr": "نحاولd",
+      "isActive": true,
+      "id": 2
+    },
+    {
+      "nameEn": "ttt",
+      "nameAr": "نحاولdd",
+      "isActive": true,
+      "id": 3
+    },
+    {
+      "nameEn": "jjj",
+      "nameAr": "sssss",
+      "isActive": true,
+      "id": 4
+    },
+    {
+      "nameEn": "gvewiurgvuiw",
+      "nameAr": "ذاصثهخدهصخثد",
+      "isActive": true,
+      "id": 5
+    },
+    {
+      "nameEn": "tests",
+      "nameAr": "نحاولs",
+      "isActive": true,
+      "id": 6
+    },
+    {
+      "nameEn": "rrr",
+      "nameAr": "rrr",
+      "isActive": true,
+      "id": 7
+    },
+    {
+      "nameEn": "jtest",
+      "nameAr": "test",
+      "isActive": true,
+      "id": 8
+    },
+    {
+      "nameEn": "mobiles",
+      "nameAr": "موبيلات",
+      "isActive": true,
+      "id": 9
+    }
+  ],
+  "productVariantMasters": [],
+  "customers": [
+    {
+      "firstNameEn": "lsoev",
+      "firstNameAr": "lsoev",
+      "lastNameEn": "lsoev",
+      "lastNameAr": "soev",
+      "companyNameEn": "",
+      "companyNameAr": "",
+      "phone": "01020414320",
+      "emailAddress": "shaimaakamal039@gmail.com",
+      "country": "Egypt",
+      "city": "imbaba",
+      "addressEn": "6 hany jiza street",
+      "addressAr": "",
+      "notesEn": "",
+      "notesAr": "",
+      "dateOfBirth": "2025-06-21T16:07:40.119Z",
+      "crn": "",
+      "vat": "",
+      "governorate": "",
+      "streetNumber": "",
+      "buildingNumber": "",
+      "customerType": 1,
+      "isActive": true,
+      "id": 1
+    },
+    {
+      "firstNameEn": "loka",
+      "firstNameAr": "loka",
+      "lastNameEn": "lokaloka",
+      "lastNameAr": "loka",
+      "companyNameEn": "",
+      "companyNameAr": "",
+      "phone": "01020414321",
+      "emailAddress": "shaimaakamal039@gmail.com",
+      "country": "Egypt",
+      "city": "imbaba",
+      "addressEn": "6 hany jiza street",
+      "addressAr": "",
+      "notesEn": "",
+      "notesAr": "",
+      "dateOfBirth": "2025-06-21T16:08:10.815Z",
+      "crn": "",
+      "vat": "",
+      "governorate": "",
+      "streetNumber": "",
+      "buildingNumber": "",
+      "customerType": 1,
+      "isActive": true,
+      "id": 2
     }
   ]
 }

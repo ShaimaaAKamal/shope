@@ -1,0 +1,12 @@
+::ng-deep .small-text-table .datatable-body,
+::ng-deep .small-text-table .datatable-header,
+::ng-deep .small-text-table .datatable-footer {
+  font-size: 0.75rem;
+}
+
+::ng-deep .datatable-body-cell ,::ng-deep .datatable-header-cell{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -18,6 +18,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { TemplateRefDirective } from '../Directives/template-ref-directive.directive';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 @NgModule({
@@ -34,9 +37,12 @@ import { ColorPickerModule } from 'ngx-color-picker';
     InputCheckboxComponent,
     NewDatePipe,
     DropdownComponent,
-    LayoutComponent
+    LayoutComponent,
+    DataTableComponent,
+    TemplateRefDirective
   ],
   imports: [
+    NgxDatatableModule,
     CommonModule,
     RouterModule,
     TranslateModule,
@@ -45,6 +51,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ColorPickerModule
   ],
   exports:[
+         DataTableComponent,
          InputComponent,
         SelectInputComponent,
         QuantityControlComponent,

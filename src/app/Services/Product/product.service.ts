@@ -4,6 +4,7 @@ import { CommonService } from '../CommonService/common.service';
 import { catchError, concatMap, finalize, forkJoin, map, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
+import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ private __SharedService=inject(SharedService);
   usedProducts: Product[] = [];
 
   variantOptions = signal<VariantMasterLookUP[]>([]);
+  productVariantOptions = signal<ProductVariantMaster[]>([]);
 
   currentProduct = signal<Product>(this.getEmptyProduct());
 
@@ -49,7 +51,7 @@ createVariant(variant: VariantMasterLookUP){
    this.loadingSignal.set(true);
    return this.__SharedService.create<VariantMasterLookUP>('Variants', variant, 'Variant').pipe(
     tap({
-      next: (newVariant) => this.variantOptions.update(variants => this.addOrReplaceItemById(variants, newVariant)),
+      next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
       complete: () => this.loadingSignal.set(false),
     })
   );
@@ -93,7 +95,67 @@ updateVariant(variant: VariantMasterLookUP){
       );
   }
 
+//ProductVarianTApi
 
+getProductVariants() {
+  this.loadingSignal.set(true);
+
+  return this.__SharedService.getAll<ProductVariantMaster>('ProductVariantMasters', 'Variants').pipe(
+    tap({
+      next: (data) => this.productVariantOptions.set([...data]),
+      complete: () => this.loadingSignal.set(false),
+
+    })
+  );
+}
+
+createProductVariant(ProductVariant: ProductVariantMaster){
+   this.loadingSignal.set(true);
+   return this.__SharedService.create<ProductVariantMaster>('ProductVariantMasters', ProductVariant, 'Variant').pipe(
+    tap({
+      next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
+      complete: () => this.loadingSignal.set(false),
+    })
+  );
+  }
+
+deleteProductVariant(id: number) {
+    this.loadingSignal.set(true);
+    return  this.__SharedService.delete<ProductVariantMaster>('ProductVariantMasters', id, 'variant').pipe(
+        tap({
+          next: () =>      this.productVariantOptions.update(variants => variants.filter(p => p.id !== id)),
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
+
+updateProductVariant(variant: ProductVariantMaster){
+    if (!variant.id) {
+    throw new Error('Variant ID is required for update.');
+  }
+
+   this.loadingSignal.set(true);
+    // const existingVariant = this.productVariantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
+    //                 if (existingVariant) {
+    //                   throw new Error(`Variant with this name already exist.`);
+    //                 }
+    //                 if (variant.variantDetails.length == 0) {
+    //                   throw new Error(`Variant values can't be empty.`);
+    //                 }
+
+    //                 if( !variant.nameEn || !variant.nameAr) {
+    //                   throw new Error(`Variant Name can't be empty.`);
+    //                 }
+    return this.__SharedService.update<ProductVariantMaster>('Variants', variant.id, variant, 'variant').pipe(
+        tap({
+          next: (updatedVariant) =>  {
+                this.productVariantOptions.update(variants =>
+                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
+                );},
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
   //Product Api
 private init(): void {
   this.getVariants().pipe(
@@ -141,7 +203,7 @@ createProduct(product: Product){
             this.productsSignal.update(products =>
                 products.filter(product => product.id !== id)
               );
-              this.productsSignal.update(products => this.addOrReplaceItemById(products, newProduct));
+              this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct));
               this.type.set('');
               this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
           },
@@ -201,17 +263,7 @@ deleteProducts(ids: number[]) {
     map(() => void 0)
   );
 }
-  private addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
-  const index = array.findIndex(item => item.id === newItem.id);
-  const updated = [...array];
 
-  if (index !== -1) {
-    updated[index] = newItem;
-  } else {
-    updated.push(newItem);
-  }
-  return updated;
-}
 
   //Helper Functions
   addNewProduct(newProduct: Product): boolean {

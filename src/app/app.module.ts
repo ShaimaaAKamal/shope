@@ -21,6 +21,7 @@ import { ApiConfigService } from './Services/apiConfigService/api-config-service
 import { firstValueFrom } from 'rxjs';
 import { ThemeComponent } from './components/theme/theme.component';
 
+
 registerLocaleData(localeAr);
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

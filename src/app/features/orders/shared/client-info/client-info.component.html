@@ -9,7 +9,7 @@
                       }}
                     </span>
                     <div class="d-flex align-items-center">
-                          <span class="pe-2 fs-verySmall text-secondary">{{ClientInfoData.additionalInfo}}</span>
+                          <span class="pe-2 fs-verySmall text-secondary" *ngIf="ClientInfoData.additionalInfo">{{ClientInfoData.additionalInfo}}</span>
                             <ng-content></ng-content>
                         </div>
                   </div>

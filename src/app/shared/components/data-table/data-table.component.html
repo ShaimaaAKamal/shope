@@ -1,0 +1,66 @@
+
+<div #tableContainer class="datatable-container pt-3" [class.resizing]="isResizing" >
+  <input type="text" placeholder="Search" (input)="updateFilter($event)" class="form-control mb-3" />
+
+  <div *ngIf="!tableVisible" class="table-loading">
+    <span>Adjusting table layout...</span>
+  </div>
+
+  <ngx-datatable
+    #table
+    *ngIf="tableVisible"
+    [attr.data-resize-key]="resizeCounter"
+    class="bootstrap expandable  small-text-table"
+    [rows]="filteredRows"
+    [rowIdentity]="identityFn"
+    [columns]="displayedColumns"
+    [columnMode]="'force'"
+    [headerHeight]="headerHeight"
+    [footerHeight]="footerHeight"
+    [rowHeight]="rowHeight"
+    [limit]="20"
+    [count]="filteredRows.length"
+    [selectionType]="selectionType"
+    [selected]="selected"
+    (select)="onSelect($event)"
+    [offset]="page"
+    (page)="onPage($event)"
+    [scrollbarV]="true"
+    [scrollbarH]="true"
+    [externalPaging]="false"
+    [externalSorting]="false"
+    [style.height]="tableHeight"
+  >
+    <ng-template #checkbox let-row="row" let-isSelected="isSelected" let-onCheckboxChange="onCheckboxChange">
+      <input
+        type="checkbox"
+        [checked]="isSelected"
+        (change)="onCheckboxChange($event, row)"
+        class="datatable-checkbox"
+      />
+    </ng-template>
+    <!-- <ng-template [appTemplateRef]="'customerTemplate'" let-value="value">
+  {{ value?.name || 'N/A' }}
+</ng-template>
+<ng-template [appTemplateRef]="'sellerTemplate'" let-value="value">
+  {{ value?.name || 'N/A' }}
+</ng-template>
+
+<ng-template [appTemplateRef]="'priceTemplate'" let-value="value">
+  {{ value | currency:'USD' }}
+</ng-template>
+
+<ng-template [appTemplateRef]="'itemsTemplate'" let-value="value">
+  {{ value?.length || 0 }}
+</ng-template>
+<ng-template [appTemplateRef]="'timeTemplate'" let-value="value">
+  {{ getDate(value)}}
+</ng-template>
+<ng-template [appTemplateRef]="'paymentMethodsTemplate'" let-value="value">
+  <ng-container *ngFor="let method of getValidPaymentMethods(value); let last = last">
+    <span>{{ method.key }}</span>
+    <span *ngIf="!last">, </span>
+  </ng-container>
+</ng-template> -->
+  </ngx-datatable>
+</div>

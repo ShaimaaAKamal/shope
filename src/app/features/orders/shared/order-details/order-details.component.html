@@ -21,7 +21,6 @@
               }"
       (input)="searchProductsByName($event)"  (focus)="handleSearchByNameFocus('focus')"
      (blur)="handleSearchByNameFocus('blur')"  #searchInputByName>
-        <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="nameSearch"></i> -->
         <i class="fa-solid fa-magnifying-glass" ></i>
 
       </app-input>
@@ -35,7 +34,6 @@
               *ngFor="let item of searchItems"
               (click)="selectItem(item)"
             >
-              <!-- {{ isRtl() ? item.nameAr : item.name }} -->
                               {{ isRtl() ? item.nameAr : item.nameEn }}
 
             </li>
@@ -63,7 +61,6 @@
                 enableFocusBlurTracking: false,
               }"
           (input)="searchProductsByBarcode($event)" #searchInputByBarcode >
-        <!-- <i class="fa-solid fa-magnifying-glass" [class.d-none]="barcodeSearch"></i> -->
          <i class="fa-solid fa-magnifying-glass"></i>
       </app-input>
       </div>
@@ -90,7 +87,7 @@
         label: 'Select Customer',
         id:'customer',
         options: customers(),
-        prop:  isRtl()?'nameAr' :'name',
+        prop:  isRtl()?'firstNameAr' :'firstNameEn',
         value: 'id',
         vertCLass:'col-12',
         noOption:'Select Customer'

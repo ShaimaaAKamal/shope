@@ -84,11 +84,19 @@ private populateInputMap() {
 }
 
 private fillInputValuesFromService() {
+  // const paymentValues = {
+  //   _discountValue: this.__OrderService.discount(),
+  //   _Cash: this.order?.paymentMethods['cash'] ?? '0',
+  //   _Network: this.order?.paymentMethods['network']  ?? '0',
+  //   _Master_Card: this.order?.paymentMethods['masterCard']  ?? '0'
+  // };
   const paymentValues = {
     _discountValue: this.__OrderService.discount(),
-    _Cash: this.order?.paymentMethods['cash'] ?? '0',
-    _Network: this.order?.paymentMethods['network']  ?? '0',
-    _Master_Card: this.order?.paymentMethods['masterCard']  ?? '0'
+    _Cash: this.order?.cashAmount?? '0',
+    _Network: this.order?.networkAmount ?? '0',
+    // _Master_Card: this.order?.paymentMethods['masterCard']  ?? '0'
+        _Master_Card:  '0'
+
   };
   Object.entries(paymentValues).forEach(([key, value]) => {
     const input = this.inputMap[key];

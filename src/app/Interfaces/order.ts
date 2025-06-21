@@ -1,7 +1,3 @@
-// import { Customer } from "./customer"
-// import { Product } from "./product"
-// import { SalesPerson } from "./sales-person"
-
 import { OrderProduct } from "./order-product"
 
 export interface Order

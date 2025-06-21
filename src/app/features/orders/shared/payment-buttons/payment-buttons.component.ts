@@ -4,6 +4,7 @@ import { CommonService } from '../../../../Services/CommonService/common.service
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Order } from '../../../../Interfaces/order';
 import { Router } from '@angular/router';
+import { Customer } from '../../../../Interfaces/customer';
   interface paymentButtonsInterface {
   getPaidAmount: () => number;
   inputMap: { [key: string]: InputComponent };
@@ -16,25 +17,22 @@ import { Router } from '@angular/router';
   styleUrl: './payment-buttons.component.scss'
 })
 export class PaymentButtonsComponent {
-   code: string = '';
   @Input() PaymentButtonsData!: paymentButtonsInterface;
    @Output() mustBePaid=new EventEmitter<boolean>(false);
   @Output() clearCustomer=new EventEmitter<void>();
 
   constructor( private __OrderService: OrderService,
-    private __CommonService: CommonService ,
    private __Router:Router) {}
 
-  ngOnInit() {
-    this.code = (this.PaymentButtonsData.order) ? this.PaymentButtonsData.order.code : this.generateOrderCode();
-  }
 
   pay_Order() {
     const paidAmount = this.PaymentButtonsData.getPaidAmount();
     const totalAmount = this.__OrderService.getGrossTotal();
 
     if (paidAmount >= totalAmount && this.__OrderService.orderProducts().length > 0) {
-      this.setOrderDetails('paid');
+      // this.setOrderDetails('paid');
+            this.setOrderDetails(2);
+
             this.mustBePaid.emit(true);
     } else {
       this.mustBePaid.emit(false);
@@ -42,10 +40,12 @@ export class PaymentButtonsComponent {
   }
 
   hold_Order() {
-    this.setOrderDetails('hold');
+    // this.setOrderDetails('hold');
+    this.setOrderDetails(1);
   }
 
   cancal_Order() {
+    this.clearOrder();
     this.__Router.navigateByUrl('Orders/create');
   }
 
@@ -68,9 +68,11 @@ export class PaymentButtonsComponent {
 //     }
 //   });
 // }
-setOrderDetails(status: string) {
-  const order = this.buildOrder(status);
+// setOrderDetails(status: string) {
+setOrderDetails(invoiceType: number) {
 
+  // const order = this.buildOrder(status);
+  const order = this.buildOrder(invoiceType);
   const action$ = this.PaymentButtonsData.order
     ? this.__OrderService.updateOrder(order)
     : this.__OrderService.addNewOrder(order);
@@ -83,22 +85,24 @@ setOrderDetails(status: string) {
 
   });
 }
-private buildOrder(status: string): Order {
-  const   code= this.code;
+// private buildOrder(status: string): Order {
+private buildOrder(invoiceType: number): Order {
   const discount=this.getInputValue('_discountValue');
   const   paymentMethods= {
       cash: this.getInputValue('_Cash'),
       network: this.getInputValue('_Network'),
       masterCard: this.getInputValue('_Master_Card')
     }
- return this.__OrderService.buildOrder(this.PaymentButtonsData.order,code,discount,status,paymentMethods)
+//  return this.__OrderService.buildOrder(this.PaymentButtonsData.order,code,discount,status,paymentMethods)
+ return this.__OrderService.buildOrder(this.PaymentButtonsData.order,discount,invoiceType,paymentMethods)
+
 }
 private getInputValue(key: string): number {
   return parseFloat(this.PaymentButtonsData.inputMap[key]?.value || '0');
 }
 private resetOrder(): void {
   this.clearOrder();
-  this.code = this.generateOrderCode();
+  // this.code = this.generateOrderCode();
 }
 
 private clearOrder(): void {
@@ -107,14 +111,11 @@ private clearOrder(): void {
       input.value = '';
       input.nativeInput?.dispatchEvent(new Event('input'));
     });
-
     this.__OrderService.setPaidAmount(0);
     this.__OrderService.discount.set(0);
     this.clearCustomer.emit();
   }
 
-private generateOrderCode(): string {
-    return this.__CommonService.generate10CharCode();
-  }
+
 
 }

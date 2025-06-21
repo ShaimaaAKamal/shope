@@ -190,10 +190,11 @@
 // }
 // calculateTotalProducts(products:Product[]){
 //    if (products.length === 0) return 0;
-//     return products.reduce((total, product) => total + parseFloat(product.quantity), 0);
-// }
-// }
+//     // return products.reduce((total, product) => total + parseFloat(product.quantity), 0);
+//         return products.reduce((total, product) => total +(product.quantity), 0);
 
+// }
+// }
 
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
@@ -204,6 +205,8 @@ import { SalesPersonsService } from '../SalesPersons/sales-persons.service';
 import { of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
+import { OrderProduct } from '../../Interfaces/order-product';
+import { UserService } from '../User/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -212,13 +215,14 @@ export class OrderService {
   private __SharedService=inject(SharedService);
 
  orders=signal<Order[]>([])
- orderProducts=signal<Product[]>([]);
+ orderProducts=signal<OrderProduct[]>([]);
  discount=signal<number>(0);
  paidAmount = signal<number>(0);
- invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
+//  invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
+ invoiveCustomer:Customer={} as Customer;
 
 constructor(private __CommonService:CommonService,private __SalesPersonsService:SalesPersonsService,
-  private __ToastingMessagesService:ToastingMessagesService
+  private __ToastingMessagesService:ToastingMessagesService,private __UserService:UserService
 ){
     this.__SharedService.getAll<Order>('Orders','orders').subscribe(orders => {
       this.orders.set(orders)
@@ -232,10 +236,14 @@ createOrderApi(order: Order){
     }));}
 
 updateOrderApi(order: Order) {
+   if (!order.id) {
+    throw new Error('Product ID is required for update.');
+  }
   return this.__SharedService.update<Order>('Orders', order.id, order, 'Order').pipe(
     tap((updatedOrder) => {
       this.orders.update((orders) =>
-        orders.map((o) => (o.code === updatedOrder.code ? updatedOrder : o))
+                // orders.map((o) => (o.code=== updatedOrder.code ? updatedOrder : o))
+        orders.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
       );
     }));
 }
@@ -252,7 +260,8 @@ deleteOrderApi(id: number){
 
 
 addNewOrder(order: Order){
-  let result = this.__CommonService.findItemInArray(this.orders(), o => o.code == order.code);
+  // let result = this.__CommonService.findItemInArray(this.orders(), o => o.code == order.code);
+    let result = this.__CommonService.findItemInArray(this.orders(), o => o.id == order.id);
   if (result.exists) {
     this.__ToastingMessagesService.showToast( 'This order already exists!' ,'error');
         return of();
@@ -262,7 +271,8 @@ addNewOrder(order: Order){
 }
 
 updateOrder(order: Order){
-  const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === order.code);
+  // const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === order.code);
+  const result = this.__CommonService.findItemInArray(this.orders(), o => o.id === order.id);
 
   if (!result.exists) {
     const message = "This Order hasn't been updated!";
@@ -271,16 +281,14 @@ updateOrder(order: Order){
 
   const existingOrder = result.item;
   const canUpdate =
-    (order.status === 'paid' && existingOrder.status === 'hold') ||
-    (order.status === 'hold' && existingOrder.status === 'hold') ||
-    (order.status === 'paid' && !existingOrder.remainingQty) ||
-    (order.status === 'paid' && existingOrder.remainingQty && existingOrder.remainingQty > 0)
-  // if (!canUpdate) {
-  //   const message = existingOrder.hasARetrun
-  //     ? 'This Order has already been returned before!'
-  //     : existingOrder.status === 'paid'
-  //       ? 'This Order has already been paid!'
-  //       : "This Order hasn't been updated!";
+      (order.invoiceType === 2 && existingOrder.invoiceType === 1) ||
+    (order.invoiceType === 1 && existingOrder.invoiceType === 1) ||
+    (order.invoiceType === 2 && !existingOrder.remainingQty) ||
+    (order.invoiceType === 2 && existingOrder.remainingQty && existingOrder.remainingQty > 0)
+    // (order.status === 'paid' && existingOrder.status === 'hold') ||
+    // (order.status === 'hold' && existingOrder.status === 'hold') ||
+    // (order.status === 'paid' && !existingOrder.remainingQty) ||
+    // (order.status === 'paid' && existingOrder.remainingQty && existingOrder.remainingQty > 0)
     if (!canUpdate) {
     const message = existingOrder.status === 'paid'
         ? 'This Order has already been paid!'
@@ -293,13 +301,26 @@ updateOrder(order: Order){
   return this.updateOrderApi(order);
 }
 
-getOrderByCode(code:string){
-   const result=this.__CommonService.findItemInArray(this.orders(), p => p.code == code)
+// getOrderByCode(code:string){
+//    const result=this.__CommonService.findItemInArray(this.orders(), p => p.code == code)
+//    return result.exists?result.item:null
+//   }
+getOrderById(id:number){
+   const result=this.__CommonService.findItemInArray(this.orders(), p => p.id == id)
    return result.exists?result.item:null
   }
 
-deleteOrderBycode(code: string){
-  const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === code);
+// deleteOrderBycode(code: string){
+//   const result = this.__CommonService.findItemInArray(this.orders(), o => o.code === code);
+
+//   if (!result.exists) {
+//     this.__ToastingMessagesService.showToast('Order not found!', 'error');
+//   }
+//   return this.deleteOrderApi(result.item.id);
+// }
+
+deleteOrderById(id: number){
+  const result = this.__CommonService.findItemInArray(this.orders(), o => o.id === id);
 
   if (!result.exists) {
     this.__ToastingMessagesService.showToast('Order not found!', 'error');
@@ -308,21 +329,26 @@ deleteOrderBycode(code: string){
 }
 
 HoldOrders = computed(() => {
-      return this.orders().filter(o => o.status=='hold');
+        return this.orders().filter(o => o.invoiceType==1);
+
+      // return this.orders().filter(o => o.status=='hold');
   });
 
 /// Order Invoice Calculations
 getNetTotal = computed(() => {
     if (this.orderProducts().length === 0) return 0;
     // return this.orderProducts().reduce((total, product) => total + (parseFloat(product.quantity) * product.price), 0);
-        return this.orderProducts().reduce((total, product) => total + ((product.quantity) * product.price), 0);
+        // return this.orderProducts().reduce((total, product) => total + ((product.quantity) * product.price), 0);
+                return this.orderProducts().reduce((total, product) => total + ((product.soldQuantity) * product.price), 0);
+
 });
 
 getTax = computed(() => {
     if (this.orderProducts().length === 0) return 0;
     return this.orderProducts().reduce(
       // (total, product) => total + parseFloat(product.quantity) * product.tax,
-            (total, product) => total +(product.quantity) * product.tax,
+            // (total, product) => total +(product.quantity) * product.tax,
+            (total, product) => total +(product.soldQuantity) * product.tax,
 
       0
     );
@@ -356,39 +382,78 @@ setPaidAmount(value: number) {
     this.paidAmount.set(value);
   }
 
-UpdateProducts(products:Product[]){
+// UpdateProducts(products:Product[]){
+UpdateProducts(products:OrderProduct[]){
   this.orderProducts.set([...products]);
 }
+// buildOrder(
+//   order:Order | null,
+//   code:string,
+//   discount: number,
+//   status: string,
+//   paymentMethods: { cash: number; network: number; masterCard: number } = { cash: 0, network: 0, masterCard: 0 }
+// ): Order {
+//   const id = (order && order.id && status != 'return') ? order.id : this.__CommonService.getId();
+//   const customer = this.invoiveCustomer;
+//   const salesPerson = this.__SalesPersonsService.currentSalesPerson();
+//   const products = this.orderProducts();
+//   const grossTotal = this.getGrossTotal();
+//   const time = new Date();
+//   return {
+//     id,
+//     code,
+//     customer,
+//     salesPerson,
+//     products,
+//     grossTotal,
+//     discount,
+//     paymentMethods,
+//     status,
+//     time,
+//   };
+// }
+
 buildOrder(
   order:Order | null,
-  code:string,
   discount: number,
-  status: string,
+  invoiceType: number,
   paymentMethods: { cash: number; network: number; masterCard: number } = { cash: 0, network: 0, masterCard: 0 }
 ): Order {
-  const id = (order && order.id && status != 'return') ? order.id : this.__CommonService.getId();
-  const customer = this.invoiveCustomer;
-  const salesPerson = this.__SalesPersonsService.currentSalesPerson();
+  const customerId = this.invoiveCustomer.id;
+  const shift= this.__SalesPersonsService.currentSalesPerson();
+  const user = this.__UserService.currentUser();
   const products = this.orderProducts();
-  const grossTotal = this.getGrossTotal();
-  const time = new Date();
+  const invoiceDate = new Date();
   return {
-    id,
-    code,
-    customer,
-    salesPerson,
-    products,
-    grossTotal,
-    discount,
-    paymentMethods,
-    status,
-    time,
+      ...(order?.id && invoiceType !== 2 ? { id: order.id } : {}),
+    customerId:customerId?? 0,
+    shiftId:shift.id?? 0,
+    shiftNumber:shift.shiftNumber,
+    userId:user.id ?? '',
+    paymentMethodId:1,
+    cashAmount:paymentMethods.cash,
+    networkAmount:paymentMethods.network,
+    totalTax:this.getTax(),
+    totalDiscount:discount,
+    totalBeforeDiscount:this.getNetTotal(),
+    totalAfterDiscount:this.getNetTotal()-discount,
+    totalBeforeTax: this.getNetTotal()-discount,
+    totalAfterTax: this.getGrossTotal(),
+    couponCode:"",
+    stopChange:false,
+    invoiceType,
+    invoiceDate,
+    details:products
   };
 }
-calculateTotalProducts(products:Product[]){
+
+// calculateTotalProducts(products:Product[]){
+calculateTotalProducts(products:OrderProduct[]){
    if (products.length === 0) return 0;
     // return products.reduce((total, product) => total + parseFloat(product.quantity), 0);
-        return products.reduce((total, product) => total +(product.quantity), 0);
+        // return products.reduce((total, product) => total +(product.quantity), 0);
+                return products.reduce((total, product) => total +(product.soldQuantity), 0);
+
 
 }
 }

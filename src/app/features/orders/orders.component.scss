@@ -1,0 +1,15 @@
+::ng-deep .status-hold {
+  color: orange;
+}
+
+::ng-deep .status-paid {
+  color: green;
+}
+
+::ng-deep .status-return {
+  color: blue;
+}
+::ng-deep .status-unknown {
+  color: red;
+}
+

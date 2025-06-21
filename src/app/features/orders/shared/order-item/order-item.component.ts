@@ -22,12 +22,16 @@ isRtl=this.__LanguageService.rtlClassSignal;
 // ngOnInit() {
 //   // this.timeDifference = this.getSmartDateDifference(this.order.time);
 // }
-getOrderCode(code:any){
- this.checkedItemCode.emit(code);
+getOrderId(id:any){
+ this.checkedItemCode.emit(id);
 }
-showOrder(id:number){
-  this.__Router.navigateByUrl(`Orders/${id}`)
-}
+// getOrderCode(code:any){
+//  this.checkedItemCode.emit(code);
+// }
+// showOrder(id:number | undefined){
+//   if(id)
+//   this.__Router.navigateByUrl(`Orders/${id}`)
+// }
 printOrder(){
   console.log('print order');
 }
@@ -35,6 +39,21 @@ returnOrder(){
  this.__Router.navigate(['/Orders/Return_Order'], {
   state: { order: this.order}
 });
+}
+
+getStatus(invoiceType:number){
+ switch (invoiceType) {
+  case 1:
+    return 'Hold';
+  case 2:
+    return 'Paid';
+  case 3:
+    return 'Returned';
+  case 4:
+    return 'Cancelled';
+  default:
+    return 'Unknown';
+}
 }
 // getSmartDateDifference(time: Date | string): { unit: string, value: number } {
 //    const d1 = new Date();

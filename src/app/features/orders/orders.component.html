@@ -1,64 +1,73 @@
-<div class="container-fluid p-4 vh-100 overflow-auto d-flex flex-column">
-   <div class="row flex-column flex-grow-1">
+<div class="container-fluid  p-4 vh-100 overflow-auto d-flex flex-column">
+  <div class="row flex-column flex-grow-1">
     <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
-       <app-page-controls
+      <app-page-controls
         [PageControlsComponentData]="{
-            route: 'Orders/create',
-            type:'order' ,
-            items:orders(),
-            sortKey: 'grossTotal'
-            }"
-         (displayedItems)="handleDispalyedItems($event)"
-         (deleteEvent)="handleDelete($event)">
-    </app-page-controls>
+          route: 'Orders/create',
+          type: 'order',
+          items: orders(),
+          sortKey: 'grossTotal'
+        }"
+        (displayedItems)="handleDispalyedItems($event)"
+        (deleteEvent)="handleDelete($event)">
+      </app-page-controls>
     </div>
-      <div class="col-12  rounded-bottom-3 p-4 shadow-sm products overflow-auto d-flex flex-column"  [ngClass]="{ 'flex-grow-1': orders().length > 0 }">
-           <app-no-items
+
+    <div
+      class="col-12  rounded-bottom-3 px-4 shadow-sm products overflow-auto d-flex flex-column"
+      [ngClass]="{ 'flex-grow-1': orders().length > 0 }">
+
+      <app-no-items
         [NoItemsComponentData]="{
-            header:'Orders',
-            subTitle:'Efficiency in every order. Excellence in every delivery.',
-            BtnName:'Add New Order',
-            route:''
+          header: 'Orders',
+          subTitle: 'Efficiency in every order. Excellence in every delivery.',
+          BtnName: 'Add New Order',
+          route: ''
         }"
         (addNewVar)="addNew($event)"
         *ngIf="orders().length == 0; else orderContainer">
       </app-no-items>
+
+      <!-- Orders Container -->
       <ng-template #orderContainer>
-        <div class="container-fluid border-bottom mb-2">
-           <div class="d-flex align-items-center">
-               <app-input-checkbox   [InputCheckboxComponentData]="{ value:'checkAll',  id:'checkAll', label:''}">
-              </app-input-checkbox>
-            <div class="row align-items-center flex-grow-1">
-            <div class="col-8 col-md-5 col-lg-7 col-xl-8 text-start">
-              <span class="ps-4">Client Info</span>
-            </div>
-            <div class="col-4 col-md-7 col-lg-5 col-xl-4 ">
-              <div class="row ">
-              <div class="col-12  col-lg-4 text-end text-lg-center">
-                <span class="small ps-lg-4">
-               Price
-                </span>
-              </div>
-              <div class="col-12 col-lg-4 text-end text-lg-center">
-                <span class="small ps-lg-5">Date</span>
-              </div>
-                <div class="col-12  col-lg-4 text-end text-lg-center">
-                <span class="small ps-lg-5">
-                  Actions
-                  </span>
-              </div>
-            </div>
-            </div>
-          </div>
-          </div>
-        </div>
-        <div class="row gy-3">
-          <div class="col-12 border-bottom pb-2" *ngFor="let order of orders()">
-            <app-order-item [order]="order" [currency]="'SAR'" (checkedItemCode)="getCheckedItemCode($event)"></app-order-item>
-          </div>
+        <div class="row">
+          <app-data-table
+            class="flex-grow-1"
+            [del]="del"
+            [rows]="orders()"
+            (rowsChanged)="updateOrders($event)"
+            [columns]="columns">
+          </app-data-table>
         </div>
       </ng-template>
+    </div>
   </div>
-  </div>
-
 </div>
+
+<ng-template #invoiceTypeTpl let-row="row">
+  <span>
+    {{
+      invoiceTypeMap[row.invoiceType] === undefined
+        ? 'Unknown'
+        : invoiceTypeMap[row.invoiceType]
+    }}
+  </span>
+</ng-template>
+
+<ng-template #invoiceDateTp2 let-row="row">
+  <span>{{ row.invoiceDate | date: 'dd/MM/yyyy' }}</span>
+</ng-template>
+
+<ng-template #invoicePaymentMethodTpl let-row="row">
+  <span>
+    {{
+      invoicePaymentMethods[row.invoiceType] === undefined
+        ? 'Unknown'
+        : invoicePaymentMethods[row.invoiceType]
+    }}
+  </span>
+</ng-template>
+
+<ng-template #defaultValueTpl let-row="row" let-value="value">
+  {{ value && value.toString().trim() !== '' ? value : '----' }}
+</ng-template>
