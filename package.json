@@ -23,6 +23,7 @@
     "@ng-select/ng-select": "^14.7.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
+    "@swimlane/ngx-datatable": "^21.1.0",
     "bootstrap": "^5.3.5",
     "ngx-color-picker": "^14.0.0",
     "ngx-toastr": "^19.0.0",
