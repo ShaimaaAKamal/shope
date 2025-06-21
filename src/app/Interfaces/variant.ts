@@ -1,5 +1,6 @@
 export interface Variant {
-  name:string;
+  name:string
+  variantMasterLookUpId:number
   values:string[]
   type:string
 }

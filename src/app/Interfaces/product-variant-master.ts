@@ -17,7 +17,7 @@ export interface ProductVariantMaster {
   variantDetails: [
     {
       variantMasterLookUpId: number,
-      "variantDetailId": number
+      variantDetailId: number
     }
   ]
 }
