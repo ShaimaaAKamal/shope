@@ -14,7 +14,7 @@
     <tr>
       <th scope="col" class="text-center">{{'Id' |translate}}</th>
       <th scope="col" class="text-center">{{'Time' | translate}}</th>
-      <th scope="col" class="text-center">{{'Code' | translate}}</th>
+      <th scope="col" class="text-center">{{'Discount' | translate}}</th>
       <th scope="col" class="text-center">{{'Price' | translate}}</th>
       <th scope="col" class="text-center" colspan="2">{{'controls' | translate }}</th>
 
@@ -23,9 +23,10 @@
   <tbody>
     <tr *ngFor="let order of holdOrders() ;let index=index;" >
       <th scope="row" class="text-center">{{index+1}}</th>
-      <td class="text-center">{{getLocalizedTime(order.time)}}</td>
-      <td class="text-center">{{order.code}}</td>
-      <td class="text-center">{{order.grossTotal}} {{ currency | translate}}</td>
+      <td class="text-center">{{getLocalizedTime(order.invoiceDate)}}</td>
+
+      <td class="text-center">{{order.totalBeforeDiscount - order.totalAfterDiscount}}{{ currency | translate}}</td>
+      <td class="text-center">{{order.totalAfterTax}} {{ currency | translate}}</td>
       <td class="text-center"  (click)="showOrder(order)"><i class="fa-solid fa-eye"></i></td>
       <td class="text-center"  (click)="deleteOrder(order)"><i class="fa-solid fa-trash-can"></i></td>
     </tr>

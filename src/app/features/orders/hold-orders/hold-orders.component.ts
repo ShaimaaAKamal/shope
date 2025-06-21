@@ -26,18 +26,13 @@ this.__Router.navigateByUrl('Orders/create');
 }
 
 showOrder(order:Order){
-this.__Router.navigateByUrl(`Orders/Order/${order.code}`)
+this.__Router.navigateByUrl(`Orders/Order/${order.id}`)
 }
 
-
-// deleteOrder(order: Order) {
-//   this.__OrderService.deleteOrderBycode(order.code).subscribe((res) => {
-//     this.__ToastingMessagesService.showToast(res.message, res.status ? 'success' : 'error');
-//   });
-// }
-
 deleteOrder(order: Order) {
-  this.__OrderService.deleteOrderBycode(order.code).subscribe({});
+     if(order.id)
+    this.__OrderService.deleteOrderById(order.id).subscribe({});
+
 }
 
 getLocalizedTime(date: string | Date | null | undefined): string {
