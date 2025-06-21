@@ -1,75 +1,109 @@
-import { Component, EventEmitter, inject, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  QueryList,
+  ViewChildren,
+  inject
+} from '@angular/core';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { CustomerService } from '../../../Services/Customer/customer.service';
 import { Customer } from '../../../Interfaces/customer';
 import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
-import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-add-in-voice-new-customer',
-  standalone: false,
+  standalone:false,
   templateUrl: './add-in-voice-new-customer.component.html',
-  styleUrl: './add-in-voice-new-customer.component.scss'
+  styleUrl: './add-in-voice-new-customer.component.scss',
 })
 export class AddInVoiceNewCustomerComponent {
-@Output() closeCustomerForm=new EventEmitter<void>();
+  @Output() closeCustomerForm = new EventEmitter<void>();
+  @ViewChildren(InputComponent) inputs!: QueryList<InputComponent>;
 
-@ViewChild('customerName') customerName!:InputComponent;
-@ViewChild('customeArabicrName') customeArabicrName!:InputComponent;
-@ViewChild('customerPhone') customerPhone!:InputComponent;
+  private __CustomerService = inject(CustomerService);
+  private __ToastingMessagesService = inject(ToastingMessagesService);
 
+  errorMessages: Record<string, string> = {};
 
-private __CustomerService=inject(CustomerService);
-private __ToastingMessagesService=inject(ToastingMessagesService);
-private __CommonService=inject(CommonService);
-customerNameError:string='';
-customerPhoneError:string='';
-customerArabicNameError:string='';
-  validate(): boolean {
-    let isValid = true;
+  ActiveDropDownSelection = 'Active';
+  customerTypeSelection = 'Super';
 
-    if (!this.customerName.value?.trim()) {
-      this.customerNameError = 'Customer name is required';
-      isValid = false;
-    } else {
-      this.customerNameError = '';
-    }
+  readonly ActiveOptions = [
+    { title: 'Active', value: true },
+    { title: 'Inactive', value: false },
+  ];
 
-    if (!this.customeArabicrName.value?.trim()) {
-      this.customerArabicNameError = 'Customer Arabic name is required';
-      isValid = false;
-    } else {
-      this.customerArabicNameError = '';
-    }
+  readonly customerTypes = [
+    { title: 'Super', value: 1 },
+    { title: 'Regular', value: 2 },
+  ];
 
-    if (!this.customerPhone.value?.trim()) {
-      this.customerPhoneError = 'Phone number is required';
-      isValid = false;
-    } else {
-      this.customerPhoneError = '';
-    }
+  readonly inputFields = [
+    { id: 'firstNameEn', label: 'First Name (En)', icon: 'fa-solid fa-signature', required: true },
+    { id: 'firstNameAr', label: 'First Name (Ar)', icon: 'fa-solid fa-signature', required: true },
+    { id: 'lastNameEn', label: 'Last Name (En)', icon: 'fa-solid fa-signature', required: true },
+    { id: 'lastNameAr', label: 'Last Name (Ar)', icon: 'fa-solid fa-signature', required: true },
+    { id: 'companyNameEn', label: 'Company Name (En)', icon: 'fa-solid fa-signature' },
+    { id: 'companyNameAr', label: 'Company Name (Ar)', icon: 'fa-solid fa-signature' },
+    { id: 'phone', label: 'Customer Phone', icon: 'fa-solid fa-phone-volume', required: true },
+    { id: 'emailAddress', label: 'Email Address', icon: 'fa-solid fa-envelope' },
+    { id: 'country', label: 'Country', icon: 'fa-solid fa-globe' },
+    { id: 'city', label: 'City', icon: 'fa-solid fa-city' },
+    { id: 'addressEn', label: 'Address (En)', icon: 'fa-solid fa-city' },
+    { id: 'addressAr', label: 'Address (Ar)', icon: 'fa-solid fa-city' },
+    { id: 'notesEn', label: 'Notes (En)', icon: 'fa-solid fa-globe' },
+    { id: 'notesAr', label: 'Notes (Ar)', icon: 'fa-solid fa-city' },
+    { id: 'dateOfBirth', label: 'Birthday', type: 'Date', icon: 'fa-solid fa-calendar' },
+    { id: 'crn', label: 'CRN', icon: 'fa-solid fa-globe' },
+    { id: 'vat', label: 'VAT', icon: 'fa-solid fa-city' },
+    { id: 'governorate', label: 'Governorate', icon: 'fa-solid fa-globe' },
+    { id: 'streetNumber', label: 'Street Number', icon: 'fa-solid fa-city' },
+    { id: 'buildingNumber', label: 'Building Number', icon: 'fa-solid fa-city' },
+  ];
 
-    return isValid;
+  validateFields(): void {
+    this.errorMessages = {};
+    this.inputFields.forEach((field) => {
+      const value = this.getInputValue(field.id);
+      if (field.required && !value?.trim()) {
+        this.errorMessages[field.id] = `${field.label} is required.`;
+      }
+    });
   }
 
-  done() {
-    if (!this.validate()) return;
+  getInputValue(id: string): string {
+    return this.inputs.find(i => i.InputComponentData?.id === id)?.value || '';
+  }
+
+  changeSelect(event: any, key: 'isActive' | 'customerType') {
+    if (key === 'isActive') this.ActiveDropDownSelection = event.title;
+    else if (key === 'customerType') this.customerTypeSelection = event.title;
+  }
+
+  done(): void {
+    this.validateFields();
+    if (Object.keys(this.errorMessages).length > 0) return;
+
+    const customerData = Object.fromEntries(
+      this.inputFields.map(field => [field.id, this.getInputValue(field.id)])
+    ) as unknown as Omit<Customer, 'customerType' | 'isActive' | 'dateOfBirth'>;
 
     const customer: Customer = {
-      id: this.__CommonService.getId(),
-      name: this.customerName.value,
-      nameAr: this.customeArabicrName.value,
-      phone: this.customerPhone.value
+      ...customerData,
+      customerType: this.customerTypes.find(t => t.title === this.customerTypeSelection)?.value ?? 1,
+      isActive: this.ActiveOptions.find(a => a.title === this.ActiveDropDownSelection)?.value ?? true,
+      dateOfBirth: (() => {
+        const val = this.getInputValue('dateOfBirth');
+        return val ? new Date(val) : new Date();
+      })()
     };
-
-    const result = this.__CustomerService.addCustomer(customer);
-    const toastType = result.status ? 'success' : 'error';
-    this.__ToastingMessagesService.showToast(result.message, toastType);
-
-    this.closeCustomerForm.emit();
+    this.__CustomerService.addCustomer(customer).subscribe({
+      next :() =>this.closeCustomerForm.emit()
+    })
   }
 
-close(){
-this.closeCustomerForm.emit()
-}
+  close(): void {
+    this.closeCustomerForm.emit();
+  }
 }

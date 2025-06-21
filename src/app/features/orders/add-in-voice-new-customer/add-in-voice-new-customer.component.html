@@ -1,4 +1,4 @@
-<app-pop-screen
+ <app-pop-screen
  [PopScreenComponentData]="{
       headerLabel:'Add Customer',
       btnLabel:'Done',
@@ -8,57 +8,59 @@
   (closeChange)="close()"
 >
 <div class="bg-white p-4">
-<app-input [InputComponentData]="{
-                type: 'text',
-                id: 'customerName',
-                label: 'Customer Name',
-                spanLabel: '',
-                placeholder: '',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: customerNameError,
-                enableFocusBlurTracking:false,
-              }"
-#customerName>
-<i class="fa-solid fa-signature"></i>
-</app-input>
-<app-input [InputComponentData]="{
-                type: 'text',
-                id: 'customerArabicName',
-                label: 'Customer Arabic Name',
-                spanLabel: '',
-                placeholder: '',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: customerArabicNameError,
-                enableFocusBlurTracking:false,
-              }"
-#customeArabicrName>
-<i class="fa-solid fa-signature"></i>
-</app-input>
-<app-input InputComponentData]="{
-                type: 'text',
-                id: 'customerPhone',
-                label: 'Customer Phone',
-                spanLabel: '',
-                placeholder: '',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: customerPhoneError,
-                enableFocusBlurTracking:false,
-              }"
-#customerPhone>
-<i class="fa-solid fa-phone-volume"></i>
-</app-input>
+  <div class="row">
+      <div class="col-lg-4" *ngFor="let field of inputFields">
+     <app-input
+      [InputComponentData]="{
+        type: field.type || 'text',
+        id: field.id,
+        label: field.label,
+        spanLabel: '',
+        placeholder: '',
+        vertCLass: 'col-12',
+        readonly: false,
+        hideLabel: false,
+        inputGroup: false,
+        clickMessage: '',
+        errorMessage: errorMessages[field.id] || '',
+        enableFocusBlurTracking: false
+      }"
+      #inputComp
+    >
+      <i [class]="field.icon"></i>
+    </app-input>
+  </div>
+  <div class="col-lg-4">
+    <app-dropdown
+    [DropdownComponentData]="{
+          title:'Active',
+          dropdownSelection:customerTypeSelection,
+          optionsArray:customerTypes,
+          key:'title',
+          noBorder:false
+    }"
+  (changeSelect)="changeSelect($event,'customerType')"
+  >
+</app-dropdown>
+</div>
+<div class="col-lg-4">
+    <app-dropdown
+    [DropdownComponentData]="{
+          title:'Active',
+          dropdownSelection:ActiveDropDownSelection,
+          optionsArray:ActiveOptions,
+          key:'title',
+          noBorder:false
+    }"
+  (changeSelect)="changeSelect($event,'isActive')"
+  >
+</app-dropdown>
+</div>
+</div>
 </div>
 </app-pop-screen>
+   
+
+
+
 
