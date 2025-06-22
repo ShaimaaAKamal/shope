@@ -1,12 +1,41 @@
 {
-    "API_BASE_URL": "http://localhost:3000",
-    "endpoints": {
-                "Products": "/Products",
-                "Orders": "/Orders",
-                "Variants":"/Variants",
-                "Categories": "/Categories",
-                "Customers":"/Customers",
-                "ProductVariantMasters":"/productVariantMasters",
-                "createOrder":"/Orders/create"
-                }
+  "API_BASE_URL": "http://localhost:5241",
+  "endpoints": {
+    "GetCategories": "/api/Category/GetCategories",
+    "GetCategoryById": "/api/Category/GetById",
+    "CreateCategory": "/api/Category/InsertCategory",
+    "UpdateCategory": "/api/Category/UpdateCategory",
+    "DeleteCategory": "/api/Category/DeleteCategory",
+
+    "GetProducts": "/api/Products/GetProduct",
+    "GetProductById": "/api/Products/GetById",
+    "CreateProduct": "/api/Products/InsertProduct",
+    "UpdateProduct": "/api/Products/UpdateProduct",
+    "DeleteProduct": "/api/Products/DeleteProduct",
+
+    "GetOrders": "/api/InvoiceMasters/GetAll",
+    "GetOrderById": "/api/Category/GetById",
+    "CreateOrder": "/api/InvoiceMasters/Insert",
+    "UpdateOrder": "/api/InvoiceMasters/Update",
+    "DeleteOrder": "/api/InvoiceMasters/Delete",
+
+    "GetVariants": "/api/VariantMasterLookups/GetAll",
+    "GetVariant": "/api/VariantMasterLookups/GetById",
+    "CreateVariant": "/api/VariantMasterLookups/Insert",
+    "UpdateVariant": "/api/VariantMasterLookups/Update",
+    "DeleteVariant": "/api/VariantMasterLookups/Delete",
+
+
+    "GetCustomers": "/api/Customers/GetCustomers",
+    "GetCustomer": "/api/Customers/GetById",
+    "CreateCustomer": "/api/Customers/InsertCustomer",
+    "UpdateCustomer": "/api/Customers/UpdateCustomer",
+    "DeleteCustomer": "/api/Customers/DeleteCustomer",
+
+    "GetProductVariants": "/api/ProductVariantMasters/GetAll",
+    "GetProoductVariant": "/api/ProductVariantMasters/GetById",
+    "CreateProductVariant": "/api/ProductVariantMasters/Insert",
+    "UpdateProductVariant": "/api/ProductVariantMasters/Update",
+    "DeleteProductVariant": "/api/ProductVariantMasters/Delete"
+  }
 }

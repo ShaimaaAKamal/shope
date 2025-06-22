@@ -19,59 +19,88 @@ constructor(private __SharedService:SharedService,private __CommonService:Common
 getCategories() {
   // this.loadingSignal.set(true);
 
-  return this.__SharedService.getAll<Category>('Categories', 'categories').pipe(
+  return this.__SharedService.getAllByPost<Category>('GetCategories', 'categories').pipe(
     tap({
-      next: (data) => this.categories.set([...data]),
+      next: (data) =>{this.categories.set([...data.data  || []])},
       // complete: () => this.loadingSignal.set(false),
     })
   );
 }
+// getCategories() {
+//   // this.loadingSignal.set(true);
+
+//   return this.__SharedService.getAll<Category>('Categories', 'categories').pipe(
+//     tap({
+//       next: (data) => this.categories.set([...data]),
+//       // complete: () => this.loadingSignal.set(false),
+//     })
+//   );
+// }
+
+// createCategoryApi(category: Category){
+//   //  this.loadingSignal.set(true);
+//    return this.__SharedService.create<Category>('Categories', category, 'Category').pipe(
+//     tap({
+//       next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory)),
+//       // complete: () => this.loadingSignal.set(false),
+//     })
+//   );
+//   }
 
 createCategoryApi(category: Category){
   //  this.loadingSignal.set(true);
-   return this.__SharedService.create<Category>('Categories', category, 'Category').pipe(
+   return this.__SharedService.createByPost<Category>('CreateCategory', category, 'Category').pipe(
     tap({
       next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory)),
       // complete: () => this.loadingSignal.set(false),
     })
   );
   }
+// deleteCategory(id: number) {
+//     // this.loadingSignal.set(true);
+//     return  this.__SharedService.delete<Category>('Categories', id, 'category').pipe(
+//         tap({
+//           next: () =>      this.categories.update(categories => categories.filter(p => p.id !== id)),
+//           // complete: () => this.loadingSignal.set(false),
+//         })
+//       );
+//   }
 
 deleteCategory(id: number) {
-    // this.loadingSignal.set(true);
-    return  this.__SharedService.delete<Category>('Categories', id, 'category').pipe(
-        tap({
-          next: () =>      this.categories.update(categories => categories.filter(p => p.id !== id)),
-          // complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+  // this.loadingSignal.set(true);
+  return  this.__SharedService.deleteByPost<Category>('DeleteCategory', id, 'category').pipe(
+      tap({
+        next: () =>      this.categories.update(categories => categories.filter(p => p.id !== id)),
+        // complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
 
 updateCategory(category: Category){
-    if (!category.id) {
-    throw new Error('Category ID is required for update.');
-  }
+  if (!category.id) {
+  throw new Error('Category ID is required for update.');
+}
 
-  //  this.loadingSignal.set(true);
-    const existingCategory = this.categories().find(v => (v.nameEn === category.nameEn ||  v.nameAr === category.nameAr) && v.id != category.id )
-                    if (existingCategory) {
-                      throw new Error(`Variant with this name already exist.`);
-                    }
+//  this.loadingSignal.set(true);
+  const existingCategory = this.categories().find(v => (v.nameEn === category.nameEn ||  v.nameAr === category.nameAr) && v.id != category.id )
+                  if (existingCategory) {
+                    throw new Error(`Category with this name already exist.`);
+                  }
 
 
-                    if( !category.nameEn || !category.nameAr) {
-                      throw new Error(`Category Name can't be empty.`);
-                    }
-    return this.__SharedService.update<Category>('Categories', category.id, category, 'category').pipe(
-        tap({
-          next: (updatedCategory) =>  {
-                this.categories.update(categories =>
-                    categories.map(v => (v.id === updatedCategory.id ? updatedCategory : v))
-                );},
-          // complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+                  if( !category.nameEn || !category.nameAr) {
+                    throw new Error(`Category Name can't be empty.`);
+                  }
+  return this.__SharedService.updateByPost<Category>('UpdateCategory', category, 'category').pipe(
+      tap({
+        next: (updatedCategory) =>  {
+              this.categories.update(categories =>
+                  categories.map(v => (v.id === updatedCategory.id ? updatedCategory : v))
+              );},
+        // complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
 
 createCategory(categoryName: string,categoryArabicName:string) {
   const normalizedName = categoryName.trim().toLowerCase();
@@ -123,5 +152,8 @@ createCategory(categoryName: string,categoryArabicName:string) {
 
 getCategoryById(id: number) {
   return this.categories().find(category => category.id === id);
+}
+getCategoryByName(name: string) {
+  return this.categories().find(category => category.nameEn === name);
 }
 }

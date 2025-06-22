@@ -10,11 +10,7 @@ import { Product } from '../../../../Interfaces/product';
   styleUrl: './product-details-pop.component.scss'
 })
 export class ProductDetailsPopComponent {
-  // ViewChild references
-// @ViewChild('productWeight') productWeight!:InputComponent;
-// @ViewChild('salePrice') salePrice!:InputComponent;
-// @ViewChild('salePriceEndDate') salePriceEndDate!:InputComponent;
-// @ViewChild('productCostPrice') productCostPrice!:InputComponent;
+
 @ViewChild('descriptionEn') descriptionEn!:InputComponent;
 @ViewChild('descriptionAr') descriptionAr!:InputComponent;
 @ViewChild('productComparePrice') productComparePrice!:InputComponent;
@@ -26,20 +22,13 @@ export class ProductDetailsPopComponent {
     // Outputs
 @Output() updated=new EventEmitter<boolean>();
 @Output() close=new EventEmitter<boolean>();
-// chargeTax:boolean=false
-// isActive:boolean=true;
-// isPriceAffecting:boolean=false;
+
 private __ProductService=inject(ProductService);
 product=this.__ProductService.currentProduct;
-// weightDropDownSelection:string='KG';
 ActiveDropDownSelection:string='Active';
 chargeTaxDropDownSelection:string='Charge';
 priceAffecringDropDownSelection:string='yes'
-// dropdownSelection:string="No.Doesn't Require Delivery";
-// shippingOptions:any[]=[
-//  {title:'Yes,Require Shipping.', value:true},
-//  {title: "No.Doesn't Require Delivery",value:false}
-// ]
+
 ActiveOptions:any[]=[
 {title:'Active', value:true},
  {title: "Inactive",value:false}
@@ -52,10 +41,7 @@ PriceAffecting:any[]=[
 {title:'yes', value:true},
  {title: "no",value:false}
 ]
-// weightOptions:any[]=[
-// {title:'KG', value:'KG'},
-//  {title: "gram",value:'gram'}
-// ]
+
 
 
 constructor(){
@@ -71,10 +57,7 @@ saveProductDetails(){
 }
 
 displayProductInfo(){
-  // const { weight, productCostPrice, salePrice, salePriceEndDate,weightUnit,barcode,requireShipping} = this.product() ?? {};
   const { sku,comparePrice,barcode,isActive,isPriceAffecting,descriptionEn,descriptionAr,chargeTax,tax,vatValue} = this.product() ?? {};
-  // this.productWeight.value = weight?.toString() ?? '';
-  // this.productCostPrice.value = productCostPrice?.toString() ?? '';
   this.barcode.value = barcode ?? null;
   this.SKU.value = sku ?? null;
   this.descriptionEn.value = descriptionEn ?? '';
@@ -85,54 +68,15 @@ displayProductInfo(){
   this.priceAffecringDropDownSelection = isPriceAffecting ? 'yes' : 'no';
   this.tax.value = tax?.toString() ?? '';
   this.vatValue.value = vatValue?.toString() ?? '';
-  // this.salePriceEndDate.value = (salePriceEndDate && salePrice)?salePriceEndDate : '';
-  // if(weightUnit)
-  //   this.weightDropDownSelection =weightUnit;
-  //  if(salePrice)
-  //   this.salePrice.value = salePrice?.toString()
-  //   this.dropdownSelection =requireShipping?'Yes,Require Shipping.':"No.Doesn't Require Delivery";
   }
 
 changeSelect(method:any,key:string){
   this.product()[key]=method.value;
-  // if(key == 'weightUnit') this.weightDropDownSelection=method.value;
    if(key == 'isActive') this.ActiveDropDownSelection=method.title;
     if(key == 'chargeTax') this.chargeTaxDropDownSelection=method.title;
     if(key == 'isPriceAffecting') this.priceAffecringDropDownSelection=method.title;
 }
 
-// getProductInfo(): void {
-//   const weight = parseFloat(this.productWeight.value);
-//   const costPrice = parseFloat(this.productCostPrice.value);
-//   const salePrice = parseFloat(this.salePrice.value);
-//   const salePriceEndDate =this.salePriceEndDate.value? new Date(this.salePriceEndDate.value).toISOString().split('T')[0]:'';
-//   const barcode = this.barcode.value;
-//   const id=this.product().id
-//   this.__ProductService.currentProduct.set({
-//     ...this.product(),
-//     weight,
-//     weightUnit: weight ? this.weightDropDownSelection : '',
-//     productCostPrice: costPrice,
-//     salePrice,
-//     barcode,
-//     salePriceEndDate
-//   });
-//   // this.updated.emit(true);
-//   if(id)
-//   this.__ProductService.patchProduct({
-//     id,
-//     weight,
-//     weightUnit: weight ? this.weightDropDownSelection : '',
-//     productCostPrice: costPrice,
-//     salePrice,
-//     barcode,
-//     salePriceEndDate
-//   }).subscribe({
-//     next:()=> this.close.emit(true)
-//   });
-
-
-// }
 getProductInfo(): void {
   const sku=this.SKU.value;
   const descriptionEn = this.descriptionEn.value;
@@ -143,7 +87,6 @@ getProductInfo(): void {
   const isActive = this.ActiveDropDownSelection === 'Active';
   const chargeTax = this.chargeTaxDropDownSelection === 'Charge';
   const isPriceAffecting = this.priceAffecringDropDownSelection === 'yes';
-  // const costPrice = parseFloat(this.productCostPrice.value);
   const barcode = this.barcode.value;
   const id=this.product().id
   this.__ProductService.currentProduct.set({
@@ -161,9 +104,12 @@ getProductInfo(): void {
   });
   // this.updated.emit(true);
   if(id)
-     this.__ProductService.updateProduct(this.__ProductService.currentProduct()).subscribe({
-    next:()=> this.close.emit(true)
-  });
+        this.updated.emit(true);
+
+  //    this.__ProductService.updateProduct(this.__ProductService.currentProduct()).subscribe({
+  //   next:()=> this.close.emit(true)
+  // });
 
 }
+
 }

@@ -129,7 +129,7 @@
              class="flex-grow-1"
             [DropdownComponentData]="{
                   title:'',
-                  dropdownSelection:dropdownSelection,
+                  dropdownSelection:!isRtl() ?dropdownSelection:dropdownSelectionArabic,
                   optionsArray:categories(),
                   key:isRtl()?'nameAr':'nameEn',
                   noBorder:false

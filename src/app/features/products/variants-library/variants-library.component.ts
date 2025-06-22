@@ -20,6 +20,7 @@ popupVisible:boolean=false;
 
 editedVariant:VariantMasterLookUP={} as VariantMasterLookUP;
 
+
 showOptionsSection(){
  this.popupVisible=true;
 }
@@ -29,7 +30,7 @@ closeAddVariantPopScreen(){
 }
 
 deleteVariant(variant:VariantMasterLookUP){
-
+  this.editedVariant={} as VariantMasterLookUP;
  if (variant.id) {
     this.__ProductService.deleteVariant(variant.id).subscribe();
   }

@@ -36,9 +36,31 @@ export class OrderProductsComponent {
   });
   }
 
+// private loadProductNames(): void {
+//   const requests = this.products().map((orderProduct) =>
+//     this.__SharedService.getById<Product>('Products', orderProduct.productId).pipe(
+//       map((product) => ({
+//         id: orderProduct.productId,
+//         name: this.OrderProductsData.isRtl() ? product.nameAr : product.nameEn
+//       })),
+//       catchError((err) => {
+//         console.error(`Failed to load product ${orderProduct.productId}`, err);
+//         return of({ id: orderProduct.productId, name: '' });
+//       })
+//     )
+//   );
+
+//   forkJoin(requests).subscribe((results) => {
+//     const updatedMap = new Map<string, string>();
+//     results.forEach(({ id, name }) => updatedMap.set(String(id), name));
+//     this.productNames = updatedMap;
+//   });
+// }
+
+
 private loadProductNames(): void {
   const requests = this.products().map((orderProduct) =>
-    this.__SharedService.getById<Product>('Products', orderProduct.productId).pipe(
+    this.__SharedService.getByIdByPost<Product>('GetProductById', orderProduct.productId).pipe(
       map((product) => ({
         id: orderProduct.productId,
         name: this.OrderProductsData.isRtl() ? product.nameAr : product.nameEn

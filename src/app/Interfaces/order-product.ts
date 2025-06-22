@@ -1,5 +1,5 @@
 export interface OrderProduct {
-     
+      id?:number,
       productId: number,
       productVariantMasterId: number,
       distributedDiscount: number,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { ApiConfigService } from '../apiConfigService/api-config-service.service';
@@ -19,39 +19,106 @@ export class SharedService {
     return throwError(() => error);
   }
 
-  getAll<T>(endpointKey: string, entityName: string = 'item'): Observable<T[]> {
+  getAllByPost<T>(
+    endpointKey: string,
+    entityName: string = 'item',
+    body: any = {
+      sorts: [],
+      filters: [],
+      pagingModel: {
+        index: 0,
+        length: 0,
+        all: false
+      },
+      properties: ''
+    }
+  ): Observable<{
+    data: T[];
+    statusCode: number;
+    message: string | null;
+    isSuccess: boolean;
+    totalCount: number;
+  }> {
     const url = this.__ApiConfigService.getEndpoint(endpointKey);
-    return this.http.get<T[]>(url).pipe(
+
+    const headers = new HttpHeaders({
+      'accept': '*/*',
+      'Content-Type': 'application/json-patch+json'
+    });
+
+    return this.http.post<{
+      data: T[];
+      statusCode: number;
+      message: string | null;
+      isSuccess: boolean;
+      totalCount: number;
+    }>(url, body, { headers }).pipe(
       catchError(err => this.handleError('fetch', entityName, err))
     );
   }
 
-  getById<T>(endpointKey: string, id: number | string, entityName: string = 'item'): Observable<T> {
-    const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
-    return this.http.get<T>(url).pipe(
+  getByIdByPost<T>(
+    endpointKey: string,
+    id: number | string,
+    entityName: string = 'item'
+  ): Observable<T> {
+    const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}?id=${id}`;
+
+    const headers = new HttpHeaders({
+      'accept': '*/*'
+    });
+
+    return this.http.post<T>(url, null, { headers }).pipe(
       catchError(err => this.handleError('fetch', entityName, err))
     );
   }
 
-  create<T>(endpointKey: string, data: T, entityName: string = 'item'): Observable<T> {
+  createByPost<T>(
+    endpointKey: string,
+    data: T,
+    entityName: string = 'item'
+  ): Observable<T> {
     const url = this.__ApiConfigService.getEndpoint(endpointKey);
-    return this.http.post<T>(url, data).pipe(
+
+    const headers = new HttpHeaders({
+      'accept': '*/*',
+      'Content-Type': 'application/json-patch+json'
+    });
+
+    return this.http.post<T>(url, data, { headers }).pipe(
       tap(() => this.__ToastingMessagesService.showToast(`${entityName} created successfully`, 'success')),
       catchError(err => this.handleError('create', entityName, err))
     );
   }
 
-  update<T>(endpointKey: string, id: number | string, data: T, entityName: string = 'item'): Observable<T> {
-    const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
-    return this.http.put<T>(url, data).pipe(
-      tap(() => {this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')}),
+
+
+  updateByPost<T>(
+    endpointKey: string,
+    data: T,
+    entityName: string = 'item'
+  ): Observable<T> {
+    const url = this.__ApiConfigService.getEndpoint(endpointKey);
+
+    const headers = new HttpHeaders({
+      'accept': '*/*',
+      'Content-Type': 'application/json-patch+json'
+    });
+
+    return this.http.put<T>(url, data, { headers }).pipe(
+      tap(() => this.__ToastingMessagesService.showToast(`${entityName} updated successfully`, 'success')),
       catchError(err => this.handleError('update', entityName, err))
     );
   }
 
-  delete<T>(endpointKey: string, id: number | string, entityName: string = 'item'): Observable<T> {
-    const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}/${id}`;
-    return this.http.delete<T>(url).pipe(
+  deleteByPost<T>(endpointKey: string,id: number | string,entityName: string = 'item'): Observable<T> {
+    const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}?id=${id}`;
+
+    const headers = new HttpHeaders({
+      'accept': '*/*'
+    });
+
+    return this.http.delete<T>(url, { headers }).pipe(
       tap(() => this.__ToastingMessagesService.showToast(`${entityName} deleted successfully`, 'success')),
       catchError(err => this.handleError('delete', entityName, err))
     );

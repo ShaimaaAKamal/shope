@@ -16,13 +16,15 @@ export interface Product {
   descriptionAr:string,
  imageUrl:string,
  vatValue:number,
-  discountId:number,
+  discountId:number|null,
   comparePrice:number,
   isPriceAffecting:boolean,
   chargeTax:boolean,
   tax:number,
   variants?:Variant[],
   variantsDetails?:any[],
+  categoryNameAr?:string,
+  categoryNameEn?:string,
     [key: string]: any
 }
 

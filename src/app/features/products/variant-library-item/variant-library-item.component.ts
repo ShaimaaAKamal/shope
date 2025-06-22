@@ -213,6 +213,7 @@ export class VariantLibraryItemComponent {
       const value = values[i]?.value?.trim();
       if (value) {
         details.push({
+          ...(this.variant && this.variant.variantDetails[i] && { id: this.variant.variantDetails[i].id }),
           detailNameEn: names[i]?.value?.trim() || '',
           detailNameAr: namesAr[i]?.value?.trim() || '',
           value

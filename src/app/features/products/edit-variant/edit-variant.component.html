@@ -1,6 +1,11 @@
 <div class="border rounded-3 p-3">
        <app-variant-library-item [action]="action" [variant]="variant" (updated)="updatedVariant()"></app-variant-library-item>
-        <div class="p-2 mt-2 text-center bg-semi-dark  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" (click)="updateVariant()">
-         <span> {{'Update Variant' | translate}}</span>
+       <div class="d-flex align-items-center justify-content-between" >
+        <div class="p-2 mt-2 text-center bg-danger  text-white fs-verySmall  rounded-2 " (click)="updatedVariant()">
+          <span> {{'Cancal' | translate}}</span>
+        </div>
+        <div class="p-2 mt-2 text-center bg-semi-dark  text-white fs-verySmall  rounded-2" (click)="updateVariant()">
+          <span> {{'Update Variant' | translate}}</span>
+        </div>
        </div>
 </div>

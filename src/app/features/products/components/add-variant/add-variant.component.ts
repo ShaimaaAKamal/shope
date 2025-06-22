@@ -3,7 +3,6 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 import { ProductService } from '../../../../Services/Product/product.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
-import { VariantMasterLookUP } from '../../../../Interfaces/variant-master-look-up';
 
 @Component({
   selector: 'app-add-variant',
@@ -106,6 +105,7 @@ if (!this.variantValues.includes(variantNewValue)) {
       (p) => p.nameEn == this.variantSelection || p.nameAr == this.variantSelection
     );
     if (result.exists) {
+      console.log('what about adding new value in update variant case');
         result.item.variantDetails.push({
           detailNameEn: this.detailName.value.trim(),
           detailNameAr: this.detailNameAr.value.trim(),

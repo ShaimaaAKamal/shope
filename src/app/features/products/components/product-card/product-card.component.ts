@@ -1,8 +1,8 @@
+import { Category } from './../../../../Interfaces/category';
 import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, Signal, ViewChild } from '@angular/core';
 import { PopScreenComponent } from '../../../../shared/components/pop-screen/pop-screen.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Product } from '../../../../Interfaces/product';
-import { Category } from '../../../../Interfaces/category';
 import { Variant } from '../../../../Interfaces/variant';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
@@ -10,6 +10,7 @@ import { CategoryService } from '../../../../Services/Category/category.service'
 import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { Order } from '../../../../Interfaces/order';
 
 type SaveResult =
   | 'success'
@@ -67,6 +68,7 @@ private productService=inject(ProductService);
 currentProduct=this.productService.currentProduct;
 getVariantDetailsData=this.productService.getVariantDetailsData;
 dropdownSelection!: string ;
+dropdownSelectionArabic!:string;
   constructor(
     private categoryService: CategoryService,
     private commonService: CommonService,
@@ -80,9 +82,9 @@ dropdownSelection!: string ;
     effect(() => {
     this.updateQuantityLabel();
   });
-    effect(() => {
-      this.setCategoryInfo()
-    });
+    // effect(() => {
+    //   this.setCategoryInfo()
+    // });
   }
 
   // ngOnInit(): void {
@@ -92,6 +94,7 @@ dropdownSelection!: string ;
   //     this.updateQuantityLabel();
   // }
    ngOnInit(): void {
+      this.setCategoryInfo()
       this.displayCheck=(!this.type);
       this.updateQuantityLabel();
   }
@@ -120,11 +123,13 @@ updateQuantityLabel(): void {
   // }
 
   setCategoryInfo() {
-  const category = this.product.category
-    ? this.categoryService.getCategoryById(this.product.category)
-    : null;
+    this.dropdownSelection = this.product.categoryNameEn
+    ?this.product.categoryNameEn
+    : 'Choose Category';
+    this.dropdownSelectionArabic = this.product.categoryNameAr
+    ?this.product.categoryNameAr
+    : 'Choose Category';
 
-  this.dropdownSelection = category?.nameEn ?? 'Choose Category';
 }
 
     chooseCategory(category: Category): void {
@@ -236,11 +241,12 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
     ...current,
     ...this.product
   }));
-
-  return this.productService.updateProductInfo(this.currentProduct(), action).pipe(
+  const mappedProduct=this.getUpdateProductMappedValue(this.currentProduct());
+  console.log('despite change here but it do not reflect in db');
+  // return this.productService.updateProductInfo(this.currentProduct(), action).pipe(
+    return this.productService.updateProductInfo(mappedProduct, action).pipe(
     switchMap((result) => {
       if (!result.status) {
-        console.log(result);
         if (result.message === 'Duplicate_Arabic_Name') return of('Duplicate_Arabic_Name' as SaveResult);
         if (result.message === 'Duplicate_English_Name') return of('Duplicate_English_Name' as SaveResult);
         return of('error' as SaveResult);
@@ -250,7 +256,18 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
     catchError(() => of('error' as SaveResult))
   );
 }
+private getUpdateProductMappedValue(product:Product){
+  const{variantMasters,categoryNameAr,categoryNameEn,...mappedProduct}=product;
+  if(categoryNameEn)
+ { const category=this.categoryService.getCategoryByName(categoryNameEn);
+  if(category) mappedProduct['category'] = category.id!;
+ }
+ console.log('what is titleEn,tITLE ar');
+ mappedProduct['titleEn']='';
+ mappedProduct['titleAr']='';
 
+ return mappedProduct;
+}
 private processProductSave(
   action: 'add' | 'update',
 ): Observable<void> {
@@ -307,10 +324,7 @@ controlVariantsPopup(type:string){
           this.controlPopScreen('variantsPopScreen','close');
       else{
              this.product=this.currentProduct();
-             console.log('current Product',this.currentProduct());
-             console.log(' Product',this.product);
              this.getVariantDetailsData.set(true);
-              console.log(' Product',this.product);
              this.productService.updateProduct(this.product).subscribe();
 
       }
@@ -319,7 +333,6 @@ controlVariantsPopup(type:string){
  }
 variantDetailsHandled(){
    this.controlPopScreen('variantsPopScreen','close');
-   console.log(this.currentProduct());
    this.getVariantDetailsData.set(false)
 }
 

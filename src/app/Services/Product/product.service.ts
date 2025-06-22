@@ -38,9 +38,9 @@ private __SharedService=inject(SharedService);
 getVariants() {
   this.loadingSignal.set(true);
 
-  return this.__SharedService.getAll<VariantMasterLookUP>('Variants', 'variants').pipe(
+  return this.__SharedService.getAllByPost<VariantMasterLookUP>('GetVariants', 'variants').pipe(
     tap({
-      next: (data) => this.variantOptions.set([...data]),
+      next: (data) => this.variantOptions.set([...data.data  || []]),
       complete: () => this.loadingSignal.set(false),
 
     })
@@ -48,61 +48,62 @@ getVariants() {
 }
 
 createVariant(variant: VariantMasterLookUP){
-   this.loadingSignal.set(true);
-   return this.__SharedService.create<VariantMasterLookUP>('Variants', variant, 'Variant').pipe(
-    tap({
-      next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
-      complete: () => this.loadingSignal.set(false),
-    })
-  );
-  }
+  this.loadingSignal.set(true);
+  return this.__SharedService.createByPost<VariantMasterLookUP>('CreateVariant', variant, 'Variant').pipe(
+   tap({
+     next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
+     complete: () => this.loadingSignal.set(false),
+   })
+ );
+ }
 
 deleteVariant(id: number) {
-    this.loadingSignal.set(true);
-    return  this.__SharedService.delete<VariantMasterLookUP>('Variants', id, 'variant').pipe(
-        tap({
-          next: () =>      this.variantOptions.update(variants => variants.filter(p => p.id !== id)),
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
-
+  this.loadingSignal.set(true);
+  return  this.__SharedService.deleteByPost<VariantMasterLookUP>('DeleteVariant', id, 'variant').pipe(
+      tap({
+        next: () =>      this.variantOptions.update(variants => variants.filter(p => p.id !== id)),
+        complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
 updateVariant(variant: VariantMasterLookUP){
-    if (!variant.id) {
-    throw new Error('Variant ID is required for update.');
-  }
+  if (!variant.id) {
+  throw new Error('Variant ID is required for update.');
+}
 
-   this.loadingSignal.set(true);
-    const existingVariant = this.variantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
-                    if (existingVariant) {
-                      throw new Error(`Variant with this name already exist.`);
-                    }
-                    if (variant.variantDetails.length == 0) {
-                      throw new Error(`Variant values can't be empty.`);
-                    }
+ this.loadingSignal.set(true);
+  const existingVariant = this.variantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
+                  if (existingVariant) {
+                    throw new Error(`Variant with this name already exist.`);
+                  }
+                  if (variant.variantDetails.length == 0) {
+                    throw new Error(`Variant values can't be empty.`);
+                  }
 
-                    if( !variant.nameEn || !variant.nameAr) {
-                      throw new Error(`Variant Name can't be empty.`);
-                    }
-    return this.__SharedService.update<VariantMasterLookUP>('Variants', variant.id, variant, 'variant').pipe(
-        tap({
-          next: (updatedVariant) =>  {
-                this.variantOptions.update(variants =>
-                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
-                );},
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
-
+                  if( !variant.nameEn || !variant.nameAr) {
+                    throw new Error(`Variant Name can't be empty.`);
+                  }
+                  console.log(variant);
+  return this.__SharedService.updateByPost<VariantMasterLookUP>('UpdateVariant', variant, 'variant').pipe(
+      tap({
+        next: (updatedVariant) =>  {
+              this.variantOptions.update(variants =>
+                  variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
+              );},
+        complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
 //ProductVarianTApi
+
+
 
 getProductVariants() {
   this.loadingSignal.set(true);
 
-  return this.__SharedService.getAll<ProductVariantMaster>('ProductVariantMasters', 'Variants').pipe(
+  return this.__SharedService.getAllByPost<ProductVariantMaster>('GetProductVariants', 'Variants').pipe(
     tap({
-      next: (data) => this.productVariantOptions.set([...data]),
+      next: (data) => this.productVariantOptions.set([...data.data]),
       complete: () => this.loadingSignal.set(false),
 
     })
@@ -110,26 +111,27 @@ getProductVariants() {
 }
 
 createProductVariant(ProductVariant: ProductVariantMaster){
-   this.loadingSignal.set(true);
-   return this.__SharedService.create<ProductVariantMaster>('ProductVariantMasters', ProductVariant, 'Variant').pipe(
-    tap({
-      next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
-      complete: () => this.loadingSignal.set(false),
-    })
-  );
-  }
+  this.loadingSignal.set(true);
+  return this.__SharedService.createByPost<ProductVariantMaster>('CreateProductVariant', ProductVariant, 'Variant').pipe(
+   tap({
+     next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
+     complete: () => this.loadingSignal.set(false),
+   })
+ );
+ }
 
 deleteProductVariant(id: number) {
-    this.loadingSignal.set(true);
-    return  this.__SharedService.delete<ProductVariantMaster>('ProductVariantMasters', id, 'variant').pipe(
-        tap({
-          next: () =>      this.productVariantOptions.update(variants => variants.filter(p => p.id !== id)),
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+  this.loadingSignal.set(true);
+  return  this.__SharedService.deleteByPost<ProductVariantMaster>('DeleteProductVariant', id, 'variant').pipe(
+      tap({
+        next: () =>      this.productVariantOptions.update(variants => variants.filter(p => p.id !== id)),
+        complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
 
-updateProductVariant(variant: ProductVariantMaster){
+
+  updateProductVariant(variant: ProductVariantMaster){
     if (!variant.id) {
     throw new Error('Variant ID is required for update.');
   }
@@ -146,7 +148,7 @@ updateProductVariant(variant: ProductVariantMaster){
     //                 if( !variant.nameEn || !variant.nameAr) {
     //                   throw new Error(`Variant Name can't be empty.`);
     //                 }
-    return this.__SharedService.update<ProductVariantMaster>('Variants', variant.id, variant, 'variant').pipe(
+    return this.__SharedService.updateByPost<ProductVariantMaster>('UpdateProductVariant', variant, 'variant').pipe(
         tap({
           next: (updatedVariant) =>  {
                 this.productVariantOptions.update(variants =>
@@ -176,12 +178,13 @@ private init(): void {
   }
 
   //Api calls
+
 getProducts() {
   this.loadingSignal.set(true);
-  return this.__SharedService.getAll<Product>('Products', 'products').pipe(
+  return this.__SharedService.getAllByPost<Product>('GetProducts', 'products').pipe(
     tap({
       next: (products) => {
-        this.productsSignal.set(products || []);
+        this.productsSignal.set(products.data || []);
       },
       complete: () => {
         this.loadingSignal.set(false);
@@ -190,34 +193,51 @@ getProducts() {
   );
 }
 
-
 createProduct(product: Product){
-    this.loadingSignal.set(true);
-    this.loadingSignal.set(true);
-    const { id, ...productWithoutId } = product;
-    // return this.__SharedService.create<Product>('Products', product, 'product').pipe(
-        return this.__SharedService.create<Product>('Products', productWithoutId, 'product').pipe(
+  this.loadingSignal.set(true);
+  this.loadingSignal.set(true);
+  const { id, ...productWithoutId } = product;
+  // return this.__SharedService.create<Product>('Products', product, 'product').pipe(
+      return this.__SharedService.createByPost<Product>('CreateProduct', productWithoutId, 'product').pipe(
 
-        tap({
-          next: (newProduct) => {
-            this.productsSignal.update(products =>
-                products.filter(product => product.id !== id)
-              );
-              this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct));
-              this.type.set('');
-              this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-          },
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+      tap({
+        next: (newProduct) => {
+          this.productsSignal.update(products =>
+              products.filter(product => product.id !== id)
+            );
+            this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct));
+            this.type.set('');
+            this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
+        },
+        complete: () => this.loadingSignal.set(false),
+      })
+    );
+}
+// updateProduct(product: Product) {
+//   if (!product.id) {
+//     throw new Error('Product ID is required for update.');
+//   }
+//     this.loadingSignal.set(true);
+//     console.log('api Product',product);
+//     return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
+//         tap({
+//           next: (updatedProduct) =>  {
+//                   console.log('updatedProduct',updatedProduct);
+//                  this.productsSignal.update(products =>
+//         products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
+//       );},
+//           complete: () => this.loadingSignal.set(false),
+//         })
+//       );
+//   }
+
 updateProduct(product: Product) {
   if (!product.id) {
     throw new Error('Product ID is required for update.');
   }
     this.loadingSignal.set(true);
-    console.log('api Product',product);
-    return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
+    console.log('api updayed product ',product);
+    return this.__SharedService.updateByPost<Product>('UpdateProduct', product, 'product').pipe(
         tap({
           next: (updatedProduct) =>  {
                   console.log('updatedProduct',updatedProduct);
@@ -228,10 +248,11 @@ updateProduct(product: Product) {
         })
       );
   }
-   deleteProduct(id: number) {
+
+  deleteProduct(id: number) {
     this.loadingSignal.set(true);
 
-      return  this.__SharedService.delete<Product>('Products', id, 'product').pipe(
+      return  this.__SharedService.deleteByPost<Product>('DeleteProduct', id, 'product').pipe(
         tap({
           next: () =>  {
                  this.productsSignal.update(products => products.filter(p => p.id !== id));
@@ -246,7 +267,7 @@ deleteProducts(ids: number[]) {
   this.loadingSignal.set(true);
 
   const deleteRequests = ids.map(id =>
-    this.__SharedService.delete<Product>('Products', id, 'product')
+    this.__SharedService.deleteByPost<Product>('DeleteProduct', id, 'product')
   );
 
   return forkJoin(deleteRequests).pipe(
@@ -264,7 +285,6 @@ deleteProducts(ids: number[]) {
   );
 }
 
-
   //Helper Functions
   addNewProduct(newProduct: Product): boolean {
     const exists = this.products().some(p => p.nameEn === newProduct.nameEn);
@@ -277,7 +297,7 @@ deleteProducts(ids: number[]) {
   }
 
 updateProductInfo(product: Product, actionType: string) {
-  console.log(product);
+  console.log('updateProductInfo',product);
   const result = this.commonService.checkDuplicateInArray(
     this.products(),
     p => p.id === product.id,
@@ -366,7 +386,7 @@ updateProductInfo(product: Product, actionType: string) {
       descriptionAr:'',
     imageUrl:'',
     vatValue:0,
-      discountId:0,
+      discountId:null,
       comparePrice:0,
       isPriceAffecting:false,
       chargeTax:false,

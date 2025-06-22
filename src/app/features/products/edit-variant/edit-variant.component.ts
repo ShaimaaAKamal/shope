@@ -21,5 +21,4 @@ updateVariant(){
   this.action.set('update');
   }
 
-
 }

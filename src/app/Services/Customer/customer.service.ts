@@ -94,13 +94,13 @@ export class CustomerService {
       this.getCustomers().subscribe({});
     }
 
-
+//start of api
   getCustomers() {
     // this.loadingSignal.set(true);
 
-    return this.__SharedService.getAll<Customer>('Customers', 'customers').pipe(
+    return this.__SharedService.getAllByPost<Customer>('GetCustomers', 'customers').pipe(
       tap({
-        next: (data) => this.customers.set([...data]),
+        next: (data) => this.customers.set([...data.data]),
         // complete: () => this.loadingSignal.set(false),
       })
     );
@@ -108,7 +108,7 @@ export class CustomerService {
 
   createCustomer(customer: Customer){
     //  this.loadingSignal.set(true);
-     return this.__SharedService.create<Customer>('Customers', customer, 'Customer').pipe(
+     return this.__SharedService.createByPost<Customer>('CreateCustomer', customer, 'Customer').pipe(
       tap({
         next: (newCustomer) => this.customers.update(customers => this.__CommonService.addOrReplaceItemById(customers, newCustomer)),
         // complete: () => this.loadingSignal.set(false),
@@ -116,40 +116,41 @@ export class CustomerService {
     );
     }
 
+
   deleteCustomer(id: number) {
-      // this.loadingSignal.set(true);
-      return  this.__SharedService.delete<Customer>('Customers', id, 'Customer').pipe(
-          tap({
-            next: () =>      this.customers.update(customers => customers.filter(c => c.id !== id)),
-            // complete: () => this.loadingSignal.set(false),
-          })
-        );
-    }
+    // this.loadingSignal.set(true);
+    return  this.__SharedService.deleteByPost<Customer>('DeleteCustomer', id, 'Customer').pipe(
+        tap({
+          next: () =>      this.customers.update(customers => customers.filter(c => c.id !== id)),
+          // complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
 
   updateCustomer(customer: Customer){
-      if (!customer.id) {
-      throw new Error('Customer ID is required for update.');
-    }
+    if (!customer.id) {
+    throw new Error('Customer ID is required for update.');
+  }
 
-    //  this.loadingSignal.set(true);
-      const existingCustomer = this.customers().find(c => (c.phone= customer.phone));
-                      if (existingCustomer) {
-                        throw new Error(`Customer with this name already exist.`);
-                      }
+  //  this.loadingSignal.set(true);
+    const existingCustomer = this.customers().find(c => (c.phone= customer.phone));
+                    if (existingCustomer) {
+                      throw new Error(`Customer with this name already exist.`);
+                    }
 
-      return this.__SharedService.update<Customer>('Customers', customer.id, customer, 'customer').pipe(
-          tap({
-            next: (updatedCustomer) =>  {
-                  this.customers.update(variants =>
-                      variants.map(v => (v.id === updatedCustomer.id ? updatedCustomer : v))
-                  );},
-            // complete: () => this.loadingSignal.set(false),
-          })
-        );
-    }
+    return this.__SharedService.updateByPost<Customer>('UpdateCustomer', customer, 'customer').pipe(
+        tap({
+          next: (updatedCustomer) =>  {
+                this.customers.update(variants =>
+                    variants.map(v => (v.id === updatedCustomer.id ? updatedCustomer : v))
+                );},
+          // complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
 
   getCustomer(id:number){
-    this.__SharedService.getById<Customer>('Customers', id, 'customer').subscribe({
+    this.__SharedService.getByIdByPost<Customer>('GetCustomer', id, 'customer').subscribe({
       next: (data) => {
         console.log('Fetched product:', data);
         // Use the data here
@@ -159,7 +160,10 @@ export class CustomerService {
       }
     });
   }
-  
+
+  //end of api
+
+
   addCustomer(customer: Customer): Observable<any> {
     const result = this.__CommonService.findItemInArray(this.customers(), c => c.phone === customer.phone);
 
