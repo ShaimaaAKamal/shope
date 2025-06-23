@@ -53,7 +53,6 @@ effect(() => {
 
 ngOnChanges(changes: SimpleChanges): void {
    if(changes['localVariants']){
-    console.log('localVariants',this.localVariants)
     if(this.localVariants.length == 0 && this.productDetails())
       this.displayedVariants=[...this.productDetails().variantMasters ?? []]!
     else
@@ -111,16 +110,16 @@ generateCombinations(): any[] {
   return combinations;
 }
 
-
   getAllVariantValues() {
     setTimeout(() => {
       const values = this.variantValueDetailsRefs.map(ref => ref.getVariantDetails());
       const updatedVariants = this.displayedVariants.map((variant, index) => {
         const updatedDetails = values ? values[index] : [];
-        return {
+        const ret={
           ...variant,
         ...updatedDetails
-        };
+        }
+        return ret;
       });
       this.displayedVariants = [...updatedVariants];
       this.variantDetailsHandled.emit(this.displayedVariants);

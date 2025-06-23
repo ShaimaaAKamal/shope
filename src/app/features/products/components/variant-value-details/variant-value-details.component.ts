@@ -134,13 +134,17 @@ export class VariantValueDetailsComponent implements AfterViewInit, OnDestroy {
 
     this.inputComponentRefs.forEach(inputComponent => {
       const id = inputComponent.InputComponentData.id;
-      variantDetailsValue[id] = inputComponent.value?.trim?.() ?? null;
+      const value = inputComponent.value?.trim?.();
+      if (id === 'barcode' || id === 'sku') {
+        variantDetailsValue[id] = value ?? '';
+      } else {
+        variantDetailsValue[id] = Number(value);
+      }
     });
 
     variantDetailsValue['quantity'] = this._inputData().quantity;
     variantDetailsValue['chargeTax'] = this.chargeTaxDropDownSelection === 'Charge';
     variantDetailsValue['isPriceAffecting'] = this.priceAffecringDropDownSelection === 'yes';
-
     return variantDetailsValue;
   }
 

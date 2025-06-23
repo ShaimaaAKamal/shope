@@ -87,12 +87,6 @@ dropdownSelectionArabic!:string;
     // });
   }
 
-  // ngOnInit(): void {
-
-  //     this.dropdownSelection = this.product.category ?  this.product.category.nameEn : 'Choose Category';
-  //     this.displayCheck=(!this.type);
-  //     this.updateQuantityLabel();
-  // }
    ngOnInit(): void {
       this.setCategoryInfo()
       this.displayCheck=(!this.type);
@@ -118,9 +112,6 @@ updateQuantityLabel(): void {
 }
 
   // Category Functions
-  // chooseCategory(category: Category): void {
-  //    this.product.category=category;
-  // }
 
   setCategoryInfo() {
     this.dropdownSelection = this.product.categoryNameEn
@@ -167,12 +158,10 @@ updateQuantityLabel(): void {
   // Product Functions
   displayProductInfo(): void {
 
-  // const { name, price, quantity ,nameAr} = this.currentProduct() ?? {};
   const { nameEn, price, quantity ,nameAr,enfinity} = this.currentProduct() ?? {};
   this.productTitleInput.value = nameEn ?? '';
   this.productArabicTitleInput.value = nameAr ?? '';
   this.productPriceInput.value = price?.toString() ?? '';
-  // this.productQuantityInput.value = quantity ?? '';
   if(enfinity) this.productQuantityInput.value = 'Unlimited Quantity'
   else
     this.productQuantityInput.value = quantity.toString() ?? '';
@@ -318,19 +307,13 @@ showVariant(event:boolean){
   this.controlPopScreen('variantsPopScreen');
   this.currentProduct.set(this.product);
   }
-controlVariantsPopup(type:string){
-     if(type=='save') {
-      if(this.currentProduct()?.variants?.length == 0 && this.product.variants?.length == 0)
-          this.controlPopScreen('variantsPopScreen','close');
-      else{
-             this.product=this.currentProduct();
-             this.getVariantDetailsData.set(true);
-             this.productService.updateProduct(this.product).subscribe();
 
-      }
-     }
-     else     this.controlPopScreen('variantsPopScreen','close');
- }
+controlVariantsPopup(type:string){
+    if(type == 'save')
+      this.getVariantDetailsData.set(true);
+    else
+    this.controlPopScreen('variantsPopScreen','close');
+}
 variantDetailsHandled(){
    this.controlPopScreen('variantsPopScreen','close');
    this.getVariantDetailsData.set(false)

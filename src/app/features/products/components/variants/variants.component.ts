@@ -43,11 +43,16 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
     }
 
     variantDetailsHandledFn(event:any) {
-      this.__SharedService.createListByPost<ProductVariantMaster[]>('CreateProductVariantList',event,'Product Variants').subscribe(
+      if(this.localVariants().length == 0){
+        console.log('Make update array list');
+        this.variantDetailsHandled.emit();
+      }
+      else {
+         this.__SharedService.createListByPost<ProductVariantMaster[]>('CreateProductVariantList',event,'Product Variants').subscribe(
         {
           next:()=>   this.variantDetailsHandled.emit()
         }
       )
-
+      }
     }
   }
