@@ -35,6 +35,7 @@
     "GetProductVariants": "/api/ProductVariantMasters/GetAll",
     "GetProoductVariant": "/api/ProductVariantMasters/GetById",
     "CreateProductVariant": "/api/ProductVariantMasters/Insert",
+    "CreateProductVariantList": "/api/ProductVariantMasters/InsertList",
     "UpdateProductVariant": "/api/ProductVariantMasters/Update",
     "DeleteProductVariant": "/api/ProductVariantMasters/Delete"
   }
