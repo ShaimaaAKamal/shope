@@ -23,6 +23,7 @@ export interface Customer{
   streetNumber: string,
   buildingNumber: string,
   isActive: boolean,
-  customerType: number
+  customerType: number,
+  [key: string]: any
 }
 

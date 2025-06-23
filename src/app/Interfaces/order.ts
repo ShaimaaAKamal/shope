@@ -21,6 +21,7 @@ export interface Order
   couponCode: string,
   stopChange: boolean,
   details:OrderProduct[]
+  [key: string]: any
 }
 
 

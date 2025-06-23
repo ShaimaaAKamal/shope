@@ -25,6 +25,7 @@ export interface Product {
   variantsDetails?:any[],
   categoryNameAr?:string,
   categoryNameEn?:string,
+  variantMasters?:any[],
     [key: string]: any
 }
 

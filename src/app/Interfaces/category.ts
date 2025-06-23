@@ -3,4 +3,5 @@ export interface Category {
   nameEn:string,
   nameAr:string,
   isActive:boolean
+  [key: string]: any
 }
