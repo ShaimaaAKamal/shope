@@ -51,7 +51,7 @@ createCategoryApi(category: Category){
   //  this.loadingSignal.set(true);
    return this.__SharedService.createByPost<Category>('CreateCategory', category, 'Category').pipe(
     tap({
-      next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory)),
+      next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory['data'])),
       // complete: () => this.loadingSignal.set(false),
     })
   );

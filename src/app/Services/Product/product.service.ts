@@ -15,7 +15,7 @@ private __SharedService=inject(SharedService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-
+  // variants= signal<VariantMasterLookUP[]>([]);
   variantOptions = signal<VariantMasterLookUP[]>([]);
   productVariantOptions = signal<ProductVariantMaster[]>([]);
 
@@ -51,7 +51,7 @@ createVariant(variant: VariantMasterLookUP){
   this.loadingSignal.set(true);
   return this.__SharedService.createByPost<VariantMasterLookUP>('CreateVariant', variant, 'Variant').pipe(
    tap({
-     next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
+     next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
      complete: () => this.loadingSignal.set(false),
    })
  );
@@ -114,7 +114,7 @@ createProductVariant(ProductVariant: ProductVariantMaster){
   this.loadingSignal.set(true);
   return this.__SharedService.createByPost<ProductVariantMaster>('CreateProductVariant', ProductVariant, 'Variant').pipe(
    tap({
-     next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant)),
+     next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
      complete: () => this.loadingSignal.set(false),
    })
  );
@@ -179,6 +179,20 @@ private init(): void {
 
   //Api calls
 
+   getProduct(id:number){
+     return this.__SharedService.getByIdByPost<Product>('GetProductById', id, 'product')
+    //  .pipe(
+    //   tap({
+    //     next: (product) => {
+    //       console.log('api product',product);
+    //     },
+    //     // complete: () => {
+    //     //   this.loadingSignal.set(false);
+    //     // }
+    //   })
+    // );
+    }
+
 getProducts() {
   this.loadingSignal.set(true);
   return this.__SharedService.getAllByPost<Product>('GetProducts', 'products').pipe(
@@ -197,7 +211,6 @@ createProduct(product: Product){
   this.loadingSignal.set(true);
   this.loadingSignal.set(true);
   const { id, ...productWithoutId } = product;
-  // return this.__SharedService.create<Product>('Products', product, 'product').pipe(
       return this.__SharedService.createByPost<Product>('CreateProduct', productWithoutId, 'product').pipe(
 
       tap({
@@ -205,7 +218,7 @@ createProduct(product: Product){
           this.productsSignal.update(products =>
               products.filter(product => product.id !== id)
             );
-            this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct));
+            this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct['data']));
             this.type.set('');
             this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
         },
@@ -236,11 +249,11 @@ updateProduct(product: Product) {
     throw new Error('Product ID is required for update.');
   }
     this.loadingSignal.set(true);
-    console.log('api updayed product ',product);
+    // console.log('api updayed product ',product);
     return this.__SharedService.updateByPost<Product>('UpdateProduct', product, 'product').pipe(
         tap({
           next: (updatedProduct) =>  {
-                  console.log('updatedProduct',updatedProduct);
+                  // console.log('updatedProduct',updatedProduct);
                  this.productsSignal.update(products =>
         products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
       );},
@@ -297,7 +310,7 @@ deleteProducts(ids: number[]) {
   }
 
 updateProductInfo(product: Product, actionType: string) {
-  console.log('updateProductInfo',product);
+  // console.log('updateProductInfo',product);
   const result = this.commonService.checkDuplicateInArray(
     this.products(),
     p => p.id === product.id,

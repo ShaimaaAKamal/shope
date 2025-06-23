@@ -44,7 +44,7 @@ getOrders() {
 createOrderApi(order: Order){
   return this.__SharedService.createByPost<Order>('CreateOrder', order, 'Order').pipe(
     tap((createdOrder) => {
-      this.orders.update((orders) => [...orders, createdOrder]);
+      this.orders.update((orders) => [...orders, createdOrder['data']]);
     }));}
 
 // updateOrderApi(order: Order) {

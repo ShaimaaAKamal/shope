@@ -110,7 +110,7 @@ export class CustomerService {
     //  this.loadingSignal.set(true);
      return this.__SharedService.createByPost<Customer>('CreateCustomer', customer, 'Customer').pipe(
       tap({
-        next: (newCustomer) => this.customers.update(customers => this.__CommonService.addOrReplaceItemById(customers, newCustomer)),
+        next: (newCustomer) => this.customers.update(customers => this.__CommonService.addOrReplaceItemById(customers, newCustomer['data'])),
         // complete: () => this.loadingSignal.set(false),
       })
     );

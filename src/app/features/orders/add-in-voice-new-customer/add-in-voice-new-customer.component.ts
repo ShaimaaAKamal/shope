@@ -89,7 +89,7 @@ export class AddInVoiceNewCustomerComponent {
       this.inputFields.map(field => [field.id, this.getInputValue(field.id)])
     ) as unknown as Omit<Customer, 'customerType' | 'isActive' | 'dateOfBirth'>;
 
-    const customer: Customer = {
+    const customer = {
       ...customerData,
       customerType: this.customerTypes.find(t => t.title === this.customerTypeSelection)?.value ?? 1,
       isActive: this.ActiveOptions.find(a => a.title === this.ActiveDropDownSelection)?.value ?? true,
@@ -97,7 +97,7 @@ export class AddInVoiceNewCustomerComponent {
         const val = this.getInputValue('dateOfBirth');
         return val ? new Date(val) : new Date();
       })()
-    };
+    } as Customer;
     this.__CustomerService.addCustomer(customer).subscribe({
       next :() =>this.closeCustomerForm.emit()
     })

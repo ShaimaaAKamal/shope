@@ -61,14 +61,26 @@ export class SharedService {
     endpointKey: string,
     id: number | string,
     entityName: string = 'item'
-  ): Observable<T> {
+  ):  Observable<{
+    data: T;
+    statusCode: number;
+    message: string | null;
+    isSuccess: boolean;
+    totalCount: number;
+  }>  {
     const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}?id=${id}`;
 
     const headers = new HttpHeaders({
       'accept': '*/*'
     });
 
-    return this.http.post<T>(url, null, { headers }).pipe(
+    return this.http.post<{
+      data: T;
+      statusCode: number;
+      message: string | null;
+      isSuccess: boolean;
+      totalCount: number;
+    }>(url, null, { headers }).pipe(
       catchError(err => this.handleError('fetch', entityName, err))
     );
   }
@@ -92,6 +104,25 @@ export class SharedService {
   }
 
 
+  createListByPost<T>(
+    endpointKey: string,
+    data: T[],
+    entityName: string = 'items'
+  ): Observable<T[]> {
+    const url = this.__ApiConfigService.getEndpoint(endpointKey);
+
+    const headers = new HttpHeaders({
+      'accept': '*/*',
+      'Content-Type': 'application/json-patch+json'
+    });
+
+    return this.http.post<T[]>(url, data, { headers }).pipe(
+      tap(() =>
+        this.__ToastingMessagesService.showToast(`${entityName} list created successfully`, 'success')
+      ),
+      catchError(err => this.handleError('bulk create', entityName, err))
+    );
+  }
 
   updateByPost<T>(
     endpointKey: string,
