@@ -4,6 +4,7 @@ import { OrderService } from '../../../../Services/order/order.service';
 import { OrderProduct } from '../../../../Interfaces/order-product';
 import { SharedService } from '../../../../Services/Shared/shared.service';
 import { catchError, forkJoin, map, of } from 'rxjs';
+import { ProductService } from '../../../../Services/Product/product.service';
 
  interface orderProductsInterface {
   isRtl: Signal<boolean>;
@@ -22,7 +23,9 @@ export class OrderProductsComponent {
   displayQtySection: true,
 };
  private __OrderService=inject(OrderService);
- private __SharedService=inject(SharedService);
+ private __ProductService=inject(ProductService);
+
+//  private __SharedService=inject(SharedService);
  currency:string='SAR';
  products= this.__OrderService.orderProducts;
  getTotalQuantity=this.__OrderService.getTotalQuantity;
@@ -36,34 +39,12 @@ export class OrderProductsComponent {
   });
   }
 
-// private loadProductNames(): void {
-//   const requests = this.products().map((orderProduct) =>
-//     this.__SharedService.getById<Product>('Products', orderProduct.productId).pipe(
-//       map((product) => ({
-//         id: orderProduct.productId,
-//         name: this.OrderProductsData.isRtl() ? product.nameAr : product.nameEn
-//       })),
-//       catchError((err) => {
-//         console.error(`Failed to load product ${orderProduct.productId}`, err);
-//         return of({ id: orderProduct.productId, name: '' });
-//       })
-//     )
-//   );
-
-//   forkJoin(requests).subscribe((results) => {
-//     const updatedMap = new Map<string, string>();
-//     results.forEach(({ id, name }) => updatedMap.set(String(id), name));
-//     this.productNames = updatedMap;
-//   });
-// }
-
-
 private loadProductNames(): void {
   const requests = this.products().map((orderProduct) =>
-    this.__SharedService.getByIdByPost<Product>('GetProductById', orderProduct.productId).pipe(
+    this.__ProductService.getProduct( orderProduct.productId).pipe(
       map((product) => ({
         id: orderProduct.productId,
-        name: this.OrderProductsData.isRtl() ? product.nameAr : product.nameEn
+        name: this.OrderProductsData.isRtl() ? product.data.nameAr : product.data.nameEn
       })),
       catchError((err) => {
         console.error(`Failed to load product ${orderProduct.productId}`, err);

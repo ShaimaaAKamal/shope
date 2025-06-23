@@ -176,17 +176,25 @@ getNetTotal = computed(() => {
 
 });
 
+// getTax = computed(() => {
+//     if (this.orderProducts().length === 0) return 0;
+//     return this.orderProducts().reduce(
+//       // (total, product) => total + parseFloat(product.quantity) * product.tax,
+//             // (total, product) => total +(product.quantity) * product.tax,
+//             (total, product) => total +(product.soldQuantity) * product.tax,
+//       0
+//     );
+//   });
+
 getTax = computed(() => {
-    if (this.orderProducts().length === 0) return 0;
-    return this.orderProducts().reduce(
-      // (total, product) => total + parseFloat(product.quantity) * product.tax,
-            // (total, product) => total +(product.quantity) * product.tax,
-            (total, product) => total +(product.soldQuantity) * product.tax,
+  if (this.orderProducts().length === 0) return 0;
 
-      0
-    );
-  });
-
+  return this.orderProducts().reduce((total, product) => {
+    const quantity = Number(product.soldQuantity) || 0;
+    const tax = Number(product.tax) || 0;
+    return total + quantity * tax;
+  }, 0);
+});
 getGrossTotal = computed(() => {
    const grossTotal=this.getNetTotal() + this.getTax() - this.discount();
     return grossTotal< 0 ? 0 :grossTotal;

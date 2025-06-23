@@ -181,16 +181,6 @@ private init(): void {
 
    getProduct(id:number){
      return this.__SharedService.getByIdByPost<Product>('GetProductById', id, 'product')
-    //  .pipe(
-    //   tap({
-    //     next: (product) => {
-    //       console.log('api product',product);
-    //     },
-    //     // complete: () => {
-    //     //   this.loadingSignal.set(false);
-    //     // }
-    //   })
-    // );
     }
 
 getProducts() {
