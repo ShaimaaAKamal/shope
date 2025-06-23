@@ -1,73 +1,53 @@
 import {
-Component,EventEmitter,inject,Output,signal,effect} from '@angular/core';
-import { ProductService } from '../../../../Services/Product/product.service';
-import { Variant } from '../../../../Interfaces/variant';
+  Component,EventEmitter,inject,Output,signal,effect} from '@angular/core';
+  import { ProductService } from '../../../../Services/Product/product.service';
+import { SharedService } from '../../../../Services/Shared/shared.service';
+import { ProductVariantMaster } from '../../../../Interfaces/product-variant-master';
 
-@Component({
-  selector: 'app-variants',
-  standalone: false,
-  templateUrl: './variants.component.html',
-  styleUrl: './variants.component.scss',
-})
-export class VariantsComponent {
-  private __ProductService = inject(ProductService);
-  product = this.__ProductService.currentProduct;
+  @Component({
+    selector: 'app-variants',
+    standalone: false,
+    templateUrl: './variants.component.html',
+    styleUrl: './variants.component.scss',
+  })
+  export class VariantsComponent {
+    private __ProductService = inject(ProductService);
+    private __SharedService = inject(SharedService);
 
-  displayVariant = signal(false);
-  variantsDetails!: any[];
+    product = this.__ProductService.currentProduct;
 
-  @Output() controlVariantsPopup = new EventEmitter<string>();
-  @Output() variantDetailsHandled = new EventEmitter<void>();
+    displayVariant = signal(false);
 
-  localVariants = signal<Variant[]>([]);
-  private firstChange=true;
-  constructor() {
-    effect(() => {
-      const inputVal = this.localVariants();
-      if(!this.firstChange){
-          this.localVariants.set(inputVal ?? []);
-      if (!inputVal || inputVal.length === 0) {
-        this.displayVariant.set(false);
-      }
-      }
-      this.firstChange=false;
-    });
-  }
+    @Output() controlVariantsPopup = new EventEmitter<string>();
+    @Output() variantDetailsHandled = new EventEmitter<void>();
 
-  ngOnInit(): void {
-    this.localVariants.set(this.product().variants ?? []);
-    this.variantsDetails = this.product().variantsDetails ?? [];
-  }
+    localVariants = signal<any[]>([]);
 
-  showOptionsSection() {
-    this.displayVariant.set(true);
-  }
-
-  setProductVariants(event: Variant[]) {
-    this.localVariants.set(event);
-    const product = this.product();
-    product.variants = event;
-    this.displayVariant.set(false);
-  }
-
-  deleteVariant(index: number) {
-    const updated = this.localVariants().filter((_, i) => i !== index);
-    this.localVariants.set(updated);
-    const product = this.product();
-    product.variants = updated;
-
-    if (updated.length === 0) {
-      product.variantsDetails = [];
+    showOptionsSection() {
+      this.displayVariant.set(true);
     }
 
-    this.product.set(product);
-  }
+    setLocalVariants(event:any){
+      this.localVariants.set([...event.map((e:any) => ({ ...e }))]);
+      if(this.localVariants().length == 0) this.displayVariant.set(false);
+    }
 
-  controlVariantsPopupScreen(action: string) {
-    this.controlVariantsPopup.emit(action);
-  }
+    // deleteVariant(index: number) {
+    //   const updated = this.localVariants().filter((_, i) => i !== index);
 
-  variantDetailsHandledFn() {
-    this.variantDetailsHandled.emit();
+    //   this.localVariants.set(updated);
+    // }
+
+    controlVariantsPopupScreen(action: string) {
+      this.controlVariantsPopup.emit(action);
+    }
+
+    variantDetailsHandledFn(event:any) {
+      this.__SharedService.createListByPost<ProductVariantMaster[]>('CreateProductVariantList',event,'Product Variants').subscribe(
+        {
+          next:()=>   this.variantDetailsHandled.emit()
+        }
+      )
+
+    }
   }
-}

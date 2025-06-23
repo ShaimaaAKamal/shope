@@ -12,7 +12,7 @@
                   title:'',
                   dropdownSelection:variantSelection,
                   optionsArray:preSetVariants(),
-                  key:'nameEn',
+                  key:!isRtl()?'nameEn':'nameAr',
                   noBorder:false
             }"
            (changeSelect)="chooseVariantName($event)"
@@ -28,9 +28,9 @@
                   title:'',
                   dropdownSelection:variantSelectValue,
                   optionsArray:variantValues,
-                  key:'',
+                  key:'value',
                   noBorder:false,
-                  type:variantSelection == 'color' ? 'color' : ''
+                  type:variantSelection == 'color' || variantSelection == 'اللون' ? 'color' : ''
             }"
           (changeSelect)="chooseOption($event)"
           >
@@ -136,21 +136,19 @@
           </div>
         </div>
       </ng-container>
-      <!-- <div class="d-flex align-item-center justify-content-between">
-          <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center"   (click)="showNewValueInput()">
+      <!-- <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" *ngIf="!insertVariantNewValue"    (click)="showNewValueInput()">
         <i class="fa-solid fa-plus fa-sm pe-2"></i>
-         <span> {{'Add Another Value' | translate}}</span>
-       </div>
-        <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center"  (click)="addNewValue()">
-        <i class="fa-solid fa-plus fa-sm pe-2"></i>
-         <span> {{'Add All' | translate}}</span>
-       </div>
-      </div> -->
-      <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" *ngIf="!insertVariantNewValue"    (click)="showNewValueInput()">
-        <i class="fa-solid fa-plus fa-sm pe-2"></i>
-         <span> {{'Add Another Value' | translate}}</span>
+         <span> {{'Add Another Variant Library Value' | translate}}</span>
        </div>
         <div class="p-2 mt-2 text-center bg-secondary  text-white fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" *ngIf="insertVariantNewValue" (click)="addNewValue()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add' | translate}}</span>
+       </div> -->
+       <div class=" mt-2 text-center   text-secondary text-decoration-underline fs-verySmall  d-flex align-items-center justify-content-end" *ngIf="!insertVariantNewValue"    (click)="showNewValueInput()">
+        <i class="fa-solid fa-plus fa-sm pe-2"></i>
+         <span> {{'Add Another Variant Library Value' | translate}}</span>
+       </div>
+        <div class=" mt-2 text-center  text-secondary fs-verySmall  text-decoration-underline  d-flex align-items-center justify-content-ende" *ngIf="insertVariantNewValue" (click)="addNewValue()">
         <i class="fa-solid fa-plus fa-sm pe-2"></i>
          <span> {{'Add' | translate}}</span>
        </div>
@@ -158,16 +156,26 @@
    </div>
 </div>
  <div>
- <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between">
+ <!-- <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between">
    <div class="p-2 text-center bg-danger  text-white fs-verySmall rounded-2 d-flex align-items-center justify-content-center" (click)="deleteVariant()">
         <i class="fa-solid fa-plus fa-sm pe-2"></i>
-         <span>{{'Delete Product Varaiant' | translate}}</span>
+         <span>{{'Delete Product Varaiant Option' | translate}}</span>
        </div>
    <div class="p-2 mt-1 mt-sm-0 text-center bg-semi-dark text-white fs-verySmall rounded-2 d-flex align-items-center justify-content-center" (click)="addVariant()">
       <i class="fa-solid fa-plus fa-sm pe-2"></i>
-      <span> {{'Add Product Variant' | translate}}</span>
+      <span> {{'Add Product Variant Option' | translate}}</span>
   </div>
+ </div> -->
+ <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between">
+  <div class="text-center   text-danger fs-verySmall rounded-2 d-flex  text-decoration-underline  align-items-center justify-content-center" (click)="deleteVariant()">
+       <i class="fa-solid fa-trash fa-sm pe-1"></i>
+        <span>{{'Delete Product Varaiant Option' | translate}}</span>
+      </div>
+  <div class="mt-1 mt-sm-0 text-center  text-semi-dark text-decoration-underline fs-verySmall  rounded-2 d-flex align-items-center justify-content-center" (click)="addVariant()">
+     <i class="fa-solid fa-plus fa-sm pe-1"></i>
+     <span> {{'Add Product Variant Option' | translate}}</span>
  </div>
+</div>
   </div>
 </div>
 <div *ngIf="!defaultSelection" >

@@ -20,6 +20,7 @@ export interface ProductVariantMaster {
       variantDetailId: number
     }
   ]
+  [key: string]: any
 }
 
 

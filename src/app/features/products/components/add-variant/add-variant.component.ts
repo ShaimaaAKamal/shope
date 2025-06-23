@@ -1,9 +1,12 @@
-import { Component, ElementRef, EventEmitter, inject, Output, QueryList, ViewChildren, signal, Input, effect, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Output, signal, effect, ViewChild } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
-
+interface variantDetailInterface {
+  variantMasterLookUpId:number,
+  variantDetailId: number
+}
 @Component({
   selector: 'app-add-variant',
   standalone: false,
@@ -30,26 +33,17 @@ export class AddVariantComponent {
   exitstErrorMessage:string=''
   showAddLibraryVariant:boolean=false;
   showNewlibraryVariantValue:boolean=false;
-  @Output() variants = new EventEmitter<any>();
+
+  @Output() localVariants=new EventEmitter<any>();
 
   @ViewChild('detailName') detailName!: InputComponent;
   @ViewChild('detailNameAr') detailNameAr!: InputComponent;
   @ViewChild('variantValue') variantValue!:InputComponent;
   @ViewChild('colorPick') colorPickInputs!: ElementRef;
 
-  // @ViewChildren('detailName') detailNameRefs!: QueryList<InputComponent>;
-  // @ViewChildren('detailNameAr') detailNameArRefs!: QueryList<InputComponent>;
-  // @ViewChildren('variantValue') variantValueRefs!: QueryList<InputComponent>
-  // @ViewChildren('colorPick') colorPickInputs!: QueryList<ElementRef>;
 
+  variantDetailId!:number;
 
-constructor(){
-   effect(() => {
-    const variants:any = this.__ProductService.currentProduct().variants;
-    // this.ProductVariantOptions.set(variants );
-        this.ProductVariantOptions.set(variants ?? [] );
-  });
-}
 
 ngOnInit(): void {
     this.setDefaultValues();
@@ -57,36 +51,35 @@ ngOnInit(): void {
 displayCreateVariantLibrary(){
   this.showAddLibraryVariant = true;
 }
+
  setDefaultValues(){
   if(this.defaultSelection){
   this.variantSelection = this.isRtl()? this.defaultSelection.nameAr:this.defaultSelection.nameEn;
   this.defaultSelection.id && (this.VariantMasterLookUPId = this.defaultSelection.id);
-  this.variantValues=  this.getVariantValues(this.defaultSelection.variantDetails);
+  this.variantValues= this.defaultSelection.variantDetails;
   this.variantSelectValue=this.defaultSelection.variantDetails[0].value;
-    if(this.defaultSelection.nameEn == 'color' ) this.showColorPickerContainer=true;
+  this.defaultSelection.variantDetails[0].id && ( this.variantDetailId=this.defaultSelection.variantDetails[0].id);
+    if(this.defaultSelection.variantTypeEn == 'color' ||  this.defaultSelection.variantTypeAr == 'اللون' ) this.showColorPickerContainer=true;
 }
    }
-
  chooseVariantName(event: any){
-    this.variantValues=this.getVariantValues(event.variantDetails);
-    this.variantSelectValue=this.variantValues[0];
+    this.variantValues= event.variantDetails;
+    this.variantSelectValue=this.variantValues[0].value;
+    this.variantDetailId=this.variantValues[0].id
     this.VariantMasterLookUPId = event.id;
-    this.variantSelection=event.nameEn;
-    this.showColorPickerContainer = event.nameEn === 'color' || event.nameEn === 'اللون';
+    this.variantSelection=!this.isRtl()?event.nameEn:event.nameAr;
+    this.showColorPickerContainer = (this.defaultSelection.variantTypeEn == 'color' ||  this.defaultSelection.variantTypeAr == 'اللون' )
   }
  chooseOption(event: any) {
-    const name=event.nameEn || event;
-    this.variantSelectValue=name;
+    const value=event.value || event;
+    this.variantSelectValue=value;
+    this.variantDetailId=event.id
+
   }
 showNewValueInput(){
   this.showNewlibraryVariantValue=true;
   this.insertVariantNewValue=true;
 }
-// showNewValueInput(){
-//     this.values.update(current => [...current, '']);
-//     this.insertVariantNewValue=true;
-// }
-
 setPickedColorValue(color:string){
 this.variantValue.value=color;
 }
@@ -122,12 +115,6 @@ if (!this.variantValues.includes(variantNewValue)) {
           this.insertVariantNewValue = false;
           this.showNewlibraryVariantValue=false;
 
-          // this.values.update(current => {
-          //   const updated = [...current];
-          //   updated.pop();
-          //   return updated;
-          // });
-
           this.variantSelectValue = variantNewValue;
           return;
         }
@@ -143,20 +130,14 @@ this.showNewlibraryVariantValue=false;
 this.insertVariantNewValue=false;
   }
 
-
-addVariant() {
-  this.hideMessages();
-//   if(this.values().length ==1) {this.values.update(current => {
-//   const updated = [...current];
-//   updated.pop()
-//   return updated;
-// });; this.insertVariantNewValue=false}
+addLocalVariant() {
   const newValue = this.variantSelectValue;
   const newVariant = {
-    variantMasterLookUpId: this.VariantMasterLookUPId,
     name: this.variantSelection,
-    values: [newValue]
+    values: [{ value: newValue, variantDetailId: this.variantDetailId }],
+    variantMasterLookUpId: this.VariantMasterLookUPId,
   };
+
   this.ProductVariantOptions.update(options => {
     const updatedOptions = [...options];
     const existingIndex = updatedOptions.findIndex(variant => variant.name === newVariant.name);
@@ -166,63 +147,73 @@ addVariant() {
         ? updatedOptions[existingIndex].values
         : [updatedOptions[existingIndex].values];
 
-      if (!existingValues.includes(newValue)) {
-        updatedOptions[existingIndex].values = [...existingValues, newValue];
+      const alreadyExists = existingValues.some((v:any) => v.value === newValue);
+
+      if (!alreadyExists) {
+        updatedOptions[existingIndex].values = [
+          ...existingValues,
+          { value: newValue, variantDetailId: this.variantDetailId }
+        ];
       }
+
       return updatedOptions;
     } else {
       return [...options, newVariant];
     }
   });
-  this.updateProductVariants();
-  this.variants.emit(this.ProductVariantOptions());
+
+  this.localVariants.emit(this.ProductVariantOptions());
 }
+
+addVariant() {
+  this.hideMessages();
+  this.addLocalVariant();
+}
+
 closeAddVariantPopScreen(){
     this.showAddLibraryVariant = false;
     this.defaultSelection = this.preSetVariants()[0];
     this.setDefaultValues();
 
 }
+
 deleteVariant() {
   this.hideMessages();
-  const valueToRemove = this.variantSelectValue;
-  const variantName = this.variantSelection;
+
+  const variantMasterLookUpId = this.VariantMasterLookUPId;
+  const variantDetailId = this.variantDetailId;
+
   this.ProductVariantOptions.update(options => {
-    const updatedOptions = [...options];
-    const existingIndex = updatedOptions.findIndex(variant => variant.name === variantName);
+    let updatedOptions = [...options];
 
-    if (existingIndex !== -1) {
-      const existingValues = Array.isArray(updatedOptions[existingIndex].values)
-        ? updatedOptions[existingIndex].values
-        : [updatedOptions[existingIndex].values];
+    const variantIndex = updatedOptions.findIndex(
+      variant => variant.variantMasterLookUpId === variantMasterLookUpId
+    );
 
-      const filteredValues = existingValues.filter((value:any) => value !== valueToRemove);
+    if (variantIndex !== -1) {
+      const variant = updatedOptions[variantIndex];
+      const filteredValues = variant.values.filter(
+        (v: any) => v.variantDetailId !== variantDetailId
+      );
 
-      if (filteredValues.length > 0) {
-        updatedOptions[existingIndex].values = filteredValues;
+      if (filteredValues.length === 0) {
+        updatedOptions.splice(variantIndex, 1);
       } else {
-        updatedOptions.splice(existingIndex, 1);
+        updatedOptions[variantIndex] = {
+          ...variant,
+          values: filteredValues
+        };
       }
     }
 
     return updatedOptions;
   });
-    this.updateProductVariants();
-  this.variants.emit(this.ProductVariantOptions());
+
+  this.localVariants.emit(this.ProductVariantOptions());
 }
 
-updateProductVariants() {
-  this.__ProductService.currentProduct.update(currentValue => {
-  const updatedValue = { ...currentValue, variants: this.ProductVariantOptions() };
-  return updatedValue;
-});
-}
 
-getVariantValues(arr:any[]){
-return  arr.map((value:any) => value.value)
-}
 private hideMessages(){
-  // this.successMessage=false;
   this.exitstErrorMessage='';
 }
 }

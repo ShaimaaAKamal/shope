@@ -10,5 +10,5 @@ export interface VariantMasterLookUP {
   detailNameEn: string;
   value: string;
 }[]
-
+[key: string]: any
 }

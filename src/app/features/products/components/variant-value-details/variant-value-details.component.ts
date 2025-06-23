@@ -1,36 +1,62 @@
-
 import {
-  Component,EventEmitter, Input, Output,QueryList,ViewChildren,AfterViewInit,OnDestroy,signal,computed,effect} from '@angular/core';
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChildren,
+  AfterViewInit,
+  OnDestroy,
+  signal,
+  computed,
+  effect
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { InputComponent } from '../../../../shared/components/input/input.component';
-interface VariantValueDetailsInterface{
-quantity:number,
-displayedVariants:any[],
-index:number
+
+interface VariantValueDetailsInterface {
+  quantity: number;
+  displayedVariants: any[];
+  index: number;
 }
+
 @Component({
   selector: 'app-variant-value-details',
   templateUrl: './variant-value-details.component.html',
   styleUrl: './variant-value-details.component.scss',
-  standalone:false
+  standalone: false
 })
 export class VariantValueDetailsComponent implements AfterViewInit, OnDestroy {
-private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-chargeTaxDropDownSelection:string='Charge';
-priceAffecringDropDownSelection:string='yes';
-ChargeTax:any[]=[
-{title:'Charge', value:true},
- {title: "Uncharge",value:false}
-]
-PriceAffecting:any[]=[
-{title:'yes', value:true},
- {title: "no",value:false}
-]
-private _inputData = signal<VariantValueDetailsInterface>({
+  chargeTaxDropDownSelection = 'Charge';
+  priceAffecringDropDownSelection = 'yes';
+
+  ChargeTax = [
+    { title: 'Charge', value: true },
+    { title: 'Uncharge', value: false }
+  ];
+
+  PriceAffecting = [
+    { title: 'yes', value: true },
+    { title: 'no', value: false }
+  ];
+
+  inputFields = [
+    { id: 'price', placeholder: 'Price', spanLabel: 'SAR', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true, triggerRecalc: true },
+    { id: 'costPerItem', placeholder: 'Cost Price', spanLabel: 'SAR', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true, triggerRecalc: true },
+    { id: 'comparePrice', placeholder: 'Compare Price', spanLabel: 'SAR', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true },
+    { id: 'profit', placeholder: 'Profit', spanLabel: 'SAR', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true },
+    { id: 'margin', placeholder: 'Margin', spanLabel: '%', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true },
+    { id: 'vatValue', placeholder: 'Vat Value', spanLabel: 'SAR', col: 'col-lg-4', icon: 'fa-money-bill-1-wave', inputGroup: true },
+    { id: 'barcode', placeholder: 'Barcode', label: 'Barcode', col: 'col-lg-6', icon: 'fa-barcode', inputGroup: false },
+    { id: 'sku', placeholder: 'SkU', col: 'col-lg-6', icon: 'fa-barcode', inputGroup: false }
+  ];
+
+  private _inputData = signal<VariantValueDetailsInterface>({
     quantity: 0,
     displayedVariants: [],
-    index: -1,
+    index: -1
   });
 
   @Input()
@@ -45,54 +71,61 @@ private _inputData = signal<VariantValueDetailsInterface>({
   @ViewChildren('inputRef') inputComponentRefs!: QueryList<InputComponent>;
   @Output() variantProductDetaills = new EventEmitter<any>();
 
-  variantDetail = computed(() =>
-    this._inputData().displayedVariants[this._inputData().index]
-  );
-private isViewInit = false;
+  private isViewInit = false;
 
-ngAfterViewInit() {
-  this.isViewInit = true;
-  this.tryDisplayVariantDetails();
-}
+  variantDetail = computed(() => {
+    const data = this._inputData();
+    return data.displayedVariants[data.index];
+  });
 
-changeSelect(method:any,key:string){
-    if(key == 'chargeTax') this.chargeTaxDropDownSelection=method.title;
-    if(key == 'isPriceAffecting') this.priceAffecringDropDownSelection=method.title;
-}
+  readonly _effect = effect(() => {
+    if (!this.isViewInit) return;
+    this.tryDisplayVariantDetails();
+  });
 
-readonly _effect = effect(() => {
-  if (!this.isViewInit) return;
-  this.tryDisplayVariantDetails();
-});
+  ngAfterViewInit() {
+    this.isViewInit = true;
+    this.tryDisplayVariantDetails();
+  }
 
-private tryDisplayVariantDetails() {
+  private tryDisplayVariantDetails() {
     if (!this.variantDetail() || !this.inputComponentRefs?.length) return;
     this.displayVariantDetails();
   }
 
-displayVariantDetails() {
+
+  private displayVariantDetails() {
     const detail = this.variantDetail();
     if (!detail) return;
 
     this.inputComponentRefs.forEach(inputComponent => {
-      inputComponent.value =
-        detail.details?.[inputComponent.InputComponentData.id] ?? '';
+      const key = inputComponent.InputComponentData.id;
+      const rawValue = detail[key];
+      inputComponent.value = rawValue === 0 ? '' : rawValue ?? '';
     });
 
-    const updated = this._inputData();
+    this.chargeTaxDropDownSelection = detail['chargeTax'] ? 'Charge' : 'Uncharge';
+    this.priceAffecringDropDownSelection = detail['isPriceAffecting'] ? 'yes' : 'no';
+
     this._inputData.set({
-      ...updated,
-      quantity: detail.details?.['quantity'] ?? '0',
+      ...this._inputData(),
+      quantity: detail['quantity'] ?? 0
     });
   }
-
+  changeSelect(selection: any, key: string) {
+    if (key === 'chargeTax') {
+      this.chargeTaxDropDownSelection = selection.title;
+    } else if (key === 'isPriceAffecting') {
+      this.priceAffecringDropDownSelection = selection.title;
+    }
+  }
 
   updateQuantity(newQuantity: number) {
-    const updated = this._inputData();
     this._inputData.set({
-      ...updated,
-      quantity: newQuantity,
+      ...this._inputData(),
+      quantity: newQuantity
     });
+
     this.variantProductDetaills.emit(newQuantity);
   }
 
@@ -101,48 +134,47 @@ displayVariantDetails() {
 
     this.inputComponentRefs.forEach(inputComponent => {
       const id = inputComponent.InputComponentData.id;
-      const value = inputComponent.value?.trim?.() ?? null;
-      if (id) {
-        variantDetailsValue[id] = value;
-      }
+      variantDetailsValue[id] = inputComponent.value?.trim?.() ?? null;
     });
+
     variantDetailsValue['quantity'] = this._inputData().quantity;
-    variantDetailsValue['chargeTax'] = this.chargeTaxDropDownSelection == 'Charge' ;
-    variantDetailsValue['isPriceAffecting'] = this.priceAffecringDropDownSelection == 'yes' ;
-    console.log('getDtails',variantDetailsValue)
+    variantDetailsValue['chargeTax'] = this.chargeTaxDropDownSelection === 'Charge';
+    variantDetailsValue['isPriceAffecting'] = this.priceAffecringDropDownSelection === 'yes';
+
     return variantDetailsValue;
   }
 
   recalculate() {
-  const inputs = this.inputComponentRefs.toArray();
-  const priceComp = inputs[0];
-  const costComp = inputs[1];
-  const profitComp = inputs[3];
-  const marginComp = inputs[4];
+    const getInputById = (id: string): InputComponent | undefined =>
+      this.inputComponentRefs.find(c => c.InputComponentData.id === id);
 
-  const price = Number(priceComp?.value);
-  const costPrice = Number(costComp?.value);
+    const price = Number(getInputById('price')?.value);
+    const cost = Number(getInputById('costPerItem')?.value);
+    const profitComp = getInputById('profit');
+    const marginComp = getInputById('margin');
 
-  const isValidPrice = !isNaN(price) && price > 0;
-  const isValidCost = !isNaN(costPrice);
+    const isValidPrice = !isNaN(price) && price > 0;
+    const isValidCost = !isNaN(cost);
 
-  if (isValidPrice && isValidCost && profitComp && marginComp) {
-    if (costPrice <= price) {
-      const profit = price - costPrice;
+    if (!isValidPrice || !isValidCost) {
+      if (profitComp) profitComp.value = '';
+      if (marginComp) marginComp.value = '';
+      return;
+    }
+
+    if (cost <= price) {
+      const profit = price - cost;
       const margin = (profit / price) * 100;
 
-      profitComp.value = profit.toFixed(2);
-      marginComp.value = margin.toFixed(1);
+      if (profitComp) profitComp.value = profit.toFixed(2);
+      if (marginComp) marginComp.value = margin.toFixed(1);
     } else {
-      profitComp.value = '0.00';
-      marginComp.value = '0.0';
+      if (profitComp) profitComp.value = '0.00';
+      if (marginComp) marginComp.value = '0.0';
     }
-  } else {
-    if (profitComp) profitComp.value = '';
-    if (marginComp) marginComp.value = '';
   }
-}
-   ngOnDestroy(): void {
+
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
