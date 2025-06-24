@@ -250,5 +250,7 @@
   "Delete Customer":"Delete Customer",
   "Edit Customer":"Edit Customer",
   "Inactive":"Inactive",
-  "Customer Type":"Customer Type"
+  "Customer Type":"Customer Type",
+  "Categories":"Categories",
+  "New Order": "New Order"
 }

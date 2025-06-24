@@ -246,5 +246,7 @@
                "Delete Customer":"حذف العميل",
                 "Edit Customer":"تعديل العميل",
                 "Inactive":"غير نشط",
-                "Customer Type":"نوع العميل"
+                "Customer Type":"نوع العميل",
+                "Categories":"الفئات",
+                 "New Order":"طلب جديد"
         }
