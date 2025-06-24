@@ -6,7 +6,7 @@
           route: 'Orders/create',
           type: 'order',
           items: orders(),
-          sortKey: 'grossTotal'
+          sortKey: 'totalBeforeTax'
         }"
         (displayedItems)="handleDispalyedItems($event)"
         (deleteEvent)="handleDelete($event)">
