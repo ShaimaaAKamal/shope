@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   Output,
   QueryList,
   ViewChildren,
@@ -9,7 +10,6 @@ import {
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { CustomerService } from '../../../Services/Customer/customer.service';
 import { Customer } from '../../../Interfaces/customer';
-import { ToastingMessagesService } from '../../../Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-add-in-voice-new-customer',
@@ -20,9 +20,11 @@ import { ToastingMessagesService } from '../../../Services/ToastingMessages/toas
 export class AddInVoiceNewCustomerComponent {
   @Output() closeCustomerForm = new EventEmitter<void>();
   @ViewChildren(InputComponent) inputs!: QueryList<InputComponent>;
-
+  @Input() CompoenentData={
+    header:'Add Customer',
+    customer:{} as Customer
+  }
   private __CustomerService = inject(CustomerService);
-  private __ToastingMessagesService = inject(ToastingMessagesService);
 
   errorMessages: Record<string, string> = {};
 
@@ -47,9 +49,9 @@ export class AddInVoiceNewCustomerComponent {
     { id: 'companyNameEn', label: 'Company Name (En)', icon: 'fa-solid fa-signature' },
     { id: 'companyNameAr', label: 'Company Name (Ar)', icon: 'fa-solid fa-signature' },
     { id: 'phone', label: 'Customer Phone', icon: 'fa-solid fa-phone-volume', required: true },
-    { id: 'emailAddress', label: 'Email Address', icon: 'fa-solid fa-envelope' },
-    { id: 'country', label: 'Country', icon: 'fa-solid fa-globe' },
-    { id: 'city', label: 'City', icon: 'fa-solid fa-city' },
+    { id: 'emailAddress', label: 'Email Address', icon: 'fa-solid fa-envelope', required: true },
+    { id: 'country', label: 'Country', icon: 'fa-solid fa-globe', required: true },
+    { id: 'city', label: 'City', icon: 'fa-solid fa-city' , required: true},
     { id: 'addressEn', label: 'Address (En)', icon: 'fa-solid fa-city' },
     { id: 'addressAr', label: 'Address (Ar)', icon: 'fa-solid fa-city' },
     { id: 'notesEn', label: 'Notes (En)', icon: 'fa-solid fa-globe' },
@@ -61,6 +63,41 @@ export class AddInVoiceNewCustomerComponent {
     { id: 'streetNumber', label: 'Street Number', icon: 'fa-solid fa-city' },
     { id: 'buildingNumber', label: 'Building Number', icon: 'fa-solid fa-city' },
   ];
+
+
+
+  ngAfterViewInit(): void {
+    if(this.CompoenentData.customer.id){
+      this.fillInputFieldsFromCustomer(this.CompoenentData.customer);
+}
+  }
+
+fillInputFieldsFromCustomer(customer: Customer) {
+    this.inputFields.forEach(field => {
+      const inputComp = this.inputs.find(input => input.InputComponentData.id === field.id);
+      if (!inputComp) return;
+
+      let value: any;
+
+      if (field.id === 'dateOfBirth' && customer.dateOfBirth) {
+        value = new Date(customer.dateOfBirth).toISOString().split('T')[0];
+      } else {
+        value = (customer as any)[field.id];
+      }
+
+      if (value !== undefined) {
+        inputComp.inputElement.nativeElement.value = value;
+      }
+    });
+
+    setTimeout(() => {
+      const type = this.customerTypes.find(t => t.value === customer.customerType);
+      this.customerTypeSelection = type?.title ?? 'Super';
+
+      const active = this.ActiveOptions.find(a => a.value === customer.isActive);
+      this.ActiveDropDownSelection = active?.title ?? 'Inactive';
+    });
+  }
 
   validateFields(): void {
     this.errorMessages = {};
@@ -98,9 +135,19 @@ export class AddInVoiceNewCustomerComponent {
         return val ? new Date(val) : new Date();
       })()
     } as Customer;
-    this.__CustomerService.addCustomer(customer).subscribe({
-      next :() =>this.closeCustomerForm.emit()
-    })
+
+    if(this.CompoenentData.customer.id){
+      const updatedCustomer={...customer,id:this.CompoenentData.customer.id};
+
+      this.__CustomerService.updateCustomer(updatedCustomer).subscribe({
+        next :() =>this.closeCustomerForm.emit()
+      });
+    }
+    else{
+      this.__CustomerService.addCustomer(customer).subscribe({
+        next :() =>this.closeCustomerForm.emit()
+      })
+    }
   }
 
   close(): void {

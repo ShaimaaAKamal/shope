@@ -1,6 +1,6 @@
  <app-pop-screen
  [PopScreenComponentData]="{
-      headerLabel:'Add Customer',
+      headerLabel:CompoenentData.header,
       btnLabel:'Done',
       hideCancalBtn:true
     }"
@@ -33,7 +33,7 @@
   <div class="col-lg-4">
     <app-dropdown
     [DropdownComponentData]="{
-          title:'Active',
+          title:'Customer Type',
           dropdownSelection:customerTypeSelection,
           optionsArray:customerTypes,
           key:'title',
@@ -59,7 +59,7 @@
 </div>
 </div>
 </app-pop-screen>
-   
+
 
 
 

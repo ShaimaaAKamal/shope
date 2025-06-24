@@ -16,7 +16,7 @@ import { OrderItemComponent } from './shared/order-item/order-item.component';
 import { ClientInfoComponent } from './shared/client-info/client-info.component';
 import { ReturnOrderComponent } from './return-order/return-order.component';
 import { ReturnOrderCodeFormComponent } from './return-order-code-form/return-order-code-form.component';
-import { AddInVoiceNewCustomerComponent } from './add-in-voice-new-customer/add-in-voice-new-customer.component';
+import { CustomersModule } from '../customers/customers.module';
 
 
 @NgModule({
@@ -34,13 +34,12 @@ import { AddInVoiceNewCustomerComponent } from './add-in-voice-new-customer/add-
     ClientInfoComponent,
     ReturnOrderComponent,
     ReturnOrderCodeFormComponent,
-    AddInVoiceNewCustomerComponent
   ],
   imports: [
     SharedModule,
     CommonModule,
     OrdersRoutingModule,
-
+    CustomersModule
   ]
 })
 export class OrdersModule {
