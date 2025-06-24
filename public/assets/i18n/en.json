@@ -121,7 +121,7 @@
   "First name is required":"First name is required",
   "Customer Phone":"Customer Phone",
   "Phone number is required":"Phone number is required",
-  
+
 
   "Add New Products":"Add New Products",
   "Start by stocking your store with products your customers will love":"Start by stocking your store with products your customers will love",
@@ -245,5 +245,10 @@
   "tax":"tax",
   "vat value" : "vat value",
   "Profit":"Profit",
-  "Margin":"Margin"
+  "Margin":"Margin",
+  "Every customer. Every moment. Every time — we deliver more than expected.":"Every customer. Every moment. Every time — we deliver more than expected.",
+  "Delete Customer":"Delete Customer",
+  "Edit Customer":"Edit Customer",
+  "Inactive":"Inactive",
+  "Customer Type":"Customer Type"
 }

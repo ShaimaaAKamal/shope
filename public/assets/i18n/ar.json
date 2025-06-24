@@ -241,5 +241,10 @@
               "tax":"ضريبة",
               "vat value" : "ضريبة القيمة المضافة",
               "Profit":"الربح",
-              "Margin":"هامش الربح"
+              "Margin":"هامش الربح",
+              "Every customer. Every moment. Every time — we deliver more than expected.":"كل عميل، كل لحظة، كل مرة - نُقدّم أكثر مما توقعنا.",
+               "Delete Customer":"حذف العميل",
+                "Edit Customer":"تعديل العميل",
+                "Inactive":"غير نشط",
+                "Customer Type":"نوع العميل"
         }
