@@ -15,6 +15,7 @@ import { VariantsLibraryComponent } from './variants-library/variants-library.co
 import { EditVariantComponent } from './edit-variant/edit-variant.component';
 import { ColorPickingComponent } from './components/color-picking/color-picking.component';
 import { VariantLibraryItemComponent } from './variant-library-item/variant-library-item.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { VariantLibraryItemComponent } from './variant-library-item/variant-libr
     VariantsLibraryComponent,
     EditVariantComponent,
     ColorPickingComponent,
-    VariantLibraryItemComponent
+    VariantLibraryItemComponent,
+    CategoriesComponent
   ],
   imports: [
     CommonModule,

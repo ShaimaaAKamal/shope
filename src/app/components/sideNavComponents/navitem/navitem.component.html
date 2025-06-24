@@ -1,12 +1,11 @@
-
 <ng-template #content>
   <ng-content></ng-content>
-  <span class="fw-light ps-2" [class.d-none]="NavitemComponentData.isCollapsed"
-      >
+  <span class="fw-light ps-2" [class.d-none]="NavitemComponentData.isCollapsed">
     {{ NavitemComponentData.navItemName.split('_').join(' ') | translate }}
   </span>
 </ng-template>
 
+<!-- Logo -->
 <ng-container *ngIf="NavitemComponentData.navItemName === 'Shopping'">
   <div class="d-flex align-items-center rounded rounded-4 hover-bg"
        [ngClass]="NavitemComponentData.classes"
@@ -17,6 +16,7 @@
   </div>
 </ng-container>
 
+<!-- Special Items -->
 <ng-container *ngIf="['Hold_Orders', 'Return_Order', 'End_Day','Arabic','اللغة الإنجليزية'].includes(NavitemComponentData.navItemName)">
   <div class="d-flex align-items-center rounded px-3 mb-2 rounded-4 hover-bg"
        [ngClass]="NavitemComponentData.classes"
@@ -27,13 +27,32 @@
   </div>
 </ng-container>
 
+<!-- Default Item -->
 <ng-container *ngIf="!['Shopping', 'Hold_Orders', 'Return_Order','End_Day','Arabic','اللغة الإنجليزية'].includes(NavitemComponentData.navItemName)">
-  <div class="d-flex align-items-center px-3 mb-2 rounded rounded-4 hover-bg"
+  <div class="d-flex align-items-center px-3 mb-2 rounded rounded-4 hover-bg w-100"
        [ngClass]="NavitemComponentData.classes"
        [class.justify-content-center]="NavitemComponentData.isCollapsed"
        [routerLink]="NavitemComponentData.navItemName"
        routerLinkActive="router-link-active"
-       [title]="NavitemComponentData.navItemName | translate">
+       [title]="NavitemComponentData.navItemName | translate"
+       (click)="toggleSubnav()">
     <ng-container *ngTemplateOutlet="content"></ng-container>
+    <i *ngIf="NavitemComponentData.subItems && !NavitemComponentData.isCollapsed"
+       class="fa ms-auto"
+       [ngClass]="showSubnav ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
   </div>
 </ng-container>
+
+<!-- Subnav (works both collapsed and expanded) -->
+<ul *ngIf="showSubnav && NavitemComponentData.subItems?.length"
+    class="subnav"
+    [ngClass]="{ 'collapsed-subnav': NavitemComponentData.isCollapsed }">
+  <li *ngFor="let subItem of NavitemComponentData.subItems" class="py-1">
+    <div class="d-flex align-items-center subnav-item hover-bg"
+         [routerLink]="subItem.name"
+         routerLinkActive="router-link-active">
+      <i [ngClass]="subItem.icon" class="pe-2 small"></i>
+      <span class="small">{{ subItem.name.split('_').join(' ') | translate }}</span>
+    </div>
+  </li>
+</ul>
