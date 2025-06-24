@@ -1,0 +1,76 @@
+<div class="card w-100  rounded-3 " >
+  <div class="position-relative">
+    <div class="card-header head bg-semi-dark"></div>
+    <div class="head "></div>
+    <div class="position-absolute customerImage">
+      <img src="assets/images/noImage.png" class="rounded-circle  w-100" alt="...">
+    </div>
+  </div>
+  <div class="card-body pt-0 text-center">
+    <h6 class="card-title mb-1">
+      {{isRtl()? customer.firstNameAr:customer.firstNameEn | titlecase}}
+      {{isRtl()?customer.lastNameAr:customer.lastNameEn | titlecase}}
+    </h6>
+    <div class="fs-verySmall text-center text-secondary">
+         {{customer.emailAddress}}
+    </div>
+    <div
+      class="fs-verySmall text-center"
+      [ngClass]="{
+        'text-success': customer.isActive === true,
+        'text-muted': customer.isActive === false
+      }">
+      <i class="fa-solid fa-circle pe-1 fa-xs"></i>
+      <span>
+          {{ customer.isActive ? 'Active' : 'Inactive'  | translate}}
+      </span>
+    </div>
+
+    <div class="pt-2">
+      <div class="d-flex align-items-center py-1">
+        <i class="fa-solid fa-location-arrow pe-1 text-secondary"></i>
+        <div class="fs-verySmall text-center">
+          {{
+            getFullAddress()
+          }}
+        </div>
+      </div>
+      <div class="d-flex align-items-center py-1">
+        <i class="fa-solid fa-location-arrow pe-1 text-secondary"></i>
+       <div class="fs-verySmall text-center">
+        {{customer.phone}}
+      </div>
+      </div>
+      <div class="d-flex align-items-center py-1">
+        <i class="fa-solid fa-location-arrow pe-1 text-secondary"></i>
+       <div class="fs-verySmall text-center ">
+        {{isRtl()?customer.companyNameAr:customer.companyNameEn}}
+      </div>
+      </div>
+      <div class="d-flex align-items-center py-1">
+        <i class="fa-solid fa-location-arrow pe-1 text-secondary"></i>
+       <div class="fs-verySmall text-center d-flex align-items-center">
+        <span class="pe-1">20</span>
+        <span>{{'Orders' | translate}}</span>
+            </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex align-items-center justify-content-center fs-verySmall" (click)="deleteCustomer(customer)">
+      <i class="fa-solid fa-trash pe-2"></i>
+      <span>{{'Delete Customer' | translate}}</span>
+    </div>
+    </div>
+    <div class="card-footer bg-semi-dark text-white">
+      <div class="d-flex align-items-center justify-content-center fs-verySmall" (click)="editCustomerfN(customer)">
+        <i class="fa-solid fa-user-pen pe-2"></i>
+        <span>{{'Edit Customer' | translate}}</span>
+      </div>
+    </div>
+</div>
+
+
+

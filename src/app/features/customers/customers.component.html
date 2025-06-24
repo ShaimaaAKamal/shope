@@ -1,1 +1,31 @@
-<p>customers works!</p>
+<div class="h-100 w-100">
+  <app-layout
+  [LayoutComponentDate]="{
+    route: '',
+    items: customers(),
+    sortKey: 'firstNameEn',
+    header: 'Add New Customers',
+    subTitle: 'Every customer. Every moment. Every time — we deliver more than expected.',
+    btnName: 'Add New Customer',
+    columns: [],
+    serviceType: '',
+  }"
+  (addNewVar)="addNew($event)"
+  (deleteSelected)="deleteSelected($event)" >
+
+        <div class="row gy-3">
+          <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let customer of customers()">
+            <div class="h-100">
+              <!-- <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" ></app-product-card> -->
+              <app-customer-card [customer]="customer" (editCustomer)="getEditCUstomerInfo($event)"></app-customer-card>
+            </div>
+          </div>
+        </div>
+  </app-layout>
+  </div>
+
+  <app-add-in-voice-new-customer *ngIf="addCustomer()" (closeCustomerForm)="closeCreateCustomer()"></app-add-in-voice-new-customer>
+  <app-add-in-voice-new-customer *ngIf="editCustomer()"  [CompoenentData]="{
+    header:'Edit Customer',
+    customer:customer}" (closeCustomerForm)="closeEditCustomer()"></app-add-in-voice-new-customer>
+
