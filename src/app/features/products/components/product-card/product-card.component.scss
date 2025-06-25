@@ -3,17 +3,44 @@
   height:250px;
   width: 100%;
 }
+.card-img{
+  height:100%;
+  width: 100%;
+  object-fit: cover;
+}
+@media (min-width: 992px) {
+  .card-img {
+    height: 150px;
+  }
+}
+
+.imgContainer{
+  top:50%;
+  transform: translateY(-50%);
+  height: 100%;
+}
 .icon{
  position: absolute;
  font-size:1.6rem;
  top:10px;
  right:10px;
 }
+.listIcon{
+  position: absolute;
+  font-size:1.6rem;
+  top:10px;
+  left:10px;
+}
 
 .addImage{
   position: absolute;
   bottom:10px;
   left:10px;
+}
+.addImageList{
+  position: absolute;
+  bottom:10px;
+  right:10px;
 }
 .dropdown-menu {
 top:-4px !important;

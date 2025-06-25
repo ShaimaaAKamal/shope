@@ -1,5 +1,5 @@
 import { Category } from './../../../../Interfaces/category';
-import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, Signal, ViewChild } from '@angular/core';
+import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, Signal, SimpleChanges, ViewChild } from '@angular/core';
 import { PopScreenComponent } from '../../../../shared/components/pop-screen/pop-screen.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Product } from '../../../../Interfaces/product';
@@ -38,7 +38,7 @@ export class ProductCardComponent {
   @ViewChild('quantity') productQuantityInput!: InputComponent;
   @ViewChild('productInfo') productInfo!: PopScreenComponent;
   @ViewChild('variantsPopScreen') variantsPopScreen!: PopScreenComponent;
-
+  @Input() cardDisplayDirection:string='catalog'
   // Inputs
   @Input() product!: Product;
   @Input() type:string='';
@@ -69,7 +69,6 @@ dropdownSelectionArabic!:string;
   constructor(
     private categoryService: CategoryService,
     private commonService: CommonService,
-    private __ToastingMessagesService:ToastingMessagesService,
     private __LanguageService:LanguageService,
 
   ) {
@@ -87,13 +86,39 @@ dropdownSelectionArabic!:string;
       this.updateQuantityLabel();
   }
 
-
-
   ngAfterViewInit() {
    this.currentProduct.set(this.product);
   if(!this.type)
       this.displayProductInfo();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['cardDisplayDirection']) {
+      setTimeout(() => {
+        this.refreshInputsFromProduct(); 
+      });
+    }
+  }
+
+
+  private refreshInputsFromProduct(): void {
+    if (!this.product || !this.productTitleInput) return;
+
+    this.productTitleInput.value = this.product.nameEn ?? '';
+    this.productArabicTitleInput.value = this.product.nameAr ?? '';
+    this.productPriceInput.value = this.product.price?.toString() ?? '';
+
+    if (this.product.enfinity) {
+      this.productQuantityInput.value = 'Unlimited Quantity';
+    } else {
+      this.productQuantityInput.value = this.product.quantity?.toString() ?? '';
+    }
+
+    this.setCategoryInfo();
+  }
+
+
+
 updateQuantityLabel(): void {
   this.quantityLabel = `<i class="fa-solid fa-infinity text-secondary pe-2"></i>`;
   if (!this.type) {
@@ -147,11 +172,9 @@ updateQuantityLabel(): void {
 }
 
   setProductBasicInfo(title:string,Arabictitle:string,price:string){
-        // this.product.name= title,
         this.product.nameEn= title;
         this.product.nameAr= Arabictitle;
         this.product.price= parseFloat(price);
-        // this.product.quantity= this.productQuantityInput.value
         if(this.productQuantityInput.value == 'Unlimited Quantity')
         {
           this.product.enfinity=true;
@@ -168,7 +191,6 @@ updateQuantityLabel(): void {
   }
 
  openProductDetails(){
-    // if(!this.product.name)
     if(!this.product.nameEn)
       this.controlPopScreen('addDetailsAlert');
     else {this.controlPopScreen('productInfo')
@@ -311,12 +333,6 @@ controlPopScreen(type: string, action: string = 'open'): void {
 
   this.commonService.controlPopScreen(config.element, action);
   (this as any)[config.flag] = action === 'open';
-}
-
-showUpdateStatusMessages(updated: boolean): void {
-  const message = updated ? 'Variant has been saved successfully' : 'Something went wrong';
-  const type = updated ? 'success' : 'error';
-  this.__ToastingMessagesService.showToast(message,type);
 }
 
 toggleCheck(product:Product){

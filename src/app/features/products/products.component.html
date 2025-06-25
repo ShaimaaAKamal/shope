@@ -8,15 +8,21 @@
   subTitle: 'Start by stocking your store with products your customers will love',
   btnName: 'Add New Product',
   columns: [],
-  serviceType: '',
+  serviceType: 'product',
+  servicesList:servicesList
 }"
 (addNewVar)="addNew($event)"
+(serviceSelected)="handleServiceAction($event)"
+(displayDir)="handleDisplayDir($event)"
 (deleteSelected)="deleteSelected($event)" >
 
       <div class="row gy-3">
-        <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let product of products()">
+        <div class="col-12 col-md-6 col-xl-4 col-xxl-3"  class="col-12"
+        [ngClass]="{
+          'col-md-6 col-xl-4 col-xxl-3': cardDisplayDirection == 'catalog'
+        }" *ngFor="let product of products()">
           <div class="h-100">
-            <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" ></app-product-card>
+            <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" [cardDisplayDirection]="cardDisplayDirection"></app-product-card>
           </div>
         </div>
       </div>

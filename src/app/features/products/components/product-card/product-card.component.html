@@ -1,4 +1,4 @@
-<div class="card  w-100 h-100">
+<div class="card  w-100 h-100" *ngIf="cardDisplayDirection == 'catalog'">
 
   <div class="position-relative">
       <i class="fa-regular fa-square  icon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(product)"></i>
@@ -24,7 +24,6 @@
     </div>
   </div>
 
-  <!-- Card Body -->
   <!-- <div class="card-body d-flex  py-2 px-2"> -->
   <div class="card-body d-flex  py-2 px-2">
 
@@ -172,6 +171,177 @@
       <span class="fs-verySmall pe-2">{{'Save' | translate}}</span>
     </div>
   </div>
+</div>
+
+<div class="card  w-100 h-100 " *ngIf="cardDisplayDirection == 'list'">
+<div class="row gy-2">
+  <div class="col-4 col-lg-2">
+    <div class="position-relative imgContainer ">
+      <span>
+        <i class="fa-regular fa-square  listIcon text-muted" *ngIf="displayCheck && unchecked" (click)="toggleCheck(product)"></i>
+        <i class="fa-solid fa-square-check listIcon text-semi-dark" *ngIf="displayCheck && !unchecked" (click)="toggleCheck(product)"></i>
+
+          <!-- Close Button -->
+          <i *ngIf="!displayCheck"
+            class="fa-solid fa-circle-xmark text-danger listIcon"
+            (click)="cancalProduct()"
+          ></i>
+      </span>
+      <img src="assets/images/noImage.png" class="card-img" alt="product image" />
+      <div class="d-flex align-items-center  addImageList px-2 py-3 bg-second rounded-3" (click)="AddImage()">
+        <i class="fa-solid fa-circle-plus fa-sm"></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 col-lg-10">
+    <div class="row gy-2 pt-3 pe-3">
+        <div class="col-lg-4">
+            <app-input
+             [InputComponentData]="{
+                    type: 'text',
+                    id: 'productTitle',
+                    label: '',
+                    spanLabel: '',
+                    placeholder: 'Enter Product Name',
+                    vertCLass: 'col-12',
+                    readonly: false,
+                    hideLabel: true,
+                    inputGroup: false,
+                    clickMessage: '',
+                    errorMessage: englishNameErrorMessage,
+                    enableFocusBlurTracking: false,
+                  }"
+              #productTitle
+            >
+              <i class="fa-solid fa-box-open"></i>
+            </app-input>
+        </div>
+        <div class="col-lg-4">
+            <app-input
+             [InputComponentData]="{
+                    type: 'text',
+                    id: 'productArabicTitle',
+                    label: '',
+                    spanLabel: '',
+                    placeholder: 'Enter Product Arabic Name',
+                    vertCLass: 'col-12',
+                    readonly: false,
+                    hideLabel: true,
+                    inputGroup: false,
+                    clickMessage: '',
+                    errorMessage: arabicNameErrorMessage,
+                    enableFocusBlurTracking: false,
+                  }"
+              #productArabicTitle
+            >
+              <i class="fa-solid fa-box-open"></i>
+            </app-input>
+        </div>
+        <div class="col-lg-4">
+          <div class="col-12">
+            <app-input
+             [InputComponentData]="{
+                  type: 'text',
+                  id: 'price',
+                  label: '',
+                  spanLabel: currency,
+                  placeholder: 'Price',
+                  vertCLass: 'col-12',
+                  readonly: false,
+                  hideLabel: true,
+                  inputGroup: true,
+                  clickMessage: '',
+                  errorMessage: priceErrorMessage,
+                  enableFocusBlurTracking: false,
+                }"
+            #price
+          >
+            <i class="fa-solid fa-money-bill-1-wave"></i>
+          </app-input>
+        </div>
+        </div>
+    </div>
+    <div class="row gy-2 pt-3 pe-3">
+      <div class="col-lg-6">
+        <app-input
+        [InputComponentData]="{
+                type: 'text',
+                id: 'quantity',
+                label: '',
+                spanLabel: quantityLabel,
+                placeholder: 'Unlimited Quantity',
+                vertCLass: 'col-12',
+                readonly: product.enfinity ? true : false,
+                hideLabel: true,
+                inputGroup: true,
+                clickMessage: 'Infinity',
+                errorMessage: '',
+                enableFocusBlurTracking: false,
+              }"
+          (showVariant)="showVariant($event)"
+          #quantity
+        >
+          <i class="fa-solid fa-database"></i>
+        </app-input>
+      </div>
+
+      <!-- Category Dropdown -->
+      <div class="col-lg-6">
+        <div class="d-flex border rounded">
+        <app-dropdown
+             class="flex-grow-1"
+            [DropdownComponentData]="{
+                  title:'',
+                  dropdownSelection:!isRtl() ?dropdownSelection:dropdownSelectionArabic,
+                  optionsArray:categories(),
+                  key:isRtl()?'nameAr':'nameEn',
+                  noBorder:false
+            }"
+          (changeSelect)="chooseCategory($event)"
+          >
+        </app-dropdown>
+          <div>
+              <span class="bg-second fs-verySmall p-2" (click)="controlPopScreen('category')">
+              {{'Add new' | translate}}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="row gy-2 pt-3 pe-3">
+      <div class="col-12">
+        <div class="card-footer mb-2 mb-lg-0 rounded-2 border py-0">
+          <div class="row">
+           <!-- <div class="col-6  " *ngIf="product.name"> -->
+          <div class="col-6 " *ngIf="product.nameEn">
+             <div class="d-flex align-items-center justify-content-center   border-end py-2 "  >
+               <span class="fs-verySmall pe-2">{{'More' | translate}}</span>
+               <i class="fa-solid fa-chevron-down fa-xs"></i>
+             </div>
+           </div>
+            <div class="col-6 flex-grow-1">
+              <div class="d-flex align-items-center justify-content-center py-2" (click)="openProductDetails()">
+               <span class="fs-verySmall pe-2">{{'Details' | translate}}</span>
+              <i class="fa-solid fa-arrow-down-short-wide fa-sm"></i>
+             </div>
+           </div>
+          </div>
+         </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- Save Button -->
+ <div class="card-footer bg-semi-dark text-white" (click)="handleSave()">
+   <div class="d-flex align-items-center justify-content-center" >
+     <span class="fs-verySmall pe-2">{{'Save' | translate}}</span>
+   </div>
+ </div>
 </div>
 
 <!-- Add Category Popup -->

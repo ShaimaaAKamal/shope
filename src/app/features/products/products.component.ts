@@ -5,6 +5,7 @@ import { ToastingMessagesService } from '../../Services/ToastingMessages/toastin
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonService } from '../../Services/CommonService/common.service';
+import { ServiceInterface } from '../../Interfaces/service-interface';
 
 @Component({
   selector: 'app-products',
@@ -24,7 +25,11 @@ export class ProductsComponent {
   newProduct!: Product;
   type = this.productService.type;
   checkedProducts:number[]=[];
-
+  servicesList:ServiceInterface[]=[
+    { label: 'Export', icon: 'fa-file-export', action: 'export' },
+    { label: 'Sync', icon: 'fa-sync', action: 'sync' }
+  ]
+  cardDisplayDirection:string='catalog'
   constructor(private __CommonService:CommonService) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
@@ -32,7 +37,6 @@ export class ProductsComponent {
   });
 
     this.products = computed(() =>
-      // [...this.productService.products()].sort((a, b) => b.id - a.id)
     [...this.productService.products()].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
     );
   }
@@ -78,6 +82,21 @@ export class ProductsComponent {
     }
   }
 }
+
+handleServiceAction(action: any) {
+  switch (action) {
+    case 'export':
+      console.log(action);
+      break;
+    case 'sync':
+      console.log(action);
+      break;
+  }
+}
+handleDisplayDir(dir:string){
+  this.cardDisplayDirection=dir;
+}
+
   ngOnDestroy(): void {
     this.type.set('');
     this.productService.removeEmptyProduct(this.products());
