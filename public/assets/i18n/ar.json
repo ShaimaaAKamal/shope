@@ -124,6 +124,7 @@
 
 
   "Add New Products":"إضافة منتجات جديدة",
+  "Add new product":"إضافة منتج جديد",
   "Start by stocking your store with products your customers will love":"ابدأ بتخزين متجرك بالمنتجات التي سيحبها عملاؤك",
    "product has been deleted successfully":"لقد تم حذف المنتج بنجاح",
   "Product can not be deleted":"لم يتم حذف المنتج",
@@ -132,6 +133,7 @@
   "Duplicate name found. Update aborted.":"تم العثور على اسم مكرر. تم إلغاء التحديث.",
   "Enter Category Name":"أدخل اسم الفئة",
    "Add New Category":"إضافة فئة جديدة",
+   "Add new category":"إضافة فئة جديدة",
   "Add Categrory":"إضافة فئة",
   "Add new":"أضف جديد",
   "Choose Category":"اختر الفئة",
@@ -192,7 +194,6 @@
          "Arabic Name is already Exist":"الاسم العربي موجود بالفعل",
         "Product has been added successfully":"تمت إضافة المنتج بنجاح",
         "Another Product already exists with this":"يوجد منتج آخر  بالفعل",
-        "Add New Product":"إضافة منتج جديد",
         "Failed to create product":"فشل في إنشاء المنتج",
         "Failed to update product":"فشل تحديث المنتج",
         "Failed to delete product":"فشل في حذف المنتج",
@@ -215,9 +216,9 @@
 
          "Failed to fetch orders":"فشل في إيجاد الطلبات",
          "Efficiency in every order. Excellence in every delivery.":"كفاءة في كل طلب. تميز في كل تسليم",
-          "Add New Order":"إضافة طلب جديد",
+          "Add new order":"إضافة طلب جديد",
           "There is no products to be returned":"لا يوجد منتجات للإرجاع",
-          "Add New Variant":"إضافة متغير جديد",
+          "Add new variant":"إضافة متغير جديد",
           "Failed to fetch variants":"فشل في إيجاد المتغيرات",
           "Failed to fetch products":"فشل في إيجاد المنتجات",
 
@@ -243,13 +244,15 @@
               "Profit":"الربح",
               "Margin":"هامش الربح",
               "Every customer. Every moment. Every time — we deliver more than expected.":"كل عميل، كل لحظة، كل مرة - نُقدّم أكثر مما توقعنا.",
-               "Delete Customer":"حذف العميل",
-                "Edit Customer":"تعديل العميل",
-                "Inactive":"غير نشط",
-                "Customer Type":"نوع العميل",
-                "Categories":"الفئات",
-                 "New Order":"طلب جديد",
+              "Delete Customer":"حذف العميل",
+              "Edit Customer":"تعديل العميل",
+             "Inactive":"غير نشط",
+             "Customer Type":"نوع العميل",
+             "Categories":"الفئات",
+             "New Order":"طلب جديد",
              "Every category, clearly crafted — so finding the right product feels effortless.":"تم تصميم كل فئة بشكل واضح - لذلك فإن العثور على المنتج المناسب يبدو سهلاً للغاية.",
              "Active Status":"الحالة",
-             "Active":"نشط"
+             "Active":"نشط",
+            "Filter":"تصفية",
+            "Services":"خدمات"
         }

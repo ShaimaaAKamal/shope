@@ -124,6 +124,7 @@
 
 
   "Add New Products":"Add New Products",
+  "Add new product":"Add new product",
   "Start by stocking your store with products your customers will love":"Start by stocking your store with products your customers will love",
   "product has been deleted successfully":"product has been deleted successfully",
   "Product can not be deleted":"Product can not be deleted",
@@ -131,7 +132,7 @@
   "Product Price Field Is Required":"Product Price Field Is Required",
   "Duplicate name found. Update aborted.":"Duplicate name found. Update aborted.",
   "Enter Category Name":"Enter Category Name",
-  "Add New Category":"Add New Category",
+  "Add new Category":"Add New Category",
   "Add Categrory":"Add Categrory",
   "Add new":"Add new",
   "Choose Category":"Choose Category",
@@ -216,9 +217,9 @@
 
  "Failed to fetch orders":"Failed to fetch orders",
  "Efficiency in every order. Excellence in every delivery.":"Efficiency in every order. Excellence in every delivery.",
- "Add New Order": "Add New Order",
+ "Add new order": "Add New Order",
  "There is no products to be returned":"There is no products to be returned",
- "Add New Variant":"Add New Variant",
+ "Add new variant":"Add New Variant",
   "Failed to fetch variants":"Failed to fetch variants",
   "Failed to fetch products": "Failed to fetch products",
 
@@ -254,5 +255,7 @@
   "Categories":"Categories",
   "New Order": "New Order",
   "Every category, clearly crafted — so finding the right product feels effortless.":"Every category, clearly crafted — so finding the right product feels effortless.",
-  "Active Status":"Active Status"
+  "Active Status":"Active Status",
+  "Filter":"Filter",
+  "Services":"Services"
 }
