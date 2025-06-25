@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CategoryService } from '../../../Services/Category/category.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { Category } from '../../../Interfaces/category';
+import { ServiceInterface } from '../../../Interfaces/service-interface';
 
 @Component({
   selector: 'app-categories',
@@ -20,6 +21,7 @@ export class CategoriesComponent {
   category!:Category;
   __LanguageService = inject(LanguageService);
   isRtl=this.__LanguageService.rtlClassSignal;
+  servicesList:ServiceInterface[]=[]
 
 
   addNew(event: any) {

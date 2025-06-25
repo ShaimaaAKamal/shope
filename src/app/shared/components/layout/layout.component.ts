@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, Signal, SimpleChanges } from '@angular/core';
+import { ServiceInterface } from '../../../Interfaces/service-interface';
 
 interface LayoutInterface {
   route: string;
@@ -9,6 +10,7 @@ interface LayoutInterface {
   btnName: string;
   columns: any[];
   serviceType: string;
+  servicesList:ServiceInterface[];
 }
 @Component({
   selector: 'app-layout',
@@ -26,10 +28,13 @@ export class LayoutComponent {
   btnName: '',
   columns: [],
   serviceType: '',
+  servicesList:[],
 };
 
 @Output() addNewVar=new EventEmitter<boolean>();
 @Output() deleteSelected=new EventEmitter<boolean>();
+@Output() serviceSelected = new EventEmitter<string>();
+@Output() displayDir=new EventEmitter<string>()
 
 noItems!:boolean;
 ngOnInit(): void {
@@ -37,7 +42,7 @@ ngOnInit(): void {
 }
 
 ngOnChanges(changes: SimpleChanges): void {
- if(changes['LayoutComponentDate'])   this.noItems=this.LayoutComponentDate.items.length == 0
+ if(changes['LayoutComponentDate'])   this.noItems=this.LayoutComponentDate.items.length == 0;
 }
 
 handleDispalyedItems(displayedItems:any[]){
@@ -45,12 +50,19 @@ handleDispalyedItems(displayedItems:any[]){
 }
 handleDelete(del:boolean){
   this.deleteSelected.emit(del);
-  }
+}
+
 addNew(value:boolean){
   if(value)
   {
     this.noItems=false;
    this.addNewVar.emit(value);
   }
+}
+handleServiceAction(action:any){
+ this.serviceSelected.emit(action);
+}
+handleDisplayDir(event:string){
+this.displayDir.emit(event);
 }
 }

@@ -1,8 +1,8 @@
-import { Component, inject, TemplateRef, ViewChild, effect, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CustomerService } from '../../Services/Customer/customer.service';
-import { Router } from '@angular/router';
 import { LanguageService } from '../../Services/Language/language.service';
 import { Customer } from '../../Interfaces/customer';
+import { ServiceInterface } from '../../Interfaces/service-interface';
 
 @Component({
   selector: 'app-customers',
@@ -14,17 +14,15 @@ export class CustomersComponent {
   __CustomerService = inject(CustomerService);
   __LanguageService = inject(LanguageService);
 
-  // __Router = inject(Router);
   addCustomer = signal(false);
   editCustomer=signal(false);
   customers = this.__CustomerService.customers;
   del: boolean = false;
   customer!:Customer;
-
+  servicesList:ServiceInterface[]=[];
 
   addNew(event: any) {
     this.addCustomer.set(true);
-    // this.__Router.navigateByUrl('Orders/create');
   }
   deleteSelected(_del: boolean): void {
     // this.__CustomerService.deleteCustomers(this.checkeCustomers).subscribe();

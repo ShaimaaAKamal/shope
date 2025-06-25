@@ -1,4 +1,4 @@
-<div class="controls d-flex  justify-content-between align-items-center">
+<!-- <div class="controls d-flex  justify-content-between align-items-center">
         <div class="d-flex align-items-center">
             <span class="me-2" *ngIf="PageControlsComponentData.type != 'product'">{{'All' | translate}}</span>
             <span (click)="AddNew()"><i class="fa-solid fa-plus"></i></span>
@@ -8,4 +8,55 @@
           <span (click)="sort()"><i class="fa-solid fa-arrow-up-a-z"></i></span>
           <span class="ms-2" (click)="deleteSelected()"><i class="fa-solid fa-trash"></i></span>
         </div>
+  </div> -->
+
+
+
+
+  <nav aria-label="breadcrumb" class="d-inline-block ps-2">
+    <ol class="breadcrumb rounded-3 m-0 py-2">
+      <li class="breadcrumb-item small">
+        <i class="fa-solid fa-house pe-1 text-muted"></i>
+        <a [routerLink]="['/Orders/create']"  routerLinkActive="router-link-active" class="text-decoration-none text-muted">
+          {{"Home" | translate}}
+        </a>
+      </li>
+      <li class="breadcrumb-item active text-secondary small" aria-current="page">
+        {{ (PageControlsComponentData.type !== 'category'
+          ? (PageControlsComponentData.type + 's')
+          : 'categories') | translate | titlecase }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="d-flex align-items-center justify-content-between pt-2" *ngIf="PageControlsComponentData.items.length > 0">
+      <div class="px-3 py-2 d-flex align-items-center justify-content-center bg-semi-dark text-white rounded-4" (click)="AddNew()">
+        <i class="fa-solid fa-circle-plus pe-2"></i>
+        <span class="small">{{'Add new ' + PageControlsComponentData.type | translate}}</span>
+      </div>
+      <div class="d-flex align-items-center justify-content-center">
+          <div class="d-flex align-items-center justify-content-between pe-3" (click)="showFilterOptions()">
+            <i class="fa-solid fa-filter pe-2 text-muted"></i>
+            <span class="fw-light">{{"Filter" | translate}}</span>
+          </div>
+          <div class="position-relative pe-3" (click)="toggleDropdown()" *ngIf="PageControlsComponentData.servicesList.length >0">
+            <i class="fa-solid fa-server pe-2 text-muted"></i>
+            <span class="fw-light">{{ 'Services' | translate }}</span>
+
+            <div *ngIf="dropdownVisible" class="dropdown-menu show position-absolute mt-2 shadow-sm"
+                 style="z-index: 1000;">
+              <button
+                *ngFor="let item of PageControlsComponentData.servicesList"
+                class="dropdown-item d-flex align-items-center"
+                (click)="onServiceClick(item.action)">
+                <i *ngIf="item.icon" class="fa me-2 fa-sm text-secondary" [ngClass]="item.icon"></i>
+                <span class="small text-secondary">{{ item.label | translate }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <i class="fa-solid fa-table-cells-large pe-3 text-muted" (click)="setDisplayDir('catalog')"></i>
+            <i class="fa-solid fa-list text-muted" (click)="setDisplayDir('list')"></i>
+          </div>
+      </div>
   </div>

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
+import { ServiceInterface } from '../../../Interfaces/service-interface';
 
 @Component({
   selector: 'app-variants-library',
@@ -19,6 +20,7 @@ popupVisible:boolean=false;
 
 
 editedVariant:VariantMasterLookUP={} as VariantMasterLookUP;
+ servicesList:ServiceInterface[]=[]
 
 
 showOptionsSection(){

@@ -1,108 +1,7 @@
-// import { Component, inject, signal } from '@angular/core';
-// import { OrderService } from '../../Services/order/order.service';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-orders',
-//   standalone: false,
-//   templateUrl: './orders.component.html',
-//   styleUrl: './orders.component.scss'
-// })
-// export class OrdersComponent {
-//  __OrderService=inject(OrderService);
-// __Router=inject(Router);
-
-//  orders=this.__OrderService.orders;
-//  columns:any[]=[];
-
-//  ngOnInit(): void {
-
-//   this.columns = [
-//     {
-//       name: '',
-//       prop: '$$checkbox',
-//       width: 50,
-//       sortable: false,
-//       canAutoResize: false,
-//       draggable: false,
-//       resizeable: false,
-//       checkboxable: true,
-//       headerCheckboxable: true,
-//       isCheckboxColumn: true
-//     },
-//      {
-//       name: 'Id',
-//       prop: 'id',
-//       mobileVisible: true,
-//       tabletVisible: true,
-//     },
-//      {
-//       name: 'Date',
-//       prop: 'invoiceDate',
-//       mobileVisible: false,
-//       tabletVisible: false,
-//       largeVisible:false,
-//     },
-//     {
-//       name: 'Total Price',
-//       prop: 'totalAfterTax',
-//       mobileVisible: true,
-//       tabletVisible: true
-//     },
-//   //    {
-//   //     name: 'paymentMethods',
-//   //     prop: 'paymentMethods',
-//   //     mobileVisible: false,
-//   //     tabletVisible: false,
-//   //     largeVisible:false,
-//   //   },
-//   // ,{
-//   //     name: 'Customer',
-//   //     prop: 'customer',
-//   //     mobileVisible: false,
-//   //     tabletVisible: false
-//   //   },
-//   //   {
-//   //     name: 'Seller',
-//   //     prop: 'salesPerson',
-//   //     mobileVisible: false,
-//   //     tabletVisible: false,
-//   //     largeVisible:false,
-//   //   },
-//       {
-//       name: 'Invoice Type',
-//       prop: 'invoiceType',
-//       mobileVisible: false,
-//       tabletVisible: true,
-//       cellClass: ({ row }: any) =>
-//         row.invoiceType === 2? 'status-active' : 'status-inactive'
-//         // row.status === 'paid' ? 'status-active' : 'status-inactive'
-//     },
-//     {
-//       name: 'Items No',
-//       prop: 'details',
-//       mobileVisible: false,
-//       tabletVisible: true
-//     }
-//   ];
-//  }
-
-//  handleRowsDeletion($event:any){}
-
-//  handleDispalyedItems(event:any){
-//     this.orders.set([...event]);
-
-//  }
-//  addNew(event:any){
-//   this.__Router.navigateByUrl('Orders/create');
-//  }
-//  handleDelete(event:any){}
-//  getCheckedItemCode(code:string){}
-// }
-
 import {Component,inject,ViewChild,TemplateRef,OnInit} from '@angular/core';
 import { OrderService } from '../../Services/order/order.service';
 import { Router } from '@angular/router';
+import { ServiceInterface } from '../../Interfaces/service-interface';
 
 @Component({
   selector: 'app-orders',
@@ -117,6 +16,8 @@ export class OrdersComponent implements OnInit {
   orders = this.__OrderService.orders;
   columns: any[] = [];
   del:boolean=false;
+  servicesList:ServiceInterface[]=[]
+
   // 👇 Reference to custom cell template for "Invoice Type"
   @ViewChild('invoiceTypeTpl', { static: true })
   invoiceTypeTpl!: TemplateRef<any>;
@@ -231,16 +132,16 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
     console.log($event);
   }
 
-  handleDispalyedItems(event: any) {
-    this.orders.set([...event]);
-  }
+  // handleDispalyedItems(event: any) {
+  //   this.orders.set([...event]);
+  // }
 
   addNew(event: any) {
     this.__Router.navigateByUrl('Orders/create');
   }
 
-  handleDelete(event: any) {
-    this.del=true;
-  }
-
+  // handleDelete(event: any) {
+  //   this.del=true;
+  // }
+  deleteSelected(event:any){}
 }

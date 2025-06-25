@@ -1,73 +1,64 @@
-<div class="container-fluid  p-4 vh-100 overflow-auto d-flex flex-column">
-  <div class="row flex-column flex-grow-1">
-    <div class="col-12 bg-semi-dark py-2 px-3 rounded-top-3 border-bottom">
-      <app-page-controls
-        [PageControlsComponentData]="{
-          route: 'Orders/create',
-          type: 'order',
-          items: orders(),
-          sortKey: 'totalBeforeTax'
-        }"
-        (displayedItems)="handleDispalyedItems($event)"
-        (deleteEvent)="handleDelete($event)">
-      </app-page-controls>
-    </div>
+<div class="h-100 w-100">
+  <app-layout
+  [LayoutComponentDate]="{
+    route: '',
+    items: orders(),
+    sortKey: 'id',
+    header: 'Add New Orders',
+    subTitle: 'Efficiency in every order. Excellence in every delivery.',
+    btnName: 'Add New Order',
+    columns: [],
+    serviceType: 'order',
+    servicesList:servicesList
+  }"
+  (addNewVar)="addNew($event)"
+  (deleteSelected)="deleteSelected($event)" >
 
-    <div
-      class="col-12  rounded-bottom-3 px-4 shadow-sm products overflow-auto d-flex flex-column"
-      [ngClass]="{ 'flex-grow-1': orders().length > 0 }">
-
-      <app-no-items
-        [NoItemsComponentData]="{
-          header: 'Orders',
-          subTitle: 'Efficiency in every order. Excellence in every delivery.',
-          BtnName: 'Add New Order',
-          route: ''
-        }"
-        (addNewVar)="addNew($event)"
-        *ngIf="orders().length == 0; else orderContainer">
-      </app-no-items>
-
-      <!-- Orders Container -->
-      <ng-template #orderContainer>
-        <div class="row">
-          <app-data-table
-            class="flex-grow-1"
-            [del]="del"
-            [rows]="orders()"
-            (rowsChanged)="updateOrders($event)"
-            [columns]="columns">
-          </app-data-table>
-        </div>
-      </ng-template>
-    </div>
+  <div class="row">
+    <app-data-table
+      class="flex-grow-1"
+      [del]="del"
+      [rows]="orders()"
+      (rowsChanged)="updateOrders($event)"
+      [columns]="columns">
+    </app-data-table>
   </div>
-</div>
 
-<ng-template #invoiceTypeTpl let-row="row">
-  <span>
-    {{
-      invoiceTypeMap[row.invoiceType] === undefined
-        ? 'Unknown'
-        : invoiceTypeMap[row.invoiceType]
-    }}
-  </span>
-</ng-template>
+  </app-layout>
+  </div>
 
-<ng-template #invoiceDateTp2 let-row="row">
-  <span>{{ row.invoiceDate | date: 'dd/MM/yyyy' }}</span>
-</ng-template>
+  <ng-template #invoiceTypeTpl let-row="row">
+    <span>
+      {{
+        invoiceTypeMap[row.invoiceType] === undefined
+          ? 'Unknown'
+          : invoiceTypeMap[row.invoiceType]
+      }}
+    </span>
+  </ng-template>
 
-<ng-template #invoicePaymentMethodTpl let-row="row">
-  <span>
-    {{
-      invoicePaymentMethods[row.invoiceType] === undefined
-        ? 'Unknown'
-        : invoicePaymentMethods[row.invoiceType]
-    }}
-  </span>
-</ng-template>
+  <ng-template #invoiceDateTp2 let-row="row">
+    <span>{{ row.invoiceDate | date: 'dd/MM/yyyy' }}</span>
+  </ng-template>
 
-<ng-template #defaultValueTpl let-row="row" let-value="value">
-  {{ value && value.toString().trim() !== '' ? value : '----' }}
-</ng-template>
+  <ng-template #invoicePaymentMethodTpl let-row="row">
+    <span>
+      {{
+        invoicePaymentMethods[row.invoiceType] === undefined
+          ? 'Unknown'
+          : invoicePaymentMethods[row.invoiceType]
+      }}
+    </span>
+  </ng-template>
+
+  <ng-template #defaultValueTpl let-row="row" let-value="value">
+    {{ value && value.toString().trim() !== '' ? value : '----' }}
+  </ng-template>
+
+
+
+
+
+
+
+

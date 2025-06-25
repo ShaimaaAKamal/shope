@@ -1,7 +1,11 @@
 @use "variables" as *;
-span{
-  padding:.3rem 1rem;
-  background-color: $light;
-  border-radius: .3rem;
-  font-size:.6rem;
+// span{
+//   padding:.3rem 1rem;
+//   background-color: $light;
+//   border-radius: .3rem;
+//   font-size:.6rem;
+// }
+
+.bg-breadCrumb{
+  background-color: #02B7A7;
 }
