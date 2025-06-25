@@ -248,5 +248,8 @@
                 "Inactive":"غير نشط",
                 "Customer Type":"نوع العميل",
                 "Categories":"الفئات",
-                 "New Order":"طلب جديد"
+                 "New Order":"طلب جديد",
+             "Every category, clearly crafted — so finding the right product feels effortless.":"تم تصميم كل فئة بشكل واضح - لذلك فإن العثور على المنتج المناسب يبدو سهلاً للغاية.",
+             "Active Status":"الحالة",
+             "Active":"نشط"
         }
