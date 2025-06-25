@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { CategoryService } from '../../../Services/Category/category.service';
+import { LanguageService } from '../../../Services/Language/language.service';
+import { Category } from '../../../Interfaces/category';
 
 @Component({
   selector: 'app-categories',
@@ -7,5 +10,33 @@ import { Component } from '@angular/core';
   styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent {
+  __CategoryService = inject(CategoryService);
 
+  // __Router = inject(Router);
+  addCategory = signal(false);
+  editCategory=signal(false);
+  categories = this.__CategoryService.categories;
+  del: boolean = false;
+  category!:Category;
+  __LanguageService = inject(LanguageService);
+  isRtl=this.__LanguageService.rtlClassSignal;
+
+
+  addNew(event: any) {
+    this.addCategory.set(true);
+  }
+  deleteSelected(_del: boolean): void {
+    // this.__CustomerService.deleteCustomers(this.checkeCustomers).subscribe();
+}
+getEditCategoryInfo(category:Category){
+  this.category=category;
+  this.editCategory.set(true);
+}
+
+closeCreate(category:Category){
+  this.addCategory.set(false);
+}
+closeEdit(category:Category){
+  this.editCategory.set(false);
+}
 }

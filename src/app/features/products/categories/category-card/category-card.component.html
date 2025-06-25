@@ -1,0 +1,39 @@
+<div class="card w-100  rounded-3 " >
+  <div class="position-relative">
+    <div class="card-header head bg-semi-dark" ></div>
+    <div class="head"></div>
+    <div class="customerImage">
+      <span>{{isRtl()? category.nameAr.charAt(0) :category.nameEn.charAt(0) | titlecase}}</span>
+    </div>
+  </div>
+  <div class="card-body pt-0 text-center">
+    <h6 class="card-title mb-1">
+      {{isRtl()? category.nameAr :category.nameEn | titlecase}}
+    </h6>
+    <div
+      class="fs-verySmall text-center"
+      [ngClass]="{
+        'text-success': category.isActive === true,
+        'text-muted': category.isActive === false
+      }">
+      <i class="fa-solid fa-circle pe-1 fa-xs"></i>
+      <span>
+        {{ (category.isActive ? 'Active' : 'Inactive') | translate }}
+      </span>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex align-items-center justify-content-center fs-verySmall" (click)="deleteCategory(category)">
+      <i class="fa-solid fa-trash pe-2"></i>
+      <span>{{'Delete Category' | translate}}</span>
+    </div>
+    </div>
+    <div class="card-footer bg-semi-dark text-white">
+      <div class="d-flex align-items-center justify-content-center fs-verySmall" (click)="editCategoryfN(category)">
+        <i class="fa-solid fa-user-pen pe-2"></i>
+        <span>{{'Edit Category' | translate}}</span>
+      </div>
+    </div>
+</div>

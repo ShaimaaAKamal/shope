@@ -31,8 +31,6 @@ type SaveResult =
 export class ProductCardComponent {
   // ViewChild references
   @ViewChild('addCategory') addCategory!: PopScreenComponent;
-  @ViewChild('CategoryName') categoryNameInput!: InputComponent;
-  @ViewChild('CategoryArabicName') CategoryArabicName!: InputComponent;
   @ViewChild('addDetailsAlert') addDetailsAlert!: PopScreenComponent;
   @ViewChild('productTitle') productTitleInput!: InputComponent;
   @ViewChild('productArabicTitle') productArabicTitleInput!: InputComponent;
@@ -59,8 +57,7 @@ quantityLabel!:string;
 variants!:Variant[];
 isRtl!:Signal<boolean>;
 
-errorMessage: string = '';
-errorArabicrMessage:string='';
+
 priceErrorMessage:string='';
 englishNameErrorMessage:string='';
 arabicNameErrorMessage:string='';
@@ -82,9 +79,6 @@ dropdownSelectionArabic!:string;
     effect(() => {
     this.updateQuantityLabel();
   });
-    // effect(() => {
-    //   this.setCategoryInfo()
-    // });
   }
 
    ngOnInit(): void {
@@ -128,32 +122,16 @@ updateQuantityLabel(): void {
           this.product.category=category.id;
   }
 
-  createCategory(): void {
-    const categoryName = this.categoryNameInput.value;
-    const categoryArabicName = this.CategoryArabicName.value;
-    const result = this.categoryService.createCategory(categoryName,categoryArabicName);
-
-    if (result.status) {
-      this.clearCategoryForm();
+  closeCreateCategory(category:Category){
+    if(category.id){
       this.controlPopScreen('category','close');
-      this.dropdownSelection=this.isRtl()? categoryArabicName : categoryName;
-      // this.product.category=result.catergory;
-      if(result.catergory && result.catergory.id)
-      this.product.category=result.catergory.id;
-    } else {
-      this.errorMessage =( result.errorType == "missing_Name" || result.errorType == "already_Exist" )?result.message : '';
-      this.errorArabicrMessage = result.errorType == "missing_Arabic_Name" ?result.message : '';
+      this.dropdownSelection=this.isRtl()? category.nameAr : category.nameEn;
+      if( category.id)
+      this.product.category=category.id;
     }
+    else       this.controlPopScreen('category','close');
   }
 
-  clearCategoryForm(): void {
-    this.clearErrorMessage();
-    this.categoryNameInput.value = '';
-  }
-  clearErrorMessage(){
-    this.errorMessage = '';
-    this.arabicNameErrorMessage=''
-   }
 
   // Product Functions
   displayProductInfo(): void {

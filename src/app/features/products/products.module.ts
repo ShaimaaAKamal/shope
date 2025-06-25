@@ -16,6 +16,8 @@ import { EditVariantComponent } from './edit-variant/edit-variant.component';
 import { ColorPickingComponent } from './components/color-picking/color-picking.component';
 import { VariantLibraryItemComponent } from './variant-library-item/variant-library-item.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { CategoryComponent } from './categories/category/category.component';
+import { CategoryCardComponent } from './categories/category-card/category-card.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { CategoriesComponent } from './categories/categories.component';
     EditVariantComponent,
     ColorPickingComponent,
     VariantLibraryItemComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    CategoryComponent,
+    CategoryCardComponent
   ],
   imports: [
     CommonModule,

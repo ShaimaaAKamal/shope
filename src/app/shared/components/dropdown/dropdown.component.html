@@ -1,6 +1,6 @@
 <div class="d-flex flex-column">
   <div class="pb-1" *ngIf="DropdownComponentData.title">
-  <span class="small">{{DropdownComponentData.title | translate}}</span>
+  <span class="fs-verySmall">{{DropdownComponentData.title | translate}}</span>
 </div>
 <div class="btn-group " [class.border]="DropdownComponentData.title">
             <button
@@ -12,9 +12,6 @@
             >
              <div class="d-flex align-items-center">
               <ng-content #name></ng-content>
-              <!-- <span class="fs-verySmall text-muted text-start"  *ngIf="!colorField">
-                {{ DropdownComponentData.dropdownSelection | translate }}
-              </span> -->
               <ng-container *ngIf="colorField; else textLabel">
               <span
                 class="circle-picker rounded-3 border mx-1"

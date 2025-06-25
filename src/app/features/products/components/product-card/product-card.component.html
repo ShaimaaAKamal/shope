@@ -175,58 +175,8 @@
 </div>
 
 <!-- Add Category Popup -->
-<app-pop-screen
- *ngIf="showCategory"
-     [PopScreenComponentData]="{
-      headerLabel:'Add New Category',
-      btnLabel:'Add Categrory',
-      hideCancalBtn:false
-    }"
-  (closeChange)="clearCategoryForm()"
-  (doneChange)="createCategory()"
-  #addCategory
->
-  <div class="px-3 bg-white pb-3">
-    <app-input
-    [InputComponentData]="{
-                type: 'text',
-                id: 'categoryName',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Enter Category Name',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage:  errorMessage | translate,
-                enableFocusBlurTracking: false,
-              }"
-      #CategoryName
-    >
-      <i class="fa-solid fa-text-width"></i>
-    </app-input>
-    <app-input
-    [InputComponentData]="{
-                type: 'text',
-                id: 'categoryArabicName',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Enter Category Arabic Nam',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage:  errorArabicrMessage | translate,
-                enableFocusBlurTracking: false,
-              }"
-      #CategoryArabicName
-    >
-      <i class="fa-solid fa-text-width"></i>
-    </app-input>
-  </div>
-</app-pop-screen>
+<app-category *ngIf="showCategory" (createdCategory)="closeCreateCategory($event)"></app-category>
+
 
 <!-- Alert Message Popup -->
 <app-pop-screen
