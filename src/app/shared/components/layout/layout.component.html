@@ -14,6 +14,7 @@
           (serviceSelected)="handleServiceAction($event)"
          (displayedItems)="handleDispalyedItems($event)"
          (displayDir)="handleDisplayDir($event)"
+         (filter)="showFilterOptions()"
          (deleteEvent)="handleDelete($event)">
       </app-page-controls>
     </div>
@@ -35,3 +36,19 @@
     </div>
   </div>
 </div>
+
+<div class="filter-sidenav" [class.show]="isFilterVisible">
+  <div class="filter-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+    <h6 class="mb-0">{{ "Filter Options" | translate }}</h6>
+    <button class="btn btn-sm btn-outline-danger" (click)="hideFilterOptions()">
+      <i class="fa-solid fa-circle-xmark"></i>
+    </button>
+  </div>
+
+  <div class="filter-content p-3">
+    <ng-content select="[filterOptions]"></ng-content>
+  </div>
+</div>
+
+<!-- Optional: overlay -->
+<div class="overlay" *ngIf="isFilterVisible" (click)="hideFilterOptions()"></div>

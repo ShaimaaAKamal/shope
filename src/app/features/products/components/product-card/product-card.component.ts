@@ -69,48 +69,7 @@ getVariantDetailsData=this.productService.getVariantDetailsData;
 dropdownSelection!: string ;
 dropdownSelectionArabic!:string;
 
-// getInputFields(layout: 'catalog' | 'list') {
-//   return [
-//     {
-//       id: 'productTitle',
-//       placeholder: 'Enter Product Name',
-//       icon: 'fa-box-open',
-//       spanLabel: '',
-//       errorMessage: this.englishNameErrorMessage,
-//       inputGroup: false,
-//       readonly: false
-//     },
-//     {
-//       id: 'productArabicTitle',
-//       placeholder: 'Enter Product Arabic Name',
-//       icon: 'fa-box-open',
-//       spanLabel: '',
-//       errorMessage: this.arabicNameErrorMessage,
-//       inputGroup: false,
-//       readonly: false
-//     },
-//     {
-//       id: 'price',
-//       placeholder: 'Price',
-//       icon: 'fa-money-bill-1-wave',
-//       spanLabel: this.currency,
-//       errorMessage: this.priceErrorMessage,
-//       inputGroup: true,
-//       readonly: false
-//     },
-//     {
-//       id: 'quantity',
-//       placeholder: 'Unlimited Quantity',
-//       icon: 'fa-database',
-//       spanLabel: this.quantityLabel,
-//       errorMessage: '',
-//       inputGroup: true,
-//       readonly: this.product?.enfinity ?? false,
-//       clickMessage: 'Infinity',
-//       showVariant: true
-//     }
-//   ];
-// }
+
 
   constructor(
     private categoryService: CategoryService,

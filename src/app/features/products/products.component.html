@@ -11,11 +11,12 @@
   serviceType: 'product',
   servicesList:servicesList
 }"
+[close]="closeFilter"
+(resetFilter)="resetFilter()"
 (addNewVar)="addNew($event)"
 (serviceSelected)="handleServiceAction($event)"
 (displayDir)="handleDisplayDir($event)"
 (deleteSelected)="deleteSelected($event)" >
-
       <div class="row gy-3">
         <div class="col-12 col-md-6 col-xl-4 col-xxl-3"  class="col-12"
         [ngClass]="{
@@ -25,6 +26,38 @@
             <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" [cardDisplayDirection]="cardDisplayDirection"></app-product-card>
           </div>
         </div>
+      </div>
+
+      <div filterOptions>
+        <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+          <div class="mb-3">
+            <label class="form-label">{{ "Search" | translate }}</label>
+            <input type="text" class="form-control" formControlName="searchText" placeholder="{{ 'Enter keyword' | translate }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{{ "Category" | translate }}</label>
+            <select class="form-select" formControlName="category">
+              <option value="">{{ "All" | translate }}</option>
+              <option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{{ "Price Range" | translate }}</label>
+            <div class="d-flex gap-2">
+              <input type="number" class="form-control" formControlName="minPrice" placeholder="{{ 'Min' | translate }}">
+              <input type="number" class="form-control" formControlName="maxPrice" placeholder="{{ 'Max' | translate }}">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">{{ "Apply" | translate }}</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">{{ "Reset" | translate }}</button>
+          </div>
+        </form>
       </div>
 </app-layout>
 </div>

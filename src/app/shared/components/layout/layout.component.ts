@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, Signal, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output, Signal, SimpleChanges } from '@angular/core';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
 
 interface LayoutInterface {
@@ -30,11 +30,13 @@ export class LayoutComponent {
   serviceType: '',
   servicesList:[],
 };
-
+@Input() close:boolean=false;
 @Output() addNewVar=new EventEmitter<boolean>();
 @Output() deleteSelected=new EventEmitter<boolean>();
 @Output() serviceSelected = new EventEmitter<string>();
-@Output() displayDir=new EventEmitter<string>()
+@Output() displayDir=new EventEmitter<string>();
+@Output() resetFilter=new EventEmitter<void>()
+isFilterVisible = false;
 
 noItems!:boolean;
 ngOnInit(): void {
@@ -43,6 +45,8 @@ ngOnInit(): void {
 
 ngOnChanges(changes: SimpleChanges): void {
  if(changes['LayoutComponentDate'])   this.noItems=this.LayoutComponentDate.items.length == 0;
+ if(changes['close'] && this.close)   {this.hideFilterOptions(); this.resetFilter.emit()}
+
 }
 
 handleDispalyedItems(displayedItems:any[]){
@@ -65,4 +69,13 @@ handleServiceAction(action:any){
 handleDisplayDir(event:string){
 this.displayDir.emit(event);
 }
+
+showFilterOptions() {
+  this.isFilterVisible = true;
+}
+
+hideFilterOptions() {
+  this.isFilterVisible = false;
+}
+
 }

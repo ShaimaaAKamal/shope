@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NewDatePipe } from '../pipes/date/date.pipe';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from './components/layout/layout.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DataTableComponent } from './components/data-table/data-table.component';
@@ -48,9 +48,11 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     TranslateModule,
     NgSelectModule,
     FormsModule,
-    ColorPickerModule
+    ColorPickerModule,
+    ReactiveFormsModule
   ],
   exports:[
+    ReactiveFormsModule,
          DataTableComponent,
          InputComponent,
         SelectInputComponent,

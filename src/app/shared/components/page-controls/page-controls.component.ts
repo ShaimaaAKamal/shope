@@ -52,13 +52,14 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
+import { FormBuilder } from '@angular/forms';
 
 interface PageControlsInterface {
   route: string;
   type: string;
   items: any[];
   sortKey: string;
-  servicesList:ServiceInterface[]
+  servicesList:ServiceInterface[],
 }
 @Component({
   selector: 'app-page-controls',
@@ -72,7 +73,7 @@ export class PageControlsComponent {
   type: '',
   items: [],
   sortKey: '',
-  servicesList:[]
+  servicesList:[],
   }
   @Output() displayedItems=new EventEmitter<any[]>()
   @Output() deleteEvent=new EventEmitter<boolean>()
@@ -80,10 +81,19 @@ export class PageControlsComponent {
   @Output() displayDir=new EventEmitter<string>()
   @Input() servicesList: ServiceInterface[] = [];
   @Output() serviceSelected = new EventEmitter<string>();
+  @Output() filter = new EventEmitter<void>();
 
   dropdownVisible = false;
 
-  constructor(private __Router:Router){}
+  constructor(private __Router:Router){
+
+    // this.filterForm = this.fb.group({
+    //   searchText: [''],
+    //   category: [''],
+    //   minPrice: [''],
+    //   maxPrice: ['']
+    // });
+  }
 
 AddNew(){
     switch(this.PageControlsComponentData.type){
@@ -105,7 +115,7 @@ deleteSelected(){
   this.deleteEvent.emit(true)
 }
 showFilterOptions(){
-
+this.filter.emit()
 }
 showServices(){}
 
@@ -122,5 +132,34 @@ onServiceClick(action: string) {
   this.serviceSelected.emit(action);
   this.dropdownVisible = false;
 }
+// isFilterVisible = false;
+// filterForm: FormGroup;
+
+// categories = [
+//   { id: 1, name: 'Electronics' },
+//   { id: 2, name: 'Clothes' },
+//   { id: 3, name: 'Books' }
+// ];
+
+
+
+// showFilterOptions() {
+//   this.isFilterVisible = true;
+// }
+
+// hideFilterOptions() {
+//   this.isFilterVisible = false;
+// }
+
+// applyFilters() {
+//   const filters = this.filterForm.value;
+//   console.log('Applying filters:', filters);
+//   // Emit filters or call filtering logic
+//   this.hideFilterOptions();
+// }
+
+// resetFilters() {
+//   this.filterForm.reset();
+// }
 }
 

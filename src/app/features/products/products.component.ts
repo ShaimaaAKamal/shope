@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonService } from '../../Services/CommonService/common.service';
 import { ServiceInterface } from '../../Interfaces/service-interface';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
@@ -25,12 +26,21 @@ export class ProductsComponent {
   newProduct!: Product;
   type = this.productService.type;
   checkedProducts:number[]=[];
+  closeFilter:boolean=false;
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },
     { label: 'Sync', icon: 'fa-sync', action: 'sync' }
   ]
-  cardDisplayDirection:string='catalog'
-  constructor(private __CommonService:CommonService) {
+  cardDisplayDirection:string='catalog';
+
+  filterForm: FormGroup;
+
+  categories = [
+    { id: 1, name: 'Electronics' },
+    { id: 2, name: 'Clothes' },
+    { id: 3, name: 'Books' }
+  ];
+  constructor(private __CommonService:CommonService,private fb: FormBuilder) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
@@ -39,6 +49,13 @@ export class ProductsComponent {
     this.products = computed(() =>
     [...this.productService.products()].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
     );
+
+    this.filterForm = this.fb.group({
+      searchText: [''],
+      category: [''],
+      minPrice: [''],
+      maxPrice: ['']
+    });
   }
 
   addNew(_value: boolean): void {
@@ -95,6 +112,18 @@ handleServiceAction(action: any) {
 }
 handleDisplayDir(dir:string){
   this.cardDisplayDirection=dir;
+}
+
+applyFilters() {
+  const filters = this.filterForm.value;
+  console.log('Applying filters:', filters);
+  this.closeFilter=true;
+  }
+  resetFilter(){
+    this.closeFilter=false;
+  }
+resetFilters() {
+  this.filterForm.reset();
 }
 
   ngOnDestroy(): void {
