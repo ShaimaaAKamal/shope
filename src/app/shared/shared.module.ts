@@ -22,6 +22,7 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { TemplateRefDirective } from '../Directives/template-ref-directive.directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LayoutHeaderComponent } from './components/layout-header/layout-header.component';
+import { FilterOptionsComponent } from './components/filter-options/filter-options.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { LayoutHeaderComponent } from './components/layout-header/layout-header.
     LayoutComponent,
     DataTableComponent,
     TemplateRefDirective,
-    LayoutHeaderComponent
+    LayoutHeaderComponent,
+    FilterOptionsComponent
   ],
   imports: [
     NgxDatatableModule,
@@ -70,7 +72,8 @@ import { LayoutHeaderComponent } from './components/layout-header/layout-header.
         DropdownComponent,
         LayoutComponent,
         ColorPickerModule,
-        FormsModule
+        FormsModule,
+        FilterOptionsComponent
   ],
   providers:[
     DatePipe,

@@ -1,0 +1,113 @@
+.accordion-button::after {
+  content: '+';
+  font-weight: bold;
+  font-size: 1rem;
+  transform: none !important;
+  background-image: none !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+  content: '−';
+}
+
+.accordion-item {
+  border: none;
+}
+
+.accordion-header {
+  margin: 0;
+  padding: 0;
+}
+
+.accordion-button::after {
+  display: none !important;
+}
+
+.accordion-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0rem;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) .accordion-icon {
+  content: "−";
+}
+.accordion-body{
+  padding:.5rem 0rem;
+}
+.border-dashed {
+  border-style: solid !important;
+  border-width: 1px 0 0 0 !important;
+  border-color: rgba(228, 222, 222, 0.616);
+}
+
+select.form-select {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+select.form-select:focus {
+  outline: none;
+  box-shadow:none !important;
+  border-color: gray;
+}
+
+.accordingBtn{
+  font-weight: 400;
+  font-size: .8rem;
+}
+
+.btn-primary:hover{
+  background-color: #ced4da;
+  border: none;
+}
+
+.form-check-input:checked {
+  border: solid #198754;
+  background-color: #198754 !important;
+  border-width: 0 2px 2px 0;
+  box-shadow: none;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+  outline: none;
+  border: solid #198754;
+  border-width: 0 2px 2px 0;
+}
+
+.custom-radio-style .form-check-input {
+  appearance: radio;
+}
+
+.custom-radio-style .form-check-input {
+  // appearance: none;
+  // -webkit-appearance: none;
+  // -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  position: relative;
+  top:2px;
+}
+
+.custom-radio-style .form-check-input:checked {
+  background-color: #198754 !important;
+  border-color: #198754 !important;
+}
+
+.custom-radio-style .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}

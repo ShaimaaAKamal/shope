@@ -9,6 +9,7 @@ import { ServiceInterface } from '../../Interfaces/service-interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../Services/Category/category.service';
 import { LanguageService } from '../../Services/Language/language.service';
+import { FilterSection } from '../../Interfaces/filter-options';
 
 @Component({
   selector: 'app-products',
@@ -31,7 +32,6 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
-  // closeFilter=signal<boolean>(false);
 
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },
@@ -39,20 +39,97 @@ export class ProductsComponent {
   ]
   cardDisplayDirection:string='catalog';
 
-  filterForm: FormGroup;
-  filterOptions = [
-    { label: 'All', value: 'all', controlName: 'all' },
-    { label: 'In Stock', value: 'inStock', controlName: 'inStock' },
-    { label: 'On Sale', value: 'onSale', controlName: 'onSale' },
-    { label: 'New Arrival', value: 'newArrival', controlName: 'newArrival' },
-    { label: 'Taxable products', value: 'taxableProducts', controlName: 'taxableProducts' },
-    { label: 'Sold out products', value: 'soldOutProducts', controlName: 'soldOutProducts' },
-    { label: 'Unpriced products', value: ' unpricedProducts', controlName: 'unpricedProducts' },
-    { label: 'Uncategorized Products', value: ' uncategorizedProducts', controlName: 'uncategorizedProducts' },
-
-
-  ];
+  // filterForm: FormGroup;
+  // filterOptions = [
+  //   { label: 'All', value: 'all', controlName: 'all' },
+  //   { label: 'In Stock', value: 'inStock', controlName: 'inStock' },
+  //   { label: 'On Sale', value: 'onSale', controlName: 'onSale' },
+  //   { label: 'New Arrival', value: 'newArrival', controlName: 'newArrival' },
+  //   { label: 'Taxable products', value: 'taxableProducts', controlName: 'taxableProducts' },
+  //   { label: 'Sold out products', value: 'soldOutProducts', controlName: 'soldOutProducts' },
+  //   { label: 'Unpriced products', value: ' unpricedProducts', controlName: 'unpricedProducts' },
+  //   { label: 'Uncategorized Products', value: ' uncategorizedProducts', controlName: 'uncategorizedProducts' },
+  // ];
   categories = this. __CategoryService.categories;
+  filterConfig= computed<FilterSection[]>(() => [
+    {
+      title: 'Category',
+      collapseId: 'collapseCategory',
+      fields: [
+        {
+          type: 'select',
+          controlName: 'category',
+          label: 'Category',
+          options: this.categories().map(c => ({
+            label: this.isRtl() ? c.nameAr : c.nameEn,
+            value: c.id
+          }))
+        }
+      ]
+    },
+    {
+      title: 'Price Range',
+      collapseId: 'collapsePrice',
+      fields: [
+        { type: 'input', controlName: 'minPrice', label: 'Min Price', inputType: 'number', placeholder: 'Min' },
+        { type: 'input', controlName: 'maxPrice', label: 'Max Price', inputType: 'number', placeholder: 'Max' }
+      ]
+    },
+    {
+      title: 'Product Status',
+      collapseId: 'collapseStatus',
+      fields: [
+        {
+          type: 'radio',
+          controlName: 'isActive',
+          label: 'Product Status',
+          options: [
+            { label: 'Active', value: true },
+            { label: 'Inactive', value: false }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Filter By',
+      collapseId: 'collapseFilterBy',
+      fields: [
+        {
+          type: 'checkbox',
+          controlName: 'all',
+          label: 'All',
+          options: [
+            { label: 'All', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'inStock',
+          label: 'In Stock',
+          options: [
+            { label: 'In Stock', value: true },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'newArrival',
+          label: 'New Arrival',
+          options: [
+            { label: 'New Arrival', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'taxableProducts',
+          label: 'Taxable products',
+          options: [
+            { label: 'Taxable products', value: 'true' },
+          ]
+        },
+
+      ]
+    }
+  ]);
   constructor(private __CommonService:CommonService,private fb: FormBuilder) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
@@ -63,19 +140,6 @@ export class ProductsComponent {
     [...this.productService.products()].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
     );
 
-    this.filterForm = this.fb.group({
-      category: [''],
-      minPrice: [''],
-      maxPrice: [''],
-      inStock: [false],
-      onSale: [false],
-      newArrival: [false],
-      uncategorizedProducts: [false],
-      unpricedProducts: [false],
-      soldOutProducts: [false],
-      taxableProducts: [false],
-      all: [false],
-    });
   }
 
   onCheckboxChange(event: any, value: string) {
@@ -138,18 +202,12 @@ handleDisplayDir(dir:string){
   this.cardDisplayDirection=dir;
 }
 
-applyFilters() {
-  const filters = this.filterForm.value;
+applyFilters(event:any) {
+  const filters = event;
   this.closeFilter=true;
-  console.log(filters);
-  console.log('send apu request to get filter data');
   }
-
-// resetFilter(){
-//     this.closeFilter=false;
-//   }
 resetFilters() {
-  this.filterForm.reset();
+  // this.filterForm.reset();
 }
 
   ngOnDestroy(): void {

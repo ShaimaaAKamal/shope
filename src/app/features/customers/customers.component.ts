@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CustomerService } from '../../Services/Customer/customer.service';
 import { LanguageService } from '../../Services/Language/language.service';
 import { Customer } from '../../Interfaces/customer';
 import { ServiceInterface } from '../../Interfaces/service-interface';
+import { FilterSection } from '../../Interfaces/filter-options';
 
 @Component({
   selector: 'app-customers',
@@ -21,6 +22,64 @@ export class CustomersComponent {
   customer!:Customer;
   servicesList:ServiceInterface[]=[];
 
+  closeFilter:boolean=false;
+  filterConfig= computed<FilterSection[]>(() => [
+    {
+      title: 'Search By Name or Phone',
+      collapseId: 'collapseSearchBy',
+      fields: [
+        { type: 'input', controlName: 'searchKey', label: '', inputType: 'text', placeholder: '' },
+      ]
+    },
+    {
+      title: 'Customer Status',
+      collapseId: 'collapseStatus',
+      fields: [
+        {
+          type: 'radio',
+          controlName: 'isActive',
+          label: 'Customer Status',
+          options: [
+            { label: 'Active', value: true },
+            { label: 'Inactive', value: false }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Gender',
+      collapseId: 'collapseGender',
+      fields: [
+        {
+          type: 'radio',
+          controlName: 'gender',
+          label: 'Gender',
+          options: [
+            { label: 'All', value: 'all' },
+            { label: 'Males', value: 'males' },
+            { label: 'Females', value: 'females' }
+
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Register Date',
+      collapseId: 'collapseRegisterDate',
+      fields: [
+        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' },
+        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To' },
+
+      ]
+    },
+  ]);
+  applyFilters(event:any) {
+    const filters = event;
+    this.closeFilter=true;
+    }
+  resetFilters() {
+    // this.filterForm.reset();
+  }
   addNew(event: any) {
     this.addCustomer.set(true);
   }

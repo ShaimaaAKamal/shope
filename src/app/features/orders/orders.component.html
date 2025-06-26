@@ -12,6 +12,7 @@
     servicesList:servicesList,
     page:'Orders'
   }"
+  [close]="closeFilter"
   (addNewVar)="addNew($event)"
   (deleteSelected)="deleteSelected($event)" >
 
@@ -24,6 +25,11 @@
       [columns]="columns">
     </app-data-table>
   </div>
+  <app-filter-options filterOptions
+  [sections]="filterConfig()"
+  (filtersApplied)="applyFilters($event)"
+  (filtersReset)="resetFilters()">
+</app-filter-options>
 
   </app-layout>
   </div>

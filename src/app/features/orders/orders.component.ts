@@ -1,7 +1,8 @@
-import {Component,inject,ViewChild,TemplateRef,OnInit} from '@angular/core';
+import {Component,inject,ViewChild,TemplateRef,OnInit, computed} from '@angular/core';
 import { OrderService } from '../../Services/order/order.service';
 import { Router } from '@angular/router';
 import { ServiceInterface } from '../../Interfaces/service-interface';
+import { FilterSection } from '../../Interfaces/filter-options';
 
 @Component({
   selector: 'app-orders',
@@ -39,6 +40,121 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
     1: 'Cash',
     2: 'Network',
   };
+
+
+  closeFilter:boolean=false;
+  filterConfig= computed<FilterSection[]>(() => [
+    {
+      title: 'Order Status',
+      collapseId: 'collapseOrderStatus',
+      fields: [
+        {
+          type: 'checkbox',
+          controlName: 'all',
+          label: 'All',
+          options: [
+            { label: 'All', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'hold',
+          label: 'Hold',
+          options: [
+            { label: 'Hold', value: true },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'paid',
+          label: 'Paid',
+          options: [
+            { label: 'Paid', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'returned',
+          label: 'Returned',
+          options: [
+            { label: 'Returned', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'cancalled',
+          label: 'Cancalled',
+          options: [
+            { label: 'Cancalled', value: 'true' },
+          ]
+        },
+      ]
+    },
+    {
+      title: 'Payment Methods',
+      collapseId: 'collapsePaymentMethod',
+      fields: [
+        {
+          type: 'checkbox',
+          controlName: 'all',
+          label: 'All',
+          options: [
+            { label: 'All', value: 'true' },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'cash',
+          label: 'Cash',
+          options: [
+            { label: 'Cash', value: true },
+          ]
+        },
+        {
+          type: 'checkbox',
+          controlName: 'Network',
+          label: 'Network',
+          options: [
+            { label: 'Network', value: 'true' },
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Sort Orders',
+      collapseId: 'collapseSortOrders',
+      fields: [
+        {
+          type: 'radio',
+          controlName: 'sortOrders',
+          label: 'Sort Orders',
+          options: [
+            { label: 'Order Number - Ascend', value: 'orderNumberAscend' },
+            { label: 'Order Number - Descend', value: 'orderNumberDescend' },
+            { label: 'Order Total - Ascend', value: 'orderTotalAscend' },
+            { label: 'Order Total - Descend', value: 'orderTotalDescend' },
+            { label: 'Order Date - Ascend', value: 'orderDateAscend' },
+            { label: 'Order Date - Descend', value: 'orderDateDescend' },
+          ]
+        }
+      ]
+    },
+    {
+      title: 'Order Date',
+      collapseId: 'collapseOrderDate',
+      fields: [
+        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' },
+        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To' },
+      ]
+    },
+  ]);
+  applyFilters(event:any) {
+    const filters = event;
+    this.closeFilter=true;
+    }
+  resetFilters() {
+    // this.filterForm.reset();
+  }
   ngOnInit(): void {
     this.columns = [
       {
