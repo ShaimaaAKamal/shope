@@ -11,6 +11,7 @@ interface LayoutInterface {
   columns: any[];
   serviceType: string;
   servicesList:ServiceInterface[];
+  page:string
 }
 @Component({
   selector: 'app-layout',
@@ -29,6 +30,7 @@ export class LayoutComponent {
   columns: [],
   serviceType: '',
   servicesList:[],
+  page:'Products'
 };
 @Input() close:boolean=false;
 @Output() addNewVar=new EventEmitter<boolean>();
