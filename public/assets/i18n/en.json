@@ -257,5 +257,11 @@
   "Every category, clearly crafted — so finding the right product feels effortless.":"Every category, clearly crafted — so finding the right product feels effortless.",
   "Active Status":"Active Status",
   "Filter":"Filter",
-  "Services":"Services"
+  "Services":"Services",
+
+  "Search by product name , category name or sku":  "Search by product name , category name or sku",
+  "Search by customer name , phone number":"Search by customer name , phone number",
+  "Search by order number , customer name":"Search by order number , customer name",
+  "Search by category name":"Search by category name",
+  "Search by variant name , variant type":"Search by variant name , variant type"
 }

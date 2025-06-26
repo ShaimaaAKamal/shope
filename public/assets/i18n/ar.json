@@ -254,5 +254,11 @@
              "Active Status":"الحالة",
              "Active":"نشط",
             "Filter":"تصفية",
-            "Services":"خدمات"
+            "Services":"خدمات",
+
+            "Search by product name , category name or sku":  "ابحث حسب اسم المنتج أو اسم الفئة أو رمز المنتج",
+            "Search by customer name , phone number":"البحث حسب اسم العميل ورقم الهاتف",
+            "Search by order number , customer name":"البحث حسب رقم الطلب أو اسم العميل",
+            "Search by category name":"البحث حسب اسم الفئة",
+            "Search by variant name , variant type":"البحث حسب اسم المتغير، نوع المتغير"
         }
