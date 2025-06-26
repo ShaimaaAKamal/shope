@@ -1,5 +1,5 @@
 import { Category } from './../../../../Interfaces/category';
-import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, Signal, SimpleChanges, ViewChild } from '@angular/core';
+import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, QueryList, Signal, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { PopScreenComponent } from '../../../../shared/components/pop-screen/pop-screen.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Product } from '../../../../Interfaces/product';
@@ -30,12 +30,14 @@ type SaveResult =
 
 export class ProductCardComponent {
   // ViewChild references
+
   @ViewChild('addCategory') addCategory!: PopScreenComponent;
   @ViewChild('addDetailsAlert') addDetailsAlert!: PopScreenComponent;
   @ViewChild('productTitle') productTitleInput!: InputComponent;
   @ViewChild('productArabicTitle') productArabicTitleInput!: InputComponent;
   @ViewChild('price') productPriceInput!: InputComponent;
   @ViewChild('quantity') productQuantityInput!: InputComponent;
+
   @ViewChild('productInfo') productInfo!: PopScreenComponent;
   @ViewChild('variantsPopScreen') variantsPopScreen!: PopScreenComponent;
   @Input() cardDisplayDirection:string='catalog'
@@ -66,6 +68,50 @@ currentProduct=this.productService.currentProduct;
 getVariantDetailsData=this.productService.getVariantDetailsData;
 dropdownSelection!: string ;
 dropdownSelectionArabic!:string;
+
+// getInputFields(layout: 'catalog' | 'list') {
+//   return [
+//     {
+//       id: 'productTitle',
+//       placeholder: 'Enter Product Name',
+//       icon: 'fa-box-open',
+//       spanLabel: '',
+//       errorMessage: this.englishNameErrorMessage,
+//       inputGroup: false,
+//       readonly: false
+//     },
+//     {
+//       id: 'productArabicTitle',
+//       placeholder: 'Enter Product Arabic Name',
+//       icon: 'fa-box-open',
+//       spanLabel: '',
+//       errorMessage: this.arabicNameErrorMessage,
+//       inputGroup: false,
+//       readonly: false
+//     },
+//     {
+//       id: 'price',
+//       placeholder: 'Price',
+//       icon: 'fa-money-bill-1-wave',
+//       spanLabel: this.currency,
+//       errorMessage: this.priceErrorMessage,
+//       inputGroup: true,
+//       readonly: false
+//     },
+//     {
+//       id: 'quantity',
+//       placeholder: 'Unlimited Quantity',
+//       icon: 'fa-database',
+//       spanLabel: this.quantityLabel,
+//       errorMessage: '',
+//       inputGroup: true,
+//       readonly: this.product?.enfinity ?? false,
+//       clickMessage: 'Infinity',
+//       showVariant: true
+//     }
+//   ];
+// }
+
   constructor(
     private categoryService: CategoryService,
     private commonService: CommonService,
@@ -88,6 +134,7 @@ dropdownSelectionArabic!:string;
 
   ngAfterViewInit() {
    this.currentProduct.set(this.product);
+   console.log(this.product);
   if(!this.type)
       this.displayProductInfo();
   }
@@ -95,7 +142,7 @@ dropdownSelectionArabic!:string;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cardDisplayDirection']) {
       setTimeout(() => {
-        this.refreshInputsFromProduct(); 
+        this.refreshInputsFromProduct();
       });
     }
   }
