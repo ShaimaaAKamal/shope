@@ -45,6 +45,7 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
     variantDetailsHandledFn(event:any) {
       if(this.localVariants().length == 0){
         console.log('Make update array list');
+        console.log(event)
         this.variantDetailsHandled.emit();
       }
       else {

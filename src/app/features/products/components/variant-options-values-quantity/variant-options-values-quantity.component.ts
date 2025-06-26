@@ -38,8 +38,11 @@ if(this.product().id){
 
 effect(() => {
    const hasDetails = !!this.productDetails()?.variantMasters?.length;
+   console.log(this.productDetails()?.variantMasters?.length);
    if(hasDetails)
    this.displayedVariants =[...this.productDetails().variantMasters ?? []]
+  console.log(this.productDetails().variantMasters)
+  console.log('this.displayedVariants',this.displayedVariants);
 });
 
   effect(() => {
@@ -115,6 +118,7 @@ generateCombinations(): any[] {
       const values = this.variantValueDetailsRefs.map(ref => ref.getVariantDetails());
       const updatedVariants = this.displayedVariants.map((variant, index) => {
         const updatedDetails = values ? values[index] : [];
+        console.log('variant',variant);
         const ret={
           ...variant,
         ...updatedDetails
@@ -122,6 +126,7 @@ generateCombinations(): any[] {
         return ret;
       });
       this.displayedVariants = [...updatedVariants];
+      console.log('displayedVariants',this.displayedVariants);
       this.variantDetailsHandled.emit(this.displayedVariants);
     });
   }

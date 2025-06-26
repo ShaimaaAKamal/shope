@@ -93,7 +93,6 @@ dropdownSelectionArabic!:string;
 
   ngAfterViewInit() {
    this.currentProduct.set(this.product);
-   console.log(this.product);
   if(!this.type)
       this.displayProductInfo();
   }
@@ -257,9 +256,9 @@ private getUpdateProductMappedValue(product:Product){
  { const category=this.categoryService.getCategoryByName(categoryNameEn);
   if(category) mappedProduct['category'] = category.id!;
  }
- console.log('what is titleEn,tITLE ar');
- mappedProduct['titleEn']='';
- mappedProduct['titleAr']='';
+//  console.log('what is titleEn,tITLE ar');
+//  mappedProduct['titleEn']='';
+//  mappedProduct['titleAr']='';
 
  return mappedProduct;
 }

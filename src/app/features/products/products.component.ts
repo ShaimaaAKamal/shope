@@ -116,7 +116,6 @@ handleDisplayDir(dir:string){
 
 applyFilters() {
   const filters = this.filterForm.value;
-  console.log('Applying filters:', filters);
   this.closeFilter=true;
   }
   resetFilter(){

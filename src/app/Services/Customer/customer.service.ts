@@ -133,7 +133,7 @@ export class CustomerService {
   }
 
   //  this.loadingSignal.set(true);
-    const existingCustomer = this.customers().find(c => (c.phone= customer.phone));
+    const existingCustomer = this.customers().find(c => (c.phone== customer.phone && c.id !=customer.id));
                     if (existingCustomer) {
                       throw new Error(`Customer with this name already exist.`);
                     }
