@@ -87,12 +87,6 @@ export class PageControlsComponent {
 
   constructor(private __Router:Router){
 
-    // this.filterForm = this.fb.group({
-    //   searchText: [''],
-    //   category: [''],
-    //   minPrice: [''],
-    //   maxPrice: ['']
-    // });
   }
 
 AddNew(){
@@ -132,34 +126,5 @@ onServiceClick(action: string) {
   this.serviceSelected.emit(action);
   this.dropdownVisible = false;
 }
-// isFilterVisible = false;
-// filterForm: FormGroup;
-
-// categories = [
-//   { id: 1, name: 'Electronics' },
-//   { id: 2, name: 'Clothes' },
-//   { id: 3, name: 'Books' }
-// ];
-
-
-
-// showFilterOptions() {
-//   this.isFilterVisible = true;
-// }
-
-// hideFilterOptions() {
-//   this.isFilterVisible = false;
-// }
-
-// applyFilters() {
-//   const filters = this.filterForm.value;
-//   console.log('Applying filters:', filters);
-//   // Emit filters or call filtering logic
-//   this.hideFilterOptions();
-// }
-
-// resetFilters() {
-//   this.filterForm.reset();
-// }
 }
 
