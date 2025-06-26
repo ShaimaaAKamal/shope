@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, Output, Signal, SimpleChanges } from '@angular/core';
+import { Component, effect, EventEmitter, input, Input, Output, signal, Signal, SimpleChanges } from '@angular/core';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
 
 interface LayoutInterface {
@@ -33,21 +33,25 @@ export class LayoutComponent {
   page:'Products'
 };
 @Input() close:boolean=false;
+
+
 @Output() addNewVar=new EventEmitter<boolean>();
 @Output() deleteSelected=new EventEmitter<boolean>();
 @Output() serviceSelected = new EventEmitter<string>();
 @Output() displayDir=new EventEmitter<string>();
-@Output() resetFilter=new EventEmitter<void>()
+// @Output() resetFilter=new EventEmitter<void>()
 isFilterVisible = false;
 
 noItems!:boolean;
+
 ngOnInit(): void {
   this.noItems=this.LayoutComponentDate.items.length == 0
 }
 
 ngOnChanges(changes: SimpleChanges): void {
  if(changes['LayoutComponentDate'])   this.noItems=this.LayoutComponentDate.items.length == 0;
- if(changes['close'] && this.close)   {this.hideFilterOptions(); this.resetFilter.emit()}
+//  if(changes['close'] && this.close)   {console.log('change');this.hideFilterOptions(); this.resetFilter.emit()}
+if(changes['close'] && this.close)   {this.hideFilterOptions()}
 
 }
 

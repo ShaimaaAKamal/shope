@@ -7,6 +7,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonService } from '../../Services/CommonService/common.service';
 import { ServiceInterface } from '../../Interfaces/service-interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CategoryService } from '../../Services/Category/category.service';
+import { LanguageService } from '../../Services/Language/language.service';
 
 @Component({
   selector: 'app-products',
@@ -16,10 +18,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ProductsComponent {
   private productService = inject(ProductService);
+  private __CategoryService = inject(CategoryService);
+  private __LanguageService=inject(LanguageService)
   private toastService = inject(ToastingMessagesService);
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
-
+  isRtl=this.__LanguageService.rtlClassSignal;
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
   products: Signal<Product[]>;
@@ -27,6 +31,8 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
+  // closeFilter=signal<boolean>(false);
+
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },
     { label: 'Sync', icon: 'fa-sync', action: 'sync' }
@@ -34,12 +40,19 @@ export class ProductsComponent {
   cardDisplayDirection:string='catalog';
 
   filterForm: FormGroup;
+  filterOptions = [
+    { label: 'All', value: 'all', controlName: 'all' },
+    { label: 'In Stock', value: 'inStock', controlName: 'inStock' },
+    { label: 'On Sale', value: 'onSale', controlName: 'onSale' },
+    { label: 'New Arrival', value: 'newArrival', controlName: 'newArrival' },
+    { label: 'Taxable products', value: 'taxableProducts', controlName: 'taxableProducts' },
+    { label: 'Sold out products', value: 'soldOutProducts', controlName: 'soldOutProducts' },
+    { label: 'Unpriced products', value: ' unpricedProducts', controlName: 'unpricedProducts' },
+    { label: 'Uncategorized Products', value: ' uncategorizedProducts', controlName: 'uncategorizedProducts' },
 
-  categories = [
-    { id: 1, name: 'Electronics' },
-    { id: 2, name: 'Clothes' },
-    { id: 3, name: 'Books' }
+
   ];
+  categories = this. __CategoryService.categories;
   constructor(private __CommonService:CommonService,private fb: FormBuilder) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
@@ -51,11 +64,22 @@ export class ProductsComponent {
     );
 
     this.filterForm = this.fb.group({
-      searchText: [''],
       category: [''],
       minPrice: [''],
-      maxPrice: ['']
+      maxPrice: [''],
+      inStock: [false],
+      onSale: [false],
+      newArrival: [false],
+      uncategorizedProducts: [false],
+      unpricedProducts: [false],
+      soldOutProducts: [false],
+      taxableProducts: [false],
+      all: [false],
     });
+  }
+
+  onCheckboxChange(event: any, value: string) {
+    const checked = event.target.checked;
   }
 
   addNew(_value: boolean): void {
@@ -117,10 +141,13 @@ handleDisplayDir(dir:string){
 applyFilters() {
   const filters = this.filterForm.value;
   this.closeFilter=true;
+  console.log(filters);
+  console.log('send apu request to get filter data');
   }
-  resetFilter(){
-    this.closeFilter=false;
-  }
+
+// resetFilter(){
+//     this.closeFilter=false;
+//   }
 resetFilters() {
   this.filterForm.reset();
 }

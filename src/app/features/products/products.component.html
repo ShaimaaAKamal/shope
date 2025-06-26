@@ -13,7 +13,6 @@
   page:'Products'
 }"
 [close]="closeFilter"
-(resetFilter)="resetFilter()"
 (addNewVar)="addNew($event)"
 (serviceSelected)="handleServiceAction($event)"
 (displayDir)="handleDisplayDir($event)"
@@ -31,32 +30,90 @@
 
       <div filterOptions>
         <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
-          <div class="mb-3">
-            <label class="form-label">{{ "Search" | translate }}</label>
-            <input type="text" class="form-control" formControlName="searchText" placeholder="{{ 'Enter keyword' | translate }}">
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">{{ "Category" | translate }}</label>
-            <select class="form-select" formControlName="category">
-              <option value="">{{ "All" | translate }}</option>
-              <option *ngFor="let category of categories" [value]="category.id">
-                {{ category.name }}
-              </option>
-            </select>
-          </div>
+          <div class="accordion border-0" id="filter">
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header">
+                <button class="accordion-button custom-accordion-button accordingBtn" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <!-- {{ "Category" | translate }} -->
+                  <div class="accordion-title-wrapper w-100 d-flex align-items-center">
+                    <span class="accordion-title-text me-2">{{ "Category" | translate }}</span>
+                    <div class="flex-grow-1 border-bottom border-dashed mx-2"></div>
+                    <span class="accordion-icon">+</span>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show " data-bs-parent="#filter">
+                    <div class="mb-3">
+                      <select class="form-select form-select-sm" formControlName="category">
+                        <option value="" class="fs-verySmall">{{ "All" | translate }}</option>
+                        <option *ngFor="let category of categories()" [value]="category.id" class="fs-verySmall">
+                          {{ isRtl()?category.nameAr:category.nameEn }}
+                        </option>
+                      </select>
+                    </div>
+              </div>
+            </div>
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header">
+                <button class="accordion-button custom-accordion-button accordingBtn" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 
-          <div class="mb-3">
-            <label class="form-label">{{ "Price Range" | translate }}</label>
-            <div class="d-flex gap-2">
-              <input type="number" class="form-control" formControlName="minPrice" placeholder="{{ 'Min' | translate }}">
-              <input type="number" class="form-control" formControlName="maxPrice" placeholder="{{ 'Max' | translate }}">
+                  <div class="accordion-title-wrapper w-100 d-flex align-items-center">
+                    <span class="accordion-title-text me-2"> <label class="form-label">{{ "Price Range" | translate }}</label></span>
+                    <div class="flex-grow-1 border-bottom border-dashed mx-2"></div>
+                    <span class="accordion-icon">+</span>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse show " data-bs-parent="#filter">
+                <div class="mb-3">
+                  <div class="d-flex gap-2">
+                    <input type="number" class="form-control" formControlName="minPrice" placeholder="{{ 'Min' | translate }}">
+                    <input type="number" class="form-control" formControlName="maxPrice" placeholder="{{ 'Max' | translate }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header">
+                <button class="accordion-button custom-accordion-button accordingBtn" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+
+                  <div class="accordion-title-wrapper w-100 d-flex align-items-center">
+                    <span class="accordion-title-text me-2"> <label class="form-label">{{ "Product Status" | translate }}</label></span>
+                    <div class="flex-grow-1 border-bottom border-dashed mx-2"></div>
+                    <span class="accordion-icon">+</span>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse show " data-bs-parent="#filter">
+                <div class="mb-3">
+                  <div class="d-flex flex-column gap-1">
+                    <div *ngFor="let option of filterOptions">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [value]="option.value"
+                          [formControlName]="option.controlName"
+                          (change)="onCheckboxChange($event, option.value)"
+                          id="{{ 'check_' + option.value }}"
+                        >
+                        <label class="form-check-label ps-2 accordingBtn" [for]="'check_' + option.value">
+                          {{ option.label | translate }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
           <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">{{ "Apply" | translate }}</button>
-            <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">{{ "Reset" | translate }}</button>
+            <button type="submit" class="btn btn-primary fs-verySmall bg-semi-dark">{{ "Apply" | translate }}</button>
+            <button type="button" class="btn btn-outline-secondary fs-verySmall" (click)="resetFilters()">{{ "Reset" | translate }}</button>
           </div>
         </form>
       </div>
