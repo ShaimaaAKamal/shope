@@ -52,7 +52,7 @@
          [routerLink]="subItem.name"
          routerLinkActive="router-link-active">
       <i [ngClass]="subItem.icon" class="pe-2 small"></i>
-      <span class="small">{{ subItem.name.split('_').join(' ') | translate }}</span>
+      <span class="small" *ngIf="!NavitemComponentData.isCollapsed">{{ subItem.name.split('_').join(' ') | translate }}</span>
     </div>
   </li>
 </ul>
