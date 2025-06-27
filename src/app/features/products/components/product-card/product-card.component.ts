@@ -20,7 +20,8 @@ type SaveResult =
   | 'duplicate'
   | 'Duplicate_Arabic_Name'
   | 'Duplicate_English_Name'
-  | 'rightVariantsData';
+  | 'rightVariantsData'
+  | 'missing_Category';
 @Component({
   selector: 'app-product-card',
   standalone: false,
@@ -59,7 +60,7 @@ quantityLabel!:string;
 variants!:Variant[];
 isRtl!:Signal<boolean>;
 
-
+categoryErrorMessage:string='';
 priceErrorMessage:string='';
 englishNameErrorMessage:string='';
 arabicNameErrorMessage:string='';
@@ -78,7 +79,7 @@ dropdownSelectionArabic!:string;
 
   ) {
     this.categories=this.categoryService.categories;
-    this.isRtl=this.__LanguageService.rtlClassSignal;
+    this.isRtl=this.__LanguageService.rtlClassSignal
 
     effect(() => {
     this.updateQuantityLabel();
@@ -165,7 +166,6 @@ updateQuantityLabel(): void {
 
   // Product Functions
   displayProductInfo(): void {
-
   const { nameEn, price, quantity ,nameAr,enfinity} = this.currentProduct() ?? {};
   this.productTitleInput.value = nameEn ?? '';
   this.productArabicTitleInput.value = nameAr ?? '';
@@ -212,11 +212,10 @@ updateQuantityLabel(): void {
 
 private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
   this.emptyBasicInfoErrorMessage();
-
   const title = this.productTitleInput.value;
   const arabicTitle = this.productArabicTitleInput.value;
   const price = this.productPriceInput.value;
-
+  const category=this.product.category
   if (!title) {
     this.englishNameErrorMessage = 'Name is Required';
     return of('missing_title' as SaveResult);
@@ -229,7 +228,10 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
     this.priceErrorMessage = 'Price is Required';
     return of('missing_price' as SaveResult);
   }
-
+  if (category == 0) {
+    this.categoryErrorMessage = 'Category is required';
+    return of('missing_Category' as SaveResult);
+  }
   this.setProductBasicInfo(title, arabicTitle, price);
   this.currentProduct.update(current => ({
     ...current,
@@ -237,17 +239,27 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
   }));
   const mappedProduct=this.getUpdateProductMappedValue(this.currentProduct());
   console.log('despite change here but it do not reflect in db');
-  // return this.productService.updateProductInfo(this.currentProduct(), action).pipe(
-    return this.productService.updateProductInfo(mappedProduct, action).pipe(
+  return this.productService.updateProductInfo(mappedProduct, action).pipe(
     switchMap((result) => {
       if (!result.status) {
-        if (result.message === 'Duplicate_Arabic_Name') return of('Duplicate_Arabic_Name' as SaveResult);
-        if (result.message === 'Duplicate_English_Name') return of('Duplicate_English_Name' as SaveResult);
+        if (result.message === 'Duplicate_Arabic_Name') {
+          this.product.nameEn = '';
+          return of('Duplicate_Arabic_Name' as SaveResult);
+        }
+        if (result.message === 'Duplicate_English_Name') {
+          this.product.nameEn = '';
+          return of('Duplicate_English_Name' as SaveResult);
+        }
+
+        this.product.nameEn = '';
         return of('error' as SaveResult);
       }
       return of('success' as SaveResult);
     }),
-    catchError(() => of('error' as SaveResult))
+    catchError(() => {
+      this.product.nameEn = '';
+      return of('error' as SaveResult);
+    })
   );
 }
 private getUpdateProductMappedValue(product:Product){
@@ -256,10 +268,6 @@ private getUpdateProductMappedValue(product:Product){
  { const category=this.categoryService.getCategoryByName(categoryNameEn);
   if(category) mappedProduct['category'] = category.id!;
  }
-//  console.log('what is titleEn,tITLE ar');
-//  mappedProduct['titleEn']='';
-//  mappedProduct['titleAr']='';
-
  return mappedProduct;
 }
 private processProductSave(
@@ -291,6 +299,7 @@ private emptyBasicInfoErrorMessage(): void {
   this.arabicNameErrorMessage = '';
   this.englishNameErrorMessage = '';
   this.priceErrorMessage = '';
+  this.categoryErrorMessage='';
 }
 
 saveAdditionalInfo(done:boolean){

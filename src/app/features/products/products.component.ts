@@ -39,17 +39,6 @@ export class ProductsComponent {
   ]
   cardDisplayDirection:string='catalog';
 
-  // filterForm: FormGroup;
-  // filterOptions = [
-  //   { label: 'All', value: 'all', controlName: 'all' },
-  //   { label: 'In Stock', value: 'inStock', controlName: 'inStock' },
-  //   { label: 'On Sale', value: 'onSale', controlName: 'onSale' },
-  //   { label: 'New Arrival', value: 'newArrival', controlName: 'newArrival' },
-  //   { label: 'Taxable products', value: 'taxableProducts', controlName: 'taxableProducts' },
-  //   { label: 'Sold out products', value: 'soldOutProducts', controlName: 'soldOutProducts' },
-  //   { label: 'Unpriced products', value: ' unpricedProducts', controlName: 'unpricedProducts' },
-  //   { label: 'Uncategorized Products', value: ' uncategorizedProducts', controlName: 'uncategorizedProducts' },
-  // ];
   categories = this. __CategoryService.categories;
   filterConfig= computed<FilterSection[]>(() => [
     {
@@ -130,6 +119,7 @@ export class ProductsComponent {
       ]
     }
   ]);
+
   constructor(private __CommonService:CommonService,private fb: FormBuilder) {
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');

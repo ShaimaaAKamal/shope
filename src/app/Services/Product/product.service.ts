@@ -221,6 +221,7 @@ private init(): void {
     concatMap(() => this.getProducts())
   ).subscribe({
     next: () => {
+      console.log(this.variantTypes());
       this.handleLoadingAllowProducts();
     },
     error: (err) => {
@@ -254,42 +255,32 @@ getProducts() {
   );
 }
 
-createProduct(product: Product){
-  this.loadingSignal.set(true);
-  this.loadingSignal.set(true);
+createProduct(product: Product) {
+  this.loadingSignal.set(true); // only once
   const { id, ...productWithoutId } = product;
-      return this.__SharedService.createByPost<Product>('CreateProduct', productWithoutId, 'product').pipe(
-
-      tap({
-        next: (newProduct) => {
-          this.productsSignal.update(products =>
-              products.filter(product => product.id !== id)
-            );
-            this.productsSignal.update(products => this.commonService.addOrReplaceItemById(products, newProduct['data']));
-            this.type.set('');
-            this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-        },
-        complete: () => this.loadingSignal.set(false),
-      })
-    );
+  return this.__SharedService.createByPost<Product>('CreateProduct', productWithoutId, 'product').pipe(
+    tap({
+      next: (newProduct) => {
+        this.productsSignal.update(products =>
+          products.filter(product => product.id !== id)
+        );
+        this.productsSignal.update(products =>
+          this.commonService.addOrReplaceItemById(products, newProduct['data'])
+        );
+        this.type.set('');
+        this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
+      },
+      complete: () => {
+        this.loadingSignal.set(false);
+      }
+    }),
+    catchError(error => {
+      console.error('❌ CreateProduct error:',  error);
+      this.loadingSignal.set(false);
+      return of(null);
+    })
+  );
 }
-// updateProduct(product: Product) {
-//   if (!product.id) {
-//     throw new Error('Product ID is required for update.');
-//   }
-//     this.loadingSignal.set(true);
-//     console.log('api Product',product);
-//     return this.__SharedService.update<Product>('Products', product.id, product, 'product').pipe(
-//         tap({
-//           next: (updatedProduct) =>  {
-//                   console.log('updatedProduct',updatedProduct);
-//                  this.productsSignal.update(products =>
-//         products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
-//       );},
-//           complete: () => this.loadingSignal.set(false),
-//         })
-//       );
-//   }
 
 updateProduct(product: Product) {
   if (!product.id) {
@@ -357,7 +348,6 @@ deleteProducts(ids: number[]) {
   }
 
 updateProductInfo(product: Product, actionType: string) {
-  // console.log('updateProductInfo',product);
   const result = this.commonService.checkDuplicateInArray(
     this.products(),
     p => p.id === product.id,
@@ -469,3 +459,4 @@ private sortProductsDesc(products: Product[]): Product[] {
   return [...products].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
 }
 }
+
