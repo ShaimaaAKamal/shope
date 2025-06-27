@@ -23,6 +23,7 @@ import { TemplateRefDirective } from '../Directives/template-ref-directive.direc
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LayoutHeaderComponent } from './components/layout-header/layout-header.component';
 import { FilterOptionsComponent } from './components/filter-options/filter-options.component';
+import { GenericCategoryVariantComponent } from './components/generic-category-variant/generic-category-variant.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { FilterOptionsComponent } from './components/filter-options/filter-optio
     DataTableComponent,
     TemplateRefDirective,
     LayoutHeaderComponent,
-    FilterOptionsComponent
+    FilterOptionsComponent,
+    GenericCategoryVariantComponent
   ],
   imports: [
     NgxDatatableModule,
@@ -56,7 +58,8 @@ import { FilterOptionsComponent } from './components/filter-options/filter-optio
     ReactiveFormsModule
   ],
   exports:[
-    ReactiveFormsModule,
+         GenericCategoryVariantComponent,
+         ReactiveFormsModule,
          DataTableComponent,
          InputComponent,
         SelectInputComponent,

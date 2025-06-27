@@ -144,7 +144,6 @@ export class SharedService {
 
   deleteByPost<T>(endpointKey: string,id: number | string,entityName: string = 'item'): Observable<T> {
     const url = `${this.__ApiConfigService.getEndpoint(endpointKey)}?id=${id}`;
-
     const headers = new HttpHeaders({
       'accept': '*/*'
     });

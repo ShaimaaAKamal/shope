@@ -13,7 +13,6 @@ import { ServiceInterface } from '../../../Interfaces/service-interface';
 export class CategoriesComponent {
   __CategoryService = inject(CategoryService);
 
-  // __Router = inject(Router);
   addCategory = signal(false);
   editCategory=signal(false);
   categories = this.__CategoryService.categories;
@@ -22,7 +21,6 @@ export class CategoriesComponent {
   __LanguageService = inject(LanguageService);
   isRtl=this.__LanguageService.rtlClassSignal;
   servicesList:ServiceInterface[]=[]
-
 
   addNew(event: any) {
     this.addCategory.set(true);

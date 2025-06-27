@@ -1,0 +1,12 @@
+<app-generic-category-variant
+  [config]="{
+    header: 'Add Variant Type',
+    item: CompoenentData.item,
+    label:CompoenentData.label,
+    service: {
+      create: __ProductService.createVariantType.bind(__ProductService),
+      update: __ProductService.updateVariantType.bind(__ProductService)
+    }
+  }"
+  (created)="onVariantCreated($event)"
+></app-generic-category-variant>

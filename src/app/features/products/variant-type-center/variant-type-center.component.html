@@ -1,0 +1,58 @@
+<div class="h-100 w-100">
+  <app-layout
+  [LayoutComponentDate]="{
+    route: '',
+    items: VariantTypes(),
+    sortKey: 'nameEn',
+    header: 'Add New Variant Type',
+    subTitle: 'Start by stocking your store with products your customers will love',
+    btnName: 'Add New Variant Type',
+    columns: [],
+    serviceType: 'variant Type',
+    servicesList:[],
+    page:'Variants Types'
+  }"
+  (addNewVar)="showOptionsSection()"
+  (deleteSelected)="deleteSelected($event)" >
+
+  <div>
+         <span class=" small fw-bold">{{'Variants Types Center' | translate}}</span>
+          <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="VariantTypes().length == 0" >
+            <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
+            <span class="small">{{'Add New Variant Type' | translate}}</span>
+          </div>
+            <div class="variants my-2" *ngIf="VariantTypes().length > 0">
+            <div class="variantContainer">
+              <div *ngFor="let variant of VariantTypes(); let index=index;let last=last;">
+              <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0" [class.rounded-bottom-3]="last" >
+                   <div class="d-flex flex-column flex-grow-1">
+                    <div>
+                      <span class="small">{{'Name' | translate}}:</span>
+                      <span class="small ps-2 fw-semibold">{{!isRtl() ? variant.nameEn : variant.nameAr  |titlecase}}</span>
+                    </div>
+                    <div>
+                      <span class="small "> {{'Status'|translate}}:</span>
+                      <span class="small ps-2 fw-semibold" [ngClass]="variant.isActive ? 'text-semi-dark' : 'text-danger'"
+                      >{{(variant.isActive ? 'Active' : 'Inactive') | translate}}</span>
+                    </div>
+
+                   </div>
+                   <div class="d-flex align-items-center">
+                          <span (click)="editVariant(variant)" class="pe-2"><i class="fa-solid fa-pen-to-square  text-semi-dark"></i></span>
+                          <span (click)="deleteVariant(variant)"><i class="fa-solid fa-trash-can text-semi-dark"></i></span>
+                   </div>
+              </div>
+             </div>
+            </div>
+          </div>
+  </div>
+  </app-layout>
+  </div>
+
+  <app-variant-type  *ngIf="popupVisible"  (created)="closeAddVariantPopScreen()"></app-variant-type>
+
+
+  <app-variant-type  *ngIf="editedVariant.nameEn"
+  [CompoenentData]="{header:'Add Variant Type',item:editedVariant,label:'Edit Variant Type'}"
+  (created)="updatedVariant()"></app-variant-type>
+

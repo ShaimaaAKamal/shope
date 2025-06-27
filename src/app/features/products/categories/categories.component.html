@@ -26,7 +26,8 @@
   <app-category *ngIf="addCategory()" (createdCategory)="closeCreate($event)"></app-category>
   <app-category  *ngIf="editCategory()"  [CompoenentData]="{
     header:'Edit Category',
-    category:category}"
+    label:'Edit Category',
+    item:category}"
    (createdCategory)="closeEdit($event)"></app-category>
 
 

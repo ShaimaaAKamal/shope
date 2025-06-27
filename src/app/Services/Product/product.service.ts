@@ -5,6 +5,7 @@ import { catchError, concatMap, finalize, forkJoin, map, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
+import { VartiantType } from '../../Interfaces/vartiant-type';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,9 @@ private __SharedService=inject(SharedService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
-  // variants= signal<VariantMasterLookUP[]>([]);
   variantOptions = signal<VariantMasterLookUP[]>([]);
   productVariantOptions = signal<ProductVariantMaster[]>([]);
-
+  variantTypes=signal<VartiantType[]>([]);
   currentProduct = signal<Product>(this.getEmptyProduct());
 
   // Signals for state management
@@ -33,6 +33,63 @@ private __SharedService=inject(SharedService);
     this.init();
   }
 
+  //VariantTypeApi
+
+  getVariantTypes() {
+    this.loadingSignal.set(true);
+
+    return this.__SharedService.getAllByPost<VartiantType>('GetVariantTypes', 'variant Types').pipe(
+      tap({
+        next: (data) => this.variantTypes.set([...data.data  || []]),
+        complete: () => this.loadingSignal.set(false),
+
+      })
+    );
+  }
+
+  createVariantType(variant: VartiantType){
+    this.loadingSignal.set(true);
+    return this.__SharedService.createByPost<VartiantType>('CreateVariantType', variant, 'Variant Type').pipe(
+     tap({
+       next: (newVariant) => this.variantTypes.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
+       complete: () => this.loadingSignal.set(false),
+     })
+   );
+   }
+
+  deleteVariantType(id: number) {
+    this.loadingSignal.set(true);
+    return  this.__SharedService.deleteByPost<VartiantType>('DeleteVariantType', id, 'variant type').pipe(
+        tap({
+          next: () =>      this.variantTypes.update(variants => variants.filter(p => p.id !== id)),
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
+  updateVariantType(variant: VartiantType){
+    if (!variant.id) {
+    throw new Error('Variant Type ID is required for update.');
+  }
+
+   this.loadingSignal.set(true);
+    const existingVariant = this.variantTypes().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
+                    if (existingVariant) {
+                      throw new Error(`Variant Type with this name already exist.`);
+                    }
+
+                    if( !variant.nameEn || !variant.nameAr) {
+                      throw new Error(`Variant Name can't be empty.`);
+                    }
+    return this.__SharedService.updateByPost<VartiantType>('UpdateVariantType', variant, 'variant').pipe(
+        tap({
+          next: (updatedVariant) =>  {
+                this.variantTypes.update(variants =>
+                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
+                );},
+          complete: () => this.loadingSignal.set(false),
+        })
+      );
+  }
 //Variant Api
 
 getVariants() {
@@ -83,7 +140,6 @@ updateVariant(variant: VariantMasterLookUP){
                   if( !variant.nameEn || !variant.nameAr) {
                     throw new Error(`Variant Name can't be empty.`);
                   }
-                  console.log(variant);
   return this.__SharedService.updateByPost<VariantMasterLookUP>('UpdateVariant', variant, 'variant').pipe(
       tap({
         next: (updatedVariant) =>  {
@@ -160,7 +216,8 @@ deleteProductVariant(id: number) {
   }
   //Product Api
 private init(): void {
-  this.getVariants().pipe(
+  this.getVariantTypes().pipe(
+    concatMap(() => this.getVariants()),
     concatMap(() => this.getProducts())
   ).subscribe({
     next: () => {

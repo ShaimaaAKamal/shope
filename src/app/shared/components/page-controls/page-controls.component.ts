@@ -96,6 +96,7 @@ AddNew(){
       case 'customer':    this.addNewVar.emit(true); break;
       case 'category':    this.addNewVar.emit(true); break;
       case 'variant':    this.addNewVar.emit(true); break;
+      case 'variant Type':    this.addNewVar.emit(true); break;
       default:break;
 
     }

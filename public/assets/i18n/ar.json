@@ -286,5 +286,17 @@
              "Filter By":"تصفية حسب",
              "In Stock":"متوفر",
              "New Arrival":"جديد",
-             "Taxable products":"المنتجات الخاضعة للضريبة"
+             "Taxable products":"المنتجات الخاضعة للضريبة",
+             "Variant Types Center":"مركز أنواع المتغيرات",
+             "Status":"الحالة",
+             "Variants Types Center":"مركز أنواع المتغيرات",
+             "variant Types":"أنواع المتغيرات",
+             "Add new variant Type":"إضافة نوع متغير جديد",
+             "Add Variant Type":"إضافة نوع المتغير",
+             "Edit Variant Type":"تعديل نوع المتغير",
+            "Enter Name":"أدخل الاسم",
+            "Enter Arabic Name":"أدخل الاسم العربي",
+            "Add Category":"إضافة فئة",
+            "Edit Category":"تعديل الفئة",
+            "Delete Category":"حذف الفئة"
         }

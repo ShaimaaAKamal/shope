@@ -1,62 +1,12 @@
-<app-pop-screen
-     [PopScreenComponentData]="{
-      headerLabel:CompoenentData.header,
-      btnLabel: CompoenentData.header != 'Add Category' ? 'Edit Category' : 'Add Category',
-      hideCancalBtn:false
-    }"
-  (closeChange)="clearCategoryForm()"
-  (doneChange)="createCategory()"
-  #addCategory
->
-<div class="px-3 bg-white pb-3">
-  <app-input
-  [InputComponentData]="{
-              type: 'text',
-              id: 'categoryName',
-              label: '',
-              spanLabel: '',
-              placeholder: 'Enter Category Name',
-              vertCLass: 'col-12',
-              readonly: false,
-              hideLabel: false,
-              inputGroup: false,
-              clickMessage: '',
-              errorMessage:  errorMessage | translate,
-              enableFocusBlurTracking: false,
-            }"
-    #CategoryName
-  >
-    <i class="fa-solid fa-text-width"></i>
-  </app-input>
-  <app-input
-  [InputComponentData]="{
-              type: 'text',
-              id: 'categoryArabicName',
-              label: '',
-              spanLabel: '',
-              placeholder: 'Enter Category Arabic Nam',
-              vertCLass: 'col-12',
-              readonly: false,
-              hideLabel: false,
-              inputGroup: false,
-              clickMessage: '',
-              errorMessage:  errorArabicrMessage | translate,
-              enableFocusBlurTracking: false,
-            }"
-    #CategoryArabicName
-  >
-    <i class="fa-solid fa-text-width"></i>
-  </app-input>
-  <app-dropdown
-  [DropdownComponentData]="{
-        title:'Active Status',
-        dropdownSelection:ActiveDropDownSelection,
-        optionsArray:ActiveOptions,
-        key:'title',
-        noBorder:false
+<app-generic-category-variant
+  [config]="{
+    header: 'Add Category',
+    label:CompoenentData.label,
+    item: CompoenentData.item,
+    service: {
+      create: __CategoryService.createCategoryApi.bind(__CategoryService),
+      update: __CategoryService.updateCategory.bind(__CategoryService)
+    }
   }"
-(changeSelect)="changeSelect($event,'isActive')"
->
-</app-dropdown>
-</div>
-</app-pop-screen>
+  (created)="onVariantCreated($event)"
+></app-generic-category-variant>

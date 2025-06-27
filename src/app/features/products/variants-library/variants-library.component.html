@@ -3,7 +3,7 @@
 [LayoutComponentDate]="{
   route: '',
   items: VariantOptions(),
-  sortKey: 'name',
+  sortKey: 'nameEn',
   header: 'Add New Variant',
   subTitle: 'Start by stocking your store with products your customers will love',
   btnName: 'Add New Variant',
@@ -16,6 +16,11 @@
 (deleteSelected)="deleteSelected($event)" >
 
 <div>
+       <div class="text-end">
+        <a [routerLink]="['/Products/VartiantTypes']"  routerLinkActive="router-link-active" class="small text-semi-dark">
+          {{'Variant Types Center' | translate}}
+        </a>
+       </div>
        <span class=" small fw-bold">{{'Variants Library' | translate}}</span>
         <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="VariantOptions().length == 0" >
           <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
@@ -23,8 +28,8 @@
         </div>
           <div class="variants my-2" *ngIf="VariantOptions().length > 0">
           <div class="variantContainer">
-            <div *ngFor="let variant of VariantOptions(); let index=index;">
-            <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0">
+            <div *ngFor="let variant of VariantOptions(); let index=index;let last=last;">
+            <div class="px-3 py-2 border d-flex justify-content-between align-items-center" [class.border-top-0]="index!=0" [class.rounded-top-3]="index ==0"  [class.rounded-bottom-3]="last">
                  <div class="d-flex align-items-center  flex-grow-1">
                   <span class="small pe-3">{{!isRtl() ? variant.nameEn : variant.nameAr  |titlecase}}:</span>
                   <div class="d-flex align-items-center">

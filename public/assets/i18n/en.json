@@ -289,6 +289,18 @@
    "Filter By":"Filter By",
    "In Stock":"In Stock",
    "New Arrival":"New Arrival",
-   "Taxable products":"Taxable products"
+   "Taxable products":"Taxable products",
 
+   "Variant Types Center":"Variant Types Center",
+   "Status":"Status",
+   "Variants Types Center":"Variants Types Center",
+   "variant Types":"Variant Types",
+   "Add new variant Type":"Add New Variant Type",
+   "Add Variant Type":"Add Variant Type",
+   "Edit Variant Type":"Edit Variant Type",
+   "Enter Name":"Enter Name",
+   "Enter Arabic Name":"Enter Arabic Name",
+   "Add Category":"Add Category",
+   "Edit Category":"Edit Category",
+   "Delete Category":"Delete Category"
 }

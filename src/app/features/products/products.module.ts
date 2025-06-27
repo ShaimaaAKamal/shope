@@ -18,6 +18,8 @@ import { VariantLibraryItemComponent } from './variant-library-item/variant-libr
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './categories/category/category.component';
 import { CategoryCardComponent } from './categories/category-card/category-card.component';
+import { VariantTypeCenterComponent } from './variant-type-center/variant-type-center.component';
+import { VariantTypeComponent } from './variant-type-center/variant-type/variant-type.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { CategoryCardComponent } from './categories/category-card/category-card.
     VariantLibraryItemComponent,
     CategoriesComponent,
     CategoryComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    VariantTypeCenterComponent,
+    VariantTypeComponent
   ],
   imports: [
     CommonModule,
