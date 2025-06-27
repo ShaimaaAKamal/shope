@@ -6,9 +6,9 @@
             [DropdownComponentData]="{
                   title:'',
                   dropdownSelection:variantTypeSelection,
-                  optionsArray:variantTypes,
+                  optionsArray:variantTypes(),
                   noBorder:false,
-                  key:isRtl()?'name':'nameAr',
+                  key:isRtl()?'nameAr':'nameEn',
             }"
            (changeSelect)="chooseVariantType($event)"
           >

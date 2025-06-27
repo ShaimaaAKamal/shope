@@ -17,12 +17,13 @@ import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
+import { VartiantType } from '../../../Interfaces/vartiant-type';
 
-interface VariantType {
-  id: number;
-  name: string;
-  nameAr: string;
-}
+// interface VariantType {
+//   id: number;
+//   name: string;
+//   nameAr: string;
+// }
 
 @Component({
   selector: 'app-variant-library-item',
@@ -36,16 +37,14 @@ export class VariantLibraryItemComponent {
   private __LanguageService = inject(LanguageService);
   private cdRef = inject(ChangeDetectorRef);
 
-  isRtl = this.__LanguageService.dirSignal;
+  isRtl = this.__LanguageService.rtlClassSignal;
   variantOptions = this.__ProductService.variantOptions;
 
   variantTypeSelection = 'text';
   variantTypeArabicSelection = 'النص';
-  variantTypes: VariantType[] = [
-    { id: 1, name: 'color', nameAr: 'اللون' },
-    { id: 2, name: 'text', nameAr: 'النص' },
-    { id: 3, name: 'number', nameAr: 'الرقم' }
-  ];
+
+   variantTypes=this.__ProductService.variantTypes;
+
 
   nameErrorMessage = '';
   arabicNameErrorMessage = '';
@@ -232,10 +231,11 @@ export class VariantLibraryItemComponent {
     this.values.set(updatedValues);
   }
 
-  chooseVariantType(type: VariantType): void {
-    this.variantTypeSelection = type.name;
+  chooseVariantType(type: VartiantType): void {
+    this.variantTypeSelection = type.nameEn;
     this.variantTypeArabicSelection = type.nameAr;
-    if (type.name === 'color') this.setColorPickerValues();
+    if (type.nameEn === 'color') this.setColorPickerValues();
+
   }
 
   setColorPickerValues(): void {
