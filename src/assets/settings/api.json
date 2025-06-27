@@ -24,6 +24,7 @@
     "CreateVariant": "/api/VariantMasterLookups/Insert",
     "UpdateVariant": "/api/VariantMasterLookups/Update",
     "DeleteVariant": "/api/VariantMasterLookups/Delete",
+    "GetVariantByType":"/api/VariantMasterLookups/GetByVariantTyoe",
 
 
     "GetCustomers": "/api/Customers/GetCustomers",
@@ -37,6 +38,54 @@
     "CreateProductVariant": "/api/ProductVariantMasters/Insert",
     "CreateProductVariantList": "/api/ProductVariantMasters/InsertList",
     "UpdateProductVariant": "/api/ProductVariantMasters/Update",
-    "DeleteProductVariant": "/api/ProductVariantMasters/Delete"
+    "DeleteProductVariant": "/api/ProductVariantMasters/Delete",
+
+    "GetClaims": "/api/Claims/GetClaims",
+
+    "GetDashboard":"/api/Dashboard/GetDashboardData",
+
+    "GetRoles":"/api/RoleManagement/GetRoles",
+    "GetRoleById":"/api/RoleManagement/GetRoleById",
+    "CreateRole":"/api/RoleManagement/CreateRole",
+    "UpdateRole":"/api/RoleManagement/UpdateRole",
+    "DeleteRole":"/api/RoleManagement/DeleteRole",
+    "AddUserRole":"/api/RoleManagement/AddUserToRole",
+    "GetUserRoles":"/api/RoleManagement/GetUserRoles",
+    "RemoveUserRole":"/api/RoleManagement/RemoveUserFromRole",
+    "AddClaimsRole":"/api/RoleManagement/AddClaimsToRole",
+
+    "GetShifts":"/api/Shifts/GetShifts",
+    "GetShiftById":"/api/Shifts/GetById",
+    "CreateShift":"/api/Shifts/InsertShift",
+    "UpdateShift":"/api/Shifts/UpdateShift",
+    "DeleteShift":"/api/Shifts/DeleteShift",
+    "CloseShift":"/api/Shifts/ClosingShift",
+
+    "Login":"/api/User/Login",
+    "RefreshToken":"/api/User/RefreshToken",
+
+
+    "GetUsers":"/api/UserManagement/GetUsers",
+    "GetUserById":"/api/UserManagement/GetUserById",
+    "CreateUser":"/api/UserManagement/CreateUser",
+    "UpdateUser":"/api/UserManagement/UpdateUser",
+    "DeleteUser":"/api/UserManagement/DeleteUser",
+    "SetPassword":"/api/UserManagement/SetPassword",
+    "ResetPassowrd":"/api/UserManagement/ResetPassowrd",
+    "ChangePassword":"/api/UserManagement/ChangePassword",
+    "AddClaimsToUser":"/api/UserManagement/AddClaimsToUser",
+    "RemoveClaimsFromUser":"/api/UserManagement/RemoveClaimsFromUser",
+
+
+    "GetVariantTypes":"/api/VariantTypes/GetVariantTypes",
+    "GetVariantTypeById":"/api/VariantTypes/GetById",
+    "CreateVariantType":"/api/VariantTypes/InsertVariantType",
+    "UpdateVariantType":"/api/VariantTypes/UpdateVariantType",
+    "DeleteVariantType":"/api/VariantTypes/DeleteVariantType"
+
+
+
+
+
   }
 }
