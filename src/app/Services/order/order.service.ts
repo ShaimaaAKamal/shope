@@ -3,25 +3,23 @@ import { Customer } from '../../Interfaces/customer';
 import { Order } from '../../Interfaces/order';
 import { CommonService } from '../CommonService/common.service';
 import { SalesPersonsService } from '../SalesPersons/sales-persons.service';
-import { of, tap } from 'rxjs';
-import { SharedService } from '../Shared/shared.service';
+import { Observable, of, tap } from 'rxjs';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { OrderProduct } from '../../Interfaces/order-product';
 import { UserService } from '../User/user.service';
+import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private __SharedService=inject(SharedService);
-
  orders=signal<Order[]>([])
  orderProducts=signal<OrderProduct[]>([]);
  discount=signal<number>(0);
  paidAmount = signal<number>(0);
-//  invoiveCustomer:Customer={name:'',nameAr:'',id:-1};
  invoiveCustomer:Customer={} as Customer;
-
+ currency:string='SAR';
+private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 constructor(private __CommonService:CommonService,private __SalesPersonsService:SalesPersonsService,
   private __ToastingMessagesService:ToastingMessagesService,private __UserService:UserService
 ){
@@ -30,64 +28,37 @@ constructor(private __CommonService:CommonService,private __SalesPersonsService:
 }
 
 // categoryAPiCall
-getOrders() {
-  // this.loadingSignal.set(true);
 
-  return this.__SharedService.getAllByPost<Order>('GetOrders', 'categories').pipe(
-    tap({
-      next: (data) =>{this.orders.set([...data.data  || []])},
-      // complete: () => this.loadingSignal.set(false),
-    })
+getOrders(body?: any): Observable<Order[]> {
+    return this.__HandleActualApiInvokeService.getEntities<Order>('GetOrders', 'GetOrders',this.orders, body)
+  }
+
+createOrderApi(order: Order) {
+  return this.__HandleActualApiInvokeService.createEntity<Order>(
+    'CreateOrder',
+    order,
+    'Order',
+    this.orders
   );
 }
 
-createOrderApi(order: Order){
-  return this.__SharedService.createByPost<Order>('CreateOrder', order, 'Order').pipe(
-    tap((createdOrder) => {
-      this.orders.update((orders) => [...orders, createdOrder['data']]);
-    }));}
-
-// updateOrderApi(order: Order) {
-//    if (!order.id) {
-//     throw new Error('Product ID is required for update.');
-//   }
-//   return this.__SharedService.update<Order>('Orders', order.id, order, 'Order').pipe(
-//     tap((updatedOrder) => {
-//       this.orders.update((orders) =>
-//                 // orders.map((o) => (o.code=== updatedOrder.code ? updatedOrder : o))
-//         orders.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-//       );
-//     }));
-// }
-
-
-// deleteOrderApi(id: number){
-//   return this.__SharedService.delete<Order>('Orders', id, 'Order').pipe(
-//     tap(() => {
-//       this.orders.update((orders) => orders.filter((o) => o.id !== id));
-//     }));
-// }
-
 updateOrderApi(order: Order) {
-  if (!order.id) {
-   throw new Error('Product ID is required for update.');
- }
- return this.__SharedService.updateByPost<Order>('Orders', order, 'Order').pipe(
-   tap((updatedOrder) => {
-     this.orders.update((orders) =>
-               // orders.map((o) => (o.code=== updatedOrder.code ? updatedOrder : o))
-       orders.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-     );
-   }));
+  return this.__HandleActualApiInvokeService.updateEntity<Order>(order, {
+    apiMethod: 'Orders',
+    signal: this.orders,
+    entityName: 'Order'
+  });
 }
 
-deleteOrderApi(id: number){
-  return this.__SharedService.deleteByPost<Order>('DeleteOrder', id, 'Order').pipe(
-    tap(() => {
-      this.orders.update((orders) => orders.filter((o) => o.id !== id));
-    }));
-}
 
+deleteOrderApi(id: number) {
+  return this.__HandleActualApiInvokeService.deleteEntity<Order>(
+    'DeleteOrder',
+    id,
+    'Order',
+    this.orders,
+  );
+}
 ///// Crud Methods
 
 

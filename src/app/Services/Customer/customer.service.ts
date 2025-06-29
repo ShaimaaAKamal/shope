@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Customer } from '../../Interfaces/customer';
 import { CommonService } from '../CommonService/common.service';
 import { SharedService } from '../Shared/shared.service';
 import { Observable, tap, throwError } from 'rxjs';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
+import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 
 @Injectable({
   providedIn: 'root'
@@ -86,80 +87,51 @@ export class CustomerService {
   //   customerType: 3
   // }
   //  ]);
+  private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 
   customers=signal<Customer[]>([]);
 
-  constructor(private __CommonService:CommonService,private __SharedService:SharedService,
+  constructor(private __CommonService:CommonService,
     private __ToastingMessagesService:ToastingMessagesService) {
       this.getCustomers().subscribe({});
     }
 
 //start of api
-  getCustomers() {
-    // this.loadingSignal.set(true);
 
-    return this.__SharedService.getAllByPost<Customer>('GetCustomers', 'customers').pipe(
-      tap({
-        next: (data) => this.customers.set([...data.data]),
-        // complete: () => this.loadingSignal.set(false),
-      })
-    );
+  getCustomers(body?: any): Observable<Customer[]> {
+    return this.__HandleActualApiInvokeService.getEntities<Customer>('GetCustomers', 'customers',this.customers, body)
   }
-
-  createCustomer(customer: Customer){
-    //  this.loadingSignal.set(true);
-     return this.__SharedService.createByPost<Customer>('CreateCustomer', customer, 'Customer').pipe(
-      tap({
-        next: (newCustomer) => this.customers.update(customers => this.__CommonService.addOrReplaceItemById(customers, newCustomer['data'])),
-        // complete: () => this.loadingSignal.set(false),
-      })
-    );
-    }
-
-
+  createCustomer(customer: Customer) {
+  return this.__HandleActualApiInvokeService.createEntity<Customer>(
+    'CreateCustomer',
+    customer,
+    'Customer',
+    this.customers
+  );
+}
   deleteCustomer(id: number) {
-    // this.loadingSignal.set(true);
-    return  this.__SharedService.deleteByPost<Customer>('DeleteCustomer', id, 'Customer').pipe(
-        tap({
-          next: () =>      this.customers.update(customers => customers.filter(c => c.id !== id)),
-          // complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+  return this.__HandleActualApiInvokeService.deleteEntity<Customer>(
+    'DeleteCustomer',
+    id,
+    'Customer',
+    this.customers,
+  );
+}
 
-  updateCustomer(customer: Customer){
-    if (!customer.id) {
-    throw new Error('Customer ID is required for update.');
-  }
-
-  //  this.loadingSignal.set(true);
-    const existingCustomer = this.customers().find(c => (c.phone== customer.phone && c.id !=customer.id));
-                    if (existingCustomer) {
-                      throw new Error(`Customer with this name already exist.`);
-                    }
-
-    return this.__SharedService.updateByPost<Customer>('UpdateCustomer', customer, 'customer').pipe(
-        tap({
-          next: (updatedCustomer) =>  {
-                this.customers.update(variants =>
-                    variants.map(v => (v.id === updatedCustomer.id ? updatedCustomer : v))
-                );},
-          // complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
-
-  getCustomer(id:number){
-    this.__SharedService.getByIdByPost<Customer>('GetCustomer', id, 'customer').subscribe({
-      next: (data) => {
-        console.log('Fetched product:', data);
-        // Use the data here
-      },
-      error: (err) => {
-        console.error('Error fetching product:', err);
-      }
+  updateCustomer(customer: Customer) {
+    return this.__HandleActualApiInvokeService.updateEntity<Customer>(customer, {
+      apiMethod: 'UpdateCustomer',
+      signal: this.customers,
+      entityName: 'Customer',
+      duplicateCheck: (c) =>
+        this.customers().some(x => x.phone === c.phone && x.id !== c.id)
     });
   }
+    getCustomer(id:number){
+      return this.__HandleActualApiInvokeService.getEntityById<Customer>('GetCustomer', id, 'customer');
+  }
+
+
 
   //end of api
 
@@ -175,10 +147,10 @@ export class CustomerService {
     }
   }
 
-  setCustomers(customers:Customer[]){
-        this.customers.set(customers);}
+
 
     getCustomerByID(id:number){
-      return this.customers().find(customer => customer.id == id) ?? {} as Customer;
+      // return this.customers().find(customer => customer.id == id) ?? {} as Customer;
+     return this.getCustomer(id);
     }
 }

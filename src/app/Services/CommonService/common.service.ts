@@ -109,9 +109,9 @@ controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: str
   ref?.togglePopScreen?.(action);
 }
 
-getId():number{
-  return Date.now() + Math.floor(Math.random() * 1000);
-}
+// getId():number{
+//   return Date.now() + Math.floor(Math.random() * 1000);
+// }
 
 addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
   const index = array.findIndex(item => item.id === newItem.id);

@@ -127,7 +127,9 @@ export class ProductsComponent {
   });
 
     this.products = computed(() =>
-    [...this.productService.products()].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
+    // [...this.productService.products()].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
+    [...this.productService.products()]
+
     );
 
   }
@@ -139,18 +141,14 @@ export class ProductsComponent {
   addNew(_value: boolean): void {
     this.type.set('new');
     this.newProduct = this.productService.getEmptyProduct();
-    this.newProduct.id = this.__CommonService.getId();
+    // this.newProduct.id = this.__CommonService.getId();
     this.productService.addNewProduct(this.newProduct);
   }
 
   deleteNewProduct(_del: boolean): void {
-    const result = this.productService.deleteProductByIndex(0);
+    // const result = this.productService.deleteProductByIndex(0);
+    const result = this.productService.deleteNewProduct();
     if (result) this.type.set('');
-
-    this.toastService.showToast(
-      result ? 'Product has been deleted successfully' : 'Product could not be deleted',
-      result ? 'success' : 'error'
-    );
   }
 
   deleteSelected(_del: boolean): void {
@@ -202,7 +200,7 @@ resetFilters() {
 
   ngOnDestroy(): void {
     this.type.set('');
-    this.productService.removeEmptyProduct(this.products());
+    this.productService.removeEmptyProductandSortPeroducts(this.products());
   }
 }
 

@@ -54,7 +54,7 @@
               </button>
             </div>
           </div>
-          <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-between"  *ngIf="PageControlsComponentData.type != 'customer'">
             <i class="fa-solid fa-table-cells-large pe-3 text-muted" (click)="setDisplayDir('catalog')"></i>
             <i class="fa-solid fa-list text-muted" (click)="setDisplayDir('list')"></i>
           </div>

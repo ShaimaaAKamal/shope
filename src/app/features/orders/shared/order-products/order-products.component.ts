@@ -26,7 +26,9 @@ export class OrderProductsComponent {
  private __ProductService=inject(ProductService);
 
 //  private __SharedService=inject(SharedService);
- currency:string='SAR';
+//  currency:string='SAR';
+currency:string=this.__OrderService.currency;
+
  products= this.__OrderService.orderProducts;
  getTotalQuantity=this.__OrderService.getTotalQuantity;
   productNames = new Map<string, string>();

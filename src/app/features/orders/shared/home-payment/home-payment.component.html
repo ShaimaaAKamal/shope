@@ -4,6 +4,8 @@
   <div class="d-flex align-items-center justify-content-between  mb-2">
       <h6 class="text-decoration-underline mb-0">{{'Payment Methods' | translate}}</h6>
       <span class="fs-verySmall text-danger" [class.d-none]="mustBePaid">{{'Total Amount must be Paid' | translate}}</span>
+      <span class="fs-verySmall text-danger" [class.d-none]="!orderProductsError">{{'There are no Products' | translate}}</span>
+
     </div>
     <div class="container-fluid px-0">
       <div class="row border-bottom pb-2 mb-2 gy-2">
@@ -78,6 +80,7 @@
       }"
         (mustBePaid)="setMustbePaid($event)"
         (clearCustomer)="clearCustomerFn()"
+        (ordersProductsError)="setordersProductsError($event)"
         ></app-payment-buttons>
       </div>
     </div>

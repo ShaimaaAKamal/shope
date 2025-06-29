@@ -1,5 +1,5 @@
 import { Category } from './../../../../Interfaces/category';
-import {  Component, effect, ElementRef, EventEmitter, inject, Input, Output, QueryList, Signal, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import {  Component, effect, EventEmitter, inject, Input, Output, Signal, SimpleChanges, ViewChild } from '@angular/core';
 import { PopScreenComponent } from '../../../../shared/components/pop-screen/pop-screen.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { Product } from '../../../../Interfaces/product';
@@ -7,10 +7,8 @@ import { Variant } from '../../../../Interfaces/variant';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { CommonService } from '../../../../Services/CommonService/common.service';
 import { CategoryService } from '../../../../Services/Category/category.service';
-import { ToastingMessagesService } from '../../../../Services/ToastingMessages/toasting-messages.service';
 import { LanguageService } from '../../../../Services/Language/language.service';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Order } from '../../../../Interfaces/order';
 
 type SaveResult =
   | 'success'
@@ -31,7 +29,6 @@ type SaveResult =
 
 export class ProductCardComponent {
   // ViewChild references
-
   @ViewChild('addCategory') addCategory!: PopScreenComponent;
   @ViewChild('addDetailsAlert') addDetailsAlert!: PopScreenComponent;
   @ViewChild('productTitle') productTitleInput!: InputComponent;
@@ -149,8 +146,10 @@ updateQuantityLabel(): void {
 }
 
     chooseCategory(category: Category): void {
+      console.log('category',category);
       if(category.id)
           this.product.category=category.id;
+        console.log('product',this.product);
   }
 
   closeCreateCategory(category:Category){
@@ -196,7 +195,7 @@ updateQuantityLabel(): void {
   }
 
  openProductDetails(){
-    if(!this.product.nameEn)
+    if(this.product.id == -1)
       this.controlPopScreen('addDetailsAlert');
     else {this.controlPopScreen('productInfo')
       this.setProduct(this.product);
@@ -209,67 +208,91 @@ updateQuantityLabel(): void {
     else  this.addProduct().subscribe( );
 }
 
-
 private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
   this.emptyBasicInfoErrorMessage();
+
   const title = this.productTitleInput.value;
   const arabicTitle = this.productArabicTitleInput.value;
   const price = this.productPriceInput.value;
-  const category=this.product.category
+  const category = this.product.category;
+
   if (!title) {
     this.englishNameErrorMessage = 'Name is Required';
     return of('missing_title' as SaveResult);
   }
+
   if (!arabicTitle) {
     this.arabicNameErrorMessage = 'Arabic Name is Required';
     return of('missing_Arabic_title' as SaveResult);
   }
+
   if (!price) {
     this.priceErrorMessage = 'Price is Required';
     return of('missing_price' as SaveResult);
   }
+
   if (category == 0) {
     this.categoryErrorMessage = 'Category is required';
     return of('missing_Category' as SaveResult);
   }
+
   this.setProductBasicInfo(title, arabicTitle, price);
+
   this.currentProduct.update(current => ({
     ...current,
     ...this.product
   }));
-  const mappedProduct=this.getUpdateProductMappedValue(this.currentProduct());
-  console.log('despite change here but it do not reflect in db');
-  return this.productService.updateProductInfo(mappedProduct, action).pipe(
-    switchMap((result) => {
-      if (!result.status) {
-        if (result.message === 'Duplicate_Arabic_Name') {
-          this.product.nameEn = '';
-          return of('Duplicate_Arabic_Name' as SaveResult);
-        }
-        if (result.message === 'Duplicate_English_Name') {
-          this.product.nameEn = '';
-          return of('Duplicate_English_Name' as SaveResult);
-        }
 
-        this.product.nameEn = '';
-        return of('error' as SaveResult);
-      }
-      return of('success' as SaveResult);
-    }),
-    catchError(() => {
-      this.product.nameEn = '';
-      return of('error' as SaveResult);
-    })
+  return this.getUpdateProductMappedValue(this.currentProduct()).pipe(
+    switchMap(mappedProduct =>
+      this.productService.updateProductInfo(mappedProduct, action).pipe(
+        switchMap((result) => {
+          if (!result.status) {
+            if (result.message === 'Duplicate_Arabic_Name') {
+              this.product.nameEn = '';
+              return of('Duplicate_Arabic_Name' as SaveResult);
+            }
+            if (result.message === 'Duplicate_English_Name') {
+              this.product.nameEn = '';
+              return of('Duplicate_English_Name' as SaveResult);
+            }
+
+            this.product.nameEn = '';
+            return of('error' as SaveResult);
+          }
+          return of('success' as SaveResult);
+        }),
+        catchError(() => {
+          this.product.nameEn = '';
+          return of('error' as SaveResult);
+        })
+      )
+    )
   );
 }
-private getUpdateProductMappedValue(product:Product){
-  const{variantMasters,categoryNameAr,categoryNameEn,...mappedProduct}=product;
-  if(categoryNameEn)
- { const category=this.categoryService.getCategoryByName(categoryNameEn);
-  if(category) mappedProduct['category'] = category.id!;
- }
- return mappedProduct;
+
+private getUpdateProductMappedValue(product: Product): Observable<Product> {
+  console.log('product before map', product);
+
+  const { variantMasters, categoryNameAr, categoryNameEn, ...mappedProduct } = product;
+
+  if (!product.category && categoryNameEn) {
+    return this.categoryService.getCategoryByName(categoryNameEn).pipe(
+      map(response => {
+        const foundCategory = response?.data?.[0]  as Category // Adjust based on actual response shape
+        if (foundCategory) {
+          mappedProduct['category'] = foundCategory.id!;
+        }
+        console.log('afterMapped', mappedProduct);
+        return mappedProduct;
+      })
+    );
+  }
+
+  console.log('afterMapped (no fetch needed)', mappedProduct);
+  return of(mappedProduct);
 }
+
 private processProductSave(
   action: 'add' | 'update',
 ): Observable<void> {

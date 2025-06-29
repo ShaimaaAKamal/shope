@@ -44,9 +44,15 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
 
     variantDetailsHandledFn(event:any) {
       if(this.localVariants().length == 0){
-        console.log('Make update array list');
-        console.log(event)
-        this.variantDetailsHandled.emit();
+        const updateVariants =this.mapUpdatedProductVariantsData(event);
+        console.log('updated product variant details',updateVariants);
+        this.__ProductService.updateProductVariants(updateVariants).subscribe({
+          next:()=>   this.variantDetailsHandled.emit()
+        })
+
+        // console.log('updated product variant details',updateVariants);
+        // console.log('Make update array list');
+        // this.variantDetailsHandled.emit();
       }
       else {
          this.__SharedService.createListByPost<ProductVariantMaster[]>('CreateProductVariantList',event,'Product Variants').subscribe(
@@ -55,5 +61,27 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
         }
       )
       }
+    }
+
+    private mapUpdatedProductVariantsData(event: any) {
+      const transformedVariants = event.map((variant: any) => {
+        const {
+          variantTypeAr,
+          variantTypeEn,
+          nameAr,
+          nameEn,
+          ...rest
+        } = variant;
+
+        return {
+          ...rest,
+          variantDetails: variant.variantDetails.map((detail: any) => ({
+            variantMasterLookUpId: detail.variantMasterLookupId,
+            variantDetailId: detail.variantDetailsLookupId
+          }))
+        };
+      });
+
+      return transformedVariants;
     }
   }

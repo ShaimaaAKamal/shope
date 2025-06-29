@@ -19,8 +19,9 @@ export interface ProductVariantMaster {
       variantMasterLookUpId: number,
       variantDetailId: number
     }
-  ]
+  ],
   [key: string]: any
+
 }
 
 

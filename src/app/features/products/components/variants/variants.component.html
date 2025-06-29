@@ -56,9 +56,7 @@
             <app-add-variant
             (localVariants)="setLocalVariants($event)"
             ></app-add-variant>
-            <!-- <div class="fs-verySmall p-1 bg-semi-dark text-white rounded-2 text-center p-2 mt-2" (click)="createProductVariants()">Create Product Variants</div> -->
         </div>
-        <!-- <div class="variantValuesQuantityContainer mt-3" *ngIf="localVariants().length > 0"> -->
           <div class="variantValuesQuantityContainer mt-3">
                    <app-variant-options-values-quantity
                    [localVariants]="localVariants()"

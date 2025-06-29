@@ -1,80 +1,74 @@
-import { effect, Injectable, signal } from '@angular/core';
+import {  inject, Injectable, signal } from '@angular/core';
 import { Category } from '../../Interfaces/category';
 import { SharedService } from '../Shared/shared.service';
-import { tap } from 'rxjs';
-import { CommonService } from '../CommonService/common.service';
+import { Observable } from 'rxjs';
+import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-
+  private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 categories=signal<Category[]>([]);
 
-constructor(private __SharedService:SharedService,private __CommonService:CommonService) {
+constructor(private __SharedService:SharedService) {
   this.getCategories().subscribe({});
 }
 
 // categoryAPiCall
-getCategories() {
-  // this.loadingSignal.set(true);
 
-  return this.__SharedService.getAllByPost<Category>('GetCategories', 'categories').pipe(
-    tap({
-      next: (data) =>{this.categories.set([...data.data  || []])},
-      // complete: () => this.loadingSignal.set(false),
-    })
-  );
+getCategories(body?: any): Observable<Category[]> {
+  return this.__HandleActualApiInvokeService.getEntities<Category>('GetCategories', 'categories',this.categories, body)
 }
 
-
-createCategoryApi(category: Category){
-  //  this.loadingSignal.set(true);
-   return this.__SharedService.createByPost<Category>('CreateCategory', category, 'Category').pipe(
-    tap({
-      next: (newCategory) => this.categories.update(categories => this.__CommonService.addOrReplaceItemById(categories, newCategory['data'])),
-      // complete: () => this.loadingSignal.set(false),
-    })
+createCategoryApi(category: Category) {
+  return this.__HandleActualApiInvokeService.createEntity<Category>(
+    'CreateCategory',
+    category,
+    'Category',
+    this.categories
   );
-  }
+}
 
 deleteCategory(id: number) {
-  // this.loadingSignal.set(true);
-  return  this.__SharedService.deleteByPost<Category>('DeleteCategory', id, 'category').pipe(
-      tap({
-        next: () =>      this.categories.update(categories => categories.filter(p => p.id !== id)),
-        // complete: () => this.loadingSignal.set(false),
-      })
-    );
+  return this.__HandleActualApiInvokeService.deleteEntity<Category>(
+    'DeleteCategory',
+    id,
+    'category',
+    this.categories,
+  );
 }
 
-updateCategory(category: Category){
-  if (!category.id) {
-  throw new Error('Category ID is required for update.');
+updateCategory(category: Category) {
+  return this.__HandleActualApiInvokeService.updateEntity<Category>(category, {
+    apiMethod: 'UpdateCategory',
+    signal: this.categories,
+    entityName: 'Category',
+    duplicateCheck: (cat) =>
+      this.categories().some(v =>
+        (v.nameEn === cat.nameEn || v.nameAr === cat.nameAr) && v.id !== cat.id
+      )
+  });
 }
 
-//  this.loadingSignal.set(true);
-  const existingCategory = this.categories().find(v => (v.nameEn === category.nameEn ||  v.nameAr === category.nameAr) && v.id != category.id )
-                  if (existingCategory) {
-                    throw new Error(`Category with this name already exist.`);
-                  }
-
-  return this.__SharedService.updateByPost<Category>('UpdateCategory', category, 'category').pipe(
-      tap({
-        next: (updatedCategory) =>  {
-              this.categories.update(categories =>
-                  categories.map(v => (v.id === updatedCategory.id ? updatedCategory : v))
-              );},
-        // complete: () => this.loadingSignal.set(false),
-      })
-    );
-}
-
-getCategoryById(id: number) {
-  return this.categories().find(category => category.id === id);
-}
 getCategoryByName(name: string) {
-  return this.categories().find(category => category.nameEn === name);
+  const searchBody={sorts: [],
+      filters: [
+        {
+          operation: 0,
+          propertyName: "nameEn",
+          propertyValue: name
+        }
+      ],
+      pagingModel: {
+        index: 0,
+        length: 0,
+        all: true
+      },
+      properties: ""
+  }
+  return this.__SharedService.getAllByPost('GetCategories','Categories',searchBody)
+  // return this.categories().find(category => category.nameEn === name);
 }
 validateCategoryInputs(nameEn: string, nameAr: string,id:number |null=null) {
   const normalizedName = nameEn.trim().toLowerCase();

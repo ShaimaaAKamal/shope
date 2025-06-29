@@ -28,7 +28,7 @@ export class SharedService {
       pagingModel: {
         index: 0,
         length: 0,
-        all: false
+        all: true
       },
       properties: ''
     }
@@ -153,4 +153,6 @@ export class SharedService {
       catchError(err => this.handleError('delete', entityName, err))
     );
   }
+
+  
 }

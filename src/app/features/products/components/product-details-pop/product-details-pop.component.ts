@@ -81,9 +81,9 @@ getProductInfo(): void {
   const sku=this.SKU.value;
   const descriptionEn = this.descriptionEn.value;
   const descriptionAr = this.descriptionAr.value;
-  const tax = parseFloat(this.tax.value);
-  const vatValue = parseFloat(this.vatValue.value);
-  const comparePrice= parseFloat(this.productComparePrice.value);
+  const tax = isNaN(parseFloat(this.tax.value)) ? 0 : parseFloat(this.tax.value);
+  const vatValue = isNaN(parseFloat(this.vatValue.value)) ? 0 : parseFloat(this.vatValue.value);
+  const comparePrice = isNaN(parseFloat(this.productComparePrice.value)) ? 0 : parseFloat(this.productComparePrice.value);
   const isActive = this.ActiveDropDownSelection === 'Active';
   const chargeTax = this.chargeTaxDropDownSelection === 'Charge';
   const isPriceAffecting = this.priceAffecringDropDownSelection === 'yes';

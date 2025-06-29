@@ -37,7 +37,6 @@ ngOnChanges(changes: SimpleChanges): void {
  if (changes['DropdownComponentData']) {
         if(this.DropdownComponentData.type == 'color') this.colorField=true;
       else {this.colorField=false;}
-      console.log(this.DropdownComponentData.key);
     }
 }
 

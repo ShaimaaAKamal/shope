@@ -1,4 +1,4 @@
-import {Component,effect,EventEmitter,inject,Output,QueryList,ViewChildren,input, Input, signal, WritableSignal, SimpleChanges} from '@angular/core';
+import {Component,effect,EventEmitter,inject,Output,QueryList,ViewChildren, Input, signal, SimpleChanges} from '@angular/core';
 import { VariantValueDetailsComponent } from '../variant-value-details/variant-value-details.component';
 import { ProductService } from '../../../../Services/Product/product.service';
 import { Product } from '../../../../Interfaces/product';
@@ -14,6 +14,7 @@ import { LanguageService } from '../../../../Services/Language/language.service'
 export class VariantOptionsValuesQuantityComponent {
   private __ProductService = inject(ProductService);
   private __LanguageService=inject(LanguageService);
+
   isRtl=this.__LanguageService.dirSignal;
   product = this.__ProductService.currentProduct;
 
@@ -30,20 +31,29 @@ export class VariantOptionsValuesQuantityComponent {
 constructor() {
 if(this.product().id){
   const id:number=this.product().id!;
-  this.__ProductService.getProduct(id).subscribe({
-    next:(data)=>this.productDetails.set(data.data)
+ const requestBody={
+    sorts: [],
+    filters: [
+      {
+        operation:0 ,
+        propertyName: "productId",
+        propertyValue: this.product().id
+      }
+    ],
+    pagingModel: {
+      index: 0,
+      length: 0,
+      all: true
+    },
+    properties: ''
+  };
+  this.__ProductService.getProductVariants(requestBody).subscribe({
+    next:(data)=>{
+        this.displayedVariants =[...data?? []];
+        console.log('this.displayedVariants',this.displayedVariants);
+    }
   });
 }
-
-
-effect(() => {
-   const hasDetails = !!this.productDetails()?.variantMasters?.length;
-   console.log(this.productDetails()?.variantMasters?.length);
-   if(hasDetails)
-   this.displayedVariants =[...this.productDetails().variantMasters ?? []]
-  console.log(this.productDetails().variantMasters)
-  console.log('this.displayedVariants',this.displayedVariants);
-});
 
   effect(() => {
       const data = this.__ProductService.getVariantDetailsData();
@@ -137,4 +147,6 @@ generateCombinations(): any[] {
 
     }
   }
+
+
 }

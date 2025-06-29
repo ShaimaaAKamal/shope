@@ -18,7 +18,8 @@ import { Customer } from '../../../../Interfaces/customer';
 })
 export class PaymentButtonsComponent {
   @Input() PaymentButtonsData!: paymentButtonsInterface;
-   @Output() mustBePaid=new EventEmitter<boolean>(false);
+  @Output() mustBePaid=new EventEmitter<boolean>(false);
+  @Output() ordersProductsError=new EventEmitter<boolean>(false);
   @Output() clearCustomer=new EventEmitter<void>();
 
   constructor( private __OrderService: OrderService,
@@ -29,14 +30,23 @@ export class PaymentButtonsComponent {
     const paidAmount = this.PaymentButtonsData.getPaidAmount();
     const totalAmount = this.__OrderService.getGrossTotal();
 
-    if (paidAmount >= totalAmount && this.__OrderService.orderProducts().length > 0) {
-      // this.setOrderDetails('paid');
-            this.setOrderDetails(2);
+    // if (paidAmount >= totalAmount && this.__OrderService.orderProducts().length > 0) {
+    //   // this.setOrderDetails('paid');
+    //         this.setOrderDetails(2);
 
-            this.mustBePaid.emit(true);
-    } else {
-      this.mustBePaid.emit(false);
-    }
+    //         this.mustBePaid.emit(true);
+    // } else {
+    //   this.mustBePaid.emit(false);
+    // }
+    if(this.__OrderService.orderProducts().length > 0){
+       if(paidAmount >= totalAmount){
+        this.setOrderDetails(2);
+
+        this.mustBePaid.emit(true);
+       }else
+       this.mustBePaid.emit(false);
+    }else
+      this.ordersProductsError.emit(true);
   }
 
   hold_Order() {

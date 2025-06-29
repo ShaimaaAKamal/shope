@@ -1,18 +1,19 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { catchError, concatMap, finalize, forkJoin, map, of, tap } from 'rxjs';
+import { catchError, concatMap, finalize, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
 import { VartiantType } from '../../Interfaces/vartiant-type';
+import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 private __SharedService=inject(SharedService);
-
+private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
@@ -23,10 +24,11 @@ private __SharedService=inject(SharedService);
 
   // Signals for state management
   private productsSignal = signal<Product[]>([]);
+  products = this.productsSignal.asReadonly();
   private loadingSignal = signal<boolean>(false);
 
   // Expose signals as readonly
-  products = this.productsSignal.asReadonly() ;
+;
   loading = this.loadingSignal.asReadonly();
 
   constructor(private commonService: CommonService) {
@@ -35,184 +37,158 @@ private __SharedService=inject(SharedService);
 
   //VariantTypeApi
 
-  getVariantTypes() {
-    this.loadingSignal.set(true);
+  getVariantTypes(body?: any): Observable<VartiantType[]> {
+      return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
+    }
 
-    return this.__SharedService.getAllByPost<VartiantType>('GetVariantTypes', 'variant Types').pipe(
-      tap({
-        next: (data) => this.variantTypes.set([...data.data  || []]),
-        complete: () => this.loadingSignal.set(false),
-
-      })
+  createVariantType(variant: VartiantType) {
+    return this.__HandleActualApiInvokeService.createEntity<VartiantType>(
+      'CreateVariantType',
+      variant,
+      'Variant Type',
+      this.variantTypes
     );
   }
 
-  createVariantType(variant: VartiantType){
-    this.loadingSignal.set(true);
-    return this.__SharedService.createByPost<VartiantType>('CreateVariantType', variant, 'Variant Type').pipe(
-     tap({
-       next: (newVariant) => this.variantTypes.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
-       complete: () => this.loadingSignal.set(false),
-     })
-   );
-   }
-
   deleteVariantType(id: number) {
-    this.loadingSignal.set(true);
-    return  this.__SharedService.deleteByPost<VartiantType>('DeleteVariantType', id, 'variant type').pipe(
-        tap({
-          next: () =>      this.variantTypes.update(variants => variants.filter(p => p.id !== id)),
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
-  updateVariantType(variant: VartiantType){
-    if (!variant.id) {
-    throw new Error('Variant Type ID is required for update.');
+    return this.__HandleActualApiInvokeService.deleteEntity<VartiantType>(
+      'DeleteVariantType',
+      id,
+      'variant type',
+      this.variantTypes,
+    );
   }
 
-   this.loadingSignal.set(true);
-    const existingVariant = this.variantTypes().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
-                    if (existingVariant) {
-                      throw new Error(`Variant Type with this name already exist.`);
-                    }
-
-                    if( !variant.nameEn || !variant.nameAr) {
-                      throw new Error(`Variant Name can't be empty.`);
-                    }
-    return this.__SharedService.updateByPost<VartiantType>('UpdateVariantType', variant, 'variant').pipe(
-        tap({
-          next: (updatedVariant) =>  {
-                this.variantTypes.update(variants =>
-                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
-                );},
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
+  updateVariantType(variant: VartiantType) {
+    return this.__HandleActualApiInvokeService.updateEntity<VartiantType>(variant, {
+      apiMethod: 'UpdateVariantType',
+      signal: this.variantTypes,
+      entityName: 'Variant Type',
+      duplicateCheck: (v) =>
+        this.variantTypes().some(x =>
+          (x.nameEn === v.nameEn || x.nameAr === v.nameAr) && x.id !== v.id
+        ),
+      additionalValidation: () => {
+        if (!variant.nameEn || !variant.nameAr) {
+          throw new Error(`Variant Name can't be empty.`);
+        }
+      }
+    });
   }
+
 //Variant Api
 
-getVariants() {
-  this.loadingSignal.set(true);
 
-  return this.__SharedService.getAllByPost<VariantMasterLookUP>('GetVariants', 'variants').pipe(
-    tap({
-      next: (data) => this.variantOptions.set([...data.data  || []]),
-      complete: () => this.loadingSignal.set(false),
-
-    })
-  );
+getVariants(body?: any): Observable<VariantMasterLookUP[]> {
+  return this.__HandleActualApiInvokeService.getEntities<VariantMasterLookUP>('GetVariants', 'variants',this.variantOptions, body)
 }
 
 createVariant(variant: VariantMasterLookUP){
-  this.loadingSignal.set(true);
-  return this.__SharedService.createByPost<VariantMasterLookUP>('CreateVariant', variant, 'Variant').pipe(
-   tap({
-     next: (newVariant) => this.variantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
-     complete: () => this.loadingSignal.set(false),
-   })
- );
- }
-
-deleteVariant(id: number) {
-  this.loadingSignal.set(true);
-  return  this.__SharedService.deleteByPost<VariantMasterLookUP>('DeleteVariant', id, 'variant').pipe(
-      tap({
-        next: () =>      this.variantOptions.update(variants => variants.filter(p => p.id !== id)),
-        complete: () => this.loadingSignal.set(false),
-      })
-    );
-}
-updateVariant(variant: VariantMasterLookUP){
-  if (!variant.id) {
-  throw new Error('Variant ID is required for update.');
-}
-
- this.loadingSignal.set(true);
-  const existingVariant = this.variantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
-                  if (existingVariant) {
-                    throw new Error(`Variant with this name already exist.`);
-                  }
-                  if (variant.variantDetails.length == 0) {
-                    throw new Error(`Variant values can't be empty.`);
-                  }
-
-                  if( !variant.nameEn || !variant.nameAr) {
-                    throw new Error(`Variant Name can't be empty.`);
-                  }
-  return this.__SharedService.updateByPost<VariantMasterLookUP>('UpdateVariant', variant, 'variant').pipe(
-      tap({
-        next: (updatedVariant) =>  {
-              this.variantOptions.update(variants =>
-                  variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
-              );},
-        complete: () => this.loadingSignal.set(false),
-      })
-    );
-}
-//ProductVarianTApi
-
-
-
-getProductVariants() {
-  this.loadingSignal.set(true);
-
-  return this.__SharedService.getAllByPost<ProductVariantMaster>('GetProductVariants', 'Variants').pipe(
-    tap({
-      next: (data) => this.productVariantOptions.set([...data.data]),
-      complete: () => this.loadingSignal.set(false),
-
-    })
+  return this.__HandleActualApiInvokeService.createEntity<VariantMasterLookUP>(
+    'CreateVariant',
+    variant,
+    'Variant',
+    this.variantOptions
   );
 }
 
-createProductVariant(ProductVariant: ProductVariantMaster){
-  this.loadingSignal.set(true);
-  return this.__SharedService.createByPost<ProductVariantMaster>('CreateProductVariant', ProductVariant, 'Variant').pipe(
-   tap({
-     next: (newVariant) => this.productVariantOptions.update(variants => this.commonService.addOrReplaceItemById(variants, newVariant['data'])),
-     complete: () => this.loadingSignal.set(false),
-   })
- );
- }
+deleteVariant(id: number) {
+  return this.__HandleActualApiInvokeService.deleteEntity<VariantMasterLookUP>(
+    'DeleteVariant',
+    id,
+    'variant',
+    this.variantOptions,
+  );
+}
+updateVariant(variant: VariantMasterLookUP) {
+  return this.__HandleActualApiInvokeService.updateEntity<VariantMasterLookUP>(variant, {
+    apiMethod: 'UpdateVariant',
+    signal: this.variantOptions,
+    entityName: 'Variant',
+    duplicateCheck: (v) =>
+      this.variantOptions().some(x =>
+        (x.nameEn === v.nameEn || x.nameAr === v.nameAr) && x.id !== v.id
+      ),
+    additionalValidation: () => {
+      if (!variant.nameEn || !variant.nameAr) {
+        throw new Error(`Variant Name can't be empty.`);
+      }
+      if (variant.variantDetails.length === 0) {
+        throw new Error(`Variant values can't be empty.`);
+      }
+    }
+  });
+}
 
-deleteProductVariant(id: number) {
-  this.loadingSignal.set(true);
-  return  this.__SharedService.deleteByPost<ProductVariantMaster>('DeleteProductVariant', id, 'variant').pipe(
-      tap({
-        next: () =>      this.productVariantOptions.update(variants => variants.filter(p => p.id !== id)),
-        complete: () => this.loadingSignal.set(false),
-      })
-    );
+getProductVariants(body?: any): Observable<ProductVariantMaster[]> {
+  return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
+}
+
+createProductVariant(ProductVariant: ProductVariantMaster){
+  return this.__HandleActualApiInvokeService.createEntity<ProductVariantMaster>(
+    'CreateProductVariant',
+    ProductVariant,
+    'Variant',
+    this.productVariantOptions
+  );
 }
 
 
-  updateProductVariant(variant: ProductVariantMaster){
-    if (!variant.id) {
-    throw new Error('Variant ID is required for update.');
+deleteProductVariant(id: number) {
+  return this.__HandleActualApiInvokeService.deleteEntity<ProductVariantMaster>(
+    'DeleteProductVariant',
+    id,
+    'variant',
+    this.productVariantOptions,
+  );
+}
+
+
+
+  updateProductVariant(variant: ProductVariantMaster) {
+    return this.__HandleActualApiInvokeService.updateEntity<ProductVariantMaster>(variant, {
+      apiMethod: 'UpdateProductVariant',
+      signal: this.productVariantOptions,
+      entityName: 'Variant',
+      // If needed, you can uncomment and add duplicateCheck or additionalValidation
+      // duplicateCheck: (v) =>
+      //   this.productVariantOptions().some(x =>
+      //     (x.nameEn === v.nameEn || x.nameAr === v.nameAr) && x.id !== v.id
+      //   ),
+      // additionalValidation: () => {
+      //   if (!variant.nameEn || !variant.nameAr) {
+      //     throw new Error(`Variant Name can't be empty.`);
+      //   }
+      //   if (variant.variantDetails.length === 0) {
+      //     throw new Error(`Variant values can't be empty.`);
+      //   }
+      // }
+    });
   }
+  updateProductVariants(variants: ProductVariantMaster[]): Observable<ProductVariantMaster[] | null> {
+    if (!variants.length) return of(null);
 
-   this.loadingSignal.set(true);
-    // const existingVariant = this.productVariantOptions().find(v => (v.nameEn === variant.nameEn ||  v.nameAr === variant.nameAr) && v.id != variant.id )
-    //                 if (existingVariant) {
-    //                   throw new Error(`Variant with this name already exist.`);
-    //                 }
-    //                 if (variant.variantDetails.length == 0) {
-    //                   throw new Error(`Variant values can't be empty.`);
-    //                 }
+    this.loadingSignal.set(true);
 
-    //                 if( !variant.nameEn || !variant.nameAr) {
-    //                   throw new Error(`Variant Name can't be empty.`);
-    //                 }
-    return this.__SharedService.updateByPost<ProductVariantMaster>('UpdateProductVariant', variant, 'variant').pipe(
-        tap({
-          next: (updatedVariant) =>  {
-                this.productVariantOptions.update(variants =>
-                    variants.map(v => (v.id === updatedVariant.id ? updatedVariant : v))
-                );},
-          complete: () => this.loadingSignal.set(false),
-        })
+    const updateRequests = variants.map(variant => {
+      return this.__SharedService.updateByPost<ProductVariantMaster>(
+        'UpdateProductVariant',
+        variant,
+        'variant'
       );
+    });
+
+    return forkJoin(updateRequests).pipe(
+      tap(() => {
+        this.productVariantOptions.update(existing =>
+          existing.map(pv => {
+            const updated = variants.find(u => u.id === pv.id);
+            return updated ? updated : pv;
+          })
+        );
+      }),
+      finalize(() => this.loadingSignal.set(false))
+    );
   }
   //Product Api
 private init(): void {
@@ -221,7 +197,6 @@ private init(): void {
     concatMap(() => this.getProducts())
   ).subscribe({
     next: () => {
-      console.log(this.variantTypes());
       this.handleLoadingAllowProducts();
     },
     error: (err) => {
@@ -230,7 +205,7 @@ private init(): void {
   });
 }
   private handleLoadingAllowProducts(){
-    const sortedProducts=this.removeEmptyProduct(this.products());
+    const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
     this.commonService.saveToStorage('products', sortedProducts);
     this.usedProducts = [...sortedProducts];
   }
@@ -238,112 +213,72 @@ private init(): void {
   //Api calls
 
    getProduct(id:number){
-     return this.__SharedService.getByIdByPost<Product>('GetProductById', id, 'product')
+    return this.__HandleActualApiInvokeService.getEntityById<Product>('GetProductById', id, 'product');
     }
 
-getProducts() {
-  this.loadingSignal.set(true);
-  return this.__SharedService.getAllByPost<Product>('GetProducts', 'products').pipe(
-    tap({
-      next: (products) => {
-        this.productsSignal.set(products.data || []);
-      },
-      complete: () => {
-        this.loadingSignal.set(false);
-      }
-    })
-  );
+getProducts(body?: any): Observable<Product[]> {
+return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
 }
 
 createProduct(product: Product) {
-  this.loadingSignal.set(true); // only once
   const { id, ...productWithoutId } = product;
-  return this.__SharedService.createByPost<Product>('CreateProduct', productWithoutId, 'product').pipe(
-    tap({
-      next: (newProduct) => {
-        this.productsSignal.update(products =>
-          products.filter(product => product.id !== id)
-        );
-        this.productsSignal.update(products =>
-          this.commonService.addOrReplaceItemById(products, newProduct['data'])
-        );
-        this.type.set('');
-        this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
-      },
-      complete: () => {
-        this.loadingSignal.set(false);
-      }
-    }),
-    catchError(error => {
-      console.error('❌ CreateProduct error:',  error);
-      this.loadingSignal.set(false);
-      return of(null);
-    })
+
+  return this.__HandleActualApiInvokeService.createEntity<Product>(
+    'CreateProduct',
+    productWithoutId,
+    'product',
+    this.productsSignal,
+    (newProduct) => {
+      this.productsSignal.update(products =>
+        products.filter(p => p.id !== id)
+      );
+      this.productsSignal.update(products =>
+        this.sortProductsDesc(this.commonService.addOrReplaceItemById(products, newProduct))
+      );
+      this.type.set('');
+      this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
+    }
   );
 }
 
 updateProduct(product: Product) {
-  if (!product.id) {
-    throw new Error('Product ID is required for update.');
-  }
-    this.loadingSignal.set(true);
-    // console.log('api updayed product ',product);
-    return this.__SharedService.updateByPost<Product>('UpdateProduct', product, 'product').pipe(
-        tap({
-          next: (updatedProduct) =>  {
-                  // console.log('updatedProduct',updatedProduct);
-                 this.productsSignal.update(products =>
-        products.map(p => (p.id === updatedProduct.id ? updatedProduct : p))
-      );},
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
-  }
+  return this.__HandleActualApiInvokeService.updateEntity<Product>(product, {
+    apiMethod: 'UpdateProduct',
+    signal: this.productsSignal,
+    entityName: 'Product',
+  });
+}
 
   deleteProduct(id: number) {
-    this.loadingSignal.set(true);
-
-      return  this.__SharedService.deleteByPost<Product>('DeleteProduct', id, 'product').pipe(
-        tap({
-          next: () =>  {
-                 this.productsSignal.update(products => products.filter(p => p.id !== id));
-                this.commonService.saveToStorage('products',  this.sortProductsDesc(this.products()));
-                },
-          complete: () => this.loadingSignal.set(false),
-        })
-      );
+    return this.__HandleActualApiInvokeService.deleteEntity<Product>(
+      'DeleteProduct',
+      id,
+      'product',
+      this.productsSignal,
+      (updatedList) => {
+        this.commonService.saveToStorage('products', this.sortProductsDesc(updatedList));
+      }
+    );
   }
 
 deleteProducts(ids: number[]) {
-  this.loadingSignal.set(true);
-
-  const deleteRequests = ids.map(id =>
-    this.__SharedService.deleteByPost<Product>('DeleteProduct', id, 'product')
-  );
-
-  return forkJoin(deleteRequests).pipe(
-    tap(() => {
-      this.productsSignal.update(products =>
-        // products.filter(product => !ids.includes(product.id))
-        products.filter(product => product.id !== undefined && !ids.includes(product.id))
-      );
-      this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
-    }),
-    finalize(() => {
-      this.loadingSignal.set(false);
-    }),
-    map(() => void 0)
+  return this.__HandleActualApiInvokeService.deleteEntities<Product>(
+    'DeleteProduct',
+    ids,
+    'product',
+    this.productsSignal,
+    (updatedList) => {
+      this.commonService.saveToStorage('products', this.sortProductsDesc(updatedList));
+    }
   );
 }
-
   //Helper Functions
   addNewProduct(newProduct: Product): boolean {
     const exists = this.products().some(p => p.nameEn === newProduct.nameEn);
     if (exists) return false;
-    const updated = [...this.products(), newProduct];
-    const sorted = this.sortProductsDesc(updated);
-    this.productsSignal.set(sorted);
-    this.commonService.saveToStorage('products', sorted);
+    const updated = [newProduct,...this.products()];
+    this.productsSignal.set(updated);
+    this.commonService.saveToStorage('products', updated);
     return true;
   }
 
@@ -367,27 +302,15 @@ updateProductInfo(product: Product, actionType: string) {
   return of({ status: false, message: result.message ?? '' });
 }
 
-  updateProducts(products: Product[]): void {
-    const sorted = this.sortProductsDesc(products);
-    this.productsSignal.set(sorted);
-    this.type.set('');
-    this.commonService.saveToStorage('products', sorted);
-  }
-
-  updateVariants(variant:any){
-      this.variantOptions.update(current => [...current, variant]);
-      this.commonService.saveToStorage('variantOptions', this.variantOptions());
-  }
-
-  deleteProductByIndex(index: number): boolean {
+  deleteNewProduct():boolean{
     const current = [...this.products()];
-    if (index < 0 || index >= current.length) return false;
-    current.splice(index, 1);
+    current.shift();
     const sorted = this.sortProductsDesc(current);
     this.productsSignal.set(sorted);
     this.commonService.saveToStorage('products', sorted);
     return true;
   }
+
 
   findProductByName(name: string): Product[] {
     const query = name.trim().toLowerCase();
@@ -401,25 +324,7 @@ updateProductInfo(product: Product, actionType: string) {
     return this.usedProducts.filter(p => p.barcode.toLowerCase() === code);
   }
 
-  getProductLength(): number {
-    return this.products()[0]?.id ?? 0;
-  }
 
-  //  getEmptyProduct(): Product {
-  //   return {
-  //     id: -1,
-  //     name: '',
-  //     nameAr: '',
-  //     barcode: '',
-  //     price: 0,
-  //     // quantity: '0',
-  //     quantity:0,
-  //     tax: 0,
-  //     status: 'Inactive',
-  //     variants: [],
-  //     variantsDetails: []
-  //   };
-  // }
    getEmptyProduct(): Product {
     return {
       id:-1,
@@ -444,16 +349,12 @@ updateProductInfo(product: Product, actionType: string) {
     };
   }
 
- removeEmptyProduct(products:Product[]){
-    const filterProducts = products.filter(p => p.nameEn && p.price);
+ removeEmptyProductandSortPeroducts(products:Product[]){
+    const filterProducts = products.filter(p => p.nameEn && p.nameAr);
     const sortedProducts = this.sortProductsDesc(filterProducts);
      this.productsSignal.set(sortedProducts);
     return sortedProducts
 }
-
-//  private sortProductsDesc(products: Product[]): Product[] {
-//     return [...products].sort((a, b) => b.id - a.id);
-//   }
 
 private sortProductsDesc(products: Product[]): Product[] {
   return [...products].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));

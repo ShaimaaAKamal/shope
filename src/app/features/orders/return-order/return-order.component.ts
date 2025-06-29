@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Order } from '../../../Interfaces/order';
 import { LanguageService } from '../../../Services/Language/language.service';
@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from '../../../Services/CommonService/common.service';
 import { OrderProduct } from '../../../Interfaces/order-product';
 import { CustomerService } from '../../../Services/Customer/customer.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-return-order',
@@ -21,50 +22,91 @@ private __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 
 private __OrderService=inject(OrderService);
+private destroyRef = inject(DestroyRef);
+
+
 getTotalQuantity=this.__OrderService.getTotalQuantity;
 getNetTotal=this.__OrderService.getNetTotal;
 
 order!:Order;
-// orderProducts!:Product[];
 orderProducts!:OrderProduct[];
-currency:string='SAR';
-
+// currency:string='SAR';
+currency:string=this.__OrderService.currency;
 constructor(private __Router: Router,
 private __ToastingMessagesService: ToastingMessagesService,
 private __TranslateService: TranslateService,
 private __CustomerService:CustomerService) {
+  // const nav = this.__Router.getCurrentNavigation();
+  // const data = nav?.extras?.state;
+  // this.order = {...data?.['order']};
+
+  // // if(this.order && this.order.status == 'hold')
+  //   if(this.order && this.order.invoiceType == 1)
+  // {
+  //   this.__ToastingMessagesService.showToast("This is a hold order",'error');
+  //   this.__Router.navigateByUrl('Orders');
+  // }
+  // //  else if(this.order && this.order.status == 'return')
+  //     if(this.order && this.order.invoiceType == 3)
+
+  // {
+  //   this.__ToastingMessagesService.showToast("This is a return order",'error');
+  //   this.__Router.navigateByUrl('Orders');
+  // }
+  // // else if(this.order && this.order.status == 'paid' && (this.__OrderService.calculateTotalProducts(this.order.products) <=0))
+  //   else if(this.order && this.order.invoiceType == 2 && (this.__OrderService.calculateTotalProducts(this.order.details) <=0))
+
+  // {
+  //   this.__ToastingMessagesService.showToast("There is no products to be returned",'error');
+  //   this.__Router.navigateByUrl('Orders');
+  // }
+  // else {
+  //   // this.__OrderService.orderProducts.set([...this.order.products.map(p => ({ ...p }))]);
+  //    this.__OrderService.orderProducts.set([...this.order.details.map(p => ({ ...p }))]);
+  //   // this.orderProducts = this.order.products.map(p => ({ ...p }));
+  //    this.orderProducts = this.order.details.map(p => ({ ...p }));
+  //   // this.__OrderService.setInvoiveCustomer(this.order.customer);
+  //       // this.__OrderService.setInvoiveCustomer(this.__CustomerService.getCustomerByID(this.order.customerId));
+  //       this.__CustomerService.getCustomerByID(this.order.customerId).subscribe({
+  //         next:(data)=> this.__OrderService.setInvoiveCustomer(data.data)
+  //       })
+  // }
+}
+
+ngOnInit(): void {
   const nav = this.__Router.getCurrentNavigation();
   const data = nav?.extras?.state;
-  this.order = {...data?.['order']};
+  this.order = { ...data?.['order'] };
 
-  // if(this.order && this.order.status == 'hold')
-    if(this.order && this.order.invoiceType == 1)
-  {
-    this.__ToastingMessagesService.showToast("This is a hold order",'error');
-    this.__Router.navigateByUrl('Orders');
-  }
-  //  else if(this.order && this.order.status == 'return')
-      if(this.order && this.order.invoiceType == 3)
+  if (!this.order) return;
 
-  {
-    this.__ToastingMessagesService.showToast("This is a return order",'error');
+  if (this.order.invoiceType == 1) {
+    this.__ToastingMessagesService.showToast("This is a hold order", 'error');
     this.__Router.navigateByUrl('Orders');
+    return;
   }
-  // else if(this.order && this.order.status == 'paid' && (this.__OrderService.calculateTotalProducts(this.order.products) <=0))
-    else if(this.order && this.order.invoiceType == 2 && (this.__OrderService.calculateTotalProducts(this.order.details) <=0))
 
-  {
-    this.__ToastingMessagesService.showToast("There is no products to be returned",'error');
+  if (this.order.invoiceType == 3) {
+    this.__ToastingMessagesService.showToast("This is a return order", 'error');
     this.__Router.navigateByUrl('Orders');
+    return;
   }
-  else {
-    // this.__OrderService.orderProducts.set([...this.order.products.map(p => ({ ...p }))]);
-     this.__OrderService.orderProducts.set([...this.order.details.map(p => ({ ...p }))]);
-    // this.orderProducts = this.order.products.map(p => ({ ...p }));
-     this.orderProducts = this.order.details.map(p => ({ ...p }));
-    // this.__OrderService.setInvoiveCustomer(this.order.customer);
-        this.__OrderService.setInvoiveCustomer(this.__CustomerService.getCustomerByID(this.order.customerId));
+
+  if (this.order.invoiceType == 2 && this.__OrderService.calculateTotalProducts(this.order.details) <= 0) {
+    this.__ToastingMessagesService.showToast("There is no products to be returned", 'error');
+    this.__Router.navigateByUrl('Orders');
+    return;
   }
+
+  this.__OrderService.orderProducts.set([...this.order.details.map(p => ({ ...p }))]);
+  this.orderProducts = this.order.details.map(p => ({ ...p }));
+
+
+  this.__CustomerService.getCustomerByID(this.order.customerId)
+  .pipe(takeUntilDestroyed(this.destroyRef))
+  .subscribe({
+    next: (data) => this.__OrderService.setInvoiveCustomer(data.data)
+  });
 }
 
 // returnOrder(){

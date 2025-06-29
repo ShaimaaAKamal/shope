@@ -42,8 +42,6 @@
       <td scope="row">{{ product.price }}  {{currency | translate}}</td>
       <td >
         <div class="d-flex justify-content-center">
-            <!-- <app-quantity-control [quantity]="product.quantity" (quantityChange)="updateQuantity(index, $event)">
-            </app-quantity-control> -->
              <app-quantity-control [quantity]="product.soldQuantity" (quantityChange)="updateQuantity(index, $event)">
             </app-quantity-control>
         </div>

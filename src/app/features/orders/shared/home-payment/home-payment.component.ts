@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { OrderService } from '../../../../Services/order/order.service';
 import { Order } from '../../../../Interfaces/order';
 import { InputComponent } from '../../../../shared/components/input/input.component';
@@ -21,7 +21,8 @@ getGrossTotal=this.__OrderService.getGrossTotal;
 discountvalue=this.__OrderService.discount;
 paidAmount=this.__OrderService.paidAmount;
 mustBePaid:boolean=true;
-currency:string='SAR';
+// currency:string='SAR';
+currency:string=this.__OrderService.currency;
 
 paymentMethods: {
     label: string;
@@ -32,10 +33,14 @@ paymentMethods: {
 
 activeInputKey!: string;
 activeInputEl!: InputComponent;
-
+orderProductsError:boolean=false;
 inputMap: { [key: string]: InputComponent } = {};
 @ViewChildren(InputComponent) inputComponents!: QueryList<InputComponent>;
-
+  constructor(){
+    effect(() => {
+       if(this.products().length > 0) this.orderProductsError=false;
+    });
+  }
   ngOnInit(): void {
          this.paymentMethods = [
       {
@@ -112,6 +117,7 @@ private fillInputValuesFromService() {
 setValueFromInputEvent(focusKey: string, event: Event) {
   const value = (event.target as HTMLInputElement).value;
   this.setModelValue(focusKey, value);
+  this.getPaidAmount();
 }
 
 setModelValue(focusKey: string, value: string) {
@@ -132,6 +138,7 @@ setModelValue(focusKey: string, value: string) {
 }
 
   getPaidAmount(): number {
+  this.mustBePaid=true;
   let total = 0;
 
   for (const key of Object.keys(this.inputMap)) {
@@ -151,6 +158,9 @@ clearCustomerFn(){
 }
 setMustbePaid(value:any){
   this.mustBePaid=value;
+}
+setordersProductsError(event:boolean){
+  this.orderProductsError=event;
 }
 
 enterKey(key: string) {
