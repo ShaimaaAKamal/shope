@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .accordion-button::after {
   content: '+';
   font-weight: bold;
@@ -27,7 +29,7 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 0rem;
-  background-color: transparent;
+  background-color: $bg-filter;
   border: none;
   box-shadow: none;
 }
@@ -110,4 +112,20 @@ select.form-select:focus {
 
 .custom-radio-style .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+.text-btn:hover{
+  background-color: $bg-popscreen-header;
+  color:#fff;
+}
+
+.custom-select-bg {
+  background-color: $bg-dropdown !important;
+  color: $input-text-color !important;
+  border-color: #ced4da;
+
+  &:focus {
+    background-color: #e6f7ff;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
 }

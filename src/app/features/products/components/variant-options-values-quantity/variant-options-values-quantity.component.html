@@ -1,9 +1,9 @@
 <div class="py-3 border-top" *ngIf="displayedVariants.length > 0">
   <div class="accordion" id="accordionExample">
-      <div class="accordion-item" *ngFor="let variant of displayedVariants ; let rowIndex=index;">
+      <div class="accordion-item bg-popscreen" *ngFor="let variant of displayedVariants ; let rowIndex=index;">
         <h2 class="accordion-header">
           <button
-            class="accordion-button"
+            class="accordion-button bg-popscreen-header"
             type="button"
             data-bs-toggle="collapse"
             [attr.data-bs-target]="'#collapse' + rowIndex + variant.name"

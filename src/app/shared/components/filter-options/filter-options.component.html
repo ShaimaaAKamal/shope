@@ -1,4 +1,4 @@
-<form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+<form [formGroup]="filterForm"  (ngSubmit)="applyFilters()">
   <div class="accordion border-0" id="filterAccordion">
     <div class="accordion-item border-0" *ngFor="let section of sections; let i = index">
       <h2 class="accordion-header">
@@ -7,18 +7,18 @@
                 [attr.data-bs-target]="'#collapse' + i"
                 [attr.aria-controls]="'collapse' + i">
           <div class="accordion-title-wrapper w-100 d-flex align-items-center">
-            <span class="accordion-title-text me-2 small">{{ section.title | translate }}</span>
+            <span class="accordion-title-text me-2 small text-input">{{ section.title | translate }}</span>
             <div class="flex-grow-1 border-bottom border-dashed mx-2"></div>
-            <span class="accordion-icon">+</span>
+            <span class="accordion-icon text-input">+</span>
           </div>
         </button>
       </h2>
       <div [id]="'collapse' + i" class="accordion-collapse collapse show" data-bs-parent="#filterAccordion">
-        <div class="accordion-body">
+        <div class="accordion-body bg-filter">
           <ng-container *ngFor="let field of section.fields">
             <!-- SELECT -->
             <div *ngIf="field.type === 'select'" class="mb-1">
-              <select class="form-select form-select-sm" [formControlName]="field.controlName">
+              <select class="form-select form-select-sm custom-select-bg" [formControlName]="field.controlName">
                 <option value="">{{ 'All' | translate }}</option>
                 <option *ngFor="let opt of field.options" [value]="opt.value">
                   {{ opt.label | translate }}
@@ -41,7 +41,7 @@
                     [formControlName]="field.controlName"
                     [id]="'check_' + field.controlName"
                   >
-                  <label class="form-check-label accordingBtn ps-1" [for]="'check_' + field.controlName">
+                  <label class="form-check-label text-input accordingBtn ps-1" [for]="'check_' + field.controlName">
                     {{ field.label | translate }}
                   </label>
                 </div>
@@ -54,7 +54,7 @@
                        [formControlName]="field.controlName"
                        [id]="'radio_' + opt.value"
                        [value]="opt.value">
-                <label class="form-check-label accordingBtn ps-1" [for]="'radio_' + opt.value">{{ opt.label | translate }}</label>
+                <label class="form-check-label text-input accordingBtn ps-1" [for]="'radio_' + opt.value">{{ opt.label | translate }}</label>
               </div>
             </div>
           </ng-container>
@@ -64,8 +64,8 @@
   </div>
 
   <div class="d-flex justify-content-between mt-4">
-    <button type="submit" class="btn btn-primary fs-verySmall bg-semi-dark">{{ 'Apply' | translate }}</button>
-    <button type="button" class="btn btn-outline-secondary fs-verySmall" (click)="resetFilters()">
+    <button type="submit" class="btn  text-btn fs-verySmall bg-semi-dark">{{ 'Apply' | translate }}</button>
+    <button type="button" class="btn btn-secondary fs-verySmall" (click)="resetFilters()">
       {{ 'Reset' | translate }}
     </button>
   </div>

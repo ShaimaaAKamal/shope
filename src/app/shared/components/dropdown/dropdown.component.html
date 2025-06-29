@@ -1,10 +1,10 @@
-<div class="d-flex flex-column">
+<div class="d-flex flex-column ">
   <div class="pb-1" *ngIf="DropdownComponentData.title">
-  <span class="fs-verySmall">{{DropdownComponentData.title | translate}}</span>
+  <span class="fs-verySmall text-input">{{DropdownComponentData.title | translate}}</span>
 </div>
-<div class="btn-group " [class.border]="DropdownComponentData.title">
+<div class="btn-group bg-dropdown " [class.border]="DropdownComponentData.title">
             <button
-              class="btn rounded-0 border-0 small dropdown-toggle border-end d-flex justify-content-between align-items-center py-1 px-2"
+              class="btn rounded-0 border-0 small dropdown-toggle border-end border-end border-end-color d-flex justify-content-between align-items-center py-1 px-2"
               [class.border-end-0]="DropdownComponentData.title || DropdownComponentData.noBorder"
               type="button"
               data-bs-toggle="dropdown"
@@ -20,20 +20,20 @@
               ></span>
             </ng-container>
             <ng-template #textLabel>
-              <span class="fs-verySmall text-muted text-start">
+              <span class="fs-verySmall py-1 text-input text-start">
                 {{ DropdownComponentData.dropdownSelection | translate }}
               </span>
             </ng-template>
              </div>
             </button>
 
-            <ul class="dropdown-menu w-100">
+            <ul class="dropdown-menu bg-dropdown  w-100">
               <li *ngIf="DropdownComponentData.optionsArray.length === 0">
                 <a class="dropdown-item fs-verySmall">{{'Choose value' | translate}}</a>
               </li>
               <li  *ngFor="let option of DropdownComponentData.optionsArray" (click)="selectOption(option)">
-                <a class="dropdown-item fs-verySmall " *ngIf="!colorField">{{ getOption(option)|translate }}</a>
-                <a class="dropdown-item fs-verySmall circle-picker rounded-3 mx-auto my-1" [style.background]="getOption(option)" *ngIf="colorField">
+                <a class="dropdown-item text-input fs-verySmall " *ngIf="!colorField">{{ getOption(option)|translate }}</a>
+                <a class="dropdown-item  fs-verySmall circle-picker rounded-3 mx-auto my-1" [style.background]="getOption(option)" *ngIf="colorField">
                 </a>
               </li>
             </ul>

@@ -8,11 +8,11 @@
   (closeChange)="controlVariantsPopupScreen('close')"
   #variantsPopScreen
 >
-<div class="variantsContainer bg-white p-3">
-       <span class=" small">{{'Product Variants' | translate}}</span>
-        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3" (click)="showOptionsSection()" *ngIf="!displayVariant() && localVariants().length == 0" >
-          <i class="fa-regular fa-square-plus fa-sm pe-2"></i>
-          <span class="small">{{'Add Options' | translate}}</span>
+<div class="variantsContainer bg-popscreen p-3">
+       <span class=" small text-input">{{'Product Variants' | translate}}</span>
+        <div class="d-flex text-muted mt-2 py-1 px-3 align-items-center border rounded-3 border-light" (click)="showOptionsSection()" *ngIf="!displayVariant() && localVariants().length == 0" >
+          <i class="fa-regular fa-square-plus fa-sm pe-2 text-input"></i>
+          <span class="small text-input">{{'Add Options' | translate}}</span>
         </div>
           <div class="variants mb-3" *ngIf="localVariants().length > 0">
           <div class="variantContainer">

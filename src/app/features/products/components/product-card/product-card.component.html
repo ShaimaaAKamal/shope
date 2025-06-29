@@ -89,7 +89,7 @@
       </div>
 
       <div class="col-12">
-        <div class="d-flex border rounded">
+        <div class="d-flex  align-items-center border-light bg-dropdown rounded">
           <app-dropdown
             class="flex-grow-1"
             [DropdownComponentData]="{
@@ -102,8 +102,8 @@
             (changeSelect)="chooseCategory($event)">
           </app-dropdown>
           <div>
-            <span class="bg-second fs-verySmall p-2" (click)="controlPopScreen('category')">
-              {{ 'Add new' | translate }}
+              <span class="text-input bg-second h-100 d-inline-block fs-verySmall p-2" (click)="controlPopScreen('category')">
+              {{'Add new' | translate }}
             </span>
           </div>
         </div>
@@ -111,7 +111,7 @@
       </div>
     </div>
 
-    <div *ngSwitchCase="'list'" class="row gy-2 pt-3 pe-3">
+    <div *ngSwitchCase="'list'" class="row gy-2 pt-3">
       <div class="col-lg-4">
         <app-input
           [InputComponentData]="{
@@ -198,7 +198,7 @@
       </div>
 
       <div class="col-lg-6">
-        <div class="d-flex border rounded">
+        <div class="d-flex border border-light bg-dropdown  rounded">
           <app-dropdown
             class="flex-grow-1"
             [DropdownComponentData]="{
@@ -211,7 +211,7 @@
             (changeSelect)="chooseCategory($event)">
           </app-dropdown>
           <div>
-            <span class="bg-second fs-verySmall p-2" (click)="controlPopScreen('category')">
+            <span class="text-input bg-second h-100 d-inline-block fs-verySmall p-2" (click)="controlPopScreen('category')">
               {{ 'Add new' | translate }}
             </span>
           </div>
@@ -222,7 +222,7 @@
   </ng-container>
 </ng-template>
 <ng-template #catalogLayout>
-  <div class="card w-100 h-100">
+  <div class="card w-100 h-100 border-light">
     <div class="position-relative">
       <i
         class="fa-regular fa-square icon text-muted"
@@ -247,19 +247,19 @@
 
       <!-- Add Image/Video -->
       <div
-        class="d-flex align-items-center addImage p-2 bg-second rounded-3"
+        class="d-flex align-items-center addImage p-2 bg-dropdown  rounded-3"
         (click)="AddImage()">
-        <i class="fa-regular fa-image fa-sm pe-1"></i>
-        <span class="fs-verySmall">{{ 'Add Image or Video' | translate }}</span>
+        <i class="fa-regular fa-image fa-sm pe-1 text-input"></i>
+        <span class="fs-verySmall text-input">{{ 'Add Image or Video' | translate }}</span>
       </div>
     </div>
 
-    <div class="card-body d-flex py-2 px-2">
+    <div class="card-body d-flex py-2 px-2 bg-card-body ">
       <ng-container *ngTemplateOutlet="commonInputs; context: { layout: 'catalog' }"></ng-container>
     </div>
 
     <!-- Footer -->
-    <div class="card-footer py-0">
+    <div class="card-footer py-0 bg-card-Btn">
       <div class="row">
         <!-- <div class="col-6" *ngIf="product.nameEn"> -->
           <div class="col-6" *ngIf="product.id != -1">
@@ -282,7 +282,7 @@
     </div>
 
     <!-- Save Button -->
-    <div class="card-footer bg-semi-dark text-white" (click)="handleSave()">
+    <div class="card-footer bg-submit-btn text-white" (click)="handleSave()">
       <div class="d-flex align-items-center justify-content-center">
         <span class="fs-verySmall pe-2">{{ 'Save' | translate }}</span>
       </div>
@@ -291,10 +291,10 @@
 </ng-template>
 
 <ng-template #listLayout>
-  <div class="card w-100 h-100">
-    <div class="row">
+  <div class="card w-100 h-100 border-light">
+    <div class="row bg-card-body">
       <div class="col-4 col-lg-2">
-        <div class="position-relative imgContainer">
+        <div class="position-relative  imgContainer">
           <span>
             <i
               class="fa-regular fa-square listIcon text-muted"
@@ -315,12 +315,14 @@
             </i>
           </span>
 
-          <img src="assets/images/noImage.png" class="card-img" alt="product image" />
+          <div class="position-relative">
+            <img src="assets/images/noImage.png" class="card-img" alt="product image" />
 
-          <div
-            class="d-flex align-items-center addImageList px-2 py-3 bg-second rounded-3"
-            (click)="AddImage()">
-            <i class="fa-solid fa-circle-plus fa-sm"></i>
+            <div
+              class="d-flex align-items-center addImageList px-2 py-3 bg-dropdown  rounded-3"
+              (click)="AddImage()">
+              <i class="fa-solid fa-circle-plus fa-sm text-input"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -329,7 +331,7 @@
         <ng-container *ngTemplateOutlet="commonInputs; context: { layout: 'list' }"></ng-container>
 
         <!-- Footer -->
-        <div class="card-footer mb-2 mb-lg-0 rounded-2 border py-0 mt-3">
+        <div class="card-footer mb-lg-2 me-2 mb-lg-0 rounded-2 border py-0 mt-3 bg-card-Btn">
           <div class="row">
             <!-- <div class="col-6" *ngIf="product.nameEn"> -->
               <div class="col-6" *ngIf="product.id == -1">
@@ -351,16 +353,11 @@
           </div>
         </div>
 
-        <!-- Save Button -->
-        <!-- <div class="card-footer bg-semi-dark text-white mt-3" (click)="handleSave()">
-          <div class="d-flex align-items-center justify-content-center">
-            <span class="fs-verySmall pe-2">{{ 'Save' | translate }}</span>
-          </div>
-        </div> -->
+
       </div>
     </div>
 
-      <div class="card-footer bg-semi-dark text-white" (click)="handleSave()">
+      <div class="card-footer bg-submit-btn  text-white" (click)="handleSave()">
         <div class="d-flex align-items-center justify-content-center">
           <span class="fs-verySmall pe-2">{{ 'Save' | translate }}</span>
         </div>
@@ -385,7 +382,7 @@
   (doneChange)="controlPopScreen('addDetailsAlert','close')"
   #addDetailsAlert
 >
-  <div class="px-3 bg-white small p-3">
+  <div class="px-3 bg-popscreen small p-3">
     <span>{{'Add Product Details then save it to be able to control advanced options.' | translate}}</span>
   </div>
 </app-pop-screen>

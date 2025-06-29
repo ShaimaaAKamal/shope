@@ -123,11 +123,11 @@ dropdownSelectionArabic!:string;
 
 
 updateQuantityLabel(): void {
-  this.quantityLabel = `<i class="fa-solid fa-infinity text-secondary pe-2"></i>`;
+  this.quantityLabel = `<i class="fa-solid fa-infinity text-input pe-2"></i>`;
   if (!this.type) {
     const translated = this.isRtl()? 'متغيرات': "Variants";
 
-    this.quantityLabel += `<div class="d-flex align-self-stretch text-center border-start justify-content-center align-items-center ps-2">
+    this.quantityLabel += `<div class="d-flex align-self-stretch text-center border-start border-start-color justify-content-center align-items-center ps-2">
       <span>${translated}</span>
     </div>`;
   }

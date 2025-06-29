@@ -43,14 +43,14 @@
             <i class="fa-solid fa-server pe-2 text-icon-muted"></i>
             <span class="fw-light text-icon-muted">{{ 'Services' | translate }}</span>
 
-            <div *ngIf="dropdownVisible" class="dropdown-menu show position-absolute mt-2 shadow-sm"
+            <div *ngIf="dropdownVisible" class="dropdown-menu bg-dropdown show position-absolute mt-2 shadow-sm"
                  style="z-index: 1000;">
               <button
                 *ngFor="let item of PageControlsComponentData.servicesList"
                 class="dropdown-item d-flex align-items-center"
                 (click)="onServiceClick(item.action)">
-                <i *ngIf="item.icon" class="fa me-2 fa-sm text-secondary" [ngClass]="item.icon"></i>
-                <span class="small text-secondary">{{ item.label | translate }}</span>
+                <i *ngIf="item.icon" class="fa me-2 fa-sm text-input" [ngClass]="item.icon"></i>
+                <span class="small text-input">{{ item.label | translate }}</span>
               </button>
             </div>
           </div>

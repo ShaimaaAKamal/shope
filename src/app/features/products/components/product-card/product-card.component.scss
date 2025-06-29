@@ -1,12 +1,17 @@
+@use 'variables' as *;
+
 .card{
   .card-img-top{
   height:250px;
   width: 100%;
 }
+.bg-card-body{
+  background-color:$bg-card-body-color !important;
+}
+
 .card-img{
-  height:100%;
   width: 100%;
-  object-fit: cover;
+  object-fit:cover;
 }
 @media (min-width: 992px) {
   .card-img {
@@ -17,7 +22,6 @@
 .imgContainer{
   top:50%;
   transform: translateY(-50%);
-  height: 100%;
 }
 .icon{
  position: absolute;
@@ -30,6 +34,7 @@
   font-size:1.6rem;
   top:10px;
   left:10px;
+  z-index: 4;
 }
 
 .addImage{

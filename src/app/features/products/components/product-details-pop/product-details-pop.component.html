@@ -8,61 +8,10 @@
   (doneChange)="saveProductDetails()"
   #productInfo
  >
-  <div class="px-3 bg-white pb-3"   >
+<!-- <div class="px-3 bg-white pb-3"   > -->
+  <div class="px-3 bg-popscreen pb-3"   >
 
 <div class="row gy-3 gx-1 py-2">
-  <!-- <div class="col-12">
-<app-dropdown
-            [DropdownComponentData]="{
-                  title:'Require Shipping/Delivery?',
-                  dropdownSelection:dropdownSelection,
-                  optionsArray:shippingOptions,
-                  key:'title',
-                  noBorder:false
-            }"
-          (changeSelect)="changeSelect($event,'requireShipping')"
-          >
-        </app-dropdown>
-  </div> -->
-  <!-- <div class="col-12">
-    <div class="d-fles flex-column">
-      <span class="small">{{'Product Weight' | translate}}</span>
-      <div class="d-flex">
-        <app-input
-          [InputComponentData]="{
-                type: 'text',
-                id: 'ProducWeight',
-                label: '',
-                spanLabel: '',
-                placeholder: 'Product Weight',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: true,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-          class="flex-grow-1"
-          #productWeight
-        >
-         <i class="fa-solid fa-weight-scale"></i>
-        </app-input>
-      <app-dropdown
-            class="ms-1 bg-second rounded-1"
-            [DropdownComponentData]="{
-                  title:'',
-                  dropdownSelection:weightDropDownSelection,
-                  optionsArray:weightOptions,
-                  key:'title',
-                  noBorder:true
-            }"
-          (changeSelect)="changeSelect($event,'weightUnit')"
-          >
-        </app-dropdown>
-      </div>
-    </div>
-  </div> -->
    <div class="col-12">
      <app-input
         [InputComponentData]="{
@@ -189,27 +138,6 @@
         <i class="fa-solid fa-file-waveform"></i>
         </app-input>
   </div>
-  <!-- <div class="col-lg-6">
-     <app-input
-       [InputComponentData]="{
-                type: 'text',
-                id: 'productCostPrice',
-                label: 'Cost Price',
-                spanLabel: '',
-                placeholder: 'Cost Price',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-          #productCostPrice
-        >
-         <i class="fa-solid fa-money-bill-1-wave"></i>
-        </app-input>
-  </div> -->
    <div class="col-lg-4">
      <app-input
        [InputComponentData]="{
@@ -231,58 +159,9 @@
          <i class="fa-solid fa-money-bill-1-wave"></i>
         </app-input>
   </div>
-   <!-- <div class="col-12">
-    <div class="row gx-2">
-      <div class="col-6">
-         <app-input
-            [InputComponentData]="{
-                type: 'text',
-                id: 'salePrice',
-                label: 'Sale Price',
-                spanLabel: '',
-                placeholder: 'Sale Price',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-          #salePrice
-        >
-         <i class="fa-solid fa-money-bill-1-wave"></i>
-        </app-input>
-      </div>
-         <div class="col-6">
-         <app-input
-           [InputComponentData]="{
-                type: 'Date',
-                id: 'SaleEndDate',
-                label: 'Valid till',
-                spanLabel: '',
-                placeholder: 'Sale Price end date',
-                vertCLass: 'col-12',
-                readonly: false,
-                hideLabel: false,
-                inputGroup: false,
-                clickMessage: '',
-                errorMessage: '',
-                enableFocusBlurTracking: false,
-              }"
-          #salePriceEndDate
-        >
-        <i class="fa-solid fa-calendar"></i>
-        </app-input>
-      </div>
-    </div>
-  </div> -->
-
   <div class="col-12">
     <div class="row gx-1 border-top pt-2">
        <div class="col-lg-4">
-          <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'isActive',  id:'isActive', label:'Active'}" (checked)="checkActive($event)">
-            </app-input-checkbox> -->
             <app-dropdown
             [DropdownComponentData]="{
                   title:'Active',
@@ -296,8 +175,6 @@
         </app-dropdown>
         </div>
         <div class="col-lg-4">
-          <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'chargeTax',  id:'chargeTax', label:'charge Tax'}">
-            </app-input-checkbox> -->
                  <app-dropdown
             [DropdownComponentData]="{
                   title:'charge Tax',

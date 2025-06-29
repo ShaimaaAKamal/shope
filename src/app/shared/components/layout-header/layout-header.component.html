@@ -4,13 +4,13 @@
       <input type="text" class="form-control border-0" [placeholder]="selectionMessage | translate" [(ngModel)]="searchKey">
 
       <div class="btn-group">
-        <button type="button" class="btn btn-outline-semi-light fs-verySmall rounded-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn btn-outline-semi-light text-input fs-verySmall rounded-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           {{dropdownSelection | translate}}
         </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li (click)="changeSelection('Products')"><a class="dropdown-item fs-verySmall">Products</a></li>
-          <li (click)="changeSelection('Customers')"><a class="dropdown-item fs-verySmall">Customers</a></li>
-          <li (click)="changeSelection('Orders')"><a class="dropdown-item fs-verySmall">Orders</a></li>
+        <ul class="dropdown-menu bg-dropdown dropdown-menu-end">
+          <li (click)="changeSelection('Products')"><a class="dropdown-item text-input fs-verySmall">Products</a></li>
+          <li (click)="changeSelection('Customers')"><a class="dropdown-item text-input fs-verySmall">Customers</a></li>
+          <li (click)="changeSelection('Orders')"><a class="dropdown-item text-input fs-verySmall">Orders</a></li>
         </ul>
       </div>
       <button class="btn btn-semi-light" type="button" (click)="search()">

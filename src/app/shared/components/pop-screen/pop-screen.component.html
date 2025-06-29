@@ -1,13 +1,13 @@
 <div class="popScreenContainer" #popScreen>
-  <div class="popScreenContent">
-    <div class="header bg-semi-dark d-flex align-items-center text-white rounded-top-3 justify-content-between py-2 px-3">
+  <div class="popScreenContent ">
+    <div class="header bg-popscreen-header d-flex align-items-center text-white rounded-top-3 justify-content-between py-2 px-3">
       <span class="small">{{PopScreenComponentData.headerLabel | translate}}</span>
       <i class="fa-solid fa-xmark" (click)="togglePopScreen('close')"></i>
     </div>
 
-    <ng-content #name></ng-content>
+    <ng-content  #name></ng-content>
 
-    <div class="footer d-flex py-2 px-3 align-items-center bg-second rounded-bottom-3"
+    <div class="footer d-flex py-2 px-3 align-items-center bg-popscreen-footer rounded-bottom-3"
       [class.justify-content-between]="!PopScreenComponentData.hideCancalBtn"
       [class.justify-content-end]="PopScreenComponentData.hideCancalBtn">
       <span class="p-2 rounded rouned-3 fs-verySmall bg-secondary text-light"
