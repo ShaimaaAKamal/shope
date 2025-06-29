@@ -10,7 +10,8 @@
   inset-inline-start: 8px;
   inset-inline-end: auto;
   top:50%;
-  color:#000;
+  // color:#000;
+  color:$input-text-color;
   font-size: .8rem;
   opacity: .4;
   transform: translateY(-50%);
@@ -23,4 +24,14 @@
    input.form-control:focus + .input-group-text {
     border-color: $semi-dark;
   }
+
+  // input.form-control{
+  //   background-color: $input-color !important;
+  //   color:$input-text-color !important;
+
+  //   &::placeholder {
+  //     color: $input-text-color !important;
+  //     opacity: 1; // Ensure full opacity (optional)
+  //   }
+  // }
 }

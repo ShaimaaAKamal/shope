@@ -9,5 +9,17 @@
 .bg-breadCrumb{
   background-color: #02B7A7;
 }
+.text-breadcrumb{
+  color:$text-breadCrumb-color;
+}
+.text-breadcrumb-secondary{
+  color:$text-breadCrumb-secondary-color;
+}
 
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  color: $text-breadCrumb-secondary-color
+}
+.text-icon-muted{
+  color:$text-icon-muted;
+}
 
