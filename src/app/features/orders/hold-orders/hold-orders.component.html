@@ -8,7 +8,7 @@
   (closeChange)="done()"
   #addDetailsAlert
 >
-<div class="p-4 bg-white overflow-scroll" >
+<div class="p-4 bg-popscreen overflow-scroll" >
   <table class="table table-striped table-responsive table-hover shadow-sm"  *ngIf=" holdOrders().length > 0 ;else noHoldOrders">
   <thead>
     <tr>
@@ -34,7 +34,7 @@
   </tbody>
 </table>
 <ng-template #noHoldOrders>
-  <div  class="alert alert-secondary text-center mb-0 py-2 small">
+  <div  class="alert bg-dropdown net-to text-input text-center mb-0 py-2 small">
     {{"There isn't any hold products" | translate}}
   </div>
 </ng-template>

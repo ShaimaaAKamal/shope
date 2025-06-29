@@ -1,10 +1,52 @@
-$dark:#003535;
-$semi-dark:#00857d;
-$error:#be1412;
-$semi-light:#c5fff6;
-$light:#eefffb;
-$secondary:#F8F9FA;
-$secondary-light:rgba(252, 249, 249, 0.416);
-$activeColor:#00b7a7;
-$gray:#EBEDEE;
+// $dark:#003535;
+// $semi-dark:#00857d;
+// $error:#be1412;
+// $semi-light:#c5fff6;
+// $light:#eefffb;
+// $secondary:#F8F9FA;
+// $secondary-light:rgba(252, 249, 249, 0.416);
+// $activeColor:#00b7a7;
+// $gray:#EBEDEE;
+
+
+$dark:var(--dark-color);
+$semi-dark:var(--semi-dark-color);
+$error:var(--error-color);
+$semi-light:var(--semi-light-color);
+$light:var(--light-color);
+$secondary:var(--secondary-color);
+$activeColor:var(var(--active-color));
+$gray:var(--gray-color);
+
+$text-color:var(--text-color);
+$hover-color:var(--hover-color);
+
+//Input styles
+$input-color:var(--input-color);
+$input-text-color:var(--input-text-color);
+$input-placeHolder-color:var(--input-placeHolder-color);
+$outline-color:var(--outline-color);
+$input-border-color:var(--input-border-color);
+
+//Page Controls styles
+$text-breadCrumb-color:var(--text-breadCrumb-color);
+$text-breadCrumb-secondary-color:var(--text-breadCrumb-secondary-color);
+$text-icon-muted:var(--text-icon-muted);
+
+$bg-card-body-color:var(--bg-card-body-color);
+$input-group-text-bg-color:var(--input-group-text-bg-color);
+
+$bg-dropdown:var(--bg-dropdown);
+$bg-card-Btn:var(--bg-card-Btn);
+$bg-submit-btn:var(--bg-submit-btn);
+$bg-popscreen-pop:var(--bg-popscreen-pop);
+$bg-popscreen-header:var(--bg-popscreen-header);
+$bg-popscreen-footer:var(--bg-popscreen-footer);
+$bg-filter:var(--bg-filter);
+$text-btn:var(--text-btn);
+$bg-secondary-light:var(--secondary-light-color);
+$bg-keypad:var(--bg-keypad);
+$net-total-border:var(--net-total-border);
+$payment-border:var(--payment-border);
+
 

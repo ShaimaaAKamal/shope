@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use 'variables' as *;
+@use './light-theme';
+@use './dark-theme';
 
 html {
     &[dir='rtl']{
@@ -13,6 +15,42 @@ html {
   font-size: 16px;
   body{
   font-family: 'Poppins', sans-serif;
+  color:$text-color;
+  }
+  .border-light{
+
+    border:1px solid $input-border-color !important;
+  }
+  .border-start-color {
+    border-color:$gray !important;
+  }
+  .border-end-color {
+    border-color:$gray !important;
+  }
+  .text-input{
+    color:$input-text-color !important;
+  }
+  .bg-dropdown{
+    background-color:$bg-dropdown;
+  }
+  .bg-card-Btn{
+    background-color: $bg-card-Btn;
+    color:$input-text-color;
+  }
+  .bg-submit-btn{
+    background-color: $bg-submit-btn !important;
+  }
+  .bg-popscreen{
+    background-color: $bg-popscreen-pop;
+  }
+  .bg-popscreen-header{
+    background-color: $bg-popscreen-header !important;
+  }
+  .bg-popscreen-footer{
+    background-color: $bg-popscreen-footer !important;
+  }
+  .bg-filter{
+    background-color: $bg-filter;
   }
   .bg-gray{
     background-color: $gray;
@@ -29,6 +67,9 @@ html {
   .fs-verySmall{
     font-size:10px !important;
   }
+  .small{
+    font-size:13px !important;
+  }
   .fs-medium{
     font-size:14px !important;
   }
@@ -43,7 +84,11 @@ html {
   }
   .hover-bg:hover {
   background-color: $semi-dark ;
+  color:$hover-color;
   transition: background-color 0.3s ease;
+  }
+  .text-btn{
+    color:$text-btn;
   }
   .router-link-active{
     background-color:$activeColor;
@@ -55,8 +100,8 @@ html {
     color:$semi-dark;
   }
   .section-style{
-    border:.5px solid $secondary-light;
-    background-color: white;
+    border:.5px solid $bg-secondary-light;
+    background-color: $bg-secondary-light;;
   }
 
 
@@ -79,7 +124,7 @@ html {
   }
   &:focus {
     border-color: $semi-dark !important;
-      box-shadow: none !important;
+    box-shadow: none !important;
   }
   // Chrome, Safari, Edge, Opera
 &[type='number']::-webkit-outer-spin-button,
@@ -96,6 +141,22 @@ html {
  padding:10px !important;
 }
 }
+
+input.form-control{
+  background-color: $input-color !important;
+  color:$input-text-color !important;
+  border-color: $input-border-color;
+  &::placeholder {
+    color: $input-placeHolder-color !important;
+    opacity: 1;
+  }
+}
+
+.payment input.form-control{
+
+  border-color: $payment-border;
+}
+
 .dropdown-menu {
   z-index:999999;
 }
@@ -155,6 +216,8 @@ html {
 .paymentButtons,.keypad{
      button{
         padding:1.5rem;
+        background-color: $bg-keypad;
+        color:$input-text-color;
         border:none;
         border-radius: 8px;
         font-size:1.2rem;
@@ -184,5 +247,6 @@ html {
     width:700px;
   }
 }
+
 }
 

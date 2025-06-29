@@ -48,11 +48,11 @@
     class="subnav"
     [ngClass]="{ 'collapsed-subnav': NavitemComponentData.isCollapsed }">
   <li *ngFor="let subItem of NavitemComponentData.subItems" class="py-1">
-    <div class="d-flex align-items-center subnav-item hover-bg"
+    <div class="d-flex align-items-center subnav-item  hover-bg"
          [routerLink]="subItem.name"
          routerLinkActive="router-link-active">
       <i [ngClass]="subItem.icon" class="pe-2 small"></i>
-      <span class="small" *ngIf="!NavitemComponentData.isCollapsed">{{ subItem.name.split('_').join(' ') | translate }}</span>
+      <span class="small fw-light" *ngIf="!NavitemComponentData.isCollapsed">{{ subItem.name.split('_').join(' ') | translate }}</span>
     </div>
   </li>
 </ul>
