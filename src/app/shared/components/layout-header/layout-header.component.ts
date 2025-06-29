@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
+import { ThemeService } from '../../../Services/Theme/theme.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -8,6 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class LayoutHeaderComponent {
   @Input() page:string='Products'
+  private __ThemeService=inject(ThemeService)
   dropdownSelection:string='Products';
   selectionMessage:string=this.getMessage('Products');
   searchKey:string='';
@@ -38,5 +40,7 @@ export class LayoutHeaderComponent {
   }
 
   showLoyalPoint(){}
-  changeTheme(){}
+  changeTheme(){
+     this.__ThemeService.toggleTheme();
+  }
 }
