@@ -4,6 +4,7 @@
 }
 .list-group{
     border-radius: 4px !important;
+    background-color: $bg-dropdown !important;
     top:54px;
     width:100%;
     inset-inline-start:0px;
@@ -18,7 +19,18 @@
         inset-inline-start:25%;
       }
    li{
-    color:$semi-dark  !important;
-    border-color: $semi-dark !important;
+    background-color: $bg-dropdown;
+    color:$input-text-color  !important;
+    border:.3px solid $secondary !important;
    }
+}
+
+@media (min-width: 992px) {
+  .paymentSection {
+    overflow-y: auto;
+    white-space: nowrap;
+  }
+  .section_2Container{
+    height: 100vh;
+  }
 }

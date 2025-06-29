@@ -1,11 +1,11 @@
   <div class="container-fluid px-0" [class.mb-3]="!SelectInputComponentData.vertCLass">
-  <div class="row align-items-center gx-2">
+  <div class="row align-items-center gx-2 ">
     <div   [ngClass]="SelectInputComponentData.vertCLass ? SelectInputComponentData.vertCLass : 'col-12 col-md-4 col-xxl-3'" >
-                <label [id]="SelectInputComponentData.id" class="form-label small">{{SelectInputComponentData.label}}</label>
+                <label [id]="SelectInputComponentData.id" class="form-label small text-input">{{SelectInputComponentData.label}}</label>
     </div>
-    <div    [ngClass]="SelectInputComponentData.vertCLass ? SelectInputComponentData.vertCLass : 'col-12 col-md-8 col-xxl-9'" >
+    <div    [ngClass]="SelectInputComponentData.vertCLass ? SelectInputComponentData.vertCLass : 'col-12 col-md-8 col-xxl-9'">
           <ng-select
-          class="small "
+          class="small custom-ng-select"
           [items]="SelectInputComponentData.options"
           [bindLabel]="SelectInputComponentData.prop"
           [bindValue]="SelectInputComponentData.value"

@@ -28,5 +28,28 @@ td,th{
   vertical-align: middle;
 }
 
+tr:nth-of-type(odd) {
+  background-color: $bg-dropdown !important;
+  td,th{
+    background-color: inherit;
+    color: $input-text-color;
+      i {
+    color: $input-text-color;
+  }
+  }
 }
+
+tr:nth-of-type(even) {
+  background-color: $bg-secondary-light !important;
+  td,th{
+    background-color: inherit;
+    color: $input-text-color;
+    i {
+      color: $input-text-color;
+    }
+  }
+}
+}
+
+
 

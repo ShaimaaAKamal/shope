@@ -1,11 +1,12 @@
 @use 'variables' as *;
 
 ::ng-deep ng-select {
-  background-color: white;
+  // background-color: white;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   font-size: 0.875rem;
   z-index: 9999999;
+
 
   .ng-select-container {
     min-height: unset;
@@ -24,5 +25,31 @@
     background-color: #f5faff;
     border-color: $semi-dark;
     box-shadow: 0 0 0 0.1rem $semi-dark;
+  }
+}
+
+.custom-ng-select ::ng-deep .ng-select-container {
+  background-color: $bg-dropdown !important;
+  color: $input-text-color !important;
+  border:none;
+}
+
+
+.custom-ng-select ::ng-deep .ng-value {
+  color: $input-text-color  !important;
+}
+
+.custom-ng-select ::ng-deep .ng-option {
+  background-color: $bg-dropdown !important;
+  color: $input-text-color !important;
+
+  &.ng-option-selected {
+    background-color: $bg-popscreen-header !important;
+    color: $input-text-color ;
+  }
+
+  &:hover {
+    background-color: $semi-dark !important;
+    color:#fff;
   }
 }

@@ -3,7 +3,7 @@
   <div class="row align-items-center gx-2 gy-0">
     <div  [class.mb-0]="true"   [ngClass]="InputComponentData.vertCLass ? InputComponentData.vertCLass : 'col-12 col-md-4 col-xxl-3'" [class.d-none]="InputComponentData.hideLabel">
 
-            <label [for]=InputComponentData.id class="form-label mb-1 fs-verySmall text-input">{{InputComponentData.label | translate}}</label>
+            <label [for]=InputComponentData.id class="form-label mb-1 small text-input">{{InputComponentData.label | translate}}</label>
     </div>
     <div  [ngClass]="InputComponentData.vertCLass ? InputComponentData.vertCLass : 'col-12 col-md-8 col-xxl-9'">
         <div class="position-relative flex-grow-1">
@@ -13,7 +13,7 @@
           <div class="input-group" *ngIf="InputComponentData.inputGroup">
             <input autocomplete="off"  [type]="InputComponentData.type"  class="form-control  border-end-0" [placeholder]="InputComponentData.placeholder|translate"
             [readonly]="InputComponentData.readonly"  [id]=InputComponentData.id  (focus)="InputComponentData.enableFocusBlurTracking ? onFocus($event) : null"  #inputRef2>
-             <span class="input-group-text  py-0 px-2  fs-verySmall" id="basic-addon2" [innerHTML]="InputComponentData.spanLabel | translate" (click)="handleClick($event)"></span>
+             <span class="input-group-text  py-0 px-2  small" id="basic-addon2" [innerHTML]="InputComponentData.spanLabel | translate" (click)="handleClick($event)"></span>
           </div>
          <input autocomplete="off"  *ngIf="!InputComponentData.inputGroup" [type]="InputComponentData.type" class="form-control form-control-sm rounded-1" [id]=InputComponentData.id
          [readonly]="InputComponentData.readonly"   [placeholder]="InputComponentData.placeholder | translate"
