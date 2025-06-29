@@ -30,6 +30,13 @@ html {
   .text-input{
     color:$input-text-color !important;
   }
+  .text-inactive{
+    color:$text-breadCrumb-secondary-color;
+  }
+  .bg-card-body{
+    background-color:$bg-card-body-color !important;
+  }
+
   .bg-dropdown{
     background-color:$bg-dropdown;
   }
