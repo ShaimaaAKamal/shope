@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { ThemeService } from '../../Services/Theme/theme.service';
 
 @Component({
   selector: 'app-theme',
@@ -7,26 +8,32 @@ import { Component } from '@angular/core';
   styleUrl: './theme.component.scss'
 })
 export class ThemeComponent {
-selectedTheme = localStorage.getItem('theme') || 'light-theme';
+private __ThemeService=inject(ThemeService)
+selectedTheme = this.__ThemeService.currentTheme;
 
-  homeHeaderColors = ['#0d6efd', '#6610f2', '#198754', '#fd7e14', '#dc3545']; // example colors
+homeHeaderColors = [
+  { name: 'blue', color: '#0d6efd' },
+  { name: 'purple', color: '#6610f2' },
+  { name: 'green', color: '#A4DD00' },
+  { name: 'orange', color: '#fd7e14' },
+  { name: 'red', color: '#dc3545'},
+   { name:'none' ,color:'#fff'}
+];
 
   constructor() {
-    this.applyTheme(this.selectedTheme);
+    effect(() => {
+      this.selectedTheme();
+    });
   }
 
-  changeTheme(theme: string) {
-    this.selectedTheme = theme;
-    localStorage.setItem('theme', theme);
-    this.applyTheme(theme);
+  changeTheme(theme: 'light' | 'dark') {
+    this.__ThemeService.setTheme(theme);
   }
 
-  applyTheme(theme: string) {
-    document.body.classList.remove('light-theme', 'dark-theme');
-    document.body.classList.add(theme);
-  }
+  changeHeaderColor(color: {name:string,color:string}) {
+    if(color.name != 'none')
+    this.__ThemeService.additionalTheme.set(color.name + '-theme');
+   else     this.__ThemeService.additionalTheme.set('none');
 
-  changeHeaderColor(color: string) {
-    document.documentElement.style.setProperty('--header-bg-color', color);
   }
 }

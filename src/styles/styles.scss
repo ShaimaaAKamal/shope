@@ -3,6 +3,11 @@
 @use 'variables' as *;
 @use './light-theme';
 @use './dark-theme';
+@use './red-theme';
+@use './orange-theme';
+@use './purple-theme';
+@use './blue-theme';
+@use './green-theme';
 
 html {
     &[dir='rtl']{
@@ -149,6 +154,21 @@ html {
 }
 }
 
+.custom-radio-style .form-check-input {
+  appearance: radio;
+}
+
+.custom-radio-style .form-check-input {
+  // appearance: none;
+  // -webkit-appearance: none;
+  // -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  position: relative;
+  top:2px;
+}
 input.form-control{
   background-color: $input-color !important;
   color:$input-text-color !important;

@@ -2,7 +2,7 @@
 // --light-color:#003535;
 // --semi-light-color:#00b7a7;
 --error-color:lab(40.4% 62.01 47.72);
---semi-dark-color:hsl(171, 100%, 89%);
+// --semi-dark-color:hsl(171, 100%, 89%);
 // --dark-color:#eefffb;
 --secondary-color:#003535;
 --active-color:#00b7a7;
@@ -10,9 +10,6 @@
 // --semi-dark-color:#003535;
 
 --semi-dark-color:#00857d;
-
-
-
 --semi-light-color:#c5fff6;
 --text-color:#eefffb;
 --hover-color:#F8F9FA;
@@ -44,7 +41,7 @@
 --bg-popscreen-pop:#272626;
 --bg-popscreen-header:#6e6c6c;
 --bg-popscreen-footer:#6e6c6c;
---bg-filter:var(--dark-color);
+--bg-filter:#212121;
 --text-btn:#fff;
 --secondary-light-color:#282828;
 --bg-keypad:#3d3c3c;

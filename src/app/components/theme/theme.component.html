@@ -1,6 +1,6 @@
 <div class="switcher-body">
   <button
-    class="btn bg-semi-dark btn-switcher shadow-sm theme"
+    class="btn bg-submit-btn btn-switcher shadow-sm theme"
     type="button"
     data-bs-toggle="offcanvas"
     data-bs-target="#offcanvasScrolling"
@@ -10,53 +10,55 @@
   </button>
 
   <div
-    class="offcanvas offcanvas-end shadow border-start-0 p-2"
+    class="offcanvas offcanvas-end shadow border-start-0 p-2 bg-filter"
     data-bs-scroll="true"
     data-bs-backdrop="false"
     tabindex="-1"
     id="offcanvasScrolling"
   >
     <div class="offcanvas-header border-bottom">
-      <h5 class="offcanvas-title">Theme Customizer</h5>
+      <h5 class="offcanvas-title text-input small">{{'Theme Customizer' | translate}}</h5>
       <button
         type="button"
-        class="btn-close text-reset"
+        class="btn-close text-reset text-input"
         data-bs-dismiss="offcanvas"
       ></button>
     </div>
 
     <div class="offcanvas-body">
-      <h6 class="mb-0">Theme Variation</h6>
-      <hr />
-      <div class="d-flex align-items-center justify-content-between">
-         <div class="form-check">
-        <input class="form-check-input" type="radio" name="Theme" id="light">
-        <label class="form-check-label" for="light">
-          Light Theme
+      <h6 class="mb-0  text-input small">{{'Theme Variation' | translate}}</h6>
+      <hr class="bg-card-Btn"/>
+      <div class="d-flex  flex-column ">
+         <div class="form-check custom-radio-style">
+        <input class="form-check-input " type="radio" name="Theme" id="light" [checked]="selectedTheme() == 'light'" (change)="changeTheme('light')">
+        <label class="form-check-label ps-1 text-input small" for="light">
+          {{'Light Theme' | translate}}
         </label>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="Theme" id="dark" checked>
-        <label class="form-check-label" for="dark">
-          Dark Theme
+      <div class="form-check custom-radio-style">
+        <input class="form-check-input" type="radio" name="Theme" id="dark" [checked]="selectedTheme() == 'dark'" (change)="changeTheme('dark')">
+        <label class="form-check-label ps-1 text-input small" for="dark">
+          {{'Dark Theme' | translate}}
         </label>
       </div>
       </div>
-       <!-- <app-input-checkbox   [InputCheckboxComponentData]="{ value:'Light',  id:'light', label:'Light Theme'}">
-        </app-input-checkbox>
-       <app-input-checkbox   [InputCheckboxComponentData]="{ value:'Dark',  id:'dark', label:'Dark Theme'}">
-        </app-input-checkbox> -->
-      <hr />
-      <h6 class="mb-0">Header Colors</h6>
-      <hr />
+      <hr class="bg-card-Btn"/>
+      <h6 class="mb-0 text-input small">{{'Change Colors' | translate}}</h6>
+      <hr class="bg-card-Btn"/>
       <div class="header-colors-indigators">
         <div class="row row-cols-auto g-3">
           <div class="col" *ngFor="let color of homeHeaderColors">
-            <div
-              class="indigator"
-              [ngStyle]="{ 'background-color': color }"
+            <div *ngIf="color.name != 'none'"
+              class="indigator rounded rounded-3"
+              [ngStyle]="{ 'background-color': color.color }"
               (click)="changeHeaderColor(color)"
             ></div>
+            <div *ngIf="color.name == 'none'"
+            class="indigator rounded rounded-3  border d-flex align-items-center justify-content-center"
+            [ngStyle]="{ 'background-color': color.color }"
+            (click)="changeHeaderColor(color)"
+          ><i class="fa-solid fa-ban"></i>
+        </div>
           </div>
         </div>
       </div>

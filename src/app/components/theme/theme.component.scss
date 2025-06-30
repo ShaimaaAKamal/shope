@@ -1,10 +1,35 @@
+@use 'variables' as * ;
 .theme{
   position: fixed;
   right:0;
   top:50%;
   transform: translateY(-50%);
+  color:$input-text-color;
+  z-index:1051002 !important;
 }
 .form-check-input{
   width: 5px;
   height:10px;
+}
+.indigator{
+  width:50px;
+  height: 50px;
+}
+.offcanvas{
+  z-index: 1051002;
+  width: 50%;
+
+  @media (min-width: 768px) {
+    width: 30%;
+  }
+
+  @media (min-width: 992px) {
+    width: 25%;
+  }
+  @media (min-width: 1200px) {
+    width: 20%;
+  }
+  @media (min-width: 1400px) {
+    width: 15%;
+  }
 }
