@@ -1,7 +1,8 @@
-import { Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, HostListener, inject, signal, ViewChild } from '@angular/core';
   import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from './Services/Language/language.service';
 import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +13,12 @@ import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav
 export class AppComponent {
 
 
- title = 'shope';
-
+  title = 'shope';
   @ViewChild('sideNavContainer') sideNavContainer!:ElementRef;
   @ViewChild('sideNav') sideNav!:SidenavComponent;
 
 
-  constructor(private translateService: TranslateService,private __LanguageService:LanguageService) {
+  constructor(private translateService: TranslateService,private __LanguageService:LanguageService,private __Router:Router) {
     this.translateService.setDefaultLang('en');
 
     this.__LanguageService.dirSignal();
@@ -45,4 +45,8 @@ export class AppComponent {
     this.sideNavContainer.nativeElement.classList.toggle('d-none');
     this.sideNav.logo.hideHeader();
    }
+
+   shouldShowHeader(): boolean {
+    return this.__Router.url !== '/Orders/create';
+  }
 }

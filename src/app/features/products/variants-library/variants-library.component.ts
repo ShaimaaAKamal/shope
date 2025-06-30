@@ -3,6 +3,7 @@ import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-variants-library',
@@ -12,17 +13,20 @@ import { ServiceInterface } from '../../../Interfaces/service-interface';
 })
 export class VariantsLibraryComponent {
 private __ProductService=inject(ProductService);
+private __CommonService=inject(CommonService);
+private __LanguageService=inject(LanguageService);
+
+page=this.__CommonService.page;
 VariantOptions=this.__ProductService.variantOptions
 
-private __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
-
-
 editedVariant:VariantMasterLookUP={} as VariantMasterLookUP;
- servicesList:ServiceInterface[]=[]
+servicesList:ServiceInterface[]=[]
 
-
+constructor(){
+  this.page.set('Variants');
+}
 showOptionsSection(){
  this.popupVisible=true;
 }

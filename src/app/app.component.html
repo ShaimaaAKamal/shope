@@ -15,7 +15,14 @@
       <app-sidenav #sideNav></app-sidenav>
     </div>
     <div class="col bg-second px-2 flex-grow-1">
-      <div>
+      <div class="row">
+        <div class="col-12 py-3" *ngIf="shouldShowHeader()">
+          <div class="px-2">
+            <app-layout-header></app-layout-header>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
        <router-outlet></router-outlet>
       </div>
     </div>

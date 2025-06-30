@@ -4,6 +4,7 @@ import { LanguageService } from '../../Services/Language/language.service';
 import { Customer } from '../../Interfaces/customer';
 import { ServiceInterface } from '../../Interfaces/service-interface';
 import { FilterSection } from '../../Interfaces/filter-options';
+import { CommonService } from '../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-customers',
@@ -14,7 +15,8 @@ import { FilterSection } from '../../Interfaces/filter-options';
 export class CustomersComponent {
   __CustomerService = inject(CustomerService);
   __LanguageService = inject(LanguageService);
-
+    private __CommonService=inject(CommonService);
+    page=this.__CommonService.page;
   addCustomer = signal(false);
   editCustomer=signal(false);
   customers = this.__CustomerService.customers;
@@ -73,12 +75,9 @@ export class CustomersComponent {
       ]
     },
   ]);
-  applyFilters(event:any) {
-    const filters = event;
-    this.closeFilter=true;
-    }
-  resetFilters() {
-    // this.filterForm.reset();
+
+  constructor(){
+    this.page.set('Customers');
   }
   addNew(event: any) {
     this.addCustomer.set(true);
@@ -97,6 +96,13 @@ closeEditCustomer(){
   this.editCustomer.set(false);
 }
 
+applyFilters(event:any) {
+  const filters = event;
+  this.closeFilter=true;
+  }
+resetFilters() {
+  // this.filterForm.reset();
+}
 }
 
 

@@ -3,6 +3,7 @@ import { OrderService } from '../../Services/order/order.service';
 import { Router } from '@angular/router';
 import { ServiceInterface } from '../../Interfaces/service-interface';
 import { FilterSection } from '../../Interfaces/filter-options';
+import { CommonService } from '../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-orders',
@@ -13,7 +14,8 @@ import { FilterSection } from '../../Interfaces/filter-options';
 export class OrdersComponent implements OnInit {
   __OrderService = inject(OrderService);
   __Router = inject(Router);
-
+    private __CommonService=inject(CommonService);
+    page=this.__CommonService.page;
   orders = this.__OrderService.orders;
   columns: any[] = [];
   del:boolean=false;
@@ -148,13 +150,11 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
       ]
     },
   ]);
-  applyFilters(event:any) {
-    const filters = event;
-    this.closeFilter=true;
-    }
-  resetFilters() {
-    // this.filterForm.reset();
+
+  constructor(){
+    this.page.set('Orders');
   }
+
   ngOnInit(): void {
     this.columns = [
       {
@@ -260,4 +260,12 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
   //   this.del=true;
   // }
   deleteSelected(event:any){}
+
+  applyFilters(event:any) {
+    const filters = event;
+    this.closeFilter=true;
+    }
+  resetFilters() {
+    // this.filterForm.reset();
+  }
 }

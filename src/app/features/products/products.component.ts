@@ -21,9 +21,10 @@ export class ProductsComponent {
   private productService = inject(ProductService);
   private __CategoryService = inject(CategoryService);
   private __LanguageService=inject(LanguageService)
-  private toastService = inject(ToastingMessagesService);
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
+  private __CommonService=inject(CommonService);
+  page=this.__CommonService.page;
   isRtl=this.__LanguageService.rtlClassSignal;
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
   popupVisible = signal(false);
@@ -120,7 +121,8 @@ export class ProductsComponent {
     }
   ]);
 
-  constructor(private __CommonService:CommonService,private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
+    this.page.set('Products');
      effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');

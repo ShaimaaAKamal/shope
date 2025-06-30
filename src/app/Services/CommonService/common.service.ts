@@ -8,6 +8,7 @@ export class CommonService {
 
 
 isCollapse=signal<boolean>(false);
+page=signal<string>('');
 
   getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
   const item = localStorage.getItem(key);

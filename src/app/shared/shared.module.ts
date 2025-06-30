@@ -58,6 +58,7 @@ import { GenericCategoryVariantComponent } from './components/generic-category-v
     ReactiveFormsModule
   ],
   exports:[
+    LayoutHeaderComponent,
          GenericCategoryVariantComponent,
          ReactiveFormsModule,
          DataTableComponent,
