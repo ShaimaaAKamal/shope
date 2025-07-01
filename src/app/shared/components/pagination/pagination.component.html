@@ -1,32 +1,5 @@
-<!-- <nav aria-label="Page navigation">
-  <ul class="pagination custom-pagination">
-    <li class="page-item">
-      <a
-            class="page-link"
-            [class.disabled]="currentPage === 1"
-            [attr.aria-disabled]="currentPage === 1"
-            (click)="currentPage > 1 && changePage(currentPage - 1); $event.preventDefault()"
-          >
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item" *ngFor="let page of pages; let index=index;" (click)="changePage(index+1)"><a class="page-link" href="#">{{index + 1}}</a></li>
-    <li class="page-item">
-      <a
-      class="page-link"
-      [class.disabled]="currentPage === totalPages"
-      [attr.aria-disabled]="currentPage === totalPages"
-      (click)="currentPage < totalPages && changePage(currentPage + 1); $event.preventDefault()"
-    >
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav> -->
-
 <nav aria-label="Page navigation">
   <ul class="pagination custom-pagination">
-    <!-- Previous Button -->
     <li class="page-item" [class.disabled]="currentPage === 1">
       <a
         class="page-link"
@@ -38,7 +11,6 @@
       </a>
     </li>
 
-    <!-- Page Numbers -->
     <li
       class="page-item"
       *ngFor="let page of pages"
@@ -53,7 +25,6 @@
       </a>
     </li>
 
-    <!-- Next Button -->
     <li class="page-item" [class.disabled]="currentPage === totalPages">
       <a
         class="page-link"

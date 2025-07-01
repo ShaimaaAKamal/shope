@@ -24,6 +24,7 @@ export class ProductsComponent {
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
   private __CommonService=inject(CommonService);
+  
   page=this.__CommonService.page;
   isRtl=this.__LanguageService.rtlClassSignal;
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
@@ -35,7 +36,8 @@ export class ProductsComponent {
   closeFilter:boolean=false;
   totalItems=this.productService.totalItems;
   currentPage=this.productService.currentPage;
-  pageSize = this.productService.pageSize
+  pageSize = this.productService.pageSize;
+
   setCurrentPage(page:number){
     this.productService.currentPage.set(page);
   }
@@ -143,12 +145,10 @@ export class ProductsComponent {
   addNew(_value: boolean): void {
     this.type.set('new');
     this.newProduct = this.productService.getEmptyProduct();
-    // this.newProduct.id = this.__CommonService.getId();
     this.productService.addNewProduct(this.newProduct);
   }
 
   deleteNewProduct(_del: boolean): void {
-    // const result = this.productService.deleteProductByIndex(0);
     const result = this.productService.deleteNewProduct();
     if (result) this.type.set('');
   }
