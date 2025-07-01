@@ -47,10 +47,15 @@ if(this.product().id){
     },
     properties: ''
   };
+  // this.__ProductService.getProductVariants(requestBody).subscribe({
+  //   next:(data)=>{
+  //       this.displayedVariants =[...data?? []];
+  //       console.log('this.displayedVariants',this.displayedVariants);
+  //   }
+  // });
   this.__ProductService.getProductVariants(requestBody).subscribe({
     next:(data)=>{
-        this.displayedVariants =[...data?? []];
-        console.log('this.displayedVariants',this.displayedVariants);
+        this.displayedVariants =[...data.data?? []];
     }
   });
 }

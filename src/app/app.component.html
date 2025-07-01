@@ -14,17 +14,28 @@
     <div class="col-auto flex-grow-0 d-none d-md-block" #sideNavContainer>
       <app-sidenav #sideNav></app-sidenav>
     </div>
-    <div class="col bg-second px-2 flex-grow-1">
-      <div class="row">
+    <!-- <div class="col bg-second px-2 flex-grow-1"> -->
+      <!-- <div class="row">
+       <div class="row bg-danger h-100">
         <div class="col-12 py-3" *ngIf="shouldShowHeader()">
           <div class="px-2">
             <app-layout-header></app-layout-header>
           </div>
         </div>
-      </div>
-      <div class="col-12">
-       <router-outlet></router-outlet>
-      </div>
+        <div class="col-12">
+          <router-outlet></router-outlet>
+         </div>
+      </div> -->
+      <div class="col bg-second px-2 flex-grow-1" style="height: 100vh;">
+        <div class="d-flex flex-column" style="height: 100vh;">
+          <div *ngIf="shouldShowHeader()" class="py-3 px-2">
+            <app-layout-header></app-layout-header>
+          </div>
+
+          <div class="flex-grow-1 overflow-auto">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
     </div>
   </div>
 </div>

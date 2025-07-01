@@ -114,15 +114,18 @@ controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: str
 //   return Date.now() + Math.floor(Math.random() * 1000);
 // }
 
-addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
+addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T,type=''): T[] {
   const index = array.findIndex(item => item.id === newItem.id);
   const updated = [...array];
 
   if (index !== -1) {
     updated[index] = newItem;
   } else {
+    if(type == 'product')
+      updated.unshift(newItem);
+    else
     updated.push(newItem);
-  }
+   }
   return updated;
 }
 

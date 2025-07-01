@@ -33,7 +33,12 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
-
+  totalItems=this.productService.totalItems;
+  currentPage=this.productService.currentPage;
+  pageSize = this.productService.pageSize
+  setCurrentPage(page:number){
+    this.productService.currentPage.set(page);
+  }
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },
     { label: 'Sync', icon: 'fa-sync', action: 'sync' }
@@ -128,12 +133,7 @@ export class ProductsComponent {
     this.popupVisible.set(popup === 'add_variant');
   });
 
-    this.products = computed(() =>
-    // [...this.productService.products()].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
-    [...this.productService.products()]
-
-    );
-
+    this.products = computed(() =>[...this.productService.products()]);
   }
 
   onCheckboxChange(event: any, value: string) {

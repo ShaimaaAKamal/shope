@@ -27,8 +27,8 @@ export class SharedService {
       filters: [],
       pagingModel: {
         index: 0,
-        length: 0,
-        all: true
+        length: 10,
+        all: false
       },
       properties: ''
     }
@@ -154,5 +154,5 @@ export class SharedService {
     );
   }
 
-  
+
 }

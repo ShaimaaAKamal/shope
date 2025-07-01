@@ -1,12 +1,13 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, effect, inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { catchError, concatMap, finalize, forkJoin, map, Observable, of, tap } from 'rxjs';
+import { catchError, concatMap, finalize, forkJoin, map, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
 import { VartiantType } from '../../Interfaces/vartiant-type';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +27,64 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   private productsSignal = signal<Product[]>([]);
   products = this.productsSignal.asReadonly();
   private loadingSignal = signal<boolean>(false);
-
-  // Expose signals as readonly
-;
   loading = this.loadingSignal.asReadonly();
 
+//Pagination signals
+  totalItems=signal<number>(0);
+  currentPage=signal<number>(1);
+  pageSize= signal<number>(this.__HandleActualApiInvokeService.pageSize);
+
+  private destroyRef = inject(DestroyRef);
+  private destroy$ = new Subject<void>();
+
   constructor(private commonService: CommonService) {
-    this.init();
+    // this.init();
+    const currentPahe = this.commonService.getItemsFromStorage('currentPage',1);
+    this.currentPage.set(currentPahe);
+    effect(() => {
+      console.log('Current effect Page:', this.currentPage());
+      const body = {
+        sorts: [
+          {
+            propertyName: "InsertedDate",
+            descending: true
+          }
+        ],
+        filters: [],
+        pagingModel: {
+          index: this.currentPage() - 1,
+          length: this.pageSize(),
+          all: false
+        },
+        properties: ''
+      };
+      this.getProducts(body)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          {
+            next:() => this.handleLoadingAllowProducts
+          }
+        );
+    });
+
+    this.destroyRef.onDestroy(() => {
+      this.destroy$.next();
+      this.destroy$.complete();
+    });
   }
+
+
+
+
 
   //VariantTypeApi
 
-  getVariantTypes(body?: any): Observable<VartiantType[]> {
-      return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
-    }
+  // getVariantTypes(body?: any): Observable<VartiantType[]> {
+  //     return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
+  //   }
+  getVariantTypes(body?: any): Observable<{data:VartiantType[],totalCount:number}> {
+    return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
+  }
 
   createVariantType(variant: VartiantType) {
     return this.__HandleActualApiInvokeService.createEntity<VartiantType>(
@@ -79,7 +124,10 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 //Variant Api
 
 
-getVariants(body?: any): Observable<VariantMasterLookUP[]> {
+// getVariants(body?: any): Observable<VariantMasterLookUP[]> {
+//   return this.__HandleActualApiInvokeService.getEntities<VariantMasterLookUP>('GetVariants', 'variants',this.variantOptions, body)
+// }
+getVariants(body?: any): Observable<{data:VariantMasterLookUP[],totalCount:number}>{
   return this.__HandleActualApiInvokeService.getEntities<VariantMasterLookUP>('GetVariants', 'variants',this.variantOptions, body)
 }
 
@@ -120,7 +168,10 @@ updateVariant(variant: VariantMasterLookUP) {
   });
 }
 
-getProductVariants(body?: any): Observable<ProductVariantMaster[]> {
+// getProductVariants(body?: any): Observable<ProductVariantMaster[]> {
+//   return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
+// }
+getProductVariants(body?: any): Observable<{data:ProductVariantMaster[],totalCount:number}>{
   return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
 }
 
@@ -144,8 +195,7 @@ deleteProductVariant(id: number) {
 }
 
 
-
-  updateProductVariant(variant: ProductVariantMaster) {
+updateProductVariant(variant: ProductVariantMaster) {
     return this.__HandleActualApiInvokeService.updateEntity<ProductVariantMaster>(variant, {
       apiMethod: 'UpdateProductVariant',
       signal: this.productVariantOptions,
@@ -191,19 +241,19 @@ deleteProductVariant(id: number) {
     );
   }
   //Product Api
-private init(): void {
-  this.getVariantTypes().pipe(
-    concatMap(() => this.getVariants()),
-    concatMap(() => this.getProducts())
-  ).subscribe({
-    next: () => {
-      this.handleLoadingAllowProducts();
-    },
-    error: (err) => {
-      console.error('Error loading data:', err);
-    }
-  });
-}
+// private init(): void {
+//   this.getVariantTypes().pipe(
+//     concatMap(() => this.getVariants()),
+//     concatMap(() => this.getProducts())
+//   ).subscribe({
+//     next: () => {
+//       this.handleLoadingAllowProducts();
+//     },
+//     error: (err) => {
+//       console.error('Error loading data:', err);
+//     }
+//   });
+// }
   private handleLoadingAllowProducts(){
     const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
     this.commonService.saveToStorage('products', sortedProducts);
@@ -216,8 +266,21 @@ private init(): void {
     return this.__HandleActualApiInvokeService.getEntityById<Product>('GetProductById', id, 'product');
     }
 
-getProducts(body?: any): Observable<Product[]> {
-return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+// getProducts(body?: any): Observable<Product[]> {
+// return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+// }
+
+// getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
+//   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+//   }
+
+
+getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
+  return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+    .pipe(
+      tap(response => console.log('Products fetched:', response.data)),
+      tap(response => { this.totalItems.set(response.totalCount);})
+      );
 }
 
 createProduct(product: Product) {
@@ -233,7 +296,8 @@ createProduct(product: Product) {
         products.filter(p => p.id !== id)
       );
       this.productsSignal.update(products =>
-        this.sortProductsDesc(this.commonService.addOrReplaceItemById(products, newProduct))
+        // this.sortProductsDesc(this.commonService.addOrReplaceItemById(products, newProduct))
+      (this.commonService.addOrReplaceItemById(products, newProduct,'product'))
       );
       this.type.set('');
       this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
@@ -305,9 +369,11 @@ updateProductInfo(product: Product, actionType: string) {
   deleteNewProduct():boolean{
     const current = [...this.products()];
     current.shift();
-    const sorted = this.sortProductsDesc(current);
-    this.productsSignal.set(sorted);
-    this.commonService.saveToStorage('products', sorted);
+    // const sorted = this.sortProductsDesc(current);
+    // this.productsSignal.set(sorted);
+    // this.commonService.saveToStorage('products', sorted);
+    this.productsSignal.set(current);
+    this.commonService.saveToStorage('products', current);
     return true;
   }
 
@@ -351,9 +417,11 @@ updateProductInfo(product: Product, actionType: string) {
 
  removeEmptyProductandSortPeroducts(products:Product[]){
     const filterProducts = products.filter(p => p.nameEn && p.nameAr);
-    const sortedProducts = this.sortProductsDesc(filterProducts);
-     this.productsSignal.set(sortedProducts);
-    return sortedProducts
+    // const sortedProducts = this.sortProductsDesc(filterProducts);
+    //  this.productsSignal.set(sortedProducts);
+    // return sortedProducts
+     this.productsSignal.set(filterProducts);
+    return filterProducts
 }
 
 private sortProductsDesc(products: Product[]): Product[] {

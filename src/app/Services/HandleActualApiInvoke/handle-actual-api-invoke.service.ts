@@ -14,8 +14,35 @@ interface ApiResponse<T> {
 export class HandleActualApiInvokeService {
   private loadingSignal = signal<boolean>(false);
   loading = this.loadingSignal.asReadonly();
+  pageSize:number =10
+
   constructor(private __SharedService:SharedService,private __CommonService:CommonService) {}
 
+
+// getEntities<T>(
+//   endpointKey: string,
+//   entityName: string,
+//   signal: WritableSignal<T[]>,
+//   body: any = {
+//     sorts: [],
+//     filters: [],
+//     pagingModel: {
+//       index: 0,
+//       length: 10,
+//       all: false
+//     },
+//     properties: ''
+//   }
+// ): Observable<T[]> {
+//   return this.__SharedService.getAllByPost<T>(endpointKey, entityName, body).pipe(
+//     map(response => data :response.data || [] )
+//     tap(data => signal.set([...data])),
+//     catchError(error => {
+//       console.error(`❌ Error fetching ${entityName}:`, error);
+//       return of([]);
+//     })
+//   );
+// }
 
 getEntities<T>(
   endpointKey: string,
@@ -26,18 +53,25 @@ getEntities<T>(
     filters: [],
     pagingModel: {
       index: 0,
-      length: 0,
-      all: true
+      length: this.pageSize,
+      all: false
     },
     properties: ''
   }
-): Observable<T[]> {
+): Observable<{
+  data: T[];
+  totalCount: number;
+}> {
   return this.__SharedService.getAllByPost<T>(endpointKey, entityName, body).pipe(
-    map(response => response.data || []),
-    tap(data => signal.set([...data])),
+    map(response => ({
+      data: response.data || [],
+      totalCount: response.totalCount ?? 0
+    })),
+    tap(result => signal.set([...result.data])),
     catchError(error => {
       console.error(`❌ Error fetching ${entityName}:`, error);
-      return of([]);
+      // Important: return the same shape expected by the function
+      return of({ data: [], totalCount: 0 });
     })
   );
 }

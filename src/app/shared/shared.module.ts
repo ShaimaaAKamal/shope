@@ -24,6 +24,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LayoutHeaderComponent } from './components/layout-header/layout-header.component';
 import { FilterOptionsComponent } from './components/filter-options/filter-options.component';
 import { GenericCategoryVariantComponent } from './components/generic-category-variant/generic-category-variant.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { GenericCategoryVariantComponent } from './components/generic-category-v
     TemplateRefDirective,
     LayoutHeaderComponent,
     FilterOptionsComponent,
-    GenericCategoryVariantComponent
+    GenericCategoryVariantComponent,
+    PaginationComponent
   ],
   imports: [
     NgxDatatableModule,
@@ -58,6 +60,7 @@ import { GenericCategoryVariantComponent } from './components/generic-category-v
     ReactiveFormsModule
   ],
   exports:[
+    PaginationComponent,
     LayoutHeaderComponent,
          GenericCategoryVariantComponent,
          ReactiveFormsModule,

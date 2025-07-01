@@ -10,83 +10,6 @@ import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-ac
   providedIn: 'root'
 })
 export class CustomerService {
-  //  customers=signal<Customer[]>([
-  //    {
-  //   id:1,
-  //   firstNameEn: "Ahmed",
-  //   firstNameAr: "أحمد",
-  //   lastNameEn: "Hassan",
-  //   lastNameAr: "حسن",
-  //   companyNameEn: "Future Tech",
-  //   companyNameAr: "تكنولوجيا المستقبل",
-  //   phone: "+201234567890",
-  //   emailAddress: "ahmed.hassan@example.com",
-  //   country: "Egypt",
-  //   city: "Cairo",
-  //   addressEn: "15 El Tahrir Street",
-  //   addressAr: "١٥ شارع التحرير",
-  //   notesEn: "Preferred customer",
-  //   notesAr: "عميل مميز",
-  //   dateOfBirth: new Date("1985-03-12"),
-  //   crn: "CRN123456",
-  //   vat: "VAT789012",
-  //   governorate: "Giza",
-  //   streetNumber: "15",
-  //   buildingNumber: "B2",
-  //   isActive: true,
-  //   customerType: 1
-  // },
-  // {
-  //   id:2,
-  //   firstNameEn: "Sara",
-  //   firstNameAr: "سارة",
-  //   lastNameEn: "Fouad",
-  //   lastNameAr: "فؤاد",
-  //   companyNameEn: "Green Solutions",
-  //   companyNameAr: "الحلول الخضراء",
-  //   phone: "+201098765432",
-  //   emailAddress: "sara.fouad@example.com",
-  //   country: "Egypt",
-  //   city: "Alexandria",
-  //   addressEn: "22 Al Corniche Road",
-  //   addressAr: "٢٢ طريق الكورنيش",
-  //   notesEn: "Call before delivery",
-  //   notesAr: "الاتصال قبل التوصيل",
-  //   dateOfBirth: new Date("1992-07-22"),
-  //   crn: "CRN654321",
-  //   vat: "VAT210987",
-  //   governorate: "Alexandria",
-  //   streetNumber: "22",
-  //   buildingNumber: "A1",
-  //   isActive: false,
-  //   customerType: 2
-  // },
-  // {
-  //   id:3,
-  //   firstNameEn: "Khaled",
-  //   firstNameAr: "خالد",
-  //   lastNameEn: "Ali",
-  //   lastNameAr: "علي",
-  //   companyNameEn: "Skyline Builders",
-  //   companyNameAr: "سكاي لاين للمقاولات",
-  //   phone: "+201112223344",
-  //   emailAddress: "khaled.ali@example.com",
-  //   country: "Egypt",
-  //   city: "Mansoura",
-  //   addressEn: "5 Nile Street",
-  //   addressAr: "٥ شارع النيل",
-  //   notesEn: "VIP client",
-  //   notesAr: "عميل VIP",
-  //   dateOfBirth: new Date("1978-11-05"),
-  //   crn: "CRN789654",
-  //   vat: "VAT456321",
-  //   governorate: "Dakahlia",
-  //   streetNumber: "5",
-  //   buildingNumber: "C3",
-  //   isActive: true,
-  //   customerType: 3
-  // }
-  //  ]);
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 
   customers=signal<Customer[]>([]);
@@ -98,7 +21,10 @@ export class CustomerService {
 
 //start of api
 
-  getCustomers(body?: any): Observable<Customer[]> {
+  // getCustomers(body?: any): Observable<Customer[]> {
+  //   return this.__HandleActualApiInvokeService.getEntities<Customer>('GetCustomers', 'customers',this.customers, body)
+  // }
+  getCustomers(body?: any): Observable<{data:Customer[],totalCount:number}>  {
     return this.__HandleActualApiInvokeService.getEntities<Customer>('GetCustomers', 'customers',this.customers, body)
   }
   createCustomer(customer: Customer) {

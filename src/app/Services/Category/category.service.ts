@@ -17,7 +17,10 @@ constructor(private __SharedService:SharedService) {
 
 // categoryAPiCall
 
-getCategories(body?: any): Observable<Category[]> {
+// getCategories(body?: any): Observable<Category[]> {
+//   return this.__HandleActualApiInvokeService.getEntities<Category>('GetCategories', 'categories',this.categories, body)
+// }
+getCategories(body?: any): Observable<{data:Category[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Category>('GetCategories', 'categories',this.categories, body)
 }
 
