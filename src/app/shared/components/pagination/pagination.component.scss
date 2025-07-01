@@ -1,0 +1,35 @@
+@use 'variables' as *;
+.custom-pagination {
+  justify-content: center;
+  padding: 10px 0;
+  gap: 6px;
+}
+
+.custom-pagination .page-item {
+  display: inline-block;
+}
+
+.custom-pagination .page-link {
+  color: #fff;
+  background-color: $bg-submit-btn;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: 0 2px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.custom-pagination .page-link:hover {
+  background-color: $gray;
+  color:#fff;
+}
+.custom-pagination .page-link:focus {
+ outline: none;
+ box-shadow: none;
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: $gray;
+  pointer-events: none;
+}
