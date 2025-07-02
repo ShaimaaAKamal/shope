@@ -14,7 +14,6 @@ interface ApiResponse<T> {
 export class HandleActualApiInvokeService {
   private loadingSignal = signal<boolean>(false);
   loading = this.loadingSignal.asReadonly();
-  pageSize:number =10
 
   constructor(private __SharedService:SharedService,private __CommonService:CommonService) {}
 
@@ -49,11 +48,11 @@ getEntities<T>(
   entityName: string,
   signal: WritableSignal<T[]>,
   body: any = {
-    sorts: [],
+    sorts: [   ],
     filters: [],
     pagingModel: {
       index: 0,
-      length: this.pageSize,
+      length: 0,
       all: false
     },
     properties: ''
@@ -67,10 +66,9 @@ getEntities<T>(
       data: response.data || [],
       totalCount: response.totalCount ?? 0
     })),
-    tap(result => signal.set([...result.data])),
+    // tap(result => signal.set([...result.data])),
     catchError(error => {
       console.error(`❌ Error fetching ${entityName}:`, error);
-      // Important: return the same shape expected by the function
       return of({ data: [], totalCount: 0 });
     })
   );
@@ -138,6 +136,40 @@ deleteEntities<T>(
   );
 }
 
+// createEntity<T>(
+//   endpoint: string,
+//   entity: T,
+//   entityKey: string,
+//   signalToUpdate?: WritableSignal<T[]>,
+//   onSuccess?: (newEntity: T) => void,
+//   onError?: (error: any) => void
+// ) {
+//   this.loadingSignal.set(true);
+
+//   return this.__SharedService.createByPost<T>(endpoint, entity, entityKey).pipe(
+//     tap({
+//       next: (response:any) => {
+//         const newEntity = response.data;
+
+//         if (entityKey.toLowerCase() === 'product' && onSuccess) {
+//           onSuccess(newEntity);
+//           // this.__CommonService.saveToStorage('products', signalToUpdate?.()); // save sorted product list
+//         } else if (signalToUpdate) {
+//           signalToUpdate.update(items =>
+//             this.__CommonService.addOrReplaceItemById(items, newEntity)
+//           );
+//         }
+//       },
+//       complete: () => this.loadingSignal.set(false),
+//     }),
+//     catchError(error => {
+//       console.error(`❌ ${endpoint} error:`, error);
+//       this.loadingSignal.set(false);
+//       onError?.(error);
+//       return of(null);
+//     })
+//   );
+// }
 createEntity<T>(
   endpoint: string,
   entity: T,
@@ -172,7 +204,6 @@ createEntity<T>(
     })
   );
 }
-
 updateEntity<T extends { id?: number; category?: number }>(
   entity: T,
   options: {

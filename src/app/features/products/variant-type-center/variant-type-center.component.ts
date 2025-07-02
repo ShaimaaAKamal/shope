@@ -10,12 +10,16 @@ import { LanguageService } from '../../../Services/Language/language.service';
   styleUrl: './variant-type-center.component.scss'
 })
 export class VariantTypeCenterComponent {
-private __ProductService=inject(ProductService);
+ __ProductService=inject(ProductService);
 VariantTypes=this.__ProductService.variantTypes;
 private __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
 editedVariant:VartiantType={} as VartiantType;
+
+setCurrentPage(page:number){
+  this.__ProductService.variantTypePagination.goToPage(page);
+}
 showOptionsSection(){
  this.popupVisible=true;
 }

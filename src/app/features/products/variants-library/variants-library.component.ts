@@ -12,7 +12,7 @@ import { CommonService } from '../../../Services/CommonService/common.service';
   styleUrl: './variants-library.component.scss'
 })
 export class VariantsLibraryComponent {
-private __ProductService=inject(ProductService);
+ __ProductService=inject(ProductService);
 private __CommonService=inject(CommonService);
 private __LanguageService=inject(LanguageService);
 
@@ -26,6 +26,9 @@ servicesList:ServiceInterface[]=[]
 
 constructor(){
   this.page.set('Variants');
+}
+setCurrentPage(page:number){
+  this.__ProductService.variantLookMasterPagination.goToPage(page);
 }
 showOptionsSection(){
  this.popupVisible=true;

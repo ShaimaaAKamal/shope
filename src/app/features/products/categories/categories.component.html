@@ -19,6 +19,10 @@
           <div class="col-12 col-md-6 col-xl-4 col-xxl-3" *ngFor="let category of categories(); let i = index">
               <app-category-card [category]="category" (editCategory)="getEditCategoryInfo($event)"></app-category-card>
           </div>
+          <app-pagination [totalItems]="__CategoryService.pagination.totalItems()"
+          [currentPage]="__CategoryService.pagination.currentPage()"
+          [pageSize]="__CategoryService.pagination.pageSize()"
+           (pageChanged)="setCurrentPage($event)"></app-pagination>
         </div>
   </app-layout>
   </div>

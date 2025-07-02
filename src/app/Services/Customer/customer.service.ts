@@ -1,22 +1,45 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { DestroyRef, effect, inject, Injectable, signal } from '@angular/core';
 import { Customer } from '../../Interfaces/customer';
 import { CommonService } from '../CommonService/common.service';
-import { SharedService } from '../Shared/shared.service';
-import { Observable, tap, throwError } from 'rxjs';
+import { Observable, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
+import { PaginationStore } from '../../shared/stores/pagination-store.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
-
   customers=signal<Customer[]>([]);
+  // totalItems=signal<number>(0);
+  // currentPage=signal<number>(1);
+  // pageSize= signal<number>(this.__HandleActualApiInvokeService.pageSize);
+
+
+    fetchPaginatedCategories = (page: number, size: number) =>{
+      return this.getCustomers({
+        filters: [],
+        sorts: [
+          {
+            propertyName: 'InsertedDate',
+            descending: true
+          }
+        ],
+        pagingModel: {
+          index: page -1,
+          length: size,
+          all: false
+        },
+        properties: ''
+      });
+    }
+
+  pagination = new PaginationStore<Customer>(this.fetchPaginatedCategories, 'customers',this.customers);
 
   constructor(private __CommonService:CommonService,
     private __ToastingMessagesService:ToastingMessagesService) {
-      this.getCustomers().subscribe({});
+      // this.getCustomers().subscribe({});
     }
 
 //start of api
@@ -33,7 +56,9 @@ export class CustomerService {
     customer,
     'Customer',
     this.customers
-  );
+  ).pipe(
+    tap(response => this.pagination.refresh() )
+    );
 }
   deleteCustomer(id: number) {
   return this.__HandleActualApiInvokeService.deleteEntity<Customer>(
@@ -41,7 +66,9 @@ export class CustomerService {
     id,
     'Customer',
     this.customers,
-  );
+  ).pipe(
+    tap(response => this.pagination.refresh() )
+    );;
 }
 
   updateCustomer(customer: Customer) {

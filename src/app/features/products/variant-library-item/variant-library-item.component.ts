@@ -33,7 +33,7 @@ import { VartiantType } from '../../../Interfaces/vartiant-type';
 })
 export class VariantLibraryItemComponent {
   private __CommonService = inject(CommonService);
-  private __ProductService = inject(ProductService);
+   __ProductService = inject(ProductService);
   private __LanguageService = inject(LanguageService);
   private cdRef = inject(ChangeDetectorRef);
 

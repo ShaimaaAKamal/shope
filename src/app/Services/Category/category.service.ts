@@ -1,8 +1,9 @@
 import {  inject, Injectable, signal } from '@angular/core';
 import { Category } from '../../Interfaces/category';
 import { SharedService } from '../Shared/shared.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
+import { PaginationStore } from '../../shared/stores/pagination-store.store';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,29 @@ export class CategoryService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 categories=signal<Category[]>([]);
 
+
+
+  fetchPaginatedCategories = (page: number, size: number) =>{
+    return this.getCategories({
+      filters: [],
+      sorts: [
+        {
+          propertyName: 'InsertedDate',
+          descending: true
+        }
+      ],
+      pagingModel: {
+        index: page -1,
+        length: size,
+        all: false
+      },
+      properties: ''
+    });
+  }
+
+pagination = new PaginationStore<Category>(this.fetchPaginatedCategories, 'categories',this.categories);
 constructor(private __SharedService:SharedService) {
-  this.getCategories().subscribe({});
+  // this.getCategories().subscribe({});
 }
 
 // categoryAPiCall
@@ -30,6 +52,10 @@ createCategoryApi(category: Category) {
     category,
     'Category',
     this.categories
+  ).pipe(
+    tap(value => {
+      this.pagination.refresh();
+    })
   );
 }
 
@@ -39,6 +65,10 @@ deleteCategory(id: number) {
     id,
     'category',
     this.categories,
+  ).pipe(
+    tap(value => {
+      this.pagination.refresh();
+    })
   );
 }
 

@@ -27,6 +27,9 @@ export class CategoriesComponent {
   constructor(){
     this.page.set('Categories');
   }
+  setCurrentPage(page:number){
+    this.__CategoryService.pagination.goToPage(page);
+  }
   addNew(event: any) {
     this.addCategory.set(true);
   }

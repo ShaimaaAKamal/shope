@@ -18,13 +18,13 @@ import { FilterSection } from '../../Interfaces/filter-options';
   standalone: false
 })
 export class ProductsComponent {
-  private productService = inject(ProductService);
+  productService = inject(ProductService);
   private __CategoryService = inject(CategoryService);
   private __LanguageService=inject(LanguageService)
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
   private __CommonService=inject(CommonService);
-  
+
   page=this.__CommonService.page;
   isRtl=this.__LanguageService.rtlClassSignal;
   queryParamsSignal= toSignal(this.__Route.queryParamMap);
@@ -34,12 +34,16 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
-  totalItems=this.productService.totalItems;
-  currentPage=this.productService.currentPage;
-  pageSize = this.productService.pageSize;
 
+  // totalItems=this.productService.totalItems;
+  // currentPage=this.productService.currentPage;
+  // pageSize = this.productService.pageSize;
+
+  // setCurrentPage(page:number){
+  //   this.productService.currentPage.set(page);
+  // }
   setCurrentPage(page:number){
-    this.productService.currentPage.set(page);
+    this.productService.pagination.goToPage(page);
   }
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },

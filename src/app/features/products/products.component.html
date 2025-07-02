@@ -26,10 +26,12 @@
             <app-product-card [product]="product" (checkedProduct)="checkedProductFn($event)" [type]="type()" (deleteProduct)="deleteNewProduct($event)" [cardDisplayDirection]="cardDisplayDirection"></app-product-card>
           </div>
         </div>
-         <div class="d-flex justify-content-center">
-            <app-pagination [totalItems]="totalItems()" [currentPage]="currentPage()"
-            [pageSize]="pageSize()" (pageChanged)="setCurrentPage($event)"></app-pagination>
-         </div>
+        <!-- <app-pagination [totalItems]="totalItems()" [currentPage]="currentPage()"
+            [pageSize]="pageSize()" (pageChanged)="setCurrentPage($event)"></app-pagination> -->
+        <app-pagination [totalItems]="productService.pagination.totalItems()"
+            [currentPage]="productService.pagination.currentPage()"
+            [pageSize]="productService.pagination.pageSize()"
+             (pageChanged)="setCurrentPage($event)"></app-pagination>
       </div>
 
 

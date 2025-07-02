@@ -1,13 +1,14 @@
-import { DestroyRef, effect, inject, Injectable, signal } from '@angular/core';
+import {  inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { catchError, concatMap, finalize, forkJoin, map, Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, finalize, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
 import { VartiantType } from '../../Interfaces/vartiant-type';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PaginationStore } from '../../shared/stores/pagination-store.store';
+type FetchEntityFn<T> = (body: any) => Observable<{ data: T[]; totalCount: number }>;
 
 @Injectable({
   providedIn: 'root'
@@ -29,48 +30,109 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   private loadingSignal = signal<boolean>(false);
   loading = this.loadingSignal.asReadonly();
 
-//Pagination signals
-  totalItems=signal<number>(0);
-  currentPage=signal<number>(1);
-  pageSize= signal<number>(this.__HandleActualApiInvokeService.pageSize);
 
-  private destroyRef = inject(DestroyRef);
-  private destroy$ = new Subject<void>();
-
-  constructor(private commonService: CommonService) {
-    this.init();
-    const currentPahe = this.commonService.getItemsFromStorage('currentPage',1);
-    this.currentPage.set(currentPahe);
-    effect(() => {
-      console.log('Current effect Page:', this.currentPage());
+   createPaginatedFetcher<T>(
+    fetchFn: FetchEntityFn<T>,
+    processData?: (data: T[]) => T[]
+  ): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
+    return (page: number, size: number) => {
       const body = {
-        sorts: [
-          {
-            propertyName: "InsertedDate",
-            descending: true
-          }
-        ],
         filters: [],
+        sorts: [{ propertyName: 'InsertedDate', descending: true }],
         pagingModel: {
-          index: this.currentPage() - 1,
-          length: this.pageSize(),
+          index: page - 1,
+          length: size,
           all: false
         },
         properties: ''
       };
-      this.getProducts(body)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          {
-            next:() => this.handleLoadingAllowProducts
-          }
-        );
-    });
 
-    this.destroyRef.onDestroy(() => {
-      this.destroy$.next();
-      this.destroy$.complete();
-    });
+      return fetchFn(body).pipe(
+        map(result => {
+          const data = processData ? processData(result.data) : result.data;
+          return { ...result, data };
+        })
+      );
+    };
+  }
+  fetchPaginatedProducts = this.createPaginatedFetcher<Product>(
+    this.getProducts.bind(this),
+    this.handleLoadingAllowProducts.bind(this)
+  );
+
+  fetchPaginatedVariantLookMaster = this.createPaginatedFetcher<VariantMasterLookUP>(
+    this.getVariants.bind(this)
+  );
+  fetchPaginatedVariantTypes = this.createPaginatedFetcher<VartiantType>(
+    this.getVariantTypes.bind(this)
+  );
+  pagination = new PaginationStore<Product>(
+    this.fetchPaginatedProducts,
+    'products',
+    this.productsSignal
+  );
+
+  variantLookMasterPagination = new PaginationStore<VariantMasterLookUP>(
+    this.fetchPaginatedVariantLookMaster,
+    'Variants',
+    this.variantOptions
+  );
+
+  variantTypePagination = new PaginationStore<VartiantType>(
+    this.fetchPaginatedVariantTypes,
+    'Variants types',
+    this.variantTypes
+  );
+  // fetchPaginatedProducts = (page: number, size: number) =>{
+  //   return this.getProducts({
+  //     filters: [],
+  //     sorts: [
+  //       {
+  //         propertyName: 'InsertedDate',
+  //         descending: true
+  //       }
+  //     ],
+  //     pagingModel: {
+  //       index: page -1,
+  //       length: size,
+  //       all: false
+  //     },
+  //     properties: ''
+  //   }).pipe(
+  //     map(result => {
+  //       // filter/sort here and return a new object
+  //       const filteredData = this.handleLoadingAllowProducts(result.data);
+  //       return {
+  //         ...result,
+  //         data: filteredData
+  //       };
+  //     }))
+  // }
+
+
+  // fetchPaginatedVariantLookMaster = (page: number, size: number) =>{
+  //   return this.getVariants({
+  //     filters: [],
+  //     sorts: [
+  //       {
+  //         propertyName: 'InsertedDate',
+  //         descending: true
+  //       }
+  //     ],
+  //     pagingModel: {
+  //       index: page -1,
+  //       length: size,
+  //       all: false
+  //     },
+  //     properties: ''
+  //   })}
+
+  // pagination = new PaginationStore<Product>(this.fetchPaginatedProducts, 'products',this.productsSignal);
+  // variantLookMasterPagination = new PaginationStore<VariantMasterLookUP>(this.fetchPaginatedVariantLookMaster, 'Variants',this.variantOptions);
+
+
+  constructor(private commonService: CommonService) {
+    // this.init();
   }
 
 
@@ -92,6 +154,10 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
       variant,
       'Variant Type',
       this.variantTypes
+    ).pipe(
+      tap(value => {
+        this.variantTypePagination.refresh();
+      })
     );
   }
 
@@ -101,6 +167,10 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
       id,
       'variant type',
       this.variantTypes,
+    ).pipe(
+      tap(value => {
+        this.variantTypePagination.refresh();
+      })
     );
   }
 
@@ -137,6 +207,10 @@ createVariant(variant: VariantMasterLookUP){
     variant,
     'Variant',
     this.variantOptions
+  ).pipe(
+    tap(value => {
+      this.variantLookMasterPagination.refresh();
+    })
   );
 }
 
@@ -146,6 +220,10 @@ deleteVariant(id: number) {
     id,
     'variant',
     this.variantOptions,
+  ).pipe(
+    tap(value => {
+      this.variantLookMasterPagination.refresh();
+    })
   );
 }
 updateVariant(variant: VariantMasterLookUP) {
@@ -241,21 +319,26 @@ updateProductVariant(variant: ProductVariantMaster) {
     );
   }
   //Product Api
-private init(): void {
-  this.getVariantTypes().pipe(
-    concatMap(() => this.getVariants()),
-  ).subscribe({
-    error: (err) => {
-      console.error('Error loading data:', err);
-    }
-  });
-}
-  private handleLoadingAllowProducts(){
-    const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
-    this.commonService.saveToStorage('products', sortedProducts);
-    this.usedProducts = [...sortedProducts];
-  }
+// private init(): void {
+//   this.getVariantTypes().subscribe({
+//     error: (err) => {
+//       console.error('Error loading data:', err);
+//     }
+//   });
+// }
+  // private handleLoadingAllowProducts(){
+  //   // const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
+  //   this.commonService.saveToStorage('products', sortedProducts);
+  //   this.usedProducts = [...sortedProducts];
+  // }
 
+  private handleLoadingAllowProducts(products:Product[]){
+    // const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
+    const sortedProducts=this.removeEmptyProductandSortPeroducts(products);
+    this.commonService.saveToStorage('products', sortedProducts);
+      this.usedProducts = [...sortedProducts];
+    return sortedProducts;
+  }
   //Api calls
 
    getProduct(id:number){
@@ -268,10 +351,14 @@ private init(): void {
 
 getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
-    .pipe(
-      tap(response => { this.totalItems.set(response.totalCount);})
-      );
 }
+
+// getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
+//   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+//     .pipe(
+//       tap(response => { this.totalItems.set(response.totalCount);})
+//       );
+// }
 
 createProduct(product: Product) {
   const { id, ...productWithoutId } = product;
@@ -286,11 +373,15 @@ createProduct(product: Product) {
         products.filter(p => p.id !== id)
       );
       this.productsSignal.update(products =>
-      (this.commonService.addOrReplaceItemById(products, newProduct,'product').slice(0, 10))
+      (this.commonService.addOrReplaceItemById(products, newProduct).slice(0, this.pagination.pageSize()))
       );
       this.type.set('');
       this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
     }
+  ).pipe(
+    tap(value => {
+      this.pagination.refresh();
+    })
   );
 }
 
@@ -311,6 +402,10 @@ updateProduct(product: Product) {
       (updatedList) => {
         this.commonService.saveToStorage('products', this.sortProductsDesc(updatedList));
       }
+    ).pipe(
+      tap(value => {
+        this.pagination.refresh();
+      })
     );
   }
 
@@ -404,7 +499,7 @@ updateProductInfo(product: Product, actionType: string) {
 
  removeEmptyProductandSortPeroducts(products:Product[]){
     const filterProducts = products.filter(p => p.nameEn && p.nameAr);
-     this.productsSignal.set(filterProducts);
+    //  this.productsSignal.set(filterProducts);
     return filterProducts
 }
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
@@ -9,13 +9,13 @@ import { CommonService } from '../../../Services/CommonService/common.service';
 })
 export class PaginationComponent {
   pages:number[]=[];
-  @Input() totalItems = 0;
-  @Input() currentPage = 1;
-  @Input() pageSize = 10;
+  @Input() totalItems:number = 0;
+  @Input() currentPage:number = 1;
+  @Input() pageSize:number = 10;
   @Output() pageChanged = new EventEmitter<number>();
 
   totalPages = 1;
-  constructor(private __CommonService:CommonService){}
+  constructor(private __CommonService:CommonService,private cdr: ChangeDetectorRef){}
   ngOnChanges(changes: SimpleChanges): void {
     this.calculatePagination();
   }
