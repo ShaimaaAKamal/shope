@@ -12,10 +12,6 @@ import { PaginationStore } from '../../shared/stores/pagination-store.store';
 export class CustomerService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   customers=signal<Customer[]>([]);
-  // totalItems=signal<number>(0);
-  // currentPage=signal<number>(1);
-  // pageSize= signal<number>(this.__HandleActualApiInvokeService.pageSize);
-
 
     fetchPaginatedCategories = (page: number, size: number) =>{
       return this.getCustomers({
@@ -38,15 +34,10 @@ export class CustomerService {
   pagination = new PaginationStore<Customer>(this.fetchPaginatedCategories, 'customers',this.customers);
 
   constructor(private __CommonService:CommonService,
-    private __ToastingMessagesService:ToastingMessagesService) {
-      // this.getCustomers().subscribe({});
-    }
+    private __ToastingMessagesService:ToastingMessagesService) {}
 
 //start of api
 
-  // getCustomers(body?: any): Observable<Customer[]> {
-  //   return this.__HandleActualApiInvokeService.getEntities<Customer>('GetCustomers', 'customers',this.customers, body)
-  // }
   getCustomers(body?: any): Observable<{data:Customer[],totalCount:number}>  {
     return this.__HandleActualApiInvokeService.getEntities<Customer>('GetCustomers', 'customers',this.customers, body)
   }

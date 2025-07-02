@@ -5,7 +5,6 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 const routes: Routes = [
   { path: '', redirectTo:"Orders/create" ,pathMatch:'full'},
   { path: 'New Order', redirectTo:"Orders/create" },
-  // { path: 'Home', redirectTo:"Orders/create" },
   {path:'Variants_Library',redirectTo:'Products/Variants_Library'},
   {path:'Categories',redirectTo:'Products/Categories'},
   { path: 'Products', loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule) },

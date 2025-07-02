@@ -35,13 +35,6 @@ export class ProductsComponent {
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
 
-  // totalItems=this.productService.totalItems;
-  // currentPage=this.productService.currentPage;
-  // pageSize = this.productService.pageSize;
-
-  // setCurrentPage(page:number){
-  //   this.productService.currentPage.set(page);
-  // }
   setCurrentPage(page:number){
     this.productService.pagination.goToPage(page);
   }
@@ -171,7 +164,6 @@ export class ProductsComponent {
   const index = this.checkedProducts.findIndex(id => id === product.id);
 
   if (!unchecked) {
-    // if (index === -1 ) {
         if (index === -1 && product.id ) {
       this.checkedProducts.push(product.id);
     }

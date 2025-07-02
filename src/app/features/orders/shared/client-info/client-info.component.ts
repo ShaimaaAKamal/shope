@@ -4,12 +4,6 @@ import { LanguageService } from '../../../../Services/Language/language.service'
 import { Customer } from '../../../../Interfaces/customer';
 import { CustomerService } from '../../../../Services/Customer/customer.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-//  interface OrderInputInterface {
-//   order: Order;
-//   additionalInfo: string;
-//   flexGrow?: boolean;
-// }
 interface OrderInputInterface {
   order: Order;
   additionalInfo: number | undefined;
@@ -33,12 +27,6 @@ personImage:string='person.jpg';
 isRtl!:Signal<boolean>;
 customerName:string='';
 
-// constructor(private __LanguageService:LanguageService,private __CustomerService:CustomerService){
-//   this.isRtl=this.__LanguageService.rtlClassSignal;
-//    effect(() => {
-//       this.getCustomerName();
-//     });
-// }
 
 constructor(
   private __LanguageService: LanguageService,
@@ -66,6 +54,7 @@ ngOnInit(): void {
      this.personImage='person.jpg';
 
 }
+
 // getCustomerName(){
 //     // this.customerName= this.isRtl() ? this.ClientInfoData.order.customer.nameAr : this.ClientInfoData.order.customer.name;
 //          const customer=this.__CustomerService.getCustomerByID(this.ClientInfoData.order.customerId)

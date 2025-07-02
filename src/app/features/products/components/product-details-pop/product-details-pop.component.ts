@@ -106,10 +106,6 @@ getProductInfo(): void {
   if(id)
         this.updated.emit(true);
 
-  //    this.__ProductService.updateProduct(this.__ProductService.currentProduct()).subscribe({
-  //   next:()=> this.close.emit(true)
-  // });
-
 }
 
 }

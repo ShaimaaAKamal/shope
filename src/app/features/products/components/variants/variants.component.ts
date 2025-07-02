@@ -32,11 +32,6 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
       if(this.localVariants().length == 0) this.displayVariant.set(false);
     }
 
-    // deleteVariant(index: number) {
-    //   const updated = this.localVariants().filter((_, i) => i !== index);
-
-    //   this.localVariants.set(updated);
-    // }
 
     controlVariantsPopupScreen(action: string) {
       this.controlVariantsPopup.emit(action);
@@ -49,10 +44,6 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
         this.__ProductService.updateProductVariants(updateVariants).subscribe({
           next:()=>   this.variantDetailsHandled.emit()
         })
-
-        // console.log('updated product variant details',updateVariants);
-        // console.log('Make update array list');
-        // this.variantDetailsHandled.emit();
       }
       else {
          this.__SharedService.createListByPost<ProductVariantMaster[]>('CreateProductVariantList',event,'Product Variants').subscribe(

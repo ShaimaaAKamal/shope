@@ -30,7 +30,6 @@ getNetTotal=this.__OrderService.getNetTotal;
 
 order!:Order;
 orderProducts!:OrderProduct[];
-// currency:string='SAR';
 currency:string=this.__OrderService.currency;
 constructor(private __Router: Router,
 private __ToastingMessagesService: ToastingMessagesService,

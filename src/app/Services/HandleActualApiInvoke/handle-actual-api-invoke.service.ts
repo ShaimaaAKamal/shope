@@ -18,30 +18,6 @@ export class HandleActualApiInvokeService {
   constructor(private __SharedService:SharedService,private __CommonService:CommonService) {}
 
 
-// getEntities<T>(
-//   endpointKey: string,
-//   entityName: string,
-//   signal: WritableSignal<T[]>,
-//   body: any = {
-//     sorts: [],
-//     filters: [],
-//     pagingModel: {
-//       index: 0,
-//       length: 10,
-//       all: false
-//     },
-//     properties: ''
-//   }
-// ): Observable<T[]> {
-//   return this.__SharedService.getAllByPost<T>(endpointKey, entityName, body).pipe(
-//     map(response => data :response.data || [] )
-//     tap(data => signal.set([...data])),
-//     catchError(error => {
-//       console.error(`❌ Error fetching ${entityName}:`, error);
-//       return of([]);
-//     })
-//   );
-// }
 
 getEntities<T>(
   endpointKey: string,

@@ -43,7 +43,6 @@ export class PaginationStore<T> {
         this.pageSize.set(this.pageSizeSubject.value.size);
       });
 
-    // Effect to keep currentPage within valid range once totalItems is set
     effect(() => {
       const totalItems = this.totalItems();
       const pageSize = this.pageSize();
@@ -81,7 +80,7 @@ export class PaginationStore<T> {
     const currentSize = this.pageSizeSubject.value.size;
     if (size !== currentSize) {
       localStorage.setItem(this.key('size'), size.toString());
-      this.pageSizeSubject.next({ page: 1, size }); // reset to page 1 on size change
+      this.pageSizeSubject.next({ page: 1, size });
     }
   }
 

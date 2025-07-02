@@ -39,7 +39,6 @@ export class LayoutComponent {
 @Output() deleteSelected=new EventEmitter<boolean>();
 @Output() serviceSelected = new EventEmitter<string>();
 @Output() displayDir=new EventEmitter<string>();
-// @Output() resetFilter=new EventEmitter<void>()
 isFilterVisible = false;
 
 noItems!:boolean;

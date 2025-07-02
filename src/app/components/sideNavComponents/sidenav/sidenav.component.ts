@@ -27,7 +27,6 @@ export class SidenavComponent {
         { name: 'New Order', icon: 'fa-solid fa-square-plus' },
       ]
      },
-    // { name: 'Home', icon: 'fa-solid fa-house' },
     {
       name: 'Products',
       icon: 'fa-solid fa-tags',
@@ -36,7 +35,6 @@ export class SidenavComponent {
         { name: 'Categories', icon: 'fa-solid fa-layer-group' }
       ]
     },
-    // { name: 'Variants_Library', icon: 'fa-solid fa-photo-film' },
     { name: 'Customers', icon: 'fa-solid fa-users' },
     { name: 'Discounts', icon: 'fa-solid fa-percent' },
     { name: 'Reports', icon: 'fa-solid fa-chart-simple' }

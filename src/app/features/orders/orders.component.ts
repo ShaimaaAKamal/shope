@@ -21,7 +21,6 @@ export class OrdersComponent implements OnInit {
   del:boolean=false;
   servicesList:ServiceInterface[]=[]
 
-  // 👇 Reference to custom cell template for "Invoice Type"
   @ViewChild('invoiceTypeTpl', { static: true })
   invoiceTypeTpl!: TemplateRef<any>;
 
@@ -31,7 +30,6 @@ invoiceDateTp2!: TemplateRef<any>;
 @ViewChild('defaultValueTpl', { static: true }) defaultValueTpl!: TemplateRef<any>;
 @ViewChild('invoicePaymentMethodTpl', { static: true })
 invoicePaymentMethodTpl!: TemplateRef<any>;
-  // 👇 Optional cleaner map for display values
   invoiceTypeMap: Record<number, string> = {
     1: 'Hold',
     2: 'Paid',

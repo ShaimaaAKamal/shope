@@ -77,9 +77,7 @@ export class CustomersComponent {
   ]);
 
 
-  // totalItems=this.__CustomerService.totalItems;
-  // currentPage=this.__CustomerService.currentPage;
-  // pageSize = this.__CustomerService.pageSize;
+  
   setCurrentPage(page:number){
     this.__CustomerService.pagination.goToPage(page);
   }

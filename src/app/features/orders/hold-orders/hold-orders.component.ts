@@ -18,7 +18,6 @@ holdOrders=this.__OrderService.HoldOrders;
 __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 
-// currency:string='SAR';
 currency:string=this.__OrderService.currency;
 
 constructor(private __Router:Router){}

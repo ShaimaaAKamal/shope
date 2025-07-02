@@ -19,12 +19,6 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 import { VartiantType } from '../../../Interfaces/vartiant-type';
 
-// interface VariantType {
-//   id: number;
-//   name: string;
-//   nameAr: string;
-// }
-
 @Component({
   selector: 'app-variant-library-item',
   standalone: false,

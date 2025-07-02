@@ -33,15 +33,9 @@ categories=signal<Category[]>([]);
   }
 
 pagination = new PaginationStore<Category>(this.fetchPaginatedCategories, 'categories',this.categories);
-constructor(private __SharedService:SharedService) {
-  // this.getCategories().subscribe({});
-}
+constructor(private __SharedService:SharedService) {}
 
 // categoryAPiCall
-
-// getCategories(body?: any): Observable<Category[]> {
-//   return this.__HandleActualApiInvokeService.getEntities<Category>('GetCategories', 'categories',this.categories, body)
-// }
 getCategories(body?: any): Observable<{data:Category[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Category>('GetCategories', 'categories',this.categories, body)
 }
@@ -101,7 +95,6 @@ getCategoryByName(name: string) {
       properties: ""
   }
   return this.__SharedService.getAllByPost('GetCategories','Categories',searchBody)
-  // return this.categories().find(category => category.nameEn === name);
 }
 validateCategoryInputs(nameEn: string, nameAr: string,id:number |null=null) {
   const normalizedName = nameEn.trim().toLowerCase();
