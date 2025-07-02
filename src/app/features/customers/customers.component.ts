@@ -77,7 +77,7 @@ export class CustomersComponent {
   ]);
 
 
-  
+
   setCurrentPage(page:number){
     this.__CustomerService.pagination.goToPage(page);
   }
@@ -108,6 +108,9 @@ applyFilters(event:any) {
   }
 resetFilters() {
   // this.filterForm.reset();
+}
+ngOnDestroy() {
+  this.__CustomerService.pagination.resetPage();
 }
 }
 

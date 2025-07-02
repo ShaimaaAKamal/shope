@@ -47,4 +47,7 @@ closeCreate(category:Category){
 closeEdit(category:Category){
   this.editCategory.set(false);
 }
+ngOnDestroy() {
+  this.__CategoryService.pagination.resetPage();
+}
 }

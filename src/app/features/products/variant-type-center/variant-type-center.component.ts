@@ -45,4 +45,7 @@ updatedVariant(){
 deleteSelected(event:any){
 
 }
+ngOnDestroy() {
+  this.__ProductService.variantTypePagination.resetPage();
+}
 }

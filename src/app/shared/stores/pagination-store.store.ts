@@ -90,6 +90,12 @@ export class PaginationStore<T> {
     }
   }
 
+  resetPage() {
+    this.currentPage.set(1);
+    localStorage.setItem(this.key('page'), '1');
+    this.refresh();
+  }
+
   refresh() {
     this.pageSizeSubject.next({
       page: this.currentPage(),

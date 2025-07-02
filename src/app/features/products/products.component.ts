@@ -199,6 +199,7 @@ resetFilters() {
   ngOnDestroy(): void {
     this.type.set('');
     this.productService.removeEmptyProductandSortPeroducts(this.products());
+    this.productService.pagination.resetPage();
   }
 }
 

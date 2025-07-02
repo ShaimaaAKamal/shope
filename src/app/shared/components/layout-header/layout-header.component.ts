@@ -99,11 +99,21 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
   private getServiceMethod() {
     const services: Record<string, () => void> = {
-      Categories: () => this.categoryService.getCategories(this.getRequestBody()).subscribe(),
-      Products: () => this.productService.getProducts(this.getRequestBody()).subscribe(),
-      Customers: () => this.customerService.getCustomers(this.getRequestBody()).subscribe(),
-      Orders: () => this.orderService.getOrders(this.getRequestBody()).subscribe(),
-      Variants: () => this.productService.getVariants(this.getRequestBody()).subscribe()
+      Categories: () => this.categoryService.getCategories(this.getRequestBody()).subscribe({
+        next : data => this.categoryService.categories.set(data.data),
+      }),
+      Products: () => this.productService.getProducts(this.getRequestBody()).subscribe({
+        next : data => this.productService.productsSignal.set(data.data),
+      }),
+      Customers: () => this.customerService.getCustomers(this.getRequestBody()).subscribe({
+        next : data => this.customerService.customers.set(data.data),
+      }),
+      Orders: () => this.orderService.getOrders(this.getRequestBody()).subscribe({
+        next : data => this.orderService.orders.set(data.data),
+      }),
+      Variants: () => this.productService.getVariants(this.getRequestBody()).subscribe({
+        next : data => this.productService.variantOptions.set(data.data),
+      })
     };
     return services[this.dropdownSelection];
   }
@@ -122,7 +132,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     const commonPaging = {
       index: 0,
       length: 0,
-      all: true
+      all: false
     };
 
     const filtersBySelection: Record<string, any[]> = {
@@ -137,11 +147,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
         {
           operation: 3,
           propertyName: this.isRtl() ? 'nameAr' : 'nameEn',
-          propertyValue: this.searchKey
-        },
-        {
-          operation: 3,
-          propertyName: 'sku',
           propertyValue: this.searchKey
         }
       ],

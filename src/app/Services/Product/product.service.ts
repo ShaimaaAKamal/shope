@@ -25,7 +25,7 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   currentProduct = signal<Product>(this.getEmptyProduct());
 
   // Signals for state management
-  private productsSignal = signal<Product[]>([]);
+  productsSignal = signal<Product[]>([]);
   products = this.productsSignal.asReadonly();
   private loadingSignal = signal<boolean>(false);
   loading = this.loadingSignal.asReadonly();
