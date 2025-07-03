@@ -1,3 +1,4 @@
+import { CustomersModule } from './../../features/customers/customers.module';
 import {  inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
@@ -16,6 +17,7 @@ type FetchEntityFn<T> = (body: any) => Observable<{ data: T[]; totalCount: numbe
 export class ProductService {
 private __SharedService=inject(SharedService);
 private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
+private commonService = inject(CommonService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
@@ -31,113 +33,53 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   loading = this.loadingSignal.asReadonly();
 
 
-   createPaginatedFetcher<T>(
-    fetchFn: FetchEntityFn<T>,
-    processData?: (data: T[]) => T[]
-  ): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
-    return (page: number, size: number) => {
-      const body = {
-        filters: [],
-        sorts: [{ propertyName: 'InsertedDate', descending: true }],
-        pagingModel: {
-          index: page - 1,
-          length: size,
-          all: false
-        },
-        properties: ''
-      };
+  searchFn = (searchKey: string) => {
+    const filters = [
+      {
+        operation: 3,
+        propertyName: 'nameEn',
+        propertyValue: searchKey
+      },
+    ];
 
-      return fetchFn(body).pipe(
-        map(result => {
-          const data = processData ? processData(result.data) : result.data;
-          return { ...result, data };
-        })
-      );
-    };
-  }
-  fetchPaginatedProducts = this.createPaginatedFetcher<Product>(
+    return this.commonService.createSearchFn(filters, (body) =>
+      this.getProducts(body).pipe(tap(data => this.handleLoadingAllowProducts(data.data)))
+    );
+  };
+
+  fetchPaginatedProducts = this.commonService.createPaginatedFetcher<Product>(
     this.getProducts.bind(this),
     this.handleLoadingAllowProducts.bind(this)
   );
 
-  fetchPaginatedVariantLookMaster = this.createPaginatedFetcher<VariantMasterLookUP>(
+  fetchPaginatedVariantLookMaster = this.commonService.createPaginatedFetcher<VariantMasterLookUP>(
     this.getVariants.bind(this)
   );
-  fetchPaginatedVariantTypes = this.createPaginatedFetcher<VartiantType>(
+  fetchPaginatedVariantTypes = this.commonService.createPaginatedFetcher<VartiantType>(
     this.getVariantTypes.bind(this)
   );
+
   pagination = new PaginationStore<Product>(
     this.fetchPaginatedProducts,
-    'products',
-    this.productsSignal
+    this.productsSignal,
   );
 
   variantLookMasterPagination = new PaginationStore<VariantMasterLookUP>(
     this.fetchPaginatedVariantLookMaster,
-    'Variants',
     this.variantOptions
   );
 
   variantTypePagination = new PaginationStore<VartiantType>(
     this.fetchPaginatedVariantTypes,
-    'Variants types',
     this.variantTypes
   );
-  // fetchPaginatedProducts = (page: number, size: number) =>{
-  //   return this.getProducts({
-  //     filters: [],
-  //     sorts: [
-  //       {
-  //         propertyName: 'InsertedDate',
-  //         descending: true
-  //       }
-  //     ],
-  //     pagingModel: {
-  //       index: page -1,
-  //       length: size,
-  //       all: false
-  //     },
-  //     properties: ''
-  //   }).pipe(
-  //     map(result => {
-  //       // filter/sort here and return a new object
-  //       const filteredData = this.handleLoadingAllowProducts(result.data);
-  //       return {
-  //         ...result,
-  //         data: filteredData
-  //       };
-  //     }))
-  // }
 
 
-  // fetchPaginatedVariantLookMaster = (page: number, size: number) =>{
-  //   return this.getVariants({
-  //     filters: [],
-  //     sorts: [
-  //       {
-  //         propertyName: 'InsertedDate',
-  //         descending: true
-  //       }
-  //     ],
-  //     pagingModel: {
-  //       index: page -1,
-  //       length: size,
-  //       all: false
-  //     },
-  //     properties: ''
-  //   })}
-
-  // pagination = new PaginationStore<Product>(this.fetchPaginatedProducts, 'products',this.productsSignal);
-  // variantLookMasterPagination = new PaginationStore<VariantMasterLookUP>(this.fetchPaginatedVariantLookMaster, 'Variants',this.variantOptions);
 
 
-  constructor(private commonService: CommonService) {
+  constructor() {
     // this.init();
   }
-
-
-
-
 
   //VariantTypeApi
 
@@ -353,12 +295,6 @@ getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
 }
 
-// getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
-//   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
-//     .pipe(
-//       tap(response => { this.totalItems.set(response.totalCount);})
-//       );
-// }
 
 createProduct(product: Product) {
   const { id, ...productWithoutId } = product;

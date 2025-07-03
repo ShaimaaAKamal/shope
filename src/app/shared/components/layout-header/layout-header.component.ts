@@ -9,6 +9,7 @@ import {
   Subject,
   debounceTime,
   distinctUntilChanged,
+  filter,
   takeUntil
 } from 'rxjs';
 
@@ -19,7 +20,7 @@ import { ProductService } from '../../../Services/Product/product.service';
 import { CustomerService } from '../../../Services/Customer/customer.service';
 import { OrderService } from '../../../Services/order/order.service';
 import { CommonService } from '../../../Services/CommonService/common.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router , Event as RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-layout-header',
@@ -46,44 +47,117 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   dropdownSelection = 'Products';
   selectionMessage = this.getSearchMessage('Products');
   searchKey = '';
-
   constructor() {
+    let runCount = 0;
     effect(() => {
+      runCount++;
       const selected = this.page() || 'Choose';
       this.dropdownSelection = selected;
+      if(runCount == 2)
+       this.checkStoredKey();
       this.selectionMessage = this.getSearchMessage(selected);
     });
   }
-
+  private previousUrl: string | null = null;
   ngOnInit(): void {
+
+    this.router.events
+    .pipe(
+      takeUntil(this.destroy$),
+      filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+    )
+    .subscribe(event => {
+      const currentPath = event.urlAfterRedirects.split('?')[0];
+      const previousPath = this.previousUrl?.split('?')[0] ?? null;
+
+      if (previousPath !== null && previousPath !== currentPath) {
+        this.clearSearchKey();
+
+      }
+      this.previousUrl = event.urlAfterRedirects;
+    });
+
     this.searchKeyChanged$
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      )
+      // .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
       .subscribe(() => this.sendSearchRequest());
   }
 
+  private clearSearchKey() {
+    this.searchKey = '';
+    localStorage.removeItem('searchKey');
+    this.searchKeyChanged$.next('');
+
+  }
+
+  private getServiceAndPagination(selection: string):any {
+    switch (selection) {
+      case 'Products':
+        return {
+          pagination: this.productService.pagination,
+          searchFn: this.productService.searchFn.bind(this.productService),
+        };
+      case 'Categories':
+        return {
+          pagination: this.categoryService.pagination,
+          searchFn: this.categoryService.searchFn.bind(this.categoryService),
+        };
+      case 'Customers':
+        return {
+          pagination: this.customerService.pagination,
+          searchFn: this.customerService.searchFn.bind(this.customerService),
+        };
+      default:
+        return null;
+    }
+  }
+
+  checkStoredKey() {
+    const savedSearchKey = localStorage.getItem('searchKey');
+    if (!savedSearchKey) return;
+
+    this.searchKey = savedSearchKey;
+    const service = this.getServiceAndPagination(this.dropdownSelection);
+    if (!service) return;
+
+    service.pagination?.setFetchFn(service.searchFn(savedSearchKey));
+    service.pagination?.refresh();
+  }
+
+  sendSearchRequest(): void {
+    const routePath = this.getRoutePath();
+    if (routePath) this.router.navigateByUrl(routePath);
+
+    const service = this.getServiceAndPagination(this.dropdownSelection);
+    if (!service) return;
+
+    service.pagination?.setFetchFn(service.searchFn(this.searchKey));
+  }
   onSearchKeyChange(value: string): void {
+    this.searchKey = value;
+    localStorage.setItem('searchKey', value);
     this.searchKeyChanged$.next(value);
   }
 
   changeSelection(action: string): void {
     this.dropdownSelection = action;
     this.selectionMessage = this.getSearchMessage(action);
+    this.searchKey='';
+    localStorage.removeItem('searchKey');
+    localStorage.setItem('dropdownSelection', action);
     this.sendSearchRequest();
   }
 
+
   private getSearchMessage(action: string): string {
     const messages: Record<string, string> = {
-      Products: 'Search by product name , category name or sku',
-      Customers: 'Search by customer name , phone number',
-      Orders: 'Search by order number , customer name',
+      Products: 'Search by product name, category name or SKU',
+      Customers: 'Search by customer name, phone number',
+      Orders: 'Search by order number, customer name',
       Categories: 'Search by category name',
-      Variants: 'Search by variant name , variant type'
+      Variants: 'Search by variant name, variant type'
     };
-    return messages[action] ?? 'Search.......';
+    return messages[action] ?? 'Search...';
   }
 
   private getRoutePath(): string | null {
@@ -95,90 +169,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       Variants: 'Products/Variants_Library'
     };
     return routes[this.dropdownSelection] ?? null;
-  }
-
-  private getServiceMethod() {
-    const services: Record<string, () => void> = {
-      Categories: () => this.categoryService.getCategories(this.getRequestBody()).subscribe({
-        next : data => this.categoryService.categories.set(data.data),
-      }),
-      Products: () => this.productService.getProducts(this.getRequestBody()).subscribe({
-        next : data => this.productService.productsSignal.set(data.data),
-      }),
-      Customers: () => this.customerService.getCustomers(this.getRequestBody()).subscribe({
-        next : data => this.customerService.customers.set(data.data),
-      }),
-      Orders: () => this.orderService.getOrders(this.getRequestBody()).subscribe({
-        next : data => this.orderService.orders.set(data.data),
-      }),
-      Variants: () => this.productService.getVariants(this.getRequestBody()).subscribe({
-        next : data => this.productService.variantOptions.set(data.data),
-      })
-    };
-    return services[this.dropdownSelection];
-  }
-
-  sendSearchRequest(): void {
-    const routePath = this.getRoutePath();
-    if (routePath) {
-      this.router.navigateByUrl(routePath);
-    }
-
-    const serviceCall = this.getServiceMethod();
-    serviceCall?.();
-  }
-
-  private getRequestBody(): any {
-    const commonPaging = {
-      index: 0,
-      length: 0,
-      all: false
-    };
-
-    const filtersBySelection: Record<string, any[]> = {
-      Categories: [
-        {
-          operation: 3,
-          propertyName: this.isRtl() ? 'nameAr' : 'nameEn',
-          propertyValue: this.searchKey
-        }
-      ],
-      Products: [
-        {
-          operation: 3,
-          propertyName: this.isRtl() ? 'nameAr' : 'nameEn',
-          propertyValue: this.searchKey
-        }
-      ],
-      Customers: [
-        {
-          operation: 3,
-          propertyName: 'phone',
-          propertyValue: this.searchKey
-        }
-      ],
-      Variants: [
-        {
-          operation: 3,
-          propertyName: this.isRtl() ? 'variantTypeAr' : 'variantTypeEn',
-          propertyValue: this.searchKey
-        }
-      ],
-      Orders: [
-        {
-          operation: 3,
-          propertyName: 'id',
-          propertyValue: this.searchKey
-        }
-      ]
-    };
-
-    return {
-      sorts: [],
-      filters: filtersBySelection[this.dropdownSelection] ?? [],
-      pagingModel: commonPaging,
-      properties: ''
-    };
   }
 
   changeTheme(): void {

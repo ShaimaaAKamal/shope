@@ -49,7 +49,6 @@ ngOnInit(): void {
 
 ngOnChanges(changes: SimpleChanges): void {
  if(changes['LayoutComponentDate'])   this.noItems=this.LayoutComponentDate.items.length == 0;
-//  if(changes['close'] && this.close)   {console.log('change');this.hideFilterOptions(); this.resetFilter.emit()}
 if(changes['close'] && this.close)   {this.hideFilterOptions()}
 
 }

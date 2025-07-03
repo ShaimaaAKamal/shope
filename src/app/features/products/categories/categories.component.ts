@@ -4,6 +4,7 @@ import { LanguageService } from '../../../Services/Language/language.service';
 import { Category } from '../../../Interfaces/category';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
 import { CommonService } from '../../../Services/CommonService/common.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-categories',
@@ -23,9 +24,13 @@ export class CategoriesComponent {
   __LanguageService = inject(LanguageService);
   isRtl=this.__LanguageService.rtlClassSignal;
   servicesList:ServiceInterface[]=[]
+  route=inject(ActivatedRoute);
 
   constructor(){
     this.page.set('Categories');
+  }
+  ngOnInit(): void {
+    this.__CategoryService.pagination.initFromQueryParams(this.route);
   }
   setCurrentPage(page:number){
     this.__CategoryService.pagination.goToPage(page);

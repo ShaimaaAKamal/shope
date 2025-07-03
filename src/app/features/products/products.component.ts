@@ -34,7 +34,7 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
-
+   route=inject(ActivatedRoute);
   setCurrentPage(page:number){
     this.productService.pagination.goToPage(page);
   }
@@ -125,16 +125,19 @@ export class ProductsComponent {
     }
   ]);
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.page.set('Products');
-     effect(() => {
+  
+    effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
   });
 
     this.products = computed(() =>[...this.productService.products()]);
   }
-
+  ngOnInit(): void {
+    this.productService.pagination.initFromQueryParams(this.route);
+  }
   onCheckboxChange(event: any, value: string) {
     const checked = event.target.checked;
   }

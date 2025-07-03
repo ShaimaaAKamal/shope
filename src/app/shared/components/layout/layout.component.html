@@ -1,8 +1,5 @@
 <div class="container-fluid px-4 py-1 vh-100 overflow-auto d-flex flex-column">
   <div class="row flex-column flex-grow-1">
-    <!-- <div class="col-12">
-      <app-layout-header [page]="LayoutComponentDate.page"></app-layout-header>
-    </div> -->
     <div class="col-12  py-2 px-3 rounded-top-3 border-bottom">
      <app-page-controls
          [PageControlsComponentData]="{
@@ -33,6 +30,10 @@
       </app-no-items>
       <ng-template #ProductTable>
             <ng-content #name></ng-content>
+            <!-- <app-pagination [totalItems]="productService.pagination.totalItems()"
+            [currentPage]="productService.pagination.currentPage()"
+            [pageSize]="productService.pagination.pageSize()"
+             (pageChanged)="setCurrentPage($event)"></app-pagination> -->
       </ng-template>
     </div>
   </div>

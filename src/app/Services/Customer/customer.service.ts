@@ -11,30 +11,27 @@ import { PaginationStore } from '../../shared/stores/pagination-store.store';
 })
 export class CustomerService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
+  private __CommonService=inject(CommonService);
   customers=signal<Customer[]>([]);
 
-    fetchPaginatedCategories = (page: number, size: number) =>{
-      return this.getCustomers({
-        filters: [],
-        sorts: [
-          {
-            propertyName: 'InsertedDate',
-            descending: true
-          }
-        ],
-        pagingModel: {
-          index: page -1,
-          length: size,
-          all: false
+
+  searchFn = (searchKey: string) => {
+      const filters = [
+        {
+          operation: 3,
+          propertyName: 'phone',
+          propertyValue: searchKey
         },
-        properties: ''
-      });
-    }
+      ];
 
-  pagination = new PaginationStore<Customer>(this.fetchPaginatedCategories, 'customers',this.customers);
+      return this.__CommonService.createSearchFn(filters, (body) => this.getCustomers(body));
+    };
+  fetchPaginatedCustomers = this.__CommonService.createPaginatedFetcher<Customer>(
+  this.getCustomers.bind(this),
+   );
+  pagination = new PaginationStore<Customer>(this.fetchPaginatedCustomers,this.customers);
 
-  constructor(private __CommonService:CommonService,
-    private __ToastingMessagesService:ToastingMessagesService) {}
+  constructor(private __ToastingMessagesService:ToastingMessagesService) {}
 
 //start of api
 

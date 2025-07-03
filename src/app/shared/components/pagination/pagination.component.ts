@@ -15,7 +15,7 @@ export class PaginationComponent {
   @Output() pageChanged = new EventEmitter<number>();
 
   totalPages = 1;
-  constructor(private __CommonService:CommonService,private cdr: ChangeDetectorRef){}
+  
   ngOnChanges(changes: SimpleChanges): void {
     this.calculatePagination();
   }
@@ -48,7 +48,6 @@ export class PaginationComponent {
   onPageClick(event: Event, page: number) {
     event.preventDefault();
     if (page !== this.currentPage) {
-      this.__CommonService.saveToStorage('currentPage', page);
       this.changePage(page);
     }
   }

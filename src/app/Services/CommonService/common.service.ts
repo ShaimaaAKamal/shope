@@ -1,6 +1,31 @@
 
 import { Injectable, signal } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
+interface Filter {
+  operation: number;
+  propertyName: string;
+  propertyValue: string;
+}
+
+interface Sort {
+  propertyName: string;
+  descending: boolean;
+}
+
+ interface FetchRequestBody {
+
+  filters: Filter[];
+  sorts: Sort[];
+  pagingModel: {
+    index: number;
+    length: number;
+    all: boolean;
+  };
+  properties?: string;
+}
+
+export type FetchEntityFn<T> = (body: FetchRequestBody) => Observable<{ data: T[]; totalCount: number }>;
 @Injectable({
   providedIn: 'root'
 })
@@ -110,8 +135,6 @@ controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: str
   ref?.togglePopScreen?.(action);
 }
 
-
-
 addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
   const index = array.findIndex(item => item.id === newItem.id);
   const updated = [...array];
@@ -123,5 +146,65 @@ addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T)
    }
   return updated;
 }
+
+
+//Pagination function
+ createPagingModel(page: number, size: number) {
+  return {
+    index: page - 1,
+    length: size,
+    all: false,
+  };
+}
+defaultSorts :Sort[] = [
+  { propertyName: 'InsertedDate', descending: true }
+];
+
+ createFetchBody({
+  filters = [] as Filter[],
+  sorts = this.defaultSorts,
+  page = 1,
+  size = 10,
+  properties = ''
+}): any {
+  return {
+    filters,
+    sorts,
+    pagingModel: this.createPagingModel(page, size),
+    properties
+  };
+}
+
+createPaginatedFetcher<T>(
+  fetchFn: FetchEntityFn<T>,
+  processData?: (data: T[]) => T[]
+): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
+  return (page: number, size: number) => {
+    const body = this.createFetchBody({ page, size });
+
+    return fetchFn(body).pipe(
+      map(result => ({
+        ...result,
+        data: processData ? processData(result.data) : result.data
+      }))
+    );
+  };
+}
+
+ createSearchFn<T>(
+  filters: any[],
+  fetchFn: (body: any) => Observable<{ data: T[] }>
+): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
+  return (page: number, size: number) => {
+    const body = this.createFetchBody({ filters, page, size });
+    return fetchFn(body).pipe(
+      map(response => ({
+        data: response.data as T[],
+        totalCount: (response as any).totalCount ?? response.data.length
+      }))
+    );
+  };
+}
+
 
 }

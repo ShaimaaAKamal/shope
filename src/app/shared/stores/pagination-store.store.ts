@@ -1,44 +1,35 @@
-import { signal, WritableSignal, effect } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { signal, WritableSignal, effect, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
 
 export class PaginationStore<T> {
+  private router=inject(Router);
+  private route=inject(ActivatedRoute);
   private pageSizeSubject = new BehaviorSubject<{ page: number; size: number }>({
     page: 1,
-    size: 10,
+    size: 12
   });
 
-  items = signal<T[]>([]);
+  items: WritableSignal<T[]>;
   totalItems = signal(0);
   currentPage = signal(1);
-  pageSize = signal(10);
+  pageSize = signal(12);
   private hasSetInitialTotal = false;
 
+  private dynamicFetchFn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>;
+
   constructor(
-    private fetchFn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>,
-    private storageKey = '',
+    initialFetchFn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>,
     externalItemsSignal?: WritableSignal<T[]>
   ) {
     this.items = externalItemsSignal ?? signal<T[]>([]);
-
-    const storedPage = Number(localStorage.getItem(this.key('page')));
-    const storedSize = Number(localStorage.getItem(this.key('size')));
-    const initialPage = storedPage || 1;
-    const initialSize = storedSize || 10;
-
-    this.currentPage.set(initialPage);
-    this.pageSize.set(initialSize);
-
-    this.pageSizeSubject.next({ page: initialPage, size: initialSize });
+    this.dynamicFetchFn = initialFetchFn;
 
     this.pageSizeSubject
-      .pipe(switchMap(({ page, size }) => this.fetchFn(page, size)))
+      .pipe(switchMap(({ page, size }) => this.dynamicFetchFn(page, size)))
       .subscribe(result => {
-        if (JSON.stringify(this.items()) !== JSON.stringify(result.data)) {
-          this.items.set(result.data);
-        }
-
+        this.items.set(result.data);
         this.setTotalItems(result.totalCount);
-
         this.currentPage.set(this.pageSizeSubject.value.page);
         this.pageSize.set(this.pageSizeSubject.value.size);
       });
@@ -55,32 +46,37 @@ export class PaginationStore<T> {
       if (!this.hasSetInitialTotal) return;
 
       const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
-
-      if (currentPage > totalPages) {
-        this.goToPage(totalPages);
-      } else if (currentPage < 1) {
-        this.goToPage(1);
-      }
+      if (currentPage > totalPages) this.goToPage(totalPages);
+      else if (currentPage < 1) this.goToPage(1);
     });
   }
 
-  private key(suffix: string) {
-    return `pagination-${this.storageKey}-${suffix}`;
+  initFromQueryParams(route: ActivatedRoute) {
+    route.queryParamMap
+      .pipe(take(1))
+      .subscribe(params => {
+        const page = Number(params.get('page')) || 1;
+        const size = Number(params.get('size')) || 12;
+        this.currentPage.set(page);
+        this.pageSize.set(size);
+        this.pageSizeSubject.next({ page, size });
+      });
   }
 
   goToPage(page: number) {
     const current = this.pageSizeSubject.value.page;
     if (page !== current) {
-      localStorage.setItem(this.key('page'), page.toString());
+      this.updateQueryParams({ page,size: this.pageSizeSubject.value.size });
       this.pageSizeSubject.next({ page, size: this.pageSizeSubject.value.size });
     }
   }
 
   setPageSize(size: number) {
     const currentSize = this.pageSizeSubject.value.size;
+    const currentPage = this.pageSizeSubject.value.page;
     if (size !== currentSize) {
-      localStorage.setItem(this.key('size'), size.toString());
-      this.pageSizeSubject.next({ page: 1, size });
+      this.updateQueryParams({ page: currentPage, size});
+      this.pageSizeSubject.next({ page: currentPage, size });
     }
   }
 
@@ -89,10 +85,19 @@ export class PaginationStore<T> {
       this.totalItems.set(count);
     }
   }
-
+  private updateQueryParams(params: { page?: number; size?: number }) {
+    const currentParams = this.route.snapshot.queryParams;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        ...currentParams,
+        ...params
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
   resetPage() {
     this.currentPage.set(1);
-    localStorage.setItem(this.key('page'), '1');
     this.refresh();
   }
 
@@ -102,4 +107,10 @@ export class PaginationStore<T> {
       size: this.pageSize()
     });
   }
+
+  setFetchFn(fn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>) {
+    this.dynamicFetchFn = fn;
+    this.resetPage();
+  }
 }
+

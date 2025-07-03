@@ -4,35 +4,50 @@ import { SharedService } from '../Shared/shared.service';
 import { Observable, tap } from 'rxjs';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 import { PaginationStore } from '../../shared/stores/pagination-store.store';
+import { CommonService } from '../CommonService/common.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
+  private commonService = inject(CommonService);
 categories=signal<Category[]>([]);
 
+// searchCategoryFn = (searchKey: string) => {
+//   return (page: number, size: number) => {
+//     const filters = [
+//       {
+//         operation: 3,
+//         propertyName: 'nameEn',
+//         propertyValue: searchKey
+//       }
+//     ];
 
+//     const body = this.commonService.createFetchBody({ filters, page, size });
 
-  fetchPaginatedCategories = (page: number, size: number) =>{
-    return this.getCategories({
-      filters: [],
-      sorts: [
-        {
-          propertyName: 'InsertedDate',
-          descending: true
-        }
-      ],
-      pagingModel: {
-        index: page -1,
-        length: size,
-        all: false
-      },
-      properties: ''
-    });
-  }
+//     return this.getCategories(body)
+//   };
+// };
 
-pagination = new PaginationStore<Category>(this.fetchPaginatedCategories, 'categories',this.categories);
+searchFn = (searchKey: string) => {
+  const filters = [
+    {
+      operation: 3,
+      propertyName: 'nameEn',
+      propertyValue: searchKey
+    },
+    // add category-specific filters here if needed
+  ];
+
+  return this.commonService.createSearchFn(filters, (body) => this.getCategories(body));
+};
+
+fetchPaginatedCategories = this.commonService.createPaginatedFetcher<Category>(
+      this.getCategories.bind(this),
+    );
+
+pagination = new PaginationStore<Category>(this.fetchPaginatedCategories,this.categories);
 constructor(private __SharedService:SharedService) {}
 
 // categoryAPiCall
