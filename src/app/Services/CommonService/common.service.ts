@@ -14,54 +14,30 @@ getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
   return item ? (JSON.parse(item) as T) : defaultValue;
 }
 
-  saveToStorage(key: string, data: any) {
+saveToStorage(key: string, data: any) {
       localStorage.setItem(key, JSON.stringify(data));
   }
 
-  removeItemFromStorage(key:string){
+removeItemFromStorage(key:string){
     localStorage.removeItem(key);
   }
-updateItemInArray<T extends { name?: string; nameAr?: string }>(
-  array: T[],
-  matchFn: (item: T) => boolean,
-  newValue: T,
-): { updated: boolean; array: T[],message?:string } {
-  let message;
-  const index = array.findIndex(matchFn);
-  const updated = index !== -1;
 
-  if (updated) {
-    let duplicateField: 'name' | 'nameAr' | null = null;
-
-    const isDuplicate = array.some((item, i) => {
-      if (i === index) return false;
-
-      if (item.name && item.name === newValue.name) {
-        duplicateField = 'name';
-        return true;
-      }
-
-      if (item.nameAr && item.nameAr === newValue.nameAr) {
-        duplicateField = 'nameAr';
-        return true;
-      }
-
-      return false;
-    });
-    if (!isDuplicate) {
-      array[index] = newValue;
-    } else {
-      if (duplicateField === 'nameAr') {
-       message=('Duplicate_Arabic_Name');
-      } else if (duplicateField === 'name') {
-        message=('Duplicate_English_Name');
-      }
-      return { updated: false, array ,message:message};
-    }
+controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: string = 'open'): void {
+    ref?.togglePopScreen?.(action);
   }
 
-  return { updated, array };
-}
+addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
+    const index = array.findIndex(item => item.id === newItem.id);
+    const updated = [...array];
+
+    if (index !== -1) {
+      updated[index] = newItem;
+    } else {
+            updated.unshift(newItem);
+     }
+    return updated;
+  }
+
 
  checkDuplicateInArray<T extends { name?: string; nameAr?: string; nameEn?: string }>(
   array: T[],
@@ -99,6 +75,7 @@ updateItemInArray<T extends { name?: string; nameAr?: string }>(
 
   return { isDuplicate: false };
 }
+
 findItemInArray<T extends { name?: string,code?:string,nameEn?: string,id?:number , firstNameEn?:string }>(
   array: T[], matchFn: (item: T) => boolean) :{exists:boolean; ind: number; item:any }{
   const index = array.findIndex(matchFn);
@@ -108,21 +85,8 @@ findItemInArray<T extends { name?: string,code?:string,nameEn?: string,id?:numbe
   else return {exists:false, ind:index ,item:null }
 
 }
-controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: string = 'open'): void {
-  ref?.togglePopScreen?.(action);
-}
 
-addOrReplaceItemById<T extends { id?: number | string }>(array: T[], newItem: T): T[] {
-  const index = array.findIndex(item => item.id === newItem.id);
-  const updated = [...array];
 
-  if (index !== -1) {
-    updated[index] = newItem;
-  } else {
-          updated.unshift(newItem);
-   }
-  return updated;
-}
 
 
 

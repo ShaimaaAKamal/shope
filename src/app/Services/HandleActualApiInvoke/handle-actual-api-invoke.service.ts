@@ -1,12 +1,8 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { SharedService } from '../Shared/shared.service';
 import { catchError, finalize, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { CommonService } from '../CommonService/common.service';
 import { Category } from '../../Interfaces/category';
-
-interface ApiResponse<T> {
-  data: T;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +38,6 @@ getEntities<T>(
       data: response.data || [],
       totalCount: response.totalCount ?? 0
     })),
-    // tap(result => signal.set([...result.data])),
     catchError(error => {
       console.error(`❌ Error fetching ${entityName}:`, error);
       return of({ data: [], totalCount: 0 });
@@ -112,40 +107,6 @@ deleteEntities<T>(
   );
 }
 
-// createEntity<T>(
-//   endpoint: string,
-//   entity: T,
-//   entityKey: string,
-//   signalToUpdate?: WritableSignal<T[]>,
-//   onSuccess?: (newEntity: T) => void,
-//   onError?: (error: any) => void
-// ) {
-//   this.loadingSignal.set(true);
-
-//   return this.__SharedService.createByPost<T>(endpoint, entity, entityKey).pipe(
-//     tap({
-//       next: (response:any) => {
-//         const newEntity = response.data;
-
-//         if (entityKey.toLowerCase() === 'product' && onSuccess) {
-//           onSuccess(newEntity);
-//           // this.__CommonService.saveToStorage('products', signalToUpdate?.()); // save sorted product list
-//         } else if (signalToUpdate) {
-//           signalToUpdate.update(items =>
-//             this.__CommonService.addOrReplaceItemById(items, newEntity)
-//           );
-//         }
-//       },
-//       complete: () => this.loadingSignal.set(false),
-//     }),
-//     catchError(error => {
-//       console.error(`❌ ${endpoint} error:`, error);
-//       this.loadingSignal.set(false);
-//       onError?.(error);
-//       return of(null);
-//     })
-//   );
-// }
 createEntity<T>(
   endpoint: string,
   entity: T,
@@ -163,7 +124,6 @@ createEntity<T>(
 
         if (entityKey.toLowerCase() === 'product' && onSuccess) {
           onSuccess(newEntity);
-          // this.__CommonService.saveToStorage('products', signalToUpdate?.()); // save sorted product list
         } else if (signalToUpdate) {
           signalToUpdate.update(items =>
             this.__CommonService.addOrReplaceItemById(items, newEntity)
@@ -203,8 +163,6 @@ updateEntity<T extends { id?: number; category?: number }>(
   }
 
   this.loadingSignal.set(true);
-  console.log('beforeUpdate',entity);
-
   return this.__SharedService.updateByPost<T>(
     options.apiMethod,
     entity,
@@ -221,7 +179,6 @@ updateEntity<T extends { id?: number; category?: number }>(
                 categoryNameEn: data.data.nameEn,
                 ...product
               } as unknown as T;
-              console.log('newEntity',newEntity);
               options.signal.update(list =>
                 list.map(item => item.id === newEntity.id ? newEntity : item)
               );

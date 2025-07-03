@@ -103,7 +103,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   }
 
   private clearSearchKey() {
-    console.log('in seacrh key');
     this.searchKey = '';
     this.commonService.removeItemFromStorage('searchKey')
     this.searchKeyChanged$.next('');
@@ -168,7 +167,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
   sendSearchRequest(): void {
     const routePath = this.getRoutePath();
-    console.log('routePath',routePath);
     if (routePath) this.router.navigateByUrl(routePath);
 
     const config = this.getEntityConfig(this.dropdownSelection);

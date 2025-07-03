@@ -83,48 +83,102 @@ showNewValueInput(){
 setPickedColorValue(color:string){
 this.variantValue.value=color;
 }
-addNewValue() {
-if(this.variantSelection == 'color' && !this.variantValue.value)
-    this.variantValue.value="#000";
- let variantNewValue: string =  this.variantValue.value.trim();
-if(!variantNewValue || !this.detailName.value || !this.detailNameAr.value)
-{  this.exitstErrorMessage="can't have empty fields";
-  return;
-}
-if (!this.variantValues.includes(variantNewValue)) {
-    this.variantValues.push(variantNewValue);
-    const result = this.__CommonService.findItemInArray(
-      this.preSetVariants(),
-      (p) => p.nameEn == this.variantSelection || p.nameAr == this.variantSelection
-    );
-    if (result.exists) {
-      console.log('what about adding new value in update variant case');
-        result.item.variantDetails.push({
-          detailNameEn: this.detailName.value.trim(),
-          detailNameAr: this.detailNameAr.value.trim(),
-          value: this.variantValue.value.trim()
-        });
-      this.__ProductService.updateVariant(result.item).subscribe({
-        next: () => {
-          this.exitstErrorMessage = '';
-        },
-        error: () => {
-          this.exitstErrorMessage = 'Something went wrong';
-        },
-        complete: () => {
-          this.insertVariantNewValue = false;
-          this.showNewlibraryVariantValue=false;
+// addNewValue() {
+// if(this.variantSelection == 'color' && !this.variantValue.value)
+//     this.variantValue.value="#000";
+//  let variantNewValue: string =  this.variantValue.value.trim();
+// if(!variantNewValue || !this.detailName.value || !this.detailNameAr.value)
+// {  this.exitstErrorMessage="can't have empty fields";
+//   return;
+// }
+// if (!this.variantValues.includes(variantNewValue)) {
+//     this.variantValues.push(variantNewValue);
+//     const result = this.__CommonService.findItemInArray(
+//       this.preSetVariants(),
+//       (p) => p.nameEn == this.variantSelection || p.nameAr == this.variantSelection
+//     );
+//     if (result.exists) {
+//       console.log('what about adding new value in update variant case');
+//         result.item.variantDetails.push({
+//           detailNameEn: this.detailName.value.trim(),
+//           detailNameAr: this.detailNameAr.value.trim(),
+//           value: this.variantValue.value.trim()
+//         });
+//       this.__ProductService.updateVariant(result.item).subscribe({
+//         next: () => {
+//           this.exitstErrorMessage = '';
+//         },
+//         error: () => {
+//           this.exitstErrorMessage = 'Something went wrong';
+//         },
+//         complete: () => {
+//           this.insertVariantNewValue = false;
+//           this.showNewlibraryVariantValue=false;
 
-          this.variantSelectValue = variantNewValue;
-          return;
-        }
-      });
-    }
-  } else {
-    this.exitstErrorMessage = "This Value is already Exist";
+//           this.variantSelectValue = variantNewValue;
+//           return;
+//         }
+//       });
+//     }
+//   } else {
+//     this.exitstErrorMessage = "This Value is already Exist";
+//     return;
+//   }
+// }
+
+
+addNewValue() {
+  if(this.variantSelection == 'color' && !this.variantValue.value)
+      this.variantValue.value="#000";
+   let variantNewValue: string =  this.variantValue.value.trim();
+  if(!variantNewValue || !this.detailName.value || !this.detailNameAr.value)
+  {  this.exitstErrorMessage="can't have empty fields";
     return;
   }
-}
+  if (!this.variantValues.includes(variantNewValue)) {
+      this.variantValues.push(variantNewValue);
+      this.__ProductService.getVariant(this.defaultSelection.id!).subscribe({
+        next: (variantItem) => {
+          if (variantItem) {
+            console.log('Adding new value in update variant case');
+            variantItem.data.variantDetails.push({
+              detailNameEn: this.detailName.value.trim(),
+              detailNameAr: this.detailNameAr.value.trim(),
+              value: variantNewValue
+            });
+
+            this.__ProductService.updateVariant(variantItem.data).subscribe({
+              next: () => {
+                this.exitstErrorMessage = '';
+              },
+              error: () => {
+                this.exitstErrorMessage = 'Something went wrong';
+              },
+              complete: () => {
+                this.insertVariantNewValue = false;
+                this.showNewlibraryVariantValue = false;
+                this.variantSelectValue = variantNewValue;
+              }
+            });
+          } else {
+            this.exitstErrorMessage = 'Variant not found';
+          }
+        },
+        error: () => {
+          this.exitstErrorMessage = 'Error fetching variant';
+        }
+      });
+
+    } else {
+      this.exitstErrorMessage = "This Value is already Exist";
+      return;
+    }
+  }
+
+
+
+
+
 removeValue(): void {
 this.showNewlibraryVariantValue=false;
 this.insertVariantNewValue=false;

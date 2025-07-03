@@ -17,21 +17,9 @@ isRtl=this.__LanguageService.rtlClassSignal;
 @Input() currency:string='SAR'
 @Output() checkedItemCode=new EventEmitter<string>();
 
-// timeDifference: { unit: string, value: number }  = { unit: 'seconds', value: 0 };
-
-// ngOnInit() {
-//   // this.timeDifference = this.getSmartDateDifference(this.order.time);
-// }
 getOrderId(id:any){
  this.checkedItemCode.emit(id);
 }
-// getOrderCode(code:any){
-//  this.checkedItemCode.emit(code);
-// }
-// showOrder(id:number | undefined){
-//   if(id)
-//   this.__Router.navigateByUrl(`Orders/${id}`)
-// }
 printOrder(){
   console.log('print order');
 }

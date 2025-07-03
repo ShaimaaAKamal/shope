@@ -40,7 +40,6 @@ import { ProductVariantMaster } from '../../../../Interfaces/product-variant-mas
     variantDetailsHandledFn(event:any) {
       if(this.localVariants().length == 0){
         const updateVariants =this.mapUpdatedProductVariantsData(event);
-        console.log('updated product variant details',updateVariants);
         this.__ProductService.updateProductVariants(updateVariants).subscribe({
           next:()=>   this.variantDetailsHandled.emit()
         })

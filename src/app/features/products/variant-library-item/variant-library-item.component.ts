@@ -245,40 +245,6 @@ export class VariantLibraryItemComponent {
     this.values.set(updated);
 
   }
-  // chooseVariantType(type: VartiantType): void {
-  //   this.variantTypeSelection = type.nameEn;
-  //   this.variantTypeArabicSelection = type.nameAr;
-  //   console.log('type',type);
-  //   if (type.nameEn === 'color') this.setColorPickerValues();
-  //   else this.setNonColorPickerValues();
-  // }
-
-  // setColorPickerValues(): void {
-  //   const updated = this.values().map((v, i) => ({
-  //     ...v,
-  //     showColorPicker: true,
-  //     colorPickingData: v.colorPickingData || {
-  //       value: '',
-  //       index: i,
-  //       values: signal([])
-  //     }
-  //   }));
-  //   this.values.set(updated);
-  // }
-
-  // setNonColorPickerValues(): void {
-  //   const updated = this.values().map((v, i) => ({
-  //     ...v,
-  //     showColorPicker: false,
-  //     colorPickingData: v.colorPickingData || {
-  //       value: '',
-  //       index: i,
-  //       values: signal([])
-  //     }
-  //   }));
-  //   this.values.set(updated);
-  // }
-
   private validateNames(name: string, arabicName: string): boolean {
     this.nameErrorMessage = '';
     this.arabicNameErrorMessage = '';

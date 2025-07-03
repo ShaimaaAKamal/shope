@@ -3,7 +3,6 @@
      <div class="text-center text-decoration-underline mb-3 text-semi-dark fs-verySmall  rounded-2 d-flex"  (click)="displayCreateVariantLibrary()">
          <span> {{'Add new variant to library' | translate}}</span>
        </div>
-  <!-- <div class="fs-verySmall text-success" *ngIf="successMessage">New Value has been added Successfully</div> -->
    <div class="row g-2 align-items-start">
      <div class="col-lg-6 ">
          <div class="border rounded-1 h-100">
@@ -39,7 +38,6 @@
          </div>
       </div>
       <div class="col-12">
-      <!-- <ng-container *ngFor="let value of values(); let index = index;"> -->
               <ng-container *ngIf="showNewlibraryVariantValue">
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">

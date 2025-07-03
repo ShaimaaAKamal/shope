@@ -127,7 +127,6 @@ generateCombinations(): any[] {
       const values = this.variantValueDetailsRefs.map(ref => ref.getVariantDetails());
       const updatedVariants = this.displayedVariants.map((variant, index) => {
         const updatedDetails = values ? values[index] : [];
-        console.log('variant',variant);
         const ret={
           ...variant,
         ...updatedDetails
@@ -135,7 +134,6 @@ generateCombinations(): any[] {
         return ret;
       });
       this.displayedVariants = [...updatedVariants];
-      console.log('displayedVariants',this.displayedVariants);
       this.variantDetailsHandled.emit(this.displayedVariants);
     });
   }

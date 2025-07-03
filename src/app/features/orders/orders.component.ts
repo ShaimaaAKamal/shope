@@ -243,7 +243,6 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
 
   updateOrders($event: any) {
     this.orders.set($event);
-    console.log($event);
   }
 
   // handleDispalyedItems(event: any) {

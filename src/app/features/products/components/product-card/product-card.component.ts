@@ -146,10 +146,8 @@ updateQuantityLabel(): void {
 }
 
     chooseCategory(category: Category): void {
-      console.log('category',category);
       if(category.id)
           this.product.category=category.id;
-        console.log('product',this.product);
   }
 
   closeCreateCategory(category:Category){
@@ -272,8 +270,6 @@ private handleProductSave(action: 'add' | 'update'): Observable<SaveResult> {
 }
 
 private getUpdateProductMappedValue(product: Product): Observable<Product> {
-  console.log('product before map', product);
-
   const { variantMasters, categoryNameAr, categoryNameEn, ...mappedProduct } = product;
 
   if (!product.category && categoryNameEn) {
@@ -283,13 +279,10 @@ private getUpdateProductMappedValue(product: Product): Observable<Product> {
         if (foundCategory) {
           mappedProduct['category'] = foundCategory.id!;
         }
-        console.log('afterMapped', mappedProduct);
         return mappedProduct;
       })
     );
   }
-
-  console.log('afterMapped (no fetch needed)', mappedProduct);
   return of(mappedProduct);
 }
 

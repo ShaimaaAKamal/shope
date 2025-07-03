@@ -1,7 +1,7 @@
 import {  inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
-import { catchError, finalize, forkJoin, map, Observable, of, tap } from 'rxjs';
+import { catchError, finalize, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { SharedService } from '../Shared/shared.service';
 import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
@@ -149,6 +149,10 @@ updateVariant(variant: VariantMasterLookUP) {
     }
   });
 }
+
+getVariant(id:number){
+  return this.__HandleActualApiInvokeService.getEntityById<VariantMasterLookUP>('GetVariant', id, 'variant');
+  }
 
 getProductVariants(body?: any): Observable<{data:ProductVariantMaster[],totalCount:number}>{
   return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
@@ -307,25 +311,53 @@ deleteProducts(ids: number[]) {
     return true;
   }
 
-updateProductInfo(product: Product, actionType: string) {
-  const result = this.commonService.checkDuplicateInArray(
-    this.products(),
-    p => p.id === product.id,
-    product
+// updateProductInfo(product: Product, actionType: string) {
+//   const result = this.commonService.checkDuplicateInArray(
+//     this.products(),
+//     p => p.id === product.id,
+//     product
+//   );
+
+//   if (!result.isDuplicate) {
+//     const action$ = actionType === 'add'
+//       ? this.createProduct(product)
+//       : this.updateProduct(product);
+
+//     return action$.pipe(
+//       map(() => ({ status: true, message: 'updated' })),
+//       catchError(error => of({ status: false, message: error?.message || 'Save failed' }))
+//     );
+//   }
+//   return of({ status: false, message: result.message ?? '' });
+// }
+
+updateProductInfo(product: Product, actionType?: string) {
+  return this.getProduct(product.id!).pipe(
+    switchMap(existingProduct => {
+      if (existingProduct) {
+        // Product exists, so update it
+        return this.updateProduct(product).pipe(
+          map(() => ({ status: true, message: 'updated' })),
+          catchError(error => of({ status: false, message: error?.message || 'Update failed' }))
+        );
+      } else {
+        // Product does not exist, so create it
+        return this.createProduct(product).pipe(
+          map(() => ({ status: true, message: 'created' })),
+          catchError(error => of({ status: false, message: error?.message || 'Create failed' }))
+        );
+      }
+    }),
+    catchError(() => {
+      // If error occurs when fetching product (e.g., not found), assume product doesn't exist => create it
+      return this.createProduct(product).pipe(
+        map(() => ({ status: true, message: 'created' })),
+        catchError(error => of({ status: false, message: error?.message || 'Create failed' }))
+      );
+    })
   );
-
-  if (!result.isDuplicate) {
-    const action$ = actionType === 'add'
-      ? this.createProduct(product)
-      : this.updateProduct(product);
-
-    return action$.pipe(
-      map(() => ({ status: true, message: 'updated' })),
-      catchError(error => of({ status: false, message: error?.message || 'Save failed' }))
-    );
-  }
-  return of({ status: false, message: result.message ?? '' });
 }
+
 
   deleteNewProduct():boolean{
     const current = [...this.products()];
