@@ -105,7 +105,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   private clearSearchKey() {
     console.log('in seacrh key');
     this.searchKey = '';
-    localStorage.removeItem('searchKey');
+    this.commonService.removeItemFromStorage('searchKey')
     this.searchKeyChanged$.next('');
 
   }
@@ -154,7 +154,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
 
   checkStoredKey() {
-    const savedSearchKey = localStorage.getItem('searchKey');
+    const savedSearchKey = this.commonService.getItemsFromStorage('searchKey','');
     if (!savedSearchKey) return;
 
     this.searchKey = savedSearchKey;
@@ -180,7 +180,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
   onSearchKeyChange(value: string): void {
     this.searchKey = value;
-    localStorage.setItem('searchKey', value);
+    this.commonService.saveToStorage('searchKey',value);
     this.searchKeyChanged$.next(value);
   }
 
@@ -188,8 +188,8 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.dropdownSelection = action;
     this.selectionMessage = this.getSearchMessage(action);
     this.searchKey='';
-    localStorage.removeItem('searchKey');
-    localStorage.setItem('dropdownSelection', action);
+    this.commonService.removeItemFromStorage('searchKey');
+    this.commonService.saveToStorage('dropdownSelection',action);
     this.sendSearchRequest();
   }
 

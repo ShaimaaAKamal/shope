@@ -9,7 +9,7 @@ export class CommonService {
 isCollapse=signal<boolean>(false);
 page=signal<string>('');
 
-  getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
+getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
   const item = localStorage.getItem(key);
   return item ? (JSON.parse(item) as T) : defaultValue;
 }
@@ -18,6 +18,9 @@ page=signal<string>('');
       localStorage.setItem(key, JSON.stringify(data));
   }
 
+  removeItemFromStorage(key:string){
+    localStorage.removeItem(key);
+  }
 updateItemInArray<T extends { name?: string; nameAr?: string }>(
   array: T[],
   matchFn: (item: T) => boolean,
