@@ -1,4 +1,5 @@
 import { effect, Injectable, signal } from '@angular/core';
+import { CommonService } from '../CommonService/common.service';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -6,10 +7,11 @@ export class ThemeService {
   additionalTheme = signal<string>('');
   fullTheme: string[] = [];
 
-  constructor() {
+  constructor(private __CommonService:CommonService) {
     const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
     this.fullTheme = this.getStoredThemeList();
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const savedTheme = this.__CommonService.getItemsFromStorage('theme',null) as 'light' | 'dark' | null;
+
 
     if (this.fullTheme.length) {
       this.setFullTheme(this.fullTheme);
@@ -22,7 +24,7 @@ export class ThemeService {
     }
 
     window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) {
+        if (!this.__CommonService.getItemsFromStorage('theme',null)) {
         this.setTheme(e.matches ? 'light' : 'dark');
       }
     });
@@ -36,7 +38,7 @@ export class ThemeService {
 
   private getStoredThemeList(): string[] {
     try {
-      return JSON.parse(localStorage.getItem('fullTheme') || '[]');
+      return (this.__CommonService.getItemsFromStorage('fullTheme',[]));
     } catch {
       return [];
     }
@@ -44,7 +46,6 @@ export class ThemeService {
 
   setTheme(theme: 'light' | 'dark') {
     this.currentTheme.set(theme);
-
     const oppositeTheme = theme === 'light' ? 'dark' : 'light';
     const updatedThemes = this.fullTheme
       .filter(cls => cls !== `${oppositeTheme}-theme`)
@@ -52,10 +53,8 @@ export class ThemeService {
 
     updatedThemes.push(`${theme}-theme`);
     this.fullTheme = updatedThemes;
-
-    localStorage.setItem('theme', theme);
-    localStorage.setItem('fullTheme', JSON.stringify(updatedThemes));
-
+    this.__CommonService.saveToStorage('theme',theme);
+    this.__CommonService.saveToStorage('fullTheme',updatedThemes);
     this.setFullTheme(updatedThemes);
   }
 
@@ -74,8 +73,7 @@ export class ThemeService {
       : [base];
 
     this.fullTheme = themeList;
-    localStorage.setItem('fullTheme', JSON.stringify(themeList));
-
+    this.__CommonService.saveToStorage('fullTheme',themeList);
     this.setFullTheme(themeList);
   }
 
