@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProductService } from '../../../Services/Product/product.service';
 import { VartiantType } from '../../../Interfaces/vartiant-type';
 import { LanguageService } from '../../../Services/Language/language.service';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-variant-type-center',
@@ -11,11 +12,17 @@ import { LanguageService } from '../../../Services/Language/language.service';
 })
 export class VariantTypeCenterComponent {
  __ProductService=inject(ProductService);
+ __CommonService=inject(CommonService);
+ page=this.__CommonService.page;
 VariantTypes=this.__ProductService.variantTypes;
 private __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
 editedVariant:VartiantType={} as VartiantType;
+
+constructor(){
+  this.page.set('Variant Types');
+}
 
 setCurrentPage(page:number){
   this.__ProductService.variantTypePagination.goToPage(page);

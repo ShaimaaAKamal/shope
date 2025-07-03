@@ -30,10 +30,11 @@
       </app-no-items>
       <ng-template #ProductTable>
             <ng-content #name></ng-content>
-            <!-- <app-pagination [totalItems]="productService.pagination.totalItems()"
-            [currentPage]="productService.pagination.currentPage()"
-            [pageSize]="productService.pagination.pageSize()"
-             (pageChanged)="setCurrentPage($event)"></app-pagination> -->
+            <app-pagination   *ngIf="paginationStore"
+             [totalItems]="paginationStore.totalItems()"
+            [currentPage]="paginationStore.currentPage() "
+            [pageSize]="paginationStore.pageSize() "
+             (pageChanged)="setCurrentPage($event)"></app-pagination>
       </ng-template>
     </div>
   </div>

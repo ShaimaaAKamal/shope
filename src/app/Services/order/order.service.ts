@@ -27,12 +27,6 @@ constructor(private __CommonService:CommonService,private __SalesPersonsService:
   this.getOrders().subscribe({});
 }
 
-// categoryAPiCall
-
-// getOrders(body?: any): Observable<Order[]> {
-//     return this.__HandleActualApiInvokeService.getEntities<Order>('GetOrders', 'GetOrders',this.orders, body)
-//   }
-
 getOrders(body?: any): Observable<{data:Order[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Order>('GetOrders', 'GetOrders',this.orders, body)
 }

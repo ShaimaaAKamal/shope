@@ -47,6 +47,35 @@ private commonService = inject(CommonService);
     );
   };
 
+
+  searchVariantFn = (searchKey: string) => {
+    const filters = [
+      {
+        operation: 3,
+        propertyName: 'nameEn',
+        propertyValue: searchKey
+      },
+    ];
+
+    return this.commonService.createSearchFn(filters, (body) =>
+      this.getVariants(body)
+    );
+  };
+
+  searchVarianTypetFn = (searchKey: string) => {
+    const filters = [
+      {
+        operation: 3,
+        propertyName: 'nameEn',
+        propertyValue: searchKey
+      },
+    ];
+
+    return this.commonService.createSearchFn(filters, (body) =>
+      this.getVariantTypes(body)
+    );
+  };
+
   fetchPaginatedProducts = this.commonService.createPaginatedFetcher<Product>(
     this.getProducts.bind(this),
     this.handleLoadingAllowProducts.bind(this)

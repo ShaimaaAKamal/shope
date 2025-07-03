@@ -8,7 +8,6 @@ import {
 import {
   Subject,
   debounceTime,
-  distinctUntilChanged,
   filter,
   takeUntil
 } from 'rxjs';
@@ -38,7 +37,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   private readonly categoryService = inject(CategoryService);
   private readonly productService = inject(ProductService);
   private readonly customerService = inject(CustomerService);
-  private readonly orderService = inject(OrderService);
+  // private readonly orderService = inject(OrderService);
   private readonly router = inject(Router);
 
   isRtl = this.languageService.rtlClassSignal;
@@ -72,13 +71,11 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
       if (previousPath !== null && previousPath !== currentPath) {
         this.clearSearchKey();
-
       }
       this.previousUrl = event.urlAfterRedirects;
     });
 
     this.searchKeyChanged$
-      // .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .pipe(debounceTime(300), takeUntil(this.destroy$))
       .subscribe(() => this.sendSearchRequest());
   }
@@ -107,6 +104,16 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
           pagination: this.customerService.pagination,
           searchFn: this.customerService.searchFn.bind(this.customerService),
         };
+      case 'Variants':
+          return {
+            pagination: this.productService.variantLookMasterPagination,
+            searchFn: this.productService.searchVariantFn.bind(this.productService),
+          };
+      case 'Variant Types':
+            return {
+              pagination: this.productService.variantTypePagination,
+              searchFn: this.productService.searchVarianTypetFn.bind(this.productService),
+            };
       default:
         return null;
     }
@@ -155,7 +162,8 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       Customers: 'Search by customer name, phone number',
       Orders: 'Search by order number, customer name',
       Categories: 'Search by category name',
-      Variants: 'Search by variant name, variant type'
+      Variants: 'Search by variant name, variant type',
+      'Variant Types': 'Search by variant type name'
     };
     return messages[action] ?? 'Search...';
   }
@@ -166,7 +174,8 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       Categories: 'Products/Categories',
       Customers: 'Customers',
       Orders: 'Orders',
-      Variants: 'Products/Variants_Library'
+      Variants: 'Products/Variants_Library',
+      'Variant Types': 'Products/VartiantTypes'
     };
     return routes[this.dropdownSelection] ?? null;
   }

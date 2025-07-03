@@ -22,8 +22,6 @@
               <app-customer-card [customer]="customer" (editCustomer)="getEditCUstomerInfo($event)"></app-customer-card>
             </div>
           </div>
-            <app-pagination [totalItems]="__CustomerService.pagination.totalItems()" [currentPage]="__CustomerService.pagination.currentPage()"
-            [pageSize]="__CustomerService.pagination.pageSize()" (pageChanged)="setCurrentPage($event)"></app-pagination>
         </div>
 
         <app-filter-options filterOptions

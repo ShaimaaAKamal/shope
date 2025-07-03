@@ -10,25 +10,10 @@ import { CommonService } from '../CommonService/common.service';
   providedIn: 'root'
 })
 export class CategoryService {
-  private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
-  private commonService = inject(CommonService);
+private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
+private commonService = inject(CommonService);
 categories=signal<Category[]>([]);
 
-// searchCategoryFn = (searchKey: string) => {
-//   return (page: number, size: number) => {
-//     const filters = [
-//       {
-//         operation: 3,
-//         propertyName: 'nameEn',
-//         propertyValue: searchKey
-//       }
-//     ];
-
-//     const body = this.commonService.createFetchBody({ filters, page, size });
-
-//     return this.getCategories(body)
-//   };
-// };
 
 searchFn = (searchKey: string) => {
   const filters = [
