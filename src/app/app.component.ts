@@ -47,6 +47,6 @@ export class AppComponent {
    }
 
    shouldShowHeader(): boolean {
-    return this.__Router.url !== '/Orders/create';
+    return !this.__Router.url.includes('/Orders/create');
   }
 }

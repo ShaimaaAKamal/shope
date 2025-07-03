@@ -63,20 +63,39 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   private previousUrl: string | null = null;
   ngOnInit(): void {
 
-    this.router.events
-    .pipe(
-      takeUntil(this.destroy$),
-      filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
-    )
-    .subscribe(event => {
-      const currentPath = event.urlAfterRedirects.split('?')[0];
-      const previousPath = this.previousUrl?.split('?')[0] ?? null;
+    // this.router.events
+    // .pipe(
+    //   takeUntil(this.destroy$),
+    //   filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+    // )
+    // .subscribe(event => {
+    //   const currentPath = event.urlAfterRedirects.split('?')[0];
+    //   const previousPath = this.previousUrl?.split('?')[0] ?? null;
 
-      if (previousPath !== null && previousPath !== currentPath) {
-        this.clearSearchKey();
-      }
-      this.previousUrl = event.urlAfterRedirects;
-    });
+    //   if (previousPath !== null && previousPath !== currentPath) {
+    //     this.clearSearchKey();
+    //   }
+    //   this.previousUrl = event.urlAfterRedirects;
+    // });
+
+    this.router.events
+  .pipe(
+    takeUntil(this.destroy$),
+    filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+  )
+  .subscribe(event => {
+    const currentPath = event.urlAfterRedirects.split('?')[0];
+    const previousPath = this.previousUrl?.split('?')[0] ?? null;
+    const excludedRoutes = ['/Orders/create'];
+    if (
+      previousPath !== null &&
+      previousPath !== currentPath &&
+      !excludedRoutes.includes(currentPath)
+    ) {
+      this.clearSearchKey();
+    }
+    this.previousUrl = event.urlAfterRedirects;
+  });
 
     this.searchKeyChanged$
       .pipe(debounceTime(300), takeUntil(this.destroy$))
@@ -84,6 +103,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   }
 
   private clearSearchKey() {
+    console.log('in seacrh key');
     this.searchKey = '';
     localStorage.removeItem('searchKey');
     this.searchKeyChanged$.next('');
@@ -148,6 +168,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
   sendSearchRequest(): void {
     const routePath = this.getRoutePath();
+    console.log('routePath',routePath);
     if (routePath) this.router.navigateByUrl(routePath);
 
     const config = this.getEntityConfig(this.dropdownSelection);
@@ -156,7 +177,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     const searchFn = this.paginationCtx.getSearchFn(config.key, config.propertyName, config.getFn);
     this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(this.searchKey));
   }
-  
+
   onSearchKeyChange(value: string): void {
     this.searchKey = value;
     localStorage.setItem('searchKey', value);
