@@ -7,6 +7,7 @@ import { CustomerService } from '../../../Services/Customer/customer.service';
 import { OrderService } from '../../../Services/order/order.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../../Services/CommonService/common.service';
+import { PaginationContextService } from '../../../Services/PaginationContext/pagination-context.service';
 
 interface LayoutInterface {
   route: string;
@@ -49,20 +50,12 @@ export class LayoutComponent {
 isFilterVisible = false;
 
 noItems!:boolean;
-private readonly categoryService = inject(CategoryService);
-private readonly productService = inject(ProductService);
-private readonly customerService = inject(CustomerService);
-private readonly orderService = inject(OrderService);
 private readonly commonService = inject(CommonService);
-
-private route=inject(ActivatedRoute);
-
 paginationStore?: PaginationStore<any>;
-constructor(){
+constructor( private paginationCtx: PaginationContextService){
   effect(() => {
        const page=this.commonService.page();
-       this.paginationStore = this.getPaginationStore(page);
-
+       this.paginationStore = this.paginationCtx.getStore(page);
   });
 }
 ngOnInit(): void {
@@ -77,23 +70,6 @@ if(changes['close'] && this.close)   {this.hideFilterOptions()}
 setCurrentPage(page:number){
   this.paginationStore?.goToPage(page);
 }
-getPaginationStore(type: string | null): PaginationStore<any> | undefined {
-  switch (type) {
-    case 'Products':
-      return this.productService.pagination;
-    case 'Categories':
-      return this.categoryService.pagination;
-    case 'Customers':
-      return this.customerService.pagination;
-    case 'Variants':
-      return this.productService.variantLookMasterPagination;
-      case 'Variant Types':
-        return this.productService.variantTypePagination;
-    default:
-      return undefined;
-  }
-}
-
 
 handleDispalyedItems(displayedItems:any[]){
   this.LayoutComponentDate.items=[...displayedItems];
@@ -123,5 +99,4 @@ showFilterOptions() {
 hideFilterOptions() {
   this.isFilterVisible = false;
 }
-
 }

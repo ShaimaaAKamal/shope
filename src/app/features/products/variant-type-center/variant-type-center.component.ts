@@ -3,6 +3,7 @@ import { ProductService } from '../../../Services/Product/product.service';
 import { VartiantType } from '../../../Interfaces/vartiant-type';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { CommonService } from '../../../Services/CommonService/common.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-variant-type-center',
@@ -19,13 +20,13 @@ private __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
 editedVariant:VartiantType={} as VartiantType;
-
+route=inject(ActivatedRoute);
 constructor(){
   this.page.set('Variant Types');
 }
 
-setCurrentPage(page:number){
-  this.__ProductService.variantTypePagination.goToPage(page);
+ngOnInit(): void {
+  this.__ProductService.paginationCtx.getStore('Variant Types')?.initFromQueryParams(this.route);
 }
 showOptionsSection(){
  this.popupVisible=true;
@@ -53,6 +54,9 @@ deleteSelected(event:any){
 
 }
 ngOnDestroy() {
-  this.__ProductService.variantTypePagination.resetPage();
+  this.__ProductService.paginationCtx.getStore('Variant Types')?.resetPage();
 }
 }
+
+
+

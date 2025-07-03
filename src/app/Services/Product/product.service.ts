@@ -1,4 +1,3 @@
-import { CustomersModule } from './../../features/customers/customers.module';
 import {  inject, Injectable, signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { CommonService } from '../CommonService/common.service';
@@ -8,8 +7,7 @@ import { VariantMasterLookUP } from '../../Interfaces/variant-master-look-up';
 import { ProductVariantMaster } from '../../Interfaces/product-variant-master';
 import { VartiantType } from '../../Interfaces/vartiant-type';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
-import { PaginationStore } from '../../shared/stores/pagination-store.store';
-type FetchEntityFn<T> = (body: any) => Observable<{ data: T[]; totalCount: number }>;
+import { PaginationContextService } from '../PaginationContext/pagination-context.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +16,7 @@ export class ProductService {
 private __SharedService=inject(SharedService);
 private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 private commonService = inject(CommonService);
+paginationCtx=inject(PaginationContextService);
   type = signal<string>('');
   getVariantDetailsData=signal<boolean>(false);
   usedProducts: Product[] = [];
@@ -33,88 +32,26 @@ private commonService = inject(CommonService);
   loading = this.loadingSignal.asReadonly();
 
 
-  searchFn = (searchKey: string) => {
-    const filters = [
-      {
-        operation: 3,
-        propertyName: 'nameEn',
-        propertyValue: searchKey
-      },
-    ];
-
-    return this.commonService.createSearchFn(filters, (body) =>
-      this.getProducts(body).pipe(tap(data => this.handleLoadingAllowProducts(data.data)))
+  constructor(    ) {
+    this.paginationCtx.registerEntity<Product>(
+      'Products',
+      this.getProducts.bind(this),
+      this.productsSignal,
+      this.handleLoadingAllowProducts.bind(this)
     );
-  };
 
-
-  searchVariantFn = (searchKey: string) => {
-    const filters = [
-      {
-        operation: 3,
-        propertyName: 'nameEn',
-        propertyValue: searchKey
-      },
-    ];
-
-    return this.commonService.createSearchFn(filters, (body) =>
-      this.getVariants(body)
-    );
-  };
-
-  searchVarianTypetFn = (searchKey: string) => {
-    const filters = [
-      {
-        operation: 3,
-        propertyName: 'nameEn',
-        propertyValue: searchKey
-      },
-    ];
-
-    return this.commonService.createSearchFn(filters, (body) =>
-      this.getVariantTypes(body)
-    );
-  };
-
-  fetchPaginatedProducts = this.commonService.createPaginatedFetcher<Product>(
-    this.getProducts.bind(this),
-    this.handleLoadingAllowProducts.bind(this)
-  );
-
-  fetchPaginatedVariantLookMaster = this.commonService.createPaginatedFetcher<VariantMasterLookUP>(
-    this.getVariants.bind(this)
-  );
-  fetchPaginatedVariantTypes = this.commonService.createPaginatedFetcher<VartiantType>(
-    this.getVariantTypes.bind(this)
-  );
-
-  pagination = new PaginationStore<Product>(
-    this.fetchPaginatedProducts,
-    this.productsSignal,
-  );
-
-  variantLookMasterPagination = new PaginationStore<VariantMasterLookUP>(
-    this.fetchPaginatedVariantLookMaster,
+  this.paginationCtx.registerEntity<VariantMasterLookUP>(
+    'Variants',
+    this.getVariants.bind(this),
     this.variantOptions
   );
 
-  variantTypePagination = new PaginationStore<VartiantType>(
-    this.fetchPaginatedVariantTypes,
+  this.paginationCtx.registerEntity<VartiantType>(
+    'Variant Types',
+    this.getVariantTypes.bind(this),
     this.variantTypes
   );
-
-
-
-
-  constructor() {
-    // this.init();
   }
-
-  //VariantTypeApi
-
-  // getVariantTypes(body?: any): Observable<VartiantType[]> {
-  //     return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
-  //   }
   getVariantTypes(body?: any): Observable<{data:VartiantType[],totalCount:number}> {
     return this.__HandleActualApiInvokeService.getEntities<VartiantType>('GetVariantTypes', 'variant Types',this.variantTypes, body)
   }
@@ -127,7 +64,7 @@ private commonService = inject(CommonService);
       this.variantTypes
     ).pipe(
       tap(value => {
-        this.variantTypePagination.refresh();
+        this.paginationCtx.getStore('Variant Types')?.refresh();
       })
     );
   }
@@ -140,7 +77,7 @@ private commonService = inject(CommonService);
       this.variantTypes,
     ).pipe(
       tap(value => {
-        this.variantTypePagination.refresh();
+        this.paginationCtx.getStore('Variant Types')?.refresh();
       })
     );
   }
@@ -164,10 +101,6 @@ private commonService = inject(CommonService);
 
 //Variant Api
 
-
-// getVariants(body?: any): Observable<VariantMasterLookUP[]> {
-//   return this.__HandleActualApiInvokeService.getEntities<VariantMasterLookUP>('GetVariants', 'variants',this.variantOptions, body)
-// }
 getVariants(body?: any): Observable<{data:VariantMasterLookUP[],totalCount:number}>{
   return this.__HandleActualApiInvokeService.getEntities<VariantMasterLookUP>('GetVariants', 'variants',this.variantOptions, body)
 }
@@ -180,7 +113,7 @@ createVariant(variant: VariantMasterLookUP){
     this.variantOptions
   ).pipe(
     tap(value => {
-      this.variantLookMasterPagination.refresh();
+      this.paginationCtx.getStore('Variants')?.refresh();
     })
   );
 }
@@ -193,7 +126,7 @@ deleteVariant(id: number) {
     this.variantOptions,
   ).pipe(
     tap(value => {
-      this.variantLookMasterPagination.refresh();
+      this.paginationCtx.getStore('Variants')?.refresh();
     })
   );
 }
@@ -217,9 +150,6 @@ updateVariant(variant: VariantMasterLookUP) {
   });
 }
 
-// getProductVariants(body?: any): Observable<ProductVariantMaster[]> {
-//   return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
-// }
 getProductVariants(body?: any): Observable<{data:ProductVariantMaster[],totalCount:number}>{
   return this.__HandleActualApiInvokeService.getEntities<ProductVariantMaster>('GetProductVariants', 'Variants',this.productVariantOptions, body)
 }
@@ -264,7 +194,7 @@ updateProductVariant(variant: ProductVariantMaster) {
       // }
     });
   }
-  updateProductVariants(variants: ProductVariantMaster[]): Observable<ProductVariantMaster[] | null> {
+updateProductVariants(variants: ProductVariantMaster[]): Observable<ProductVariantMaster[] | null> {
     if (!variants.length) return of(null);
 
     this.loadingSignal.set(true);
@@ -289,22 +219,8 @@ updateProductVariant(variant: ProductVariantMaster) {
       finalize(() => this.loadingSignal.set(false))
     );
   }
-  //Product Api
-// private init(): void {
-//   this.getVariantTypes().subscribe({
-//     error: (err) => {
-//       console.error('Error loading data:', err);
-//     }
-//   });
-// }
-  // private handleLoadingAllowProducts(){
-  //   // const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
-  //   this.commonService.saveToStorage('products', sortedProducts);
-  //   this.usedProducts = [...sortedProducts];
-  // }
 
   private handleLoadingAllowProducts(products:Product[]){
-    // const sortedProducts=this.removeEmptyProductandSortPeroducts(this.products());
     const sortedProducts=this.removeEmptyProductandSortPeroducts(products);
     this.commonService.saveToStorage('products', sortedProducts);
       this.usedProducts = [...sortedProducts];
@@ -315,10 +231,6 @@ updateProductVariant(variant: ProductVariantMaster) {
    getProduct(id:number){
     return this.__HandleActualApiInvokeService.getEntityById<Product>('GetProductById', id, 'product');
     }
-
-// getProducts(body?: any): Observable<Product[]> {
-// return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
-// }
 
 getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
   return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
@@ -338,14 +250,14 @@ createProduct(product: Product) {
         products.filter(p => p.id !== id)
       );
       this.productsSignal.update(products =>
-      (this.commonService.addOrReplaceItemById(products, newProduct).slice(0, this.pagination.pageSize()))
+      (this.commonService.addOrReplaceItemById(products, newProduct).slice(0, this.paginationCtx.getStore('Products')?.pageSize()))
       );
       this.type.set('');
       this.commonService.saveToStorage('products', this.sortProductsDesc(this.products()));
     }
   ).pipe(
     tap(value => {
-      this.pagination.refresh();
+      this.paginationCtx.getStore('Products')?.refresh();
     })
   );
 }
@@ -369,7 +281,7 @@ updateProduct(product: Product) {
       }
     ).pipe(
       tap(value => {
-        this.pagination.refresh();
+        this.paginationCtx.getStore('Products')?.refresh();
       })
     );
   }
@@ -464,7 +376,6 @@ updateProductInfo(product: Product, actionType: string) {
 
  removeEmptyProductandSortPeroducts(products:Product[]){
     const filterProducts = products.filter(p => p.nameEn && p.nameAr);
-    //  this.productsSignal.set(filterProducts);
     return filterProducts
 }
 

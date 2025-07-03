@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CategoriesComponent {
   __CategoryService = inject(CategoryService);
   private __CommonService=inject(CommonService);
+  private route=inject(ActivatedRoute);
   page=this.__CommonService.page;
   addCategory = signal(false);
   editCategory=signal(false);
@@ -24,16 +25,12 @@ export class CategoriesComponent {
   __LanguageService = inject(LanguageService);
   isRtl=this.__LanguageService.rtlClassSignal;
   servicesList:ServiceInterface[]=[]
-  route=inject(ActivatedRoute);
 
   constructor(){
     this.page.set('Categories');
   }
   ngOnInit(): void {
-    this.__CategoryService.pagination.initFromQueryParams(this.route);
-  }
-  setCurrentPage(page:number){
-    this.__CategoryService.pagination.goToPage(page);
+    this.__CategoryService.paginationCtx.getStore('Categories')?.initFromQueryParams(this.route);
   }
   addNew(event: any) {
     this.addCategory.set(true);
@@ -53,6 +50,6 @@ closeEdit(category:Category){
   this.editCategory.set(false);
 }
 ngOnDestroy() {
-  this.__CategoryService.pagination.resetPage();
+  this.__CategoryService.paginationCtx.getStore('Categories')?.resetPage();
 }
 }

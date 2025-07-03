@@ -1,10 +1,10 @@
-import { DestroyRef, effect, inject, Injectable, signal } from '@angular/core';
+import {  inject, Injectable, signal } from '@angular/core';
 import { Customer } from '../../Interfaces/customer';
 import { CommonService } from '../CommonService/common.service';
 import { Observable, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
-import { PaginationStore } from '../../shared/stores/pagination-store.store';
+import { PaginationContextService } from '../PaginationContext/pagination-context.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +12,17 @@ import { PaginationStore } from '../../shared/stores/pagination-store.store';
 export class CustomerService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   private __CommonService=inject(CommonService);
+  paginationCtx=inject(PaginationContextService)
   customers=signal<Customer[]>([]);
 
 
-  searchFn = (searchKey: string) => {
-      const filters = [
-        {
-          operation: 3,
-          propertyName: 'phone',
-          propertyValue: searchKey
-        },
-      ];
-
-      return this.__CommonService.createSearchFn(filters, (body) => this.getCustomers(body));
-    };
-  fetchPaginatedCustomers = this.__CommonService.createPaginatedFetcher<Customer>(
-  this.getCustomers.bind(this),
-   );
-  pagination = new PaginationStore<Customer>(this.fetchPaginatedCustomers,this.customers);
-
-  constructor(private __ToastingMessagesService:ToastingMessagesService) {}
+  constructor(private __ToastingMessagesService:ToastingMessagesService) {
+    this.paginationCtx.registerEntity<Customer>(
+      'Customers',
+      this.getCustomers.bind(this),
+      this.customers
+    );
+  }
 
 //start of api
 
@@ -45,7 +36,9 @@ export class CustomerService {
     'Customer',
     this.customers
   ).pipe(
-    tap(response => this.pagination.refresh() )
+    tap(response =>
+      this.paginationCtx.getStore('Customers')?.refresh()
+       )
     );
 }
   deleteCustomer(id: number) {
@@ -55,7 +48,9 @@ export class CustomerService {
     'Customer',
     this.customers,
   ).pipe(
-    tap(response => this.pagination.refresh() )
+    tap(response =>
+      this.paginationCtx.getStore('Customers')?.refresh()
+   )
     );;
 }
 
@@ -91,7 +86,6 @@ export class CustomerService {
 
 
     getCustomerByID(id:number){
-      // return this.customers().find(customer => customer.id == id) ?? {} as Customer;
      return this.getCustomer(id);
     }
 }

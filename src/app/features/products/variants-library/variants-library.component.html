@@ -62,8 +62,6 @@
           </div>
         </div>
 </div>
-<app-pagination [totalItems]="__ProductService.variantLookMasterPagination.totalItems()" [currentPage]="__ProductService.variantLookMasterPagination.currentPage()"
-[pageSize]="__ProductService.variantLookMasterPagination.pageSize()" (pageChanged)="setCurrentPage($event)"></app-pagination>
  <app-edit-variant [variant]="editedVariant" (updated)="updatedVariant()" *ngIf="editedVariant.nameEn"></app-edit-variant>
 
 </app-layout>

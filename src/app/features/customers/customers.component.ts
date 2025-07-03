@@ -5,6 +5,7 @@ import { Customer } from '../../Interfaces/customer';
 import { ServiceInterface } from '../../Interfaces/service-interface';
 import { FilterSection } from '../../Interfaces/filter-options';
 import { CommonService } from '../../Services/CommonService/common.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -15,8 +16,10 @@ import { CommonService } from '../../Services/CommonService/common.service';
 export class CustomersComponent {
   __CustomerService = inject(CustomerService);
   __LanguageService = inject(LanguageService);
-    private __CommonService=inject(CommonService);
-    page=this.__CommonService.page;
+   private route=inject(ActivatedRoute)
+
+   private __CommonService=inject(CommonService);
+  page=this.__CommonService.page;
   addCustomer = signal(false);
   editCustomer=signal(false);
   customers = this.__CustomerService.customers;
@@ -76,14 +79,13 @@ export class CustomersComponent {
     },
   ]);
 
-
-
-  setCurrentPage(page:number){
-    this.__CustomerService.pagination.goToPage(page);
-  }
-
   constructor(){
     this.page.set('Customers');
+  }
+
+  ngOnInit(): void {
+    this.__CustomerService.paginationCtx.getStore('Customers')?.initFromQueryParams(this.route);
+
   }
   addNew(event: any) {
     this.addCustomer.set(true);
@@ -110,7 +112,7 @@ resetFilters() {
   // this.filterForm.reset();
 }
 ngOnDestroy() {
-  this.__CustomerService.pagination.resetPage();
+  this.__CustomerService.paginationCtx.getStore('Customers')?.resetPage();
 }
 }
 

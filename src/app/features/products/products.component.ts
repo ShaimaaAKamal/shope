@@ -24,6 +24,7 @@ export class ProductsComponent {
   private __Route=inject(ActivatedRoute);
   private __Router = inject(Router);
   private __CommonService=inject(CommonService);
+  route=inject(ActivatedRoute);
 
   page=this.__CommonService.page;
   isRtl=this.__LanguageService.rtlClassSignal;
@@ -34,10 +35,7 @@ export class ProductsComponent {
   type = this.productService.type;
   checkedProducts:number[]=[];
   closeFilter:boolean=false;
-   route=inject(ActivatedRoute);
-  setCurrentPage(page:number){
-    this.productService.pagination.goToPage(page);
-  }
+
   servicesList:ServiceInterface[]=[
     { label: 'Export', icon: 'fa-file-export', action: 'export' },
     { label: 'Sync', icon: 'fa-sync', action: 'sync' }
@@ -127,7 +125,7 @@ export class ProductsComponent {
 
   constructor() {
     this.page.set('Products');
-  
+
     effect(() => {
     const popup = this.queryParamsSignal()?.get('popup');
     this.popupVisible.set(popup === 'add_variant');
@@ -136,7 +134,7 @@ export class ProductsComponent {
     this.products = computed(() =>[...this.productService.products()]);
   }
   ngOnInit(): void {
-    this.productService.pagination.initFromQueryParams(this.route);
+    this.productService.paginationCtx.getStore('Products')?.initFromQueryParams(this.route);
   }
   onCheckboxChange(event: any, value: string) {
     const checked = event.target.checked;
@@ -202,7 +200,8 @@ resetFilters() {
   ngOnDestroy(): void {
     this.type.set('');
     this.productService.removeEmptyProductandSortPeroducts(this.products());
-    this.productService.pagination.resetPage();
+    this.productService.paginationCtx.getStore('Products')?.resetPage();
+
   }
 }
 

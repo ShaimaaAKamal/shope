@@ -6,6 +6,7 @@ import {
   effect
 } from '@angular/core';
 import {
+  Observable,
   Subject,
   debounceTime,
   filter,
@@ -20,6 +21,7 @@ import { CustomerService } from '../../../Services/Customer/customer.service';
 import { OrderService } from '../../../Services/order/order.service';
 import { CommonService } from '../../../Services/CommonService/common.service';
 import { NavigationEnd, Router , Event as RouterEvent } from '@angular/router';
+import { PaginationContextService } from '../../../Services/PaginationContext/pagination-context.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -28,6 +30,7 @@ import { NavigationEnd, Router , Event as RouterEvent } from '@angular/router';
   styleUrl: './layout-header.component.scss'
 })
 export class LayoutHeaderComponent implements OnInit, OnDestroy {
+  private readonly paginationCtx = inject(PaginationContextService);
   private readonly destroy$ = new Subject<void>();
   private readonly searchKeyChanged$ = new Subject<string>();
 
@@ -87,59 +90,73 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
 
   }
 
-  private getServiceAndPagination(selection: string):any {
+  private getEntityConfig(selection: string): {
+    key: string;
+    getFn: (body?: any) => Observable<{ data: any[]; totalCount: number }>;
+    propertyName: string;
+  } | null {
     switch (selection) {
       case 'Products':
         return {
-          pagination: this.productService.pagination,
-          searchFn: this.productService.searchFn.bind(this.productService),
+          key: 'Products',
+          getFn: this.productService.getProducts.bind(this.productService),
+          propertyName: 'nameEn'
         };
       case 'Categories':
         return {
-          pagination: this.categoryService.pagination,
-          searchFn: this.categoryService.searchFn.bind(this.categoryService),
+          key: 'Categories',
+          getFn: this.categoryService.getCategories.bind(this.categoryService),
+          propertyName: 'nameEn'
         };
       case 'Customers':
         return {
-          pagination: this.customerService.pagination,
-          searchFn: this.customerService.searchFn.bind(this.customerService),
+          key: 'Customers',
+          getFn: this.customerService.getCustomers.bind(this.customerService),
+          propertyName: 'phone'
         };
       case 'Variants':
-          return {
-            pagination: this.productService.variantLookMasterPagination,
-            searchFn: this.productService.searchVariantFn.bind(this.productService),
-          };
+        return {
+          key: 'Variants',
+          getFn: this.productService.getVariants.bind(this.productService),
+          propertyName: 'nameEn'
+        };
       case 'Variant Types':
-            return {
-              pagination: this.productService.variantTypePagination,
-              searchFn: this.productService.searchVarianTypetFn.bind(this.productService),
-            };
+        return {
+          key: 'Variant Types',
+          getFn: this.productService.getVariantTypes.bind(this.productService),
+          propertyName: 'nameEn'
+        };
       default:
         return null;
     }
   }
+
+
 
   checkStoredKey() {
     const savedSearchKey = localStorage.getItem('searchKey');
     if (!savedSearchKey) return;
 
     this.searchKey = savedSearchKey;
-    const service = this.getServiceAndPagination(this.dropdownSelection);
-    if (!service) return;
+    const config = this.getEntityConfig(this.dropdownSelection);
+    if (!config) return;
 
-    service.pagination?.setFetchFn(service.searchFn(savedSearchKey));
-    service.pagination?.refresh();
+    const searchFn = this.paginationCtx.getSearchFn(config.key, config.propertyName, config.getFn);
+    this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(savedSearchKey));
+    this.paginationCtx.getStore(config.key)?.refresh();
   }
 
   sendSearchRequest(): void {
     const routePath = this.getRoutePath();
     if (routePath) this.router.navigateByUrl(routePath);
 
-    const service = this.getServiceAndPagination(this.dropdownSelection);
-    if (!service) return;
+    const config = this.getEntityConfig(this.dropdownSelection);
+    if (!config) return;
 
-    service.pagination?.setFetchFn(service.searchFn(this.searchKey));
+    const searchFn = this.paginationCtx.getSearchFn(config.key, config.propertyName, config.getFn);
+    this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(this.searchKey));
   }
+  
   onSearchKeyChange(value: string): void {
     this.searchKey = value;
     localStorage.setItem('searchKey', value);

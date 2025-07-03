@@ -3,37 +3,23 @@ import { Category } from '../../Interfaces/category';
 import { SharedService } from '../Shared/shared.service';
 import { Observable, tap } from 'rxjs';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
-import { PaginationStore } from '../../shared/stores/pagination-store.store';
-import { CommonService } from '../CommonService/common.service';
+import { PaginationContextService } from '../PaginationContext/pagination-context.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
-private commonService = inject(CommonService);
 categories=signal<Category[]>([]);
+paginationCtx=inject(PaginationContextService);
+constructor(private __SharedService:SharedService) {
 
-
-searchFn = (searchKey: string) => {
-  const filters = [
-    {
-      operation: 3,
-      propertyName: 'nameEn',
-      propertyValue: searchKey
-    },
-    // add category-specific filters here if needed
-  ];
-
-  return this.commonService.createSearchFn(filters, (body) => this.getCategories(body));
-};
-
-fetchPaginatedCategories = this.commonService.createPaginatedFetcher<Category>(
-      this.getCategories.bind(this),
-    );
-
-pagination = new PaginationStore<Category>(this.fetchPaginatedCategories,this.categories);
-constructor(private __SharedService:SharedService) {}
+  this.paginationCtx.registerEntity<Category>(
+    'Categories',
+    this.getCategories.bind(this),
+    this.categories
+  );
+}
 
 // categoryAPiCall
 getCategories(body?: any): Observable<{data:Category[],totalCount:number}> {
@@ -48,7 +34,7 @@ createCategoryApi(category: Category) {
     this.categories
   ).pipe(
     tap(value => {
-      this.pagination.refresh();
+      this.paginationCtx.getStore('Categories')?.refresh();
     })
   );
 }
@@ -61,7 +47,7 @@ deleteCategory(id: number) {
     this.categories,
   ).pipe(
     tap(value => {
-      this.pagination.refresh();
+      this.paginationCtx.getStore('Products')?.refresh();
     })
   );
 }

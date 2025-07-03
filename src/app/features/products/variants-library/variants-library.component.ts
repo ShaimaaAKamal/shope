@@ -4,6 +4,7 @@ import { LanguageService } from '../../../Services/Language/language.service';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
 import { CommonService } from '../../../Services/CommonService/common.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-variants-library',
@@ -23,12 +24,13 @@ isRtl=this.__LanguageService.rtlClassSignal;
 popupVisible:boolean=false;
 editedVariant:VariantMasterLookUP={} as VariantMasterLookUP;
 servicesList:ServiceInterface[]=[]
-
+route=inject(ActivatedRoute);
 constructor(){
   this.page.set('Variants');
 }
-setCurrentPage(page:number){
-  this.__ProductService.variantLookMasterPagination.goToPage(page);
+
+ngOnInit(): void {
+  this.__ProductService.paginationCtx.getStore('Variants')?.initFromQueryParams(this.route);
 }
 showOptionsSection(){
  this.popupVisible=true;
@@ -56,7 +58,8 @@ deleteSelected(event:any){
 
 }
 ngOnDestroy() {
-  this.__ProductService.variantLookMasterPagination.resetPage();
+  this.__ProductService.paginationCtx.getStore('Variants')?.resetPage();
 }
+
 }
 
