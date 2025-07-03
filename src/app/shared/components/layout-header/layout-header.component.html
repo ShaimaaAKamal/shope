@@ -4,7 +4,7 @@
       <input
       type="text"
       class="form-control"
-      placeholder="{{ selectionMessage }}"
+      placeholder="{{ selectionMessage | translate }}"
       [(ngModel)]="searchKey"
       (ngModelChange)="onSearchKeyChange($event)"
     />
@@ -14,12 +14,12 @@
           {{dropdownSelection | translate}}
         </button>
         <ul class="dropdown-menu bg-dropdown dropdown-menu-end ">
-          <li (click)="changeSelection('Products')"><a class="dropdown-item text-input fs-verySmall">Products</a></li>
-          <li (click)="changeSelection('Customers')"><a class="dropdown-item text-input fs-verySmall">Customers</a></li>
-          <li (click)="changeSelection('Orders')"><a class="dropdown-item text-input fs-verySmall">Orders</a></li>
-          <li (click)="changeSelection('Categories')"><a class="dropdown-item text-input fs-verySmall">Categories</a></li>
-          <li (click)="changeSelection('Variants')"><a class="dropdown-item text-input fs-verySmall">Variants</a></li>
-          <li (click)="changeSelection('Variant Types')"><a class="dropdown-item text-input fs-verySmall">Variant Types</a></li>
+          <li (click)="changeSelection('Products')"><a class="dropdown-item text-input fs-verySmall">{{'Products' | translate}}</a></li>
+          <li (click)="changeSelection('Customers')"><a class="dropdown-item text-input fs-verySmall">{{'Customers' | translate}}</a></li>
+          <li (click)="changeSelection('Orders')"><a class="dropdown-item text-input fs-verySmall">{{'Orders' | translate}}</a></li>
+          <li (click)="changeSelection('Categories')"><a class="dropdown-item text-input fs-verySmall">{{'Categories' | translate}}</a></li>
+          <li (click)="changeSelection('Variants')"><a class="dropdown-item text-input fs-verySmall">{{'Variants' | translate}}</a></li>
+          <li (click)="changeSelection('Variant Types')"><a class="dropdown-item text-input fs-verySmall">{{'Variant Types' | translate}}</a></li>
 
         </ul>
       </div>

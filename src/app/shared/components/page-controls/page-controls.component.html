@@ -1,16 +1,4 @@
-<!-- <div class="controls d-flex  justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <span class="me-2" *ngIf="PageControlsComponentData.type != 'product'">{{'All' | translate}}</span>
-            <span (click)="AddNew()"><i class="fa-solid fa-plus"></i></span>
-        </div>
-        <div class="d-flex align-items-center">
-          <span class="me-2" *ngIf="PageControlsComponentData.type != 'product'"><i class="fa-solid fa-filter"></i></span>
-          <span (click)="sort()"><i class="fa-solid fa-arrow-up-a-z"></i></span>
-          <span class="ms-2" (click)="deleteSelected()"><i class="fa-solid fa-trash"></i></span>
-        </div>
-  </div> -->
-
-  <nav aria-label="breadcrumb" class="d-inline-block ps-2">
+ <nav aria-label="breadcrumb" class="d-inline-block ps-2">
     <ol class="breadcrumb rounded-3 m-0 py-2">
       <li class="breadcrumb-item small">
         <i class="fa-solid fa-house pe-1 text-breadcrumb"></i>
@@ -21,7 +9,7 @@
       <li class="breadcrumb-item active text-breadcrumb-secondary small" aria-current="page">
         {{ (PageControlsComponentData.type !== 'category'
           ? (PageControlsComponentData.type + 's')
-          : 'categories') | translate | titlecase }}
+          : 'categories') | titlecase |translate  }}
       </li>
     </ol>
   </nav>
