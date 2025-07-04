@@ -16,6 +16,7 @@ interface variantDetailInterface {
 export class AddVariantComponent {
   private __ProductService=inject(ProductService);
   private __LanguageService=inject(LanguageService);
+  private __CommonService=inject(CommonService);
   isRtl=this.__LanguageService.rtlClassSignal;
 
   preSetVariants=this.__ProductService.variantOptions;
@@ -32,7 +33,8 @@ export class AddVariantComponent {
   exitstErrorMessage:string=''
   showAddLibraryVariant:boolean=false;
   showNewlibraryVariantValue:boolean=false;
-
+  detailNameErrorMessage: string = '';
+  detailNameArErrorMessage:string='';
   @Output() localVariants=new EventEmitter<any>();
 
   @ViewChild('detailName') detailName!: InputComponent;
@@ -82,58 +84,29 @@ showNewValueInput(){
 setPickedColorValue(color:string){
 this.variantValue.value=color;
 }
-// addNewValue() {
-// if(this.variantSelection == 'color' && !this.variantValue.value)
-//     this.variantValue.value="#000";
-//  let variantNewValue: string =  this.variantValue.value.trim();
-// if(!variantNewValue || !this.detailName.value || !this.detailNameAr.value)
-// {  this.exitstErrorMessage="can't have empty fields";
-//   return;
-// }
-// if (!this.variantValues.includes(variantNewValue)) {
-//     this.variantValues.push(variantNewValue);
-//     const result = this.__CommonService.findItemInArray(
-//       this.preSetVariants(),
-//       (p) => p.nameEn == this.variantSelection || p.nameAr == this.variantSelection
-//     );
-//     if (result.exists) {
-//       console.log('what about adding new value in update variant case');
-//         result.item.variantDetails.push({
-//           detailNameEn: this.detailName.value.trim(),
-//           detailNameAr: this.detailNameAr.value.trim(),
-//           value: this.variantValue.value.trim()
-//         });
-//       this.__ProductService.updateVariant(result.item).subscribe({
-//         next: () => {
-//           this.exitstErrorMessage = '';
-//         },
-//         error: () => {
-//           this.exitstErrorMessage = 'Something went wrong';
-//         },
-//         complete: () => {
-//           this.insertVariantNewValue = false;
-//           this.showNewlibraryVariantValue=false;
-
-//           this.variantSelectValue = variantNewValue;
-//           return;
-//         }
-//       });
-//     }
-//   } else {
-//     this.exitstErrorMessage = "This Value is already Exist";
-//     return;
-//   }
-// }
-
 
 addNewValue() {
+  this.clearErrorMessages();
   if(this.variantSelection == 'color' && !this.variantValue.value)
       this.variantValue.value="#000";
    let variantNewValue: string =  this.variantValue.value.trim();
-  if(!variantNewValue || !this.detailName.value || !this.detailNameAr.value)
-  {  this.exitstErrorMessage="can't have empty fields";
+
+
+   const result=this.__CommonService.validatenNameInputs(this.detailName.value,this.detailNameAr.value,variantNewValue);
+   console.log(result);
+   if (!result.status) {
+    for (const err of result.errors) {
+      if (err.errorType === 'missing_Name') {
+        this.detailNameErrorMessage = err.message;
+      } else if (err.errorType === 'missing_Arabic_Name') {
+        this.detailNameArErrorMessage = err.message;
+      } else if (err.errorType === 'missing_Value') {
+        this.exitstErrorMessage = err.message;
+    }
+  }
     return;
   }
+
   if (!this.variantValues.includes(variantNewValue)) {
       this.variantValues.push(variantNewValue);
       this.__ProductService.getVariant(this.defaultSelection.id!).subscribe({
@@ -268,5 +241,10 @@ deleteVariant() {
 
 private hideMessages(){
   this.exitstErrorMessage='';
+}
+clearErrorMessages = () => {
+  this.detailNameErrorMessage = '';
+  this.detailNameArErrorMessage = '';
+  this.hideMessages();
 }
 }

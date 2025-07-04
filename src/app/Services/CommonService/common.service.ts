@@ -24,15 +24,14 @@ removeItemFromStorage(key:string){
   }
 
 
-  validatenNameInputs(nameEn: string, nameAr: string): {
+  validatenNameInputs(nameEn: string, nameAr: string,Value='default'): {
     status: boolean;
     errors: { message: string; errorType: string }[];
   } {
     const errors: { message: string; errorType: string }[] = [];
-
     const normalizedName = nameEn.trim().toLowerCase();
     const normalizedArabicName = nameAr.trim().toLowerCase();
-
+    const normalizedValue = Value.trim().toLowerCase();
     if (!normalizedName) {
       errors.push({
         message: 'Name is Required',
@@ -44,6 +43,13 @@ removeItemFromStorage(key:string){
       errors.push({
         message: 'Arabic Name is Required',
         errorType: 'missing_Arabic_Name'
+      });
+    }
+
+    if (!normalizedValue) {
+      errors.push({
+        message: 'Value is Required',
+        errorType: 'missing_Value'
       });
     }
 

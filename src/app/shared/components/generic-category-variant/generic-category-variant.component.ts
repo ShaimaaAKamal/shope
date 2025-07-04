@@ -98,35 +98,4 @@ export class GenericCategoryVariantComponent <T extends { id?: number, nameEn: s
       next: (data: T) => this.created.emit(id ? { ...newItem, id } : data)
     });
   }
-  // create(): void {
-  //   const name = this.NameInput.value.trim();
-  //   const nameAr = this.NameAr.value.trim();
-  //   const isActive = this.ActiveDropDownSelection === 'Active';
-  //   const id = this.config.item?.id ?? null;
-
-  //  const result=this.__CommonService.validatenNameInputs(name, nameAr);
-  //  if(!result.status){
-  //    this.errorMessage = result.errorType== 'missing_Name' ? result.message : '';
-  //    this.errorArabicrMessage =result.errorType== 'missing_Arabic_Name' ?result.message:'';
-  //    return;
-  //  }
-  //  else{
-  //   this.errorMessage='';
-  //   this.errorArabicrMessage='';
-  //   const newItem: T = {
-  //     ...this.config.item,
-  //     nameEn: name,
-  //     nameAr: nameAr,
-  //     isActive: isActive
-  //   };
-
-  //   const request$ = id
-  //     ? this.config.service.update({ ...newItem, id } as T)
-  //     : this.config.service.create(newItem);
-  //   request$.subscribe({
-  //     next: (data: T) => this.created.emit(id ? { ...newItem, id } : data)
-  //   });
-  //  }
-
-  // }
 }

@@ -313,7 +313,7 @@ deleteProducts(ids: number[]) {
 
 // updateProductInfo(product: Product, actionType: string) {
 //   const result = this.commonService.checkDuplicateInArray(
-//     this.products(),
+//     this.products()
 //     p => p.id === product.id,
 //     product
 //   );

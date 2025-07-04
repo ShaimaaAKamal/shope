@@ -173,23 +173,23 @@ export class VariantLibraryItemComponent {
   private addOrUpdateVariant(mode: 'add' | 'update'): void {
     const variantName = this.optionName.value?.trim();
     const variantArabicName = this.optionArabicName.value?.trim();
-
     if (!this.validateNames(variantName, variantArabicName)) {
       this.action.set('');
       return;
     }
 
-      if (this.isDuplicateVariant(variantName, variantArabicName)) {
-      this.nameErrorMessage = 'Variant already exists';
-      this.action.set('');
-      return;
-    }
+    //   if (this.isDuplicateVariant(variantName, variantArabicName)) {
+    //   this.nameErrorMessage = 'Variant already exists';
+    //   this.action.set('');
+    //   return;
+    // }
 
     const variantDetails = this.collectVariantDetails();
     if (this.hasAnyErrors()) {
       this.action.set('');
       return;
     }
+
     const newVariant: VariantMasterLookUP = {
       ...(mode === 'update' && { id: this.variant.id }),
       variantTypeEn: this.variantTypeSelection,
@@ -199,20 +199,45 @@ export class VariantLibraryItemComponent {
       variantDetails
     };
 
-    const serviceCall =
-      mode === 'add'
-        ? this.__ProductService.createVariant(newVariant)
-        : this.__ProductService.updateVariant(newVariant);
+    // const serviceCall =
+    //   mode === 'add'
+    //     ? this.__ProductService.createVariant(newVariant)
+    //     : this.__ProductService.updateVariant(newVariant);
 
-    serviceCall.subscribe({
-      next: () => {
-        if (mode === 'add') {
-          this.closeAddVariantPopScreen.emit();
-        } else {
-          this.updated.emit();
+    // serviceCall.subscribe({
+    //   next: () => {
+    //     console.log('in next');
+    //     if (mode === 'add') {
+    //       this.closeAddVariantPopScreen.emit();
+    //     } else {
+    //       this.updated.emit();
+    //     }
+    //   },
+    //   error: (error)=> {this.nameErrorMessage='Something went wrong, please try again later'; console.error('Error adding/updating variant:', error);},
+    // });
+    try {
+      const serviceCall =
+        mode === 'add'
+          ? this.__ProductService.createVariant(newVariant)
+          : this.__ProductService.updateVariant(newVariant);
+
+      serviceCall.subscribe({
+        next: () => {
+          if (mode === 'add') {
+            this.closeAddVariantPopScreen.emit();
+          } else {
+            this.updated.emit();
+          }
+        },
+        error: (error) => {
+          this.nameErrorMessage = 'Something went wrong, please try again later';
+          this.action.set('');
         }
-      }
-    });
+      });
+    } catch (error: any) {
+      this.nameErrorMessage = error?.message || 'Unexpected error occurred.';
+      this.action.set('');
+    }
   }
 
 
@@ -314,7 +339,6 @@ export class VariantLibraryItemComponent {
   private validateNames(name: string, arabicName: string): boolean {
     this.nameErrorMessage = '';
     this.arabicNameErrorMessage = '';
-
     const result = this.__CommonService.validatenNameInputs(name, arabicName);
 
     if (!result.status) {
@@ -331,11 +355,14 @@ export class VariantLibraryItemComponent {
     return true;
   }
 
-  private isDuplicateVariant(name: string, arabicName: string): boolean {
-    const variants = this.variantOptions();
-    return this.__CommonService.findItemInArray(
-      variants,
-      v => (v.nameEn === name || v.nameAr === arabicName) && v.id !== this.variant?.id
-    ).exists;
+  clearMessages(){
+
   }
+  // private isDuplicateVariant(name: string, arabicName: string): boolean {
+  //   const variants = this.variantOptions();
+  //   return this.__CommonService.findItemInArray(
+  //     variants,
+  //     v => (v.nameEn === name || v.nameAr === arabicName) && v.id !== this.variant?.id
+  //   ).exists;
+  // }
 }
