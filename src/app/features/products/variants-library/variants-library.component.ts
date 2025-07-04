@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { ProductService } from '../../../Services/Product/product.service';
 import { LanguageService } from '../../../Services/Language/language.service';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
@@ -27,7 +27,13 @@ servicesList:ServiceInterface[]=[]
 route=inject(ActivatedRoute);
 constructor(){
   this.page.set('Variants');
+
+  effect(() => {
+      const _=this.VariantOptions();
+      this.editedVariant={} as VariantMasterLookUP;
+  });
 }
+
 
 ngOnInit(): void {
   this.__ProductService.paginationCtx.getStore('Variants')?.initFromQueryParams(this.route);

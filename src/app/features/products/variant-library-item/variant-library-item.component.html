@@ -59,8 +59,7 @@
         </app-input>
       </div>
       <div class="col-12" >
-
-            <ng-container *ngFor="let value of values(); let index = index;">
+      <ng-container *ngFor="let value of values(); let index = index;">
         <div class="varianOption shadow-sm bg-second rounded-2  py-1 d-flex flex-column flex-sm-row align-items-center">
           <div class="d-flex align-items-center flex-grow-1">
             <div class="pe-2">
@@ -81,7 +80,7 @@
                       hideLabel: true,
                       inputGroup: false,
                       clickMessage: '',
-                      errorMessage: '',
+                      errorMessage:  errors()[index].detailName || '',
                       enableFocusBlurTracking: false,
                     }"
                       #detailName
@@ -104,7 +103,7 @@
                       hideLabel: true,
                       inputGroup: false,
                       clickMessage: '',
-                      errorMessage: '',
+                      errorMessage: errors()[index].detailNameAr || '',
                       enableFocusBlurTracking: false,
                     }"
                       #detailNameAr
@@ -127,7 +126,7 @@
                       hideLabel: true,
                       inputGroup: false,
                       clickMessage: '',
-                      errorMessage: '',
+                      errorMessage: errors()[index].variantValue || '',
                       enableFocusBlurTracking: false,
                     }"
                       #variantValue
@@ -157,5 +156,5 @@
        </div>
      </div>
   </div>
- 
+
 </div>

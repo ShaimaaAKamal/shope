@@ -9,6 +9,7 @@ export class CommonService {
 isCollapse=signal<boolean>(false);
 page=signal<string>('');
 
+//Local Storage Methods
 getItemsFromStorage<T = any>(key: string, defaultValue: T): T {
   const item = localStorage.getItem(key);
   return item ? (JSON.parse(item) as T) : defaultValue;
@@ -22,6 +23,35 @@ removeItemFromStorage(key:string){
     localStorage.removeItem(key);
   }
 
+
+  validatenNameInputs(nameEn: string, nameAr: string): {
+    status: boolean;
+    errors: { message: string; errorType: string }[];
+  } {
+    const errors: { message: string; errorType: string }[] = [];
+
+    const normalizedName = nameEn.trim().toLowerCase();
+    const normalizedArabicName = nameAr.trim().toLowerCase();
+
+    if (!normalizedName) {
+      errors.push({
+        message: 'Name is Required',
+        errorType: 'missing_Name'
+      });
+    }
+
+    if (!normalizedArabicName) {
+      errors.push({
+        message: 'Arabic Name is Required',
+        errorType: 'missing_Arabic_Name'
+      });
+    }
+
+    return {
+      status: errors.length === 0,
+      errors
+    };
+  }
 controlPopScreen(ref: { togglePopScreen: (action: string) => void }, action: string = 'open'): void {
     ref?.togglePopScreen?.(action);
   }
@@ -85,6 +115,7 @@ findItemInArray<T extends { name?: string,code?:string,nameEn?: string,id?:numbe
   else return {exists:false, ind:index ,item:null }
 
 }
+
 
 
 

@@ -13,7 +13,6 @@ private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
 categories=signal<Category[]>([]);
 paginationCtx=inject(PaginationContextService);
 constructor(private __SharedService:SharedService) {
-
   this.paginationCtx.registerEntity<Category>(
     'Categories',
     this.getCategories.bind(this),
@@ -82,63 +81,34 @@ getCategoryByName(name: string) {
   }
   return this.__SharedService.getAllByPost('GetCategories','Categories',searchBody)
 }
-validateCategoryInputs(nameEn: string, nameAr: string,id:number |null=null) {
-  const normalizedName = nameEn.trim().toLowerCase();
-  const normalizedArabicName = nameAr.trim().toLowerCase();
 
-  if (!normalizedName) {
-    return {
-      message: 'Name is Required',
-      status: false,
-      errorType: 'missing_Name'
-    };
-  }
+// validateCategoryInputs(nameEn: string, nameAr: string,id:number |null=null) {
+//   const normalizedName = nameEn.trim().toLowerCase();
+//   const normalizedArabicName = nameAr.trim().toLowerCase();
 
-  if (!normalizedArabicName) {
-    return {
-      message: 'Arabic Name is Required',
-      status: false,
-      errorType: 'missing_Arabic_Name'
-    };
-  }
+//   const categories = this.categories();
 
-  const categories = this.categories();
+//   const duplicateExists = id == null
+//     ? categories.some(
+//         (category) =>
+//           category.nameEn.toLowerCase() === normalizedName ||
+//           category.nameAr.toLowerCase() === normalizedArabicName
+//       )
+//     : categories.find(
+//         (category) =>
+//           (category.nameEn.toLowerCase() === normalizedName ||
+//            category.nameAr.toLowerCase() === normalizedArabicName) &&
+//           category.id !== id
+//       );
 
-  const duplicateExists = id == null
-    ? categories.some(
-        (category) =>
-          category.nameEn.toLowerCase() === normalizedName ||
-          category.nameAr.toLowerCase() === normalizedArabicName
-      )
-    : categories.find(
-        (category) =>
-          (category.nameEn.toLowerCase() === normalizedName ||
-           category.nameAr.toLowerCase() === normalizedArabicName) &&
-          category.id !== id
-      );
+//   if (duplicateExists) {
+//     return {
+//       message: 'Category already exists',
+//       status: false,
+//       errorType: 'already_Exist'
+//     };
+//   }
 
-  if (duplicateExists) {
-    return {
-      message: 'Category already exists',
-      status: false,
-      errorType: 'already_Exist'
-    };
-  }
-
-  // const exists = this.categories().some(
-  //   (category: Category) =>
-  //     category.nameEn.toLowerCase() === normalizedName ||
-  //     category.nameAr === normalizedArabicName
-  // );
-
-  // if (exists) {
-  //   return {
-  //     message: 'Category already exists',
-  //     status: false,
-  //     errorType: 'already_Exist'
-  //   };
-  // }
-
-  return { status: true };
-}
+//   return { status: true };
+// }
 }

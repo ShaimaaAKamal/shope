@@ -16,7 +16,6 @@ interface variantDetailInterface {
 export class AddVariantComponent {
   private __ProductService=inject(ProductService);
   private __LanguageService=inject(LanguageService);
-  private __CommonService=inject(CommonService);
   isRtl=this.__LanguageService.rtlClassSignal;
 
   preSetVariants=this.__ProductService.variantOptions;

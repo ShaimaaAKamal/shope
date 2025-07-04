@@ -18,6 +18,11 @@ import { LanguageService } from '../../../Services/Language/language.service';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { VariantMasterLookUP } from '../../../Interfaces/variant-master-look-up';
 import { VartiantType } from '../../../Interfaces/vartiant-type';
+interface FieldErrors {
+  detailName: string;
+  detailNameAr: string;
+  variantValue: string;
+}
 
 @Component({
   selector: 'app-variant-library-item',
@@ -64,6 +69,9 @@ export class VariantLibraryItemComponent {
   @Input() variant!: VariantMasterLookUP;
   @Input() action = signal<string>('');
 
+   errors = signal<FieldErrors[]>([
+    { detailName: '', detailNameAr: '', variantValue: '' }
+   ]);
   constructor() {
     effect(() => {
       if (this.action() === 'add') this.addOrUpdateVariant('add');
@@ -112,6 +120,12 @@ export class VariantLibraryItemComponent {
       })
     }));
 
+    const newErrors = variantDetails.map(() => ({
+      detailName: '',
+      detailNameAr: '',
+      variantValue: ''
+    }))
+    this.errors.set(newErrors);
     this.values.set(newValues);
     this.cdRef.detectChanges();
   }
@@ -142,10 +156,18 @@ export class VariantLibraryItemComponent {
         }
       }
     ]);
+  this.errors.update(prev => [
+    ...prev,
+    { detailName: '', detailNameAr: '', variantValue: '' }
+  ]);
   }
 
   removeValue(id: string): void {
-    this.values.set(this.values().filter(v => v.id !== id));
+    const index = this.values().findIndex(v => v.id === id);
+    if (index !== -1) {
+      this.values.update(prev => prev.filter((_, i) => i !== index));
+      this.errors.update(prev => prev.filter((_, i) => i !== index));
+    }
   }
 
   private addOrUpdateVariant(mode: 'add' | 'update'): void {
@@ -157,7 +179,6 @@ export class VariantLibraryItemComponent {
       return;
     }
 
-    // if (mode === 'add' && this.isDuplicateVariant(variantName, variantArabicName)) {
       if (this.isDuplicateVariant(variantName, variantArabicName)) {
       this.nameErrorMessage = 'Variant already exists';
       this.action.set('');
@@ -165,12 +186,10 @@ export class VariantLibraryItemComponent {
     }
 
     const variantDetails = this.collectVariantDetails();
-    if (!variantDetails.length) {
-      this.nameErrorMessage = 'At least one value is required';
+    if (this.hasAnyErrors()) {
       this.action.set('');
       return;
     }
-
     const newVariant: VariantMasterLookUP = {
       ...(mode === 'update' && { id: this.variant.id }),
       variantTypeEn: this.variantTypeSelection,
@@ -196,23 +215,68 @@ export class VariantLibraryItemComponent {
     });
   }
 
+
+  hasAnyErrors(): boolean {
+    return this.errors().some(error =>
+      !!error.detailName || !!error.detailNameAr || !!error.variantValue
+    );
+  }
+
+
   private collectVariantDetails() {
     const details = [];
     const names = this.detailNameRefs.toArray();
     const namesAr = this.detailNameArRefs.toArray();
     const values = this.variantValueRefs.toArray();
 
+    const updatedErrors: FieldErrors[] = [];
+
     for (let i = 0; i < values.length; i++) {
       const value = values[i]?.value?.trim();
-      if (value) {
+      const name = names[i]?.value?.trim() || '';
+      const nameAr = namesAr[i]?.value?.trim() || '';
+
+      const fieldError: FieldErrors = {
+        detailName: '',
+        detailNameAr: '',
+        variantValue: '',
+      };
+
+      let isValid = true;
+
+      const result = this.__CommonService.validatenNameInputs(name, nameAr);
+      if (!result.status) {
+        isValid = false;
+
+        for (const err of result.errors) {
+          if (err.errorType === 'missing_Name') {
+            fieldError.detailName = err.message;
+          } else if (err.errorType === 'missing_Arabic_Name') {
+            fieldError.detailNameAr = err.message;
+          }
+        }
+      }
+
+      // Validate value field
+      if (!value) {
+        isValid = false;
+        fieldError.variantValue = 'Value is required';
+      }
+
+      updatedErrors.push(fieldError);
+
+      // Push valid variant detail
+      if (isValid) {
         details.push({
-          ...(this.variant && this.variant.variantDetails[i] && { id: this.variant.variantDetails[i].id }),
-          detailNameEn: names[i]?.value?.trim() || '',
-          detailNameAr: namesAr[i]?.value?.trim() || '',
+          ...(this.variant?.variantDetails?.[i] && { id: this.variant.variantDetails[i].id }),
+          detailNameEn: name,
+          detailNameAr: nameAr,
           value
         });
       }
     }
+
+    this.errors.set(updatedErrors);
     return details;
   }
 
@@ -245,14 +309,26 @@ export class VariantLibraryItemComponent {
     this.values.set(updated);
 
   }
+
+
   private validateNames(name: string, arabicName: string): boolean {
     this.nameErrorMessage = '';
     this.arabicNameErrorMessage = '';
 
-    if (!name) this.nameErrorMessage = 'Name is required';
-    if (!arabicName) this.arabicNameErrorMessage = 'Arabic Name is required';
+    const result = this.__CommonService.validatenNameInputs(name, arabicName);
 
-    return !!name && !!arabicName;
+    if (!result.status) {
+      for (const err of result.errors) {
+        if (err.errorType === 'missing_Name') {
+          this.nameErrorMessage = err.message;
+        } else if (err.errorType === 'missing_Arabic_Name') {
+          this.arabicNameErrorMessage = err.message;
+        }
+      }
+      return false;
+    }
+
+    return true;
   }
 
   private isDuplicateVariant(name: string, arabicName: string): boolean {
