@@ -46,7 +46,7 @@ paginationCtx=inject(PaginationContextService);
     this.variantOptions
   );
 
-  this.paginationCtx.registerEntity<VartiantType>(
+this.paginationCtx.registerEntity<VartiantType>(
     'Variant Types',
     this.getVariantTypes.bind(this),
     this.variantTypes
@@ -243,7 +243,6 @@ getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
 
 createProduct(product: Product) {
   const { id, ...productWithoutId } = product;
-
   return this.__HandleActualApiInvokeService.createEntity<Product>(
     'CreateProduct',
     productWithoutId,
@@ -341,7 +340,6 @@ updateProductInfo(product: Product, actionType?: string) {
           catchError(error => of({ status: false, message: error?.message || 'Update failed' }))
         );
       } else {
-        // Product does not exist, so create it
         return this.createProduct(product).pipe(
           map(() => ({ status: true, message: 'created' })),
           catchError(error => of({ status: false, message: error?.message || 'Create failed' }))
@@ -349,7 +347,6 @@ updateProductInfo(product: Product, actionType?: string) {
       }
     }),
     catchError(() => {
-      // If error occurs when fetching product (e.g., not found), assume product doesn't exist => create it
       return this.createProduct(product).pipe(
         map(() => ({ status: true, message: 'created' })),
         catchError(error => of({ status: false, message: error?.message || 'Create failed' }))
@@ -358,8 +355,7 @@ updateProductInfo(product: Product, actionType?: string) {
   );
 }
 
-
-  deleteNewProduct():boolean{
+deleteNewProduct():boolean{
     const current = [...this.products()];
     current.shift();
 

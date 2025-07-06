@@ -6,12 +6,15 @@ export interface FilterOption {
 }
 
 export interface FilterField {
+  operation?:number;
   type: FilterFieldType;
   controlName: string;
   label: string;
   placeholder?: string;
   inputType?: string;
-  options?: FilterOption[]; 
+  options?: FilterOption[];
+  filterValue?:any,
+  filterName?:string
 }
 
 export interface FilterSection {

@@ -1,12 +1,10 @@
 import { Component, computed, effect, inject, signal, Signal } from '@angular/core';
 import { Product } from '../../Interfaces/product';
 import { ProductService } from '../../Services/Product/product.service';
-import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonService } from '../../Services/CommonService/common.service';
 import { ServiceInterface } from '../../Interfaces/service-interface';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../Services/Category/category.service';
 import { LanguageService } from '../../Services/Language/language.service';
 import { FilterSection } from '../../Interfaces/filter-options';
@@ -48,7 +46,7 @@ export class ProductsComponent {
       title: 'Category',
       collapseId: 'collapseCategory',
       fields: [
-        {
+        {  operation:0,
           type: 'select',
           controlName: 'category',
           label: 'Category',
@@ -60,18 +58,19 @@ export class ProductsComponent {
       ]
     },
     {
+
       title: 'Price Range',
       collapseId: 'collapsePrice',
       fields: [
-        { type: 'input', controlName: 'minPrice', label: 'Min Price', inputType: 'number', placeholder: 'Min' },
-        { type: 'input', controlName: 'maxPrice', label: 'Max Price', inputType: 'number', placeholder: 'Max' }
+        { type: 'input', controlName: 'minPrice', label: 'Min Price', inputType: 'number', placeholder: 'Min' ,operation:7,filterName:'price'},
+        { type: 'input', controlName: 'maxPrice', label: 'Max Price', inputType: 'number', placeholder: 'Max',operation:5 ,filterName:'price'}
       ]
     },
     {
       title: 'Product Status',
       collapseId: 'collapseStatus',
       fields: [
-        {
+        {operation:0,
           type: 'radio',
           controlName: 'isActive',
           label: 'Product Status',
@@ -94,26 +93,32 @@ export class ProductsComponent {
             { label: 'All', value: 'true' },
           ]
         },
-        {
+        { operation:5,
           type: 'checkbox',
           controlName: 'inStock',
           label: 'In Stock',
+          filterName: 'qunatity',
           options: [
             { label: 'In Stock', value: true },
-          ]
+          ],
+          filterValue:1
         },
         {
+          operation:0,
           type: 'checkbox',
           controlName: 'newArrival',
           label: 'New Arrival',
+          filterName: 'InsertedDate',
           options: [
             { label: 'New Arrival', value: 'true' },
-          ]
+          ],
+          filterValue:new Date().toISOString()
         },
-        {
+        {operation:0,
           type: 'checkbox',
           controlName: 'taxableProducts',
           label: 'Taxable products',
+          filterName: 'chargesTax',
           options: [
             { label: 'Taxable products', value: 'true' },
           ]
@@ -191,6 +196,16 @@ handleDisplayDir(dir:string){
 
 applyFilters(event:any) {
   const filters = event;
+  console.log('Applied Filters:', filters);
+  const body: any = {
+    sorts: [],
+    filters: [],
+    pagingModel: { index: 0, length: 0, all: false },
+    properties: ''
+  };
+  this.productService.getProducts({
+    
+  });
   this.closeFilter=true;
   }
 resetFilters() {

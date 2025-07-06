@@ -2,6 +2,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilterSection } from '../../../Interfaces/filter-options';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
+// type FilterOperation = 0 | 1 | 2 | 3 | 4 |5 | 6 | 7 | 8 | 9;
+
+interface FilterOption {
+  // operation: FilterOperation;
+  operation: number;
+  propertyName: string;
+  propertyValue: string;
+}
 
 @Component({
   selector: 'app-filter-options',
@@ -33,8 +41,35 @@ export class FilterOptionsComponent {
   }
 
   applyFilters() {
-    this.filtersApplied.emit(this.filterForm.value);
+    const mappedFilters= this.mapToApiFilterStructure(this.sections, this.filterForm.value);
+    this.filtersApplied.emit(mappedFilters);
+
   }
+
+  mapToApiFilterStructure( sections: FilterSection[],
+    values: { [key: string]: any }):FilterOption[]{
+    const filters: FilterOption[] = [];
+
+    for (const section of sections) {
+      for (const field of section.fields) {
+        const value = values[field.controlName];
+        if (
+          value !== null &&
+          value !== undefined &&
+          value !== '' &&
+          !(Array.isArray(value) && value.length === 0)
+        ) {
+          filters.push({
+            operation: field.operation ?? 0,
+            propertyName: field.filterName?? field.controlName,
+            propertyValue: field.filterValue ?? value
+          });
+        }
+      }
+    }
+
+    return filters;
+    }
 
   resetFilters() {
     this.filterForm.reset();

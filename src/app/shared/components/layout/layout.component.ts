@@ -1,11 +1,6 @@
-import { Component, effect, EventEmitter, inject, input, Input, Output, signal, Signal, SimpleChanges } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { ServiceInterface } from '../../../Interfaces/service-interface';
 import { PaginationStore } from '../../stores/pagination-store.store';
-import { CategoryService } from '../../../Services/Category/category.service';
-import { ProductService } from '../../../Services/Product/product.service';
-import { CustomerService } from '../../../Services/Customer/customer.service';
-import { OrderService } from '../../../Services/order/order.service';
-import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../../Services/CommonService/common.service';
 import { PaginationContextService } from '../../../Services/PaginationContext/pagination-context.service';
 

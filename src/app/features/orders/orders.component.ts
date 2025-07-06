@@ -57,6 +57,9 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
           ]
         },
         {
+          filterName:"invoiceType",
+          operation:0,
+          filterValue:1,
           type: 'checkbox',
           controlName: 'hold',
           label: 'Hold',
@@ -65,6 +68,9 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
           ]
         },
         {
+          filterName:"invoiceType",
+          operation:0,
+          filterValue:2,
           type: 'checkbox',
           controlName: 'paid',
           label: 'Paid',
@@ -73,6 +79,9 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
           ]
         },
         {
+          filterName:"invoiceType",
+          operation:0,
+          filterValue:3,
           type: 'checkbox',
           controlName: 'returned',
           label: 'Returned',
@@ -103,6 +112,9 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
           ]
         },
         {
+          filterName:"paymentMethodId",
+          operation:0,
+          filterValue:1,
           type: 'checkbox',
           controlName: 'cash',
           label: 'Cash',
@@ -111,6 +123,9 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
           ]
         },
         {
+          filterName:"paymentMethodId",
+          operation:0,
+          filterValue:2,
           type: 'checkbox',
           controlName: 'Network',
           label: 'Network',
@@ -143,8 +158,8 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
       title: 'Order Date',
       collapseId: 'collapseOrderDate',
       fields: [
-        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' },
-        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To' },
+        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' , filterName: 'InsertedDate', operation:5 },
+        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To', filterName: 'InsertedDate', operation:7 },
       ]
     },
   ]);

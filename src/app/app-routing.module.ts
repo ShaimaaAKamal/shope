@@ -10,6 +10,8 @@ const routes: Routes = [
   { path: 'Products', loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule) },
   { path: 'Orders', loadChildren: () => import('./features/orders/orders.module').then(m => m.OrdersModule) },
   { path: 'Customers', loadChildren: () => import('./features/customers/customers.module').then(m => m.CustomersModule) },
+  { path: 'users', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule) },
+  { path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
   {path:"**",component:NotFoundComponent}
 ];
 

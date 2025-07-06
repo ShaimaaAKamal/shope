@@ -30,10 +30,10 @@ export class CustomersComponent {
   closeFilter:boolean=false;
   filterConfig= computed<FilterSection[]>(() => [
     {
-      title: 'Search By Name or Phone',
+      title: 'Search by Phone',
       collapseId: 'collapseSearchBy',
       fields: [
-        { type: 'input', controlName: 'searchKey', label: '', inputType: 'text', placeholder: '' },
+        { type: 'input', controlName: 'searchKey', label: '', inputType: 'text', placeholder: '' , operation:3,filterName:"phone" },
       ]
     },
     {
@@ -72,8 +72,8 @@ export class CustomersComponent {
       title: 'Register Date',
       collapseId: 'collapseRegisterDate',
       fields: [
-        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' },
-        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To' },
+        { type: 'input', controlName: 'startPeriod', label: 'From', inputType: 'date', placeholder: 'From' ,   filterName: 'InsertedDate', operation:5},
+        { type: 'input', controlName: 'endPeriod', label: 'To', inputType: 'date', placeholder: 'To' ,   filterName: 'InsertedDate', operation:7},
 
       ]
     },
