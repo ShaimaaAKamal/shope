@@ -333,8 +333,7 @@ deleteProducts(ids: number[]) {
 updateProductInfo(product: Product, actionType?: string) {
   return this.getProduct(product.id!).pipe(
     switchMap(existingProduct => {
-      if (existingProduct) {
-        // Product exists, so update it
+        if (existingProduct.isSuccess) {
         return this.updateProduct(product).pipe(
           map(() => ({ status: true, message: 'updated' })),
           catchError(error => of({ status: false, message: error?.message || 'Update failed' }))
@@ -346,12 +345,6 @@ updateProductInfo(product: Product, actionType?: string) {
         );
       }
     }),
-    catchError(() => {
-      return this.createProduct(product).pipe(
-        map(() => ({ status: true, message: 'created' })),
-        catchError(error => of({ status: false, message: error?.message || 'Create failed' }))
-      );
-    })
   );
 }
 

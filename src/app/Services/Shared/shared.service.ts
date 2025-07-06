@@ -15,6 +15,7 @@ export class SharedService {
   ) {}
 
   private handleError(operation: string, entityName: string = 'item', error: any): Observable<never> {
+    if(entityName != 'product')
     this.__ToastingMessagesService.showToast(`Failed to ${operation} ${entityName}`, 'error');
     return throwError(() => error);
   }
@@ -57,6 +58,7 @@ export class SharedService {
     );
   }
 
+
   getByIdByPost<T>(
     endpointKey: string,
     id: number | string,
@@ -84,6 +86,7 @@ export class SharedService {
       catchError(err => this.handleError('fetch', entityName, err))
     );
   }
+
 
   createByPost<T>(
     endpointKey: string,
