@@ -1,6 +1,7 @@
 import {  NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { GuestGuard } from './guards/Guest/guest.guard';
 
 const routes: Routes = [
   { path: '', redirectTo:"Orders/create" ,pathMatch:'full'},
@@ -11,7 +12,7 @@ const routes: Routes = [
   { path: 'Orders', loadChildren: () => import('./features/orders/orders.module').then(m => m.OrdersModule) },
   { path: 'Customers', loadChildren: () => import('./features/customers/customers.module').then(m => m.CustomersModule) },
   { path: 'Users', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule) },
-  { path: 'Auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
+  { path: 'Auth',  canActivate: [GuestGuard],loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
   {path:"**",component:NotFoundComponent}
 ];
 
