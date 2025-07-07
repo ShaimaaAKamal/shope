@@ -3,6 +3,7 @@ import { Component, effect, ElementRef, HostListener, inject, signal, ViewChild 
 import { LanguageService } from './Services/Language/language.service';
 import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
 import { Router } from '@angular/router';
+import { ThemeService } from './Services/Theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,9 @@ export class AppComponent {
   @ViewChild('sideNav') sideNav!:SidenavComponent;
 
 
-  constructor(private translateService: TranslateService,private __LanguageService:LanguageService,private __Router:Router) {
+  constructor(private translateService: TranslateService,private __LanguageService:LanguageService,private __Router:Router,
+    private __ThemeService:ThemeService
+  ) {
     this.translateService.setDefaultLang('en');
 
     this.__LanguageService.dirSignal();
@@ -48,5 +51,9 @@ export class AppComponent {
 
    shouldShowHeader(): boolean {
     return !this.__Router.url.includes('/Orders/create');
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }
