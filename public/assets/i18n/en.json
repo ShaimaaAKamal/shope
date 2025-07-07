@@ -340,5 +340,19 @@
    "Delete Product Varaiant Option":"Delete Product Varaiant Option",
    "Add new customer":"Add New Customer",
    "Add New Customers":"Add New Customers",
-   "Add New Customer":"Add New Customer"
+   "Add New Customer":"Add New Customer",
+
+   "New Password":"New Password",
+   "Change Password":"Change Password",
+   "Reset Password":"Reset Password",
+   "Login":"Login",
+   "Register":"Register",
+   "Full Name":"Full Name",
+   "Phone":"Phone",
+   "Password":"Password",
+   "Confirm Password":"Confirm Password",
+   "Email Address": "Email Address",
+   "Enter your New Password":"Enter your New Password",
+   "Forget Password ?":"Forget Password ?",
+   "Enter your registered email address to receive a password reset link.":"Enter your registered email address to receive a password reset link."
 }

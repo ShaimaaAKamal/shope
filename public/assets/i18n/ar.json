@@ -340,6 +340,19 @@
             "Delete Product Varaiant Option": "حذف خيار متغير المنتج",
             "Add new customer": "إضافة عميل جديد",
             "Add New Customers": "إضافة عملاء جدد",
-            "Add New Customer": "إضافة عميل جديد"
+            "Add New Customer": "إضافة عميل جديد",
+            "New Password": "كلمة المرور الجديدة",
+            "Change Password": "تغيير كلمة المرور",
+            "Reset Password": "إعادة تعيين كلمة المرور",
+            "Login": "تسجيل الدخول",
+            "Register": "إنشاء حساب",
+            "Full Name": "الاسم الكامل",
+            "Phone": "رقم الهاتف",
+            "Password": "كلمة المرور",
+            "Confirm Password": "تأكيد كلمة المرور",
+            "Email Address": "البريد الإلكتروني",
+            "Enter your New Password": "أدخل كلمة المرور الجديدة",
+            "Forget Password ?": "هل نسيت كلمة المرور؟",
+            "Enter your registered email address to receive a password reset link.": "أدخل بريدك الإلكتروني المسجل لتلقي رابط إعادة تعيين كلمة المرور."
 
         }
