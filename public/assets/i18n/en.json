@@ -364,9 +364,8 @@
    "Failed to Change Password Data": "Failed to Change Password Data",
 
 
-   "Failed to create categories": "Failed to create categories",
-   "Failed to create products":   "Failed to create products",
-    "Failed to create variants":   "Failed to create variants",
-    "Failed to create orders":"Failed to create orders",
-    "Failed to create variant types":"Failed to create variant types",
+   "Failed to create Category": "Failed to create category",
+   "Failed to create Product":   "Failed to create product",
+    "Failed to create Variant":   "Failed to create variant",
+    "Failed to create Order":"Failed to create order",
 }

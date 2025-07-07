@@ -52,6 +52,10 @@ updateUser(user: User) {
   });
 }
 
+  getUser(id:number){
+      return this.__HandleActualApiInvokeService.getEntityById<User>('GetUserById', id, 'user');
+  }
+
   setCurrentUser(user:User){
     this.currentUser.set(user);
   }

@@ -13,63 +13,57 @@ import { SetPassword } from '../../../Interfaces/set-password';
 })
 export class RegisterComponent {
   @ViewChildren(InputComponent) inputs!: QueryList<InputComponent>;
-   userNameError:string='';
-   mailError:string='';
-   phoneError:string='';
-   passwordError:string='';
 
-  constructor(private __Router:Router,private __AuthService:AuthService){}
+  errors = {
+    userName: '',
+    email: '',
+    phone: '',
+    password: ''
+  };
 
-  goToLogin(){
-    this.__Router.navigateByUrl('Auth/Login');
+  constructor(private router: Router, private authService: AuthService) {}
+
+  goToLogin() {
+    this.router.navigateByUrl('Auth/Login');
   }
-  register(){
-    const userName=this.inputs.get(0)?.value.trim() ?? '';
-    const email=this.inputs.get(1)?.value.trim() ?? '';
-    const phoneNumber=this.inputs.get(2)?.value.trim() ?? '';
-    const password=this.inputs.get(3)?.value.trim() ?? '';
 
+  register() {
     this.clearErrors();
-    if(!userName)
-    this.userNameError='Name is required'
-    if(!email)
-     this.mailError='Email Address is required'
-    if(!phoneNumber)
-      this.phoneError='Phone is required'
-      if(!password)
-      this.passwordError='Password is required'
 
-    if(this.userNameError || this.mailError || this.phoneError || this.passwordError){
-        return;
-    }
-    else {
-      const user:User={
-        userName,
-        email,
-        phoneNumber,
-        rolesId: [],
-        applicationsId:[0],
-        level: 0
+    const [userName, email, phoneNumber, password] = this.inputs.map(i => i.value?.trim() ?? '');
+
+    // Validation
+    if (!userName) this.errors.userName = 'Name is required';
+    if (!email) this.errors.email = 'Email Address is required';
+    if (!phoneNumber) this.errors.phone = 'Phone is required';
+    if (!password) this.errors.password = 'Password is required';
+
+    if (Object.values(this.errors).some(err => err)) return;
+
+    const user: User = {
+      userName,
+      email,
+      phoneNumber,
+      rolesId: [],
+      applicationsId: [0],
+      level: 0
+    };
+
+    this.authService.Register(user).subscribe({
+      next: () => {
+        const setPasswordData: SetPassword = {
+          userEmail: email,
+          newPassword: password
+        };
+
+        this.authService.setPassword(setPasswordData).subscribe({
+          next: () => this.goToLogin()
+        });
       }
-
-
-      this.__AuthService.Register(user).subscribe({
-         next:()=> {
-              const SetPasswordData:SetPassword={
-                userEmail: email,
-                newPassword: password
-              }
-             this.__AuthService.setPassword(SetPasswordData).subscribe({
-               next:()=> this.goToLogin()
-             })
-         }
-      });
-    }
+    });
   }
-  clearErrors(){
-    this.userNameError='';
-    this.mailError='';
-    this.phoneError='';
-    this.passwordError='';
+
+  clearErrors() {
+    Object.keys(this.errors).forEach(key => this.errors[key as keyof typeof this.errors] = '');
   }
 }
