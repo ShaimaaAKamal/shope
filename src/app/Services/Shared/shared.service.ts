@@ -16,14 +16,15 @@ export class SharedService {
 
   private handleError(operation: string, entityName: string = 'item', error: any): Observable<never> {
     if(entityName != 'product'){
-      if(entityName == 'User Data')
-        this.__ToastingMessagesService.showToast(`Failed to Login`, 'error');
+      if(entityName == 'Login' || entityName == 'Change Password Data' ||entityName == 'Set Password' )
+      this.__ToastingMessagesService.showToast(`Failed to ${entityName}`, 'error');
       else
       this.__ToastingMessagesService.showToast(`Failed to ${operation} ${entityName}`, 'error');
 
     }
     return throwError(() => error);
   }
+
 
   getAllByPost<T>(
     endpointKey: string,

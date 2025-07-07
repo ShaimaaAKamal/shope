@@ -3,6 +3,8 @@ import { User } from '../../Interfaces/user';
 import { HandleActualApiInvokeService } from '../HandleActualApiInvoke/handle-actual-api-invoke.service';
 import { UserLoginData } from '../../Interfaces/user-login-data';
 import { CommonService } from '../CommonService/common.service';
+import { ChangePassword } from '../../Interfaces/change-password';
+import { SetPassword } from '../../Interfaces/set-password';
 
 
 @Injectable({
@@ -27,17 +29,29 @@ export class AuthService {
     return this.__HandleActualApiInvokeService.createEntity<UserLoginData>(
       'Login',
       userData,
-      'User Data',
+      'Login',
+    )
+  }
+
+  setPassword(SetPasswordData:SetPassword){
+    return this.__HandleActualApiInvokeService.createEntity<SetPassword>(
+      'SetPassword',
+      SetPasswordData,
+      'Set Password',
     )
   }
 
   resetPassword(){
 
   }
-  changePassword(){
-
+  changePassword(ChangePasswordData:ChangePassword){
+    return this.__HandleActualApiInvokeService.createEntity<ChangePassword>(
+      'ChangePassword',
+      ChangePasswordData,
+      'Change Password Data',
+    )
   }
-  
+
   saveToken(token:string){
     this.__CommonService.saveToStorage('token',token);
     this.token=token;

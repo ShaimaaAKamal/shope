@@ -353,6 +353,12 @@
             "Email Address": "البريد الإلكتروني",
             "Enter your New Password": "أدخل كلمة المرور الجديدة",
             "Forget Password ?": "هل نسيت كلمة المرور؟",
-            "Enter your registered email address to receive a password reset link.": "أدخل بريدك الإلكتروني المسجل لتلقي رابط إعادة تعيين كلمة المرور."
-
+            "Enter your registered email address to receive a password reset link.": "أدخل بريدك الإلكتروني المسجل لتلقي رابط إعادة تعيين كلمة المرور.",
+            "Email Address is required": "عنوان البريد الإلكتروني مطلوب",
+              "Name is required": "الاسم مطلوب",
+              "Password is required": "كلمة المرور مطلوبة",
+              "Phone is required": "رقم الهاتف مطلوب",
+              "Failed to Login":"فشل في تسجيل الدخول",
+              "Failed to Set Password": "فشل في تسجيل الرقم السري",
+              "Failed to Change Password Data": "فشل في تغيير الرقم السري"
         }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { AuthService } from '../../../Services/Auth/auth.service';
 import { User } from '../../../Interfaces/user';
+import { SetPassword } from '../../../Interfaces/set-password';
 
 @Component({
   selector: 'app-register',
@@ -51,12 +52,20 @@ export class RegisterComponent {
         level: 0
       }
 
+
       this.__AuthService.Register(user).subscribe({
-         next:()=> this.goToLogin()
+         next:()=> {
+              const SetPasswordData:SetPassword={
+                userEmail: email,
+                newPassword: password
+              }
+             this.__AuthService.setPassword(SetPasswordData).subscribe({
+               next:()=> this.goToLogin()
+             })
+         }
       });
     }
   }
-
   clearErrors(){
     this.userNameError='';
     this.mailError='';

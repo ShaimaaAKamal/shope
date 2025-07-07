@@ -354,5 +354,19 @@
    "Email Address": "Email Address",
    "Enter your New Password":"Enter your New Password",
    "Forget Password ?":"Forget Password ?",
-   "Enter your registered email address to receive a password reset link.":"Enter your registered email address to receive a password reset link."
+   "Enter your registered email address to receive a password reset link.":"Enter your registered email address to receive a password reset link.",
+   "Email Address is required":"Email Address is required",
+   "Name is required":"Name is required",
+   "Password is required":"Password is required",
+   "Phone is required":"Phone is required",
+   "Failed to Login":"Failed to Login",
+   "Failed to Set Password": "Failed to Set Password",
+   "Failed to Change Password Data": "Failed to Change Password Data",
+
+
+   "Failed to create categories": "Failed to create categories",
+   "Failed to create products":   "Failed to create products",
+    "Failed to create variants":   "Failed to create variants",
+    "Failed to create orders":"Failed to create orders",
+    "Failed to create variant types":"Failed to create variant types",
 }
