@@ -1,0 +1,25 @@
+@media (min-width: 768px) {
+  .authSvg {
+    bottom: 0px;
+    position: absolute;
+    left:0px;
+  }
+
+  .authSvg2 {
+    top: 0px;
+    position: absolute;
+    transform: rotate(180deg);
+    right:0px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .authSvg {
+    bottom: -40px;
+  }
+
+  .authSvg2 {
+    top: -50px;
+  }
+}
+
