@@ -8,6 +8,8 @@ import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SendEmailComponent } from './send-email/send-email.component';
+import { SharedModule } from '../../shared/shared.module';
+import { LayoutComponent } from './layout/layout.component';
 
 
 @NgModule({
@@ -17,11 +19,13 @@ import { SendEmailComponent } from './send-email/send-email.component';
     RegisterComponent,
     ForgetPasswordComponent,
     ResetPasswordComponent,
-    SendEmailComponent
+    SendEmailComponent,
+    LayoutComponent
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    SharedModule
   ]
 })
 export class AuthModule { }
