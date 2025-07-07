@@ -242,7 +242,7 @@ buildOrder(
     customerId:customerId?? 0,
     shiftId:shift.id?? 0,
     shiftNumber:shift.shiftNumber,
-    userId:user.id ?? '',
+    userId:user.id?.toString() ?? '',
     paymentMethodId:1,
     cashAmount:paymentMethods.cash,
     networkAmount:paymentMethods.network,

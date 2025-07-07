@@ -1,11 +1,9 @@
 export interface User {
-  id?:string,
+  id?:number,
   userName: string,
   email: string,
   phoneNumber: string,
-  rolesId: [
-    string
-  ],
+  rolesId: string[],
   applicationsId: number[],
   level: number
 }

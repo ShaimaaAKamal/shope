@@ -15,8 +15,13 @@ export class SharedService {
   ) {}
 
   private handleError(operation: string, entityName: string = 'item', error: any): Observable<never> {
-    if(entityName != 'product')
-    this.__ToastingMessagesService.showToast(`Failed to ${operation} ${entityName}`, 'error');
+    if(entityName != 'product'){
+      if(entityName == 'User Data')
+        this.__ToastingMessagesService.showToast(`Failed to Login`, 'error');
+      else
+      this.__ToastingMessagesService.showToast(`Failed to ${operation} ${entityName}`, 'error');
+
+    }
     return throwError(() => error);
   }
 

@@ -4,6 +4,7 @@ import { LanguageService } from './Services/Language/language.service';
 import { SidenavComponent } from './components/sideNavComponents/sidenav/sidenav.component';
 import { Router } from '@angular/router';
 import { ThemeService } from './Services/Theme/theme.service';
+import { AuthService } from './Services/Auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,8 @@ import { ThemeService } from './Services/Theme/theme.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-
-
+  private __AuthService=inject(AuthService);
+  isLoggedIn=this.__AuthService.isLogged;
   title = 'shope';
   @ViewChild('sideNavContainer') sideNavContainer!:ElementRef;
   @ViewChild('sideNav') sideNav!:SidenavComponent;
@@ -53,7 +54,4 @@ export class AppComponent {
     return !this.__Router.url.includes('/Orders/create');
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
 }
