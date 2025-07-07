@@ -22,6 +22,11 @@ html {
   font-family: 'Poppins', sans-serif;
   color:$text-color;
   }
+
+.w-90{
+  width: 90% !important;
+}
+
   .border-light{
 
     border:1px solid $input-border-color !important;
@@ -31,6 +36,13 @@ html {
   }
   .border-end-color {
     border-color:$gray !important;
+  }
+
+  .border-auth{
+      border-color:$semi-dark !important;
+    }
+  .bg-ilustraion{
+    background-color: #c2cbd4;
   }
   .text-input{
     color:$input-text-color !important;
@@ -42,6 +54,9 @@ html {
     background-color:$bg-card-body-color !important;
   }
 
+   .bg-auth-register-login-btn{
+    background-color: #E0F7E6;
+   }
   .bg-dropdown{
     background-color:$bg-dropdown;
   }
@@ -93,6 +108,9 @@ html {
   }
   .bg-semi-dark{
     background-color: $semi-dark;
+  }
+  .bg-auth{
+    background-color: $bg-auth;
   }
   .hover-bg:hover {
   background-color: $semi-dark ;
@@ -238,8 +256,8 @@ input.form-control{
         outline: none;
       }
     }
-
 }
+
 .paymentButtons,.keypad{
      button{
         padding:1.5rem;
