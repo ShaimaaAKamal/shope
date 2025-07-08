@@ -13,7 +13,7 @@ import { SetPassword } from '../../Interfaces/set-password';
 export class AuthService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   private __CommonService=inject(CommonService);
-  isLogged=signal<boolean>(false);
+  isLogged=signal<boolean>(true);
   token:string='';
 
   Register(user: User) {
