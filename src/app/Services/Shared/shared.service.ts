@@ -14,21 +14,10 @@ export class SharedService {
     private __ToastingMessagesService: ToastingMessagesService
   ) {}
 
-  // private handleError(operation: string, entityName: string = 'item', error: any): Observable<never> {
-  //   if(entityName != 'product'){
-  //     if(entityName == 'Login' || entityName == 'Change Password Data' ||entityName == 'Set Password' )
-  //     this.__ToastingMessagesService.showToast(`Failed to ${entityName}`, 'error');
-  //     else
-  //     this.__ToastingMessagesService.showToast(`Failed to ${operation} ${entityName}`, 'error');
-
-  //   }
-  //   return throwError(() => error);
-  // }
-
   private handleError(operation: string, entityName: string = 'item', error: any): Observable<never> {
     const specialEntities = new Set(['Login', 'Change Password Data', 'Set Password']);
 
-    if (entityName !== 'product') {
+    if(entityName !== 'product' && entityName !== 'getUserByMail'){
       const message = specialEntities.has(entityName)
         ? `Failed to ${entityName}`
         : `Failed to ${operation} ${entityName}`;

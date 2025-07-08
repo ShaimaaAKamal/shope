@@ -13,7 +13,7 @@ import { SetPassword } from '../../Interfaces/set-password';
 export class AuthService {
   private __HandleActualApiInvokeService=inject(HandleActualApiInvokeService);
   private __CommonService=inject(CommonService);
-  isLogged=signal<boolean>(true);
+  isLogged=signal<boolean>(false);
   token:string='';
 
   Register(user: User) {
@@ -41,15 +41,30 @@ export class AuthService {
     )
   }
 
-  resetPassword(){
 
-  }
   changePassword(ChangePasswordData:ChangePassword){
     return this.__HandleActualApiInvokeService.createEntity<ChangePassword>(
       'ChangePassword',
       ChangePasswordData,
       'Change Password Data',
     )
+  }
+
+  getUserByEmail(email:string){
+   const  body: any = {
+      sorts: [],
+      filters: [
+        {
+          operation: 0,
+          propertyName: "email",
+          propertyValue: email
+        }
+      ],
+      pagingModel: { index: 0, length: 0, all: false },
+      properties: ''
+    }
+      return this.__HandleActualApiInvokeService.getEntities<User>('GetUsers', 'getUserByMail',signal<User[]>([]), body)
+
   }
 
   saveToken(token:string){
