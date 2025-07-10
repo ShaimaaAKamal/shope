@@ -48,7 +48,7 @@ export class ProductsComponent {
       fields: [
         {  operation:0,
           type: 'select',
-          controlName: 'category',
+          controlName: 'categoryId',
           label: 'Category',
           options: this.categories().map(c => ({
             label: this.isRtl() ? c.nameAr : c.nameEn,
@@ -97,14 +97,14 @@ export class ProductsComponent {
           type: 'checkbox',
           controlName: 'inStock',
           label: 'In Stock',
-          filterName: 'qunatity',
+          filterName: 'quantity',
           options: [
             { label: 'In Stock', value: true },
           ],
           filterValue:1
         },
         {
-          operation:0,
+          operation:5,
           type: 'checkbox',
           controlName: 'newArrival',
           label: 'New Arrival',
@@ -196,16 +196,29 @@ handleDisplayDir(dir:string){
 
 applyFilters(event:any) {
   const filters = event;
-  console.log('Applied Filters:', filters);
-  const body: any = {
-    sorts: [],
-    filters: [],
-    pagingModel: { index: 0, length: 0, all: false },
-    properties: ''
-  };
-  this.productService.getProducts({
-    
-  });
+  const store = this.productService.paginationCtx.getStore('Products');
+if (store) {
+  store.filters=filters;
+  const savedSearchKey=this.__CommonService.getItemsFromStorage('searchKey','');
+  console.log('filters',filters);
+  console.log('store filters',store.filters);
+  // if(savedSearchKey){
+  //   console.log('savedSearchKey',savedSearchKey);
+  //   console.log('insearch');
+    const searchFn = this.productService.paginationCtx.getSearchFn('Products', 'nameEn',this.productService.getProducts.bind(this.productService));
+    this.productService.paginationCtx.getStore('Products')?.setFetchFn(searchFn(savedSearchKey));
+  // }
+  this.productService.paginationCtx.getStore('Products')?.refresh();
+}
+  // const body: any = {
+  //   sorts: [],
+  //   filters: filters,
+  //   pagingModel: { index: 0, length: 0, all: false },
+  //   properties: ''
+  // };
+  // this.productService.getProducts({
+
+  // });
   this.closeFilter=true;
   }
 resetFilters() {
@@ -215,8 +228,13 @@ resetFilters() {
   ngOnDestroy(): void {
     this.type.set('');
     this.productService.removeEmptyProductandSortPeroducts(this.products());
-    this.productService.paginationCtx.getStore('Products')?.resetPage();
-
+    const store= this.productService.paginationCtx.getStore('Products');
+    if(store){
+      store.resetPage();
+      console.log('in destroye')
+      store.filters=[]
+    }
+    // this.productService.paginationCtx.getStore('Products')?.resetPage();
   }
 }
 

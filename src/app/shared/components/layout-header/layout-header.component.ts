@@ -63,21 +63,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   private previousUrl: string | null = null;
   ngOnInit(): void {
 
-    // this.router.events
-    // .pipe(
-    //   takeUntil(this.destroy$),
-    //   filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
-    // )
-    // .subscribe(event => {
-    //   const currentPath = event.urlAfterRedirects.split('?')[0];
-    //   const previousPath = this.previousUrl?.split('?')[0] ?? null;
-
-    //   if (previousPath !== null && previousPath !== currentPath) {
-    //     this.clearSearchKey();
-    //   }
-    //   this.previousUrl = event.urlAfterRedirects;
-    // });
-
     this.router.events
   .pipe(
     takeUntil(this.destroy$),
@@ -102,11 +87,23 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       .subscribe(() => this.sendSearchRequest());
   }
 
-  private clearSearchKey() {
-    this.searchKey = '';
-    this.commonService.removeItemFromStorage('searchKey')
-    this.searchKeyChanged$.next('');
+  // private clearSearchKey() {
+  //   this.searchKey = '';
+  //   this.commonService.removeItemFromStorage('searchKey')
+  //   this.searchKeyChanged$.next('');
+  // }
 
+  private clearSearchKey() {
+    const store= this.paginationCtx.getStore(this.dropdownSelection);
+    if(store) {store.filters=[];
+      // this.commonService.removeItemFromStorage(`filters`);
+     this.commonService.removeItemFromStorage(`${this.dropdownSelection}_filters`)
+     }
+    this.commonService.removeItemFromStorage('searchKey');
+    // this.commonService.removeItemFromStorage(`${this.dropdownSelection}_filters`)
+
+    this.searchKey = '';
+    this.searchKeyChanged$.next('');
   }
 
   private getEntityConfig(selection: string): {
@@ -159,7 +156,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.searchKey = savedSearchKey;
     const config = this.getEntityConfig(this.dropdownSelection);
     if (!config) return;
-
+    console.log('checkStoredKey');
     const searchFn = this.paginationCtx.getSearchFn(config.key, config.propertyName, config.getFn);
     this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(savedSearchKey));
     this.paginationCtx.getStore(config.key)?.refresh();
@@ -176,9 +173,18 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(this.searchKey));
   }
 
+  // onSearchKeyChange(value: string): void {
+  //   this.searchKey = value;
+  //   this.commonService.saveToStorage('searchKey',value);
+  //   this.searchKeyChanged$.next(value);
+  // }
   onSearchKeyChange(value: string): void {
-    this.searchKey = value;
-    this.commonService.saveToStorage('searchKey',value);
+    if(value){
+      this.searchKey = value;
+      this.commonService.saveToStorage('searchKey',value);
+    }
+    else this.commonService.removeItemFromStorage('searchKey');
+
     this.searchKeyChanged$.next(value);
   }
 

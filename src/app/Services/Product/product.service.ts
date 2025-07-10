@@ -237,7 +237,9 @@ updateProductVariants(variants: ProductVariantMaster[]): Observable<ProductVaria
     }
 
 getProducts(body?: any): Observable<{data:Product[],totalCount:number}> {
-  return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body)
+  return this.__HandleActualApiInvokeService.getEntities<Product>('GetProducts', 'products',this.productsSignal, body).pipe(
+    tap(data => console.log(data))
+  )
 }
 
 

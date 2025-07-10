@@ -46,6 +46,32 @@ export class FilterOptionsComponent {
 
   }
 
+  // mapToApiFilterStructure( sections: FilterSection[],
+  //   values: { [key: string]: any }):FilterOption[]{
+  //   const filters: FilterOption[] = [];
+
+  //   for (const section of sections) {
+  //     for (const field of section.fields) {
+  //       const value = values[field.controlName];
+  //       if (
+  //         value !== null &&
+  //         value !== undefined &&
+  //         value !== '' &&
+  //         !(Array.isArray(value) && value.length === 0)
+  //       ) {
+  //         filters.push({
+  //           operation: field.operation ?? 0,
+  //           propertyName: field.filterName?? field.controlName,
+  //           propertyValue: field.filterValue ?? value
+  //         });
+  //       }
+  //     }
+  //   }
+
+  //   return filters;
+  //   }
+
+
   mapToApiFilterStructure( sections: FilterSection[],
     values: { [key: string]: any }):FilterOption[]{
     const filters: FilterOption[] = [];
@@ -56,13 +82,16 @@ export class FilterOptionsComponent {
         if (
           value !== null &&
           value !== undefined &&
-          value !== '' &&
-          !(Array.isArray(value) && value.length === 0)
+          value !== '' && value &&
+          !(Array.isArray(value) && value.length === 0) && (field.controlName != 'all' && value)
         ) {
+          const propertyName = field.filterName ?? field.controlName;
+          const propertyValue =
+          field.filterValue ?? ((propertyName=== 'category' || propertyName === 'quantity') ? Number(value) : value);
           filters.push({
             operation: field.operation ?? 0,
-            propertyName: field.filterName?? field.controlName,
-            propertyValue: field.filterValue ?? value
+            propertyName:propertyName,
+            propertyValue: propertyValue
           });
         }
       }
@@ -70,6 +99,7 @@ export class FilterOptionsComponent {
 
     return filters;
     }
+
 
   resetFilters() {
     this.filterForm.reset();
