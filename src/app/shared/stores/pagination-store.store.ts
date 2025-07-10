@@ -19,47 +19,11 @@ export class PaginationStore<T> {
   totalItems = signal(0);
   currentPage = signal(1);
   pageSize = signal(12);
-  private hasSetInitialTotal = false;
-  // filters:Filter[]=[];
-    filters:Filter[]=[];
-  // filters=signal<Filter[]>([]);
+  filters:Filter[]=[];
   sorts:Sort[]=[];
   private dynamicFetchFn: (page: number, size: number,filters:Filter[],sorts:Sort[]) => Observable<{ data: T[]; totalCount: number }>;
+  private hasSetInitialTotal = false;
 
-  // private dynamicFetchFn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>;
-
-  // constructor(
-  //   initialFetchFn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>,
-  //   externalItemsSignal?: WritableSignal<T[]>
-  // ) {
-  //   this.items = externalItemsSignal ?? signal<T[]>([]);
-  //   this.dynamicFetchFn = initialFetchFn;
-
-  //   this.pageSizeSubject
-  //     .pipe(switchMap(({ page, size }) => this.dynamicFetchFn(page, size)))
-  //     .subscribe(result => {
-  //       this.items.set(result.data);
-  //       this.setTotalItems(result.totalCount);
-  //       this.currentPage.set(this.pageSizeSubject.value.page);
-  //       this.pageSize.set(this.pageSizeSubject.value.size);
-  //     });
-
-  //   effect(() => {
-  //     const totalItems = this.totalItems();
-  //     const pageSize = this.pageSize();
-  //     const currentPage = this.currentPage();
-
-  //     if (!this.hasSetInitialTotal && totalItems > 0) {
-  //       this.hasSetInitialTotal = true;
-  //     }
-
-  //     if (!this.hasSetInitialTotal) return;
-
-  //     const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
-  //     if (currentPage > totalPages) this.goToPage(totalPages);
-  //     else if (currentPage < 1) this.goToPage(1);
-  //   });
-  // }
 
 
   constructor(
@@ -69,13 +33,9 @@ export class PaginationStore<T> {
   ) {
     this.items = externalItemsSignal ?? signal<T[]>([]);
     this.dynamicFetchFn = initialFetchFn;
-    this.filters=this.__CommonService.getItemsFromStorage(`${key}_filters`,[]);
-    // this.filters=this.__CommonService.getItemsFromStorage(`filters`,[]);
-    console.log(`${key}_filters`,this.filters);
     this.pageSizeSubject
       .pipe(switchMap(({ page, size }) => this.dynamicFetchFn(page, size,this.filters,this.sorts)))
       .subscribe(result => {
-        console.log('in constructor here');
         this.items.set(result.data);
         this.setTotalItems(result.totalCount);
         this.currentPage.set(this.pageSizeSubject.value.page);
@@ -153,19 +113,12 @@ export class PaginationStore<T> {
 
 
   refresh() {
-    console.log('in refresh');
     this.pageSizeSubject.next({
       page: this.currentPage(),
       size: this.pageSize()
     });
   }
-
-  // setFetchFn(fn: (page: number, size: number) => Observable<{ data: T[]; totalCount: number }>) {
-  //   this.dynamicFetchFn = fn;
-  //   this.resetPage();
-  // }
   setFetchFn(fn: (page: number, size: number,filters:Filter[],sorts:Sort[]) => Observable<{ data: T[]; totalCount: number }>) {
-    console.log('in setFetchFn')
     this.dynamicFetchFn = fn;
     this.resetPage();
   }

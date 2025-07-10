@@ -21,7 +21,6 @@ getGrossTotal=this.__OrderService.getGrossTotal;
 discountvalue=this.__OrderService.discount;
 paidAmount=this.__OrderService.paidAmount;
 mustBePaid:boolean=true;
-// currency:string='SAR';
 currency:string=this.__OrderService.currency;
 
 paymentMethods: {

@@ -198,23 +198,6 @@ export class VariantLibraryItemComponent {
       nameEn: variantName,
       variantDetails
     };
-
-    // const serviceCall =
-    //   mode === 'add'
-    //     ? this.__ProductService.createVariant(newVariant)
-    //     : this.__ProductService.updateVariant(newVariant);
-
-    // serviceCall.subscribe({
-    //   next: () => {
-    //     console.log('in next');
-    //     if (mode === 'add') {
-    //       this.closeAddVariantPopScreen.emit();
-    //     } else {
-    //       this.updated.emit();
-    //     }
-    //   },
-    //   error: (error)=> {this.nameErrorMessage='Something went wrong, please try again later'; console.error('Error adding/updating variant:', error);},
-    // });
     try {
       const serviceCall =
         mode === 'add'

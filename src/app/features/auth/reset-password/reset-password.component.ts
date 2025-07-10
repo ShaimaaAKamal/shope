@@ -43,7 +43,6 @@ export class ResetPasswordComponent {
 
     this.authService.changePassword(payload).subscribe({
       next: () => this.router.navigateByUrl('Auth/Login')
-      // error: () => console.error('Password change failed')
     });
   }
 

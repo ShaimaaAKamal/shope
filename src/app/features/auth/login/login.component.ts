@@ -47,8 +47,6 @@ export class LoginComponent {
           this.authService.saveToken(result.token);
         }
       }
-      // Uncomment for handling failed login
-      // error: () => this.errors.password = 'Invalid email or password'
     });
   }
 

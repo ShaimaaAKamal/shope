@@ -50,37 +50,24 @@ export class PaginationContextService {
     getFn: (body?: any) => Observable<{ data: T[]; totalCount: number }>,
   ): (searchKey: string) => (page: number, size: number,filters:Filter[],sorts:Sort[]) => Observable<{ data: T[]; totalCount: number }> {
     return (searchKey: string) => {
-      console.log('in search');
-      // const filters = [{ operation: 3, propertyName: property, propertyValue: searchKey }];
       const filters=this.getStore(key)?.filters;
-      console.log('search filtees',filters);
       const searchFilter: Filter = {
         operation: 3,
         propertyName: property,
         propertyValue: searchKey
       };
 
-      const allFilters = filters?.length ? [...filters, searchFilter] : [searchFilter];
-      this.__CommonService.saveToStorage(`${key}_filters`,allFilters);
+      const isDuplicate = filters?.some(f => f.propertyName === searchFilter.propertyName);
 
-      console.log('allFilters',allFilters);
+      const allFilters = filters?.length
+        ? isDuplicate
+          ? [...filters]
+          : [...filters, searchFilter]
+        : [searchFilter];
+
       return this.createSearchFn(allFilters, (body) => getFn(body));
     };
   }
-
-
-  // getSearchFn<T>(
-  //   key: string,
-  //   property: string,
-  //   getFn: (body?: any) => Observable<{ data: T[]; totalCount: number }>,
-  //   sorts ?: Sort[],
-  // ): (searchKey: string) => (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
-  //   return (searchKey: string) => {
-  //   const filters = [{ operation: 3, propertyName: property, propertyValue: searchKey }];
-
-  //   return this.createSearchFn(filters, (body) => getFn(body),sorts ?? []);
-  //   };
-  // }
 
   getStore<T>(key: string): PaginationStore<T> | undefined {
     return this.storeMap.get(key);
@@ -95,23 +82,6 @@ export class PaginationContextService {
     all: false,
   };
 }
-
-
-// private createFetchBody({
-//   filters = [] as Filter[],
-//   sorts = this.defaultSorts,
-//   page = 1,
-//   size = 10,
-//   properties = ''
-// }): any {
-//   return {
-//     filters,
-//     sorts,
-//     pagingModel: this.createPagingModel(page, size),
-//     properties
-//   };
-// }
-
 
 private createFetchBody({
   filters = [] as Filter[],
@@ -128,23 +98,6 @@ private createFetchBody({
     properties
   };
 }
-
-// private createPaginatedFetcher<T>(
-//   fetchFn: FetchEntityFn<T>,
-//   processData?: (data: T[]) => T[]
-// ): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
-//   return (page: number, size: number) => {
-//     const body = this.createFetchBody({ page, size });
-
-//     return fetchFn(body).pipe(
-//       map(result => ({
-//         ...result,
-//         data: processData ? processData(result.data) : result.data
-//       }))
-//     );
-//   };
-// }
-
 
 private createPaginatedFetcher<T>(
   fetchFn: FetchEntityFn<T>,
@@ -170,9 +123,6 @@ private createSearchFn<T>(
     const body = this.createFetchBody({
       filters:enterfilters
       , page, size });
-      console.log('enterfilters',enterfilters);
-      console.log("in create Search");
-      console.log('body',body);
     return fetchFn(body).pipe(
       map(response => ({
         data: response.data as T[],
@@ -181,37 +131,5 @@ private createSearchFn<T>(
     );
   };
 }
-
-// private createSearchFn<T>(
-//   filters: any[],
-//   fetchFn: (body: any) => Observable<{ data: T[] }>
-// ): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
-//   return (page: number, size: number) => {
-//     const body = this.createFetchBody({ filters, page, size });
-//     return fetchFn(body).pipe(
-//       map(response => ({
-//         data: response.data as T[],
-//         totalCount: (response as any).totalCount ?? response.data.length
-//       }))
-//     );
-//   };
-// }
-
-
-// private createSearchFn<T>(
-//   filters: any[],
-//   fetchFn: (body: any) => Observable<{ data: T[] }>,
-//   sorts:Sort[]
-// ): (page: number, size: number) => Observable<{ data: T[]; totalCount: number }> {
-//   return (page: number, size: number) => {
-//     const body = this.createFetchBody({ filters,sorts ,page, size });
-//     return fetchFn(body).pipe(
-//       map(response => ({
-//         data: response.data as T[],
-//         totalCount: (response as any).totalCount ?? response.data.length
-//       }))
-//     );
-//   };
-// }
 
 }

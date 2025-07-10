@@ -200,25 +200,10 @@ applyFilters(event:any) {
 if (store) {
   store.filters=filters;
   const savedSearchKey=this.__CommonService.getItemsFromStorage('searchKey','');
-  console.log('filters',filters);
-  console.log('store filters',store.filters);
-  // if(savedSearchKey){
-  //   console.log('savedSearchKey',savedSearchKey);
-  //   console.log('insearch');
     const searchFn = this.productService.paginationCtx.getSearchFn('Products', 'nameEn',this.productService.getProducts.bind(this.productService));
     this.productService.paginationCtx.getStore('Products')?.setFetchFn(searchFn(savedSearchKey));
-  // }
   this.productService.paginationCtx.getStore('Products')?.refresh();
 }
-  // const body: any = {
-  //   sorts: [],
-  //   filters: filters,
-  //   pagingModel: { index: 0, length: 0, all: false },
-  //   properties: ''
-  // };
-  // this.productService.getProducts({
-
-  // });
   this.closeFilter=true;
   }
 resetFilters() {
@@ -231,10 +216,7 @@ resetFilters() {
     const store= this.productService.paginationCtx.getStore('Products');
     if(store){
       store.resetPage();
-      console.log('in destroye')
-      store.filters=[]
     }
-    // this.productService.paginationCtx.getStore('Products')?.resetPage();
   }
 }
 

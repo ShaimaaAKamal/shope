@@ -40,7 +40,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   private readonly categoryService = inject(CategoryService);
   private readonly productService = inject(ProductService);
   private readonly customerService = inject(CustomerService);
-  // private readonly orderService = inject(OrderService);
   private readonly router = inject(Router);
 
   isRtl = this.languageService.rtlClassSignal;
@@ -87,21 +86,10 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       .subscribe(() => this.sendSearchRequest());
   }
 
-  // private clearSearchKey() {
-  //   this.searchKey = '';
-  //   this.commonService.removeItemFromStorage('searchKey')
-  //   this.searchKeyChanged$.next('');
-  // }
-
   private clearSearchKey() {
     const store= this.paginationCtx.getStore(this.dropdownSelection);
-    if(store) {store.filters=[];
-      // this.commonService.removeItemFromStorage(`filters`);
-     this.commonService.removeItemFromStorage(`${this.dropdownSelection}_filters`)
-     }
+    if(store) store.filters=[];
     this.commonService.removeItemFromStorage('searchKey');
-    // this.commonService.removeItemFromStorage(`${this.dropdownSelection}_filters`)
-
     this.searchKey = '';
     this.searchKeyChanged$.next('');
   }
@@ -156,7 +144,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.searchKey = savedSearchKey;
     const config = this.getEntityConfig(this.dropdownSelection);
     if (!config) return;
-    console.log('checkStoredKey');
     const searchFn = this.paginationCtx.getSearchFn(config.key, config.propertyName, config.getFn);
     this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(savedSearchKey));
     this.paginationCtx.getStore(config.key)?.refresh();
@@ -173,11 +160,6 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.paginationCtx.getStore(config.key)?.setFetchFn(searchFn(this.searchKey));
   }
 
-  // onSearchKeyChange(value: string): void {
-  //   this.searchKey = value;
-  //   this.commonService.saveToStorage('searchKey',value);
-  //   this.searchKeyChanged$.next(value);
-  // }
   onSearchKeyChange(value: string): void {
     if(value){
       this.searchKey = value;

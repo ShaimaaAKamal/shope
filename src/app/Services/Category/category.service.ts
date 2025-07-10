@@ -82,33 +82,5 @@ getCategoryByName(name: string) {
   return this.__SharedService.getAllByPost('GetCategories','Categories',searchBody)
 }
 
-// validateCategoryInputs(nameEn: string, nameAr: string,id:number |null=null) {
-//   const normalizedName = nameEn.trim().toLowerCase();
-//   const normalizedArabicName = nameAr.trim().toLowerCase();
 
-//   const categories = this.categories();
-
-//   const duplicateExists = id == null
-//     ? categories.some(
-//         (category) =>
-//           category.nameEn.toLowerCase() === normalizedName ||
-//           category.nameAr.toLowerCase() === normalizedArabicName
-//       )
-//     : categories.find(
-//         (category) =>
-//           (category.nameEn.toLowerCase() === normalizedName ||
-//            category.nameAr.toLowerCase() === normalizedArabicName) &&
-//           category.id !== id
-//       );
-
-//   if (duplicateExists) {
-//     return {
-//       message: 'Category already exists',
-//       status: false,
-//       errorType: 'already_Exist'
-//     };
-//   }
-
-//   return { status: true };
-// }
 }

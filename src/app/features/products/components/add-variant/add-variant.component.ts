@@ -93,7 +93,6 @@ addNewValue() {
 
 
    const result=this.__CommonService.validatenNameInputs(this.detailName.value,this.detailNameAr.value,variantNewValue);
-   console.log(result);
    if (!result.status) {
     for (const err of result.errors) {
       if (err.errorType === 'missing_Name') {

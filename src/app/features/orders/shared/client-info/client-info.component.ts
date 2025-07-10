@@ -55,13 +55,4 @@ ngOnInit(): void {
 
 }
 
-// getCustomerName(){
-//     // this.customerName= this.isRtl() ? this.ClientInfoData.order.customer.nameAr : this.ClientInfoData.order.customer.name;
-//          const customer=this.__CustomerService.getCustomerByID(this.ClientInfoData.order.customerId)
-//         // this.customerName= this.isRtl() ? this.ClientInfoData.order.customer.nameAr : this.ClientInfoData.order.customer.name;
-//         this.customerName= this.isRtl() ? customer.firstNameAr : customer.firstNameEn;
-// }
-
-
-
 }
