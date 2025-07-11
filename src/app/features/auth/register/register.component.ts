@@ -45,7 +45,6 @@ export class RegisterComponent {
       email,
       phoneNumber,
       rolesId: [],
-      applicationsId: [0],
       level: 0
     };
 

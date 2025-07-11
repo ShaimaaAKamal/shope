@@ -4,6 +4,5 @@ export interface User {
   email: string,
   phoneNumber: string,
   rolesId: string[],
-  applicationsId: number[],
   level: number
 }
