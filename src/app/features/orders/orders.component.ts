@@ -169,6 +169,7 @@ invoicePaymentMethodTpl!: TemplateRef<any>;
   }
 
   ngOnInit(): void {
+    console.log('orders',this.__OrderService.orders());
     this.columns = [
       {
         name: '',

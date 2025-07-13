@@ -2,11 +2,9 @@ import { OrderProduct } from "./order-product"
 
 export interface Order
 {
-  id?:number
+  id?:number,
   customerId: number,
   userId: string,
-  shiftNumber: number,
-  shiftId: number,
   invoiceDate: Date,
   invoiceType: number,
   paymentMethodId: number,
@@ -20,7 +18,11 @@ export interface Order
   totalAfterTax: number,
   couponCode: string,
   stopChange: boolean,
-  details:OrderProduct[]
+  InvoiceDetails:OrderProduct[],
+  invoiceNumber?:number,
+  shiftNumber?:number,
+  customerName?:string,
+  paymentMethodName?:string
   [key: string]: any
 }
 

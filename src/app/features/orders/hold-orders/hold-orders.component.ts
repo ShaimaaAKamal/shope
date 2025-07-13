@@ -3,6 +3,7 @@ import { Order } from '../../../Interfaces/order';
 import { Router } from '@angular/router';
 import { OrderService } from '../../../Services/order/order.service';
 import { LanguageService } from '../../../Services/Language/language.service';
+import { CommonService } from '../../../Services/CommonService/common.service';
 
 @Component({
   selector: 'app-hold-orders',
@@ -14,6 +15,7 @@ export class HoldOrdersComponent {
 
 __OrderService=inject(OrderService);
 holdOrders=this.__OrderService.HoldOrders;
+
 
 __LanguageService=inject(LanguageService);
 isRtl=this.__LanguageService.rtlClassSignal;

@@ -91,14 +91,18 @@ ngOnInit(): void {
     return;
   }
 
-  if (this.order.invoiceType == 2 && this.__OrderService.calculateTotalProducts(this.order.details) <= 0) {
+  // if (this.order.invoiceType == 2 && this.__OrderService.calculateTotalProducts(this.order.details) <= 0) {
+    if (this.order.invoiceType == 2 && this.__OrderService.calculateTotalProducts(this.order.InvoiceDetails) <= 0) {
+
     this.__ToastingMessagesService.showToast("There is no products to be returned", 'error');
     this.__Router.navigateByUrl('Orders');
     return;
   }
 
-  this.__OrderService.orderProducts.set([...this.order.details.map(p => ({ ...p }))]);
-  this.orderProducts = this.order.details.map(p => ({ ...p }));
+  // this.__OrderService.orderProducts.set([...this.order.details.map(p => ({ ...p }))]);
+    this.__OrderService.orderProducts.set([...this.order.InvoiceDetails.map(p => ({ ...p }))]);
+  this.orderProducts = this.order.InvoiceDetails.map(p => ({ ...p }));
+  // this.orderProducts = this.order.details.map(p => ({ ...p }));
 
 
   this.__CustomerService.getCustomerByID(this.order.customerId)
@@ -177,7 +181,8 @@ validateReturnOrder(newReturnProducts:OrderProduct[]): boolean {
     //   p => p.id === returnItem.id
     // );
       const originalProduct = this.orderProducts.find(
-      p => p.productId === returnItem.productId
+      // p => p.productId === returnItem.productId
+            p => p.productVariantMasterId === returnItem.productVariantMasterId
     );
 
     // if (!originalProduct) {
@@ -187,8 +192,10 @@ validateReturnOrder(newReturnProducts:OrderProduct[]): boolean {
     // }
 
      if (!originalProduct) {
-      this.__TranslateService.instant('RETURN.INVALID_PRODUCT', { id: returnItem.productId });
-      this.__ToastingMessagesService.showToast(`Product ID ${returnItem.productId} was not part of the original order.`, 'error');
+      // this.__TranslateService.instant('RETURN.INVALID_PRODUCT', { id: returnItem.productId });
+      // this.__ToastingMessagesService.showToast(`Product ID ${returnItem.productId} was not part of the original order.`, 'error');
+         this.__TranslateService.instant('RETURN.INVALID_PRODUCT', { id: returnItem.productVariantMasterId });
+      this.__ToastingMessagesService.showToast(`Product ID ${returnItem.productVariantMasterId} was not part of the original order.`, 'error');
       return false;
     }
 
@@ -198,8 +205,10 @@ validateReturnOrder(newReturnProducts:OrderProduct[]): boolean {
     //   return false;
     // }
       if (returnItem.soldQuantity > originalProduct.soldQuantity) {
-       this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.soldQuantity, name:originalProduct.productId });
-      this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.soldQuantity} of "${originalProduct.productId}".`, 'error');
+      //  this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.soldQuantity, name:originalProduct.productId });
+      // this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.soldQuantity} of "${originalProduct.productId}".`, 'error');
+         this.__TranslateService.instant('RETURN.MAX_QUANTITY', { quantity:originalProduct.soldQuantity, name:originalProduct.productVariantMasterId });
+      this.__ToastingMessagesService.showToast(`You can only return up to ${originalProduct.soldQuantity} of "${originalProduct.productVariantMasterId}".`, 'error');
       return false;
     }
   }
@@ -215,8 +224,10 @@ const updatedProducts:OrderProduct[] = [];
 const returnedProducts=this.__OrderService.orderProducts();
 const returnedItems:OrderProduct[] = []
 
-this.order.details.forEach(product => {
-  const returned = returnedProducts.find(p => p.productId === product.productId);
+// this.order.details.forEach(product => {
+//   const returned = returnedProducts.find(p => p.productId === product.productId);
+this.order.InvoiceDetails.forEach(product => {
+  const returned = returnedProducts.find(p => p.productVariantMasterId === product.productVariantMasterId);
 
   if (returned) {
     const remainingQty:number = Number(product.soldQuantity) - Number(returned.soldQuantity);
@@ -236,7 +247,9 @@ this.order.details.forEach(product => {
 });
 
 // this.order.products = updatedProducts;
-this.order.details = updatedProducts;
+this.order.InvoiceDetails = updatedProducts;
+
+// this.order.details = updatedProducts;
 
 }
 

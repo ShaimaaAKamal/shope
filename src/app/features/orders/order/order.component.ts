@@ -32,7 +32,8 @@ export class OrderComponent {
 
 
   displayOrderDetails(order: Order) {
-    this.__OrderService.orderProducts.set([...order.details]);
+    // this.__OrderService.orderProducts.set([...order.details]);
+        this.__OrderService.orderProducts.set([...order.InvoiceDetails]);
     this.__OrderService.discount.set(order.totalBeforeDiscount - order.totalAfterDiscount);
 
     if (!order.customerId) return;
